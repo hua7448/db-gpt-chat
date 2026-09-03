@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="DB-GPT v0.8.2 面向二次开发、部署与安全改造的代码核查报告">
+<meta name="theme-color" content="#17343a">
+<title>DB-GPT 技术调研报告 — 二开与改造指南</title>
+<style>
+:root{
+  --bg:#f3f5f4; --panel:#fff; --ink:#18232b; --muted:#64727b;
+  --accent:#087f78; --accent-dark:#075e59; --accent-soft:#e3f3f0;
+  --line:#d9e1df; --side:#13252a; --side-ink:#c8d7d6; --side-hover:#1d383d;
+  --code-bg:#17252b; --code-ink:#e6f0ee;
+  --danger:#b42318; --danger-bg:#fff1ef; --danger-line:#f4c7c2;
+  --warn:#9a5b00; --warn-bg:#fff8e8; --warn-line:#f0d59b;
+  --ok:#176b45; --ok-bg:#edf8f1; --ok-line:#b9dfc8;
+  --info:#245b83; --info-bg:#eef6fb; --info-line:#c4dceb;
+  --shadow:0 8px 24px rgba(19,37,42,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:74px}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px}
+body.menu-open{overflow:hidden}
+.layout{display:flex;min-height:100vh}
+/* ---------- sidebar ---------- */
+aside{width:272px;flex:0 0 272px;background:var(--side);color:var(--side-ink);position:sticky;top:0;height:100vh;overflow-y:auto;padding:0 0 40px;z-index:20}
+aside .brand{padding:22px 20px 16px;border-bottom:1px solid #294147}
+aside .brand h1{font-size:17px;margin:0;color:#fff;letter-spacing:.4px}
+aside .brand .sub{font-size:12px;color:#91aaa8;margin-top:6px}
+aside nav{padding:12px 0}
+aside nav a{display:block;color:var(--side-ink);text-decoration:none;padding:7px 20px;font-size:13px;border-left:3px solid transparent;transition:background .15s,color .15s}
+aside nav a:hover,aside nav a:focus-visible{background:var(--side-hover);color:#fff;outline:none}
+aside nav a.active{background:var(--side-hover);color:#78d4c7;border-left-color:#42b8aa}
+aside nav a.h{color:#799392;font-size:10.5px;text-transform:uppercase;letter-spacing:1.3px;padding:16px 20px 4px;pointer-events:none}
+.mobile-close{display:none}
+.scrim{display:none}
+/* ---------- main and utility bar ---------- */
+main{flex:1;min-width:0;padding:0 48px 80px;max-width:1240px;margin:0 auto}
+.topbar{height:58px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:10;background:rgba(243,245,244,.96);border-bottom:1px solid var(--line)}
+.crumb{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tools{display:flex;align-items:center;gap:8px}
+.icon-btn{width:34px;height:34px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;cursor:pointer;font-size:17px;line-height:1;display:inline-grid;place-items:center}
+.icon-btn:hover,.icon-btn:focus-visible{border-color:var(--accent);color:var(--accent);outline:2px solid rgba(8,127,120,.18);outline-offset:1px}
+#menuToggle{display:none}
+.search-wrap{position:relative}
+.search{display:flex;align-items:center;gap:6px;height:34px;width:250px;border:1px solid var(--line);background:var(--panel);border-radius:6px;padding:0 8px;color:var(--muted)}
+.search:focus-within{border-color:var(--accent);box-shadow:0 0 0 2px rgba(8,127,120,.12)}
+.search input{border:0;outline:0;background:transparent;min-width:0;width:100%;font:inherit;font-size:13px;color:var(--ink)}
+.search kbd{font-size:10px;border:1px solid var(--line);border-bottom-width:2px;border-radius:3px;padding:0 4px;color:var(--muted);background:#f6f8f7}
+.search-results{position:absolute;right:0;top:40px;width:min(420px,calc(100vw - 32px));background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:6px;display:none;max-height:360px;overflow:auto}
+.search-results.show{display:block}
+.search-results a{display:block;padding:9px 12px;border-bottom:1px solid #edf1ef;color:var(--ink);font-size:13px;text-decoration:none}
+.search-results a:hover,.search-results a:focus-visible{background:var(--accent-soft);outline:0}
+.search-results small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+/* ---------- hero ---------- */
+.hero{background:#17343a;color:#fff;border-bottom:4px solid #42b8aa;border-radius:0 0 8px 8px;margin:0 -48px 30px;padding:42px 48px 34px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;right:-90px;top:-110px;width:300px;height:300px;border:1px solid rgba(138,220,210,.2);transform:rotate(25deg);pointer-events:none}
+.hero h1{margin:0 0 9px;font-size:30px;letter-spacing:.2px;line-height:1.25;position:relative;z-index:1}
+.hero p{margin:6px 0;color:#d5e7e4;max-width:760px;position:relative;z-index:1}
+.hero .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;position:relative;z-index:1}
+.hero .meta span{background:#24474d;border:1px solid #3b6569;border-radius:4px;padding:3px 10px;font-size:12px;color:#d8e9e6}
+.hero-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;position:relative;z-index:1}
+.hero-actions a{display:inline-flex;align-items:center;gap:6px;border:1px solid #6cbeb4;border-radius:5px;padding:7px 12px;color:#fff;font-size:13px;text-decoration:none;background:#205158}
+.hero-actions a.primary{background:#42b8aa;color:#12373a;border-color:#42b8aa;font-weight:700}
+.hero-actions a:hover,.hero-actions a:focus-visible{filter:brightness(1.08);outline:2px solid #a8e4dc;outline-offset:1px}
+/* ---------- headings and content ---------- */
+h2{font-size:23px;margin:50px 0 16px;padding-bottom:9px;border-bottom:2px solid var(--accent);color:#14272c;line-height:1.3}
+h2 .no{color:var(--accent);margin-right:8px}
+h3{font-size:17.5px;margin:28px 0 10px;color:#19343a;line-height:1.4}
+h4{font-size:15px;margin:20px 0 8px;color:#315058}
+p{margin:8px 0}
+a{color:var(--accent-dark);text-decoration:none}
+a:hover{text-decoration:underline}
+section.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px 28px;margin:18px 0;box-shadow:0 2px 8px rgba(19,37,42,.025)}
+/* ---------- orientation layer ---------- */
+.start-panel{margin:0 0 20px}
+.start-kicker{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);font-weight:800;margin-bottom:5px}
+.start-title{font-size:24px;line-height:1.35;margin:0;color:#14272c}
+.start-lead{max-width:820px;color:#4b5d63;margin:8px 0 18px}
+.signal-grid,.decision-grid,.roadmap-grid,.deploy-grid{display:grid;gap:12px}
+.signal-grid{grid-template-columns:repeat(4,minmax(0,1fr));margin:18px 0}
+.signal{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent);border-radius:6px;padding:13px 14px;min-height:105px}
+.signal .label{font-size:11px;color:var(--muted);display:block;margin-bottom:4px}
+.signal strong{display:block;font-size:15px;line-height:1.4;color:#18353a}
+.signal.danger{border-top-color:var(--danger)}.signal.warn{border-top-color:#d28a19}.signal.ok{border-top-color:var(--ok)}
+.decision-grid{grid-template-columns:repeat(3,minmax(0,1fr));margin:14px 0 22px}
+.decision-card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:17px;display:flex;flex-direction:column;min-height:190px}
+.decision-card h3{font-size:16px;margin:4px 0 7px}.decision-card p{font-size:13px;color:#52646a;margin:0 0 12px}.decision-card a{font-size:13px;font-weight:700;margin-top:auto}
+.decision-card .symbol{font-size:20px;color:var(--accent);line-height:1}
+.roadmap{border-top:1px solid var(--line);padding-top:18px;margin-top:8px}
+.roadmap h3{margin-top:0}
+.roadmap-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.roadmap-step{position:relative;border-left:3px solid var(--line);padding:7px 13px 8px 15px;background:#fbfcfb}
+.roadmap-step.p0{border-left-color:var(--danger)}.roadmap-step.p1{border-left-color:#d28a19}.roadmap-step.p2{border-left-color:var(--accent)}
+.roadmap-step .phase{font-weight:800;font-size:12px;letter-spacing:.4px}.roadmap-step strong{display:block;font-size:15px;margin:3px 0}.roadmap-step p{font-size:12.5px;color:var(--muted);margin:0}
+.deploy-guide{margin-top:22px;border-top:1px solid var(--line);padding-top:18px}
+.deploy-guide h3{margin-top:0}
+.deploy-tabs{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
+.deploy-tab{border:1px solid var(--line);background:var(--panel);color:#38545a;border-radius:5px;padding:7px 10px;font:inherit;font-size:12.5px;cursor:pointer}
+.deploy-tab:hover,.deploy-tab:focus-visible,.deploy-tab.active{border-color:var(--accent);color:var(--accent-dark);background:var(--accent-soft);outline:0}
+.deploy-panel{display:none;border:1px solid var(--line);border-left:3px solid var(--accent);background:#fbfdfc;border-radius:5px;padding:13px 15px;font-size:13px}
+.deploy-panel.active{display:block}.deploy-panel strong{color:#17383d}.deploy-panel .mini{margin-top:5px}
+/* ---------- callouts ---------- */
+.box{border-radius:6px;padding:13px 15px;margin:14px 0;border:1px solid;font-size:14px}
+.box .t{font-weight:700;display:block;margin-bottom:4px}
+.box.danger{background:var(--danger-bg);border-color:var(--danger-line);color:#7f2b25}.box.danger .t{color:var(--danger)}
+.box.warn{background:var(--warn-bg);border-color:var(--warn-line);color:#704400}.box.warn .t{color:var(--warn)}
+.box.ok{background:var(--ok-bg);border-color:var(--ok-line);color:#1d5a3d}.box.ok .t{color:var(--ok)}
+.box.info{background:var(--info-bg);border-color:var(--info-line);color:#244f70}.box.info .t{color:var(--info)}
+/* ---------- tables ---------- */
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:13.5px;background:#fff}
+th{background:#edf2f1;color:#30484e;text-align:left;padding:8px 10px;border:1px solid var(--line);font-weight:700;white-space:nowrap}
+td{padding:7px 10px;border:1px solid var(--line);vertical-align:top}
+tbody tr:nth-child(even){background:#f8faf9}
+.tw{overflow-x:auto;display:block}
+/* ---------- code ---------- */
+code{background:#e6f3f1;color:#075e59;border-radius:3px;padding:1px 5px;font-size:12.8px;font-family:"SF Mono",Menlo,Consolas,monospace;word-break:break-all}
+.code-wrap{position:relative}
+pre{background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:16px 18px;overflow-x:auto;font-size:12.8px;line-height:1.65;font-family:"SF Mono",Menlo,Consolas,monospace}
+pre code{background:none;color:inherit;padding:0;font-size:inherit;word-break:normal}
+pre .c{color:#83cfd0}pre .k{color:#b2b9ee}pre .s{color:#9be2ae}
+.copy-code{position:absolute;right:8px;top:8px;border:1px solid #48636a;border-radius:4px;background:#20353c;color:#cde1df;padding:4px 7px;font:inherit;font-size:11px;cursor:pointer;opacity:.9}
+.copy-code:hover,.copy-code:focus-visible{background:#2b4d53;color:#fff;outline:2px solid #70cfc3;outline-offset:1px}
+/* ---------- details and misc ---------- */
+details{background:#fff;border:1px solid var(--line);border-radius:6px;margin:12px 0;padding:0}
+details>summary{cursor:pointer;padding:11px 16px;font-weight:700;font-size:14px;color:var(--accent-dark);list-style:none;user-select:none}
+details>summary::before{content:"▸ ";color:var(--accent)}details[open]>summary::before{content:"▾ "}details[open]>summary{border-bottom:1px dashed var(--line)}details .body{padding:6px 16px 15px}
+.pill{display:inline-block;border-radius:10px;padding:1px 9px;font-size:12px;font-weight:700;margin-right:5px}.pill.red{background:#fee3df;color:#a32a20}.pill.amber{background:#fff0c9;color:#8b5500}.pill.green{background:#dff3e6;color:#176b45}.pill.blue{background:#dcecf7;color:#245b83}.pill.gray{background:#e7eceb;color:#526267}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0;font-size:13px}.flow .node{background:#eaf5f3;border:1.5px solid #8dcac3;border-radius:5px;padding:6px 12px;color:#075e59;font-weight:700;white-space:nowrap}.flow .node.alt{background:#fff8e8;border-color:#e1bd70;color:#805000}.flow .node.green{background:#edf8f1;border-color:#92cfa9;color:#176b45}.flow .node.red{background:#fff1ef;border-color:#e7a79e;color:#a32a20}.flow .arr{color:#819397;font-weight:700}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:1000px){.cols{grid-template-columns:1fr}}
+.mini{font-size:12.5px;color:var(--muted)}.kv{margin:10px 0}.kv b{color:#18353a}.tag-list span{display:inline-block;background:#eef3f2;border:1px solid var(--line);border-radius:4px;padding:2px 9px;margin:3px 4px 3px 0;font-size:12.5px;color:#496066}hr{border:none;border-top:1px dashed var(--line);margin:26px 0}
+.top-link{display:inline-flex;align-items:center;gap:5px;position:fixed;right:24px;bottom:20px;border:1px solid var(--line);background:rgba(255,255,255,.95);border-radius:5px;padding:7px 10px;font-size:12px;color:var(--accent-dark);box-shadow:var(--shadow);z-index:5}.top-link:hover{text-decoration:none;border-color:var(--accent)}
+.focus-target{outline:3px solid rgba(8,127,120,.28);outline-offset:3px}
+@media(max-width:900px){
+  main{padding:0 24px 64px}.hero{margin:0 -24px 26px;padding:34px 24px 28px}.signal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.decision-grid,.roadmap-grid{grid-template-columns:1fr}.topbar{margin:0 -24px;padding:0 24px}.crumb{display:none}.search{width:min(250px,48vw)}#menuToggle{display:inline-grid}
+  aside{position:fixed;left:0;top:0;transform:translateX(-102%);transition:transform .2s ease;box-shadow:12px 0 30px rgba(0,0,0,.22)}body.menu-open aside{transform:translateX(0)}.mobile-close{display:inline-grid;position:absolute;right:14px;top:14px}.scrim{position:fixed;inset:0;background:rgba(4,18,21,.48);z-index:15}.scrim.show{display:block}
+}
+@media(max-width:560px){body{font-size:14px}main{padding:0 16px 58px}.topbar{margin:0 -16px;padding:0 16px;height:54px}.hero{margin:0 -16px 24px;padding:30px 18px 25px}.hero h1{font-size:25px}.hero .meta{gap:5px}.hero .meta span{font-size:11px}.hero-actions a{padding:6px 9px}.signal-grid{grid-template-columns:1fr}.search{width:calc(100vw - 120px)}.tools{gap:5px}.copy-code{position:sticky;float:right;margin-bottom:-30px;z-index:2}.top-link{right:13px;bottom:13px}.section.card{padding:18px}.card{padding-left:18px!important;padding-right:18px!important}h2{font-size:20px;margin-top:40px}
+}
+@media print{body{background:#fff;color:#111}.topbar,aside,.scrim,.top-link,.hero-actions,.copy-code,.deploy-tabs{display:none!important}main{padding:0;max-width:none}.hero{margin:0 0 20px;border-radius:0}.start-panel{page-break-after:always}.signal-grid,.decision-grid,.roadmap-grid{grid-template-columns:repeat(3,1fr)}section.card{box-shadow:none;break-inside:avoid}a{color:#111;text-decoration:underline}pre{white-space:pre-wrap;overflow:visible}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside>
+  <div class="brand">
+    <h1>DB-GPT 技术调研</h1>
+    <div class="sub">二开与改造指南 · v0.8.2 · 2026-09-01</div>
+    <button class="icon-btn mobile-close" id="closeMenu" type="button" aria-label="关闭目录">×</button>
+  </div>
+  <nav>
+    <a class="h">总览</a>
+    <a href="#orientation">阅读入口</a>
+    <a href="#summary">0. 执行摘要</a>
+    <a href="#arch">1. 架构总览</a>
+    <a class="h">核心机制</a>
+    <a href="#core">2. 核心抽象：组件系统与 AWEL</a>
+    <a href="#agent">3. 多 Agent 框架执行机制</a>
+    <a href="#skills">4. Skills 技能系统</a>
+    <a href="#text2sql">5. Text2SQL 与数据分析链路</a>
+    <a href="#rag">6. RAG 体系</a>
+    <a class="h">安全与部署</a>
+    <a href="#sandbox">7. 沙箱与安全执行</a>
+    <a href="#deploy">8. 部署与运维</a>
+    <a href="#config">9. 配置参考</a>
+    <a class="h">二次开发</a>
+    <a href="#extend">10. 扩展点 Cookbook</a>
+    <a href="#pitfalls">11. 坑点与注意事项全集</a>
+    <a href="#appendix">12. 附录：关键文件索引</a>
+  </nav>
+</aside>
+<div class="scrim" id="scrim" aria-hidden="true"></div>
+<main>
+
+<div class="topbar">
+  <div class="crumb">DB-GPT / 二次开发与部署决策</div>
+  <div class="tools">
+    <div class="search-wrap">
+      <label class="search" aria-label="搜索报告">
+        <span aria-hidden="true">⌕</span>
+        <input id="reportSearch" type="search" placeholder="搜索章节、路径、配置…" autocomplete="off">
+        <kbd>/</kbd>
+      </label>
+      <div class="search-results" id="searchResults" role="listbox" aria-label="搜索结果"></div>
+    </div>
+    <button class="icon-btn" id="menuToggle" type="button" aria-label="打开目录" aria-expanded="false">☰</button>
+    <button class="icon-btn" id="printReport" type="button" aria-label="打印报告" title="打印报告">⎙</button>
+  </div>
+</div>
+
+<div class="hero">
+  <h1>DB-GPT 深度技术调研报告</h1>
+  <p>开源 Agentic AI 数据分析智能助手 — 面向二次开发与改造的完整参考</p>
+  <div class="meta">
+    <span>调研日期：2026-09-01</span>
+    <span>代码基线：main @ 28312854（v0.8.2）</span>
+    <span>覆盖：8 个核心方向</span>
+    <span>仓库路径：/Users/simple/kWork/DB-GPT</span>
+  </div>
+  <div class="hero-actions">
+    <a class="primary" href="#orientation">先看决策摘要 ↓</a>
+    <a href="#deploy">直接看部署</a>
+    <a href="#extend">直接看二开入口</a>
+  </div>
+</div>
+
+<!-- ================= 阅读入口 ================= -->
+<section id="orientation" class="start-panel" aria-labelledby="orientation-title">
+  <div class="start-kicker">先回答四个问题</div>
+  <h2 id="orientation-title" class="start-title">这份报告应该怎么读？</h2>
+  <p class="start-lead">先用下面的信号判断项目是否适合当前场景，再进入对应章节。深度章节保留代码路径和证据，入口层只负责帮助你快速做决定。</p>
+  <div class="box info"><span class="t">阅读约定</span><span class="pill blue">代码事实</span>表示可从当前仓库路径直接核对；<span class="pill amber">改造建议</span>表示面向生产的推荐动作；<span class="pill gray">文档漂移</span>表示旧命令或旧符号，不能直接照抄。所有判断均以 <code>main @ 28312854</code> 为基线。</div>
+  <div class="signal-grid">
+    <div class="signal"><span class="label">当前基线</span><strong>main @ 28312854<br>v0.8.2</strong></div>
+    <div class="signal danger"><span class="label">生产红线</span><strong>Agentic 代码执行仍有宿主裸跑点</strong></div>
+    <div class="signal warn"><span class="label">部署默认</span><strong>单进程 webserver，TOML 驱动</strong></div>
+    <div class="signal ok"><span class="label">推荐入口</span><strong>先配置 / Skills / AWEL，再改源码</strong></div>
+  </div>
+  <div class="decision-grid">
+    <article class="decision-card">
+      <div class="symbol" aria-hidden="true">⌘</div>
+      <h3>我应该改哪条链路？</h3>
+      <p>要改现有聊天行为，先区分 Legacy Scene 与 Agentic/ReAct；要做新能力，优先走 Serve、Skills 或 AWEL。</p>
+      <a href="#text2sql">查看链路对照 →</a>
+    </article>
+    <article class="decision-card">
+      <div class="symbol" aria-hidden="true">▣</div>
+      <h3>我应该怎么部署？</h3>
+      <p>源码模式适合二开；Compose 适合单机试用；HA 只解决模型服务扩展，不能自动解决应用状态和执行安全。</p>
+      <a href="#deploy">查看部署选择 →</a>
+    </article>
+    <article class="decision-card">
+      <div class="symbol" aria-hidden="true">!</div>
+      <h3>我先要封住哪些风险？</h3>
+      <p>先封住代码执行、鉴权、CORS、文件下载和 SQL 写操作，再谈多副本和平台化。</p>
+      <a href="#sandbox">查看安全清单 →</a>
+    </article>
+  </div>
+  <div class="roadmap">
+    <h3>推荐二开路线图</h3>
+    <div class="roadmap-grid">
+      <div class="roadmap-step p0"><span class="phase">P0 · 上线前</span><strong>安全与边界</strong><p>统一执行后端到 RuntimeFactory；关闭个人技能脚本；接入真实鉴权；收紧下载白名单和 CORS。</p></div>
+      <div class="roadmap-step p1"><span class="phase">P1 · 业务迭代</span><strong>能力与接入</strong><p>用 TOML、Skills、AWEL、Serve 脚手架和新数据源连接器实现业务能力，尽量不改核心循环。</p></div>
+      <div class="roadmap-step p2"><span class="phase">P2 · 平台化</span><strong>可靠性与产品化</strong><p>补外部任务队列、共享状态、可观测后端、前端页面和多副本发布流程。</p></div>
+    </div>
+  </div>
+  <div class="deploy-guide" id="deploy-guide">
+    <h3>部署场景快速选择</h3>
+    <div class="deploy-tabs" role="tablist" aria-label="部署场景">
+      <button class="deploy-tab active" type="button" role="tab" aria-selected="true" data-deploy="dev">源码二开</button>
+      <button class="deploy-tab" type="button" role="tab" aria-selected="false" data-deploy="single">Docker 单机</button>
+      <button class="deploy-tab" type="button" role="tab" aria-selected="false" data-deploy="ha">模型 HA</button>
+      <button class="deploy-tab" type="button" role="tab" aria-selected="false" data-deploy="sandbox">独立沙箱</button>
+    </div>
+    <div class="deploy-panel active" data-deploy-panel="dev"><strong>推荐给二开团队</strong>：<code>uv sync</code> + 明确的 TOML 配置，直接运行 webserver。SQLite 足够开发，改动集中在 <code>packages/</code> 与 <code>web/</code>，验证快、可调试。</div>
+    <div class="deploy-panel" data-deploy-panel="single"><strong>推荐给单机试用</strong>：根目录 <code>docker-compose.yml</code> 会启动 MySQL + webserver。它是开发示例，默认口令、<code>ipc: host</code>、缺少健康检查和 secret 管理，不能直接当生产基线。</div>
+    <div class="deploy-panel" data-deploy-panel="ha"><strong>推荐给模型服务扩展</strong>：使用 <code>ha-cluster-docker-compose.yml</code>，将 controller、LLM worker、embedding worker 和 light webserver 分离。HA 解决模型路由，不会自动解决应用层任务、文件和鉴权问题。</div>
+    <div class="deploy-panel" data-deploy-panel="sandbox"><strong>推荐给不可信代码</strong>：独立部署 <code>dbgpt-sandbox</code> 并置于内网和鉴权网关后。主应用当前不会自动调用它，必须把 app 内工具显式接到统一执行后端。</div>
+  </div>
+  <details class="quick-loop"><summary>最小可用闭环：请求、状态、文件各在哪里？</summary><div class="body">
+    <div class="flow"><span class="node">浏览器 / SDK</span><span class="arr">→</span><span class="node">webserver :5670</span><span class="arr">→</span><span class="node">Legacy 或 Agentic API</span><span class="arr">→</span><span class="node green">模型 / RAG / 工具</span></div>
+    <div class="tw"><table>
+      <thead><tr><th>对象</th><th>默认位置</th><th>扩容时的要求</th></tr></thead>
+      <tbody>
+        <tr><td>会话与消息</td><td><code>pilot/meta_data/dbgpt.db</code> / MySQL 表</td><td>共享元数据库；不要依赖进程内队列</td></tr>
+        <tr><td>上传文件与图表</td><td><code>pilot/message</code>、<code>pilot/tmp/{conv_id}</code></td><td>持久卷或对象存储；按 owner 清理</td></tr>
+        <tr><td>向量 / 全文 / 图索引</td><td><code>pilot/data</code> 或外部存储服务</td><td>固定 embedding 维度，迁移前先备份并重建索引</td></tr>
+        <tr><td>同步任务</td><td>进程内 <code>asyncio.create_task</code></td><td>生产补外部队列、重试、幂等和状态恢复</td></tr>
+      </tbody>
+    </table></div>
+    <p class="mini">快速定位：Legacy <code>POST /api/v1/chat/completions</code>；Agentic <code>POST /api/v1/chat/react-agent</code>；知识库 Agent <code>POST /api/v1/chat/knowledge-agent</code>。完整 API 证据见 §5、§6、§8。</p>
+  </div></details>
+</section>
+
+<!-- ================= 0. 执行摘要 ================= -->
+<section id="summary">
+<h2><span class="no">0.</span>执行摘要</h2>
+
+<section class="card">
+<h3>项目一句话</h3>
+<p>DB-GPT 是一个以「<b>组件系统 + AWEL DAG 工作流引擎 + 多 Agent 框架</b>」三大抽象为骨架的平台型项目：连接数据库/文件/知识库，让 AI 自主编写 SQL 与代码并执行分析，生成图表与报告。后端 Python（FastAPI）+ 前端 Next.js 13，采用 uv workspace monorepo（7 个包，依赖链 <code>dbgpt-app → dbgpt-serve → dbgpt-ext → dbgpt(core)</code>）。</p>
+
+<h3>⚡ 二开前必须知道的 10 个关键结论</h3>
+<table>
+<thead><tr><th style="width:40px">#</th><th>结论</th><th style="width:110px">影响</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><b>代码库存在两代并行的数据分析链路</b>：Legacy Scene 链路（提示词模板驱动，<code>/api/v1/chat/completions</code>）与新一代 Agentic/ReAct 链路（<code>/api/v1/chat/react-agent</code>，产品新主线）。改代码前必须先判断改的是哪一代。</td><td><span class="pill red">架构</span></td></tr>
+<tr><td>2</td><td><b>产品默认的 Python 代码执行不走容器沙箱</b>：ReAct 分析的 <code>code_interpreter</code> 仍在宿主 <code>sys.executable</code> 起子进程（60s 超时）；<code>shell_interpreter</code> 直接实例化 <code>LocalRuntime()</code> 绕过工厂保护。当前代码已把文件路径改走子进程环境变量，但执行边界仍未隔离。上生产前必须改造（见 §7）。</td><td><span class="pill red">安全</span></td></tr>
+<tr><td>3</td><td><b>配置以 TOML 为中心</b>（<code>configs/*.toml</code> + <code>~/.dbgpt/configs/&lt;profile&gt;.toml</code>）；<code>dbgpt start</code> 系列命令只认 <code>-c/--config</code>，旧文档中的 <code>--model_name/--light</code> 等 CLI 旗标已移除，照抄旧文档/旧 compose 会启动失败。</td><td><span class="pill amber">部署</span></td></tr>
+<tr><td>4</td><td><b>SQL 错误重试两代机制完全不同</b>：Legacy 链路 SQL 执行失败直接红字展示、不重试；Agentic 链路才有「错误作为 Observation 反馈 → LLM 修正重发」的循环（最多 30 轮）。</td><td><span class="pill blue">功能</span></td></tr>
+<tr><td>5</td><td><b>Skills 是产品新卖点且零代码可扩展</b>：Claude 风格 <code>SKILL.md</code> 技能包（scripts + templates），渐进披露注入，每次对话自动重载，放目录即生效。但技能脚本在宿主本机子进程执行、无沙箱。</td><td><span class="pill green">扩展</span></td></tr>
+<tr><td>6</td><td><b>Agent 框架有硬编码兜底</b>：模型选择无可用模型时兜底返回 <code>"deepseek-chat"</code>；AWEL 团队管理器硬编码 <code>bailing_proxyllm</code> 优先——私有化部署需修改。</td><td><span class="pill amber">私有化</span></td></tr>
+<tr><td>7</td><td><b>文档与代码存在漂移</b>：<code>cluster-docker-compose.yml</code>、<code>observability/docker-compose.yml</code> 仍用旧式 CLI 旗标；旧符号 <code>auto_client/ProxyType/@action</code> 已不存在。本报告全部以实际代码为准。</td><td><span class="pill amber">踩坑</span></td></tr>
+<tr><td>8</td><td><b>扩展体系成熟</b>：零侵入扩展（TOML 配置 / AWEL DAG 目录 / Flow 模板 / Skills / dbgpts 插件五形态）→ 轻侵入（Serve 模块脚手架 <code>dbgpt new serve</code>）→ 中侵入（LLM provider / 数据源 / 自定义组件）→ 重侵入（fork 管理）。</td><td><span class="pill green">扩展</span></td></tr>
+<tr><td>9</td><td><b>几个空壳/半成品要避开</b>：<code>RRFRanker</code>（HYBRID 检索只是拼接去重，无加权融合）、Weaviate 向量检索被注释、<code>OpenSPG/AwelIntentTranslator</code> 空壳、<code>DataAnalysisAgent</code> 未绑动作。</td><td><span class="pill amber">踩坑</span></td></tr>
+<tr><td>10</td><td><b>文档同步是进程内 <code>asyncio.create_task</code></b>：无任务队列/重试，多副本部署或进程重启会丢任务、卡在 RUNNING 状态。生产需要补队列或单实例化。</td><td><span class="pill amber">可靠性</span></td></tr>
+</tbody>
+</table>
+</section>
+</section>
+
+<!-- ================= 1. 架构总览 ================= -->
+<section id="arch">
+<h2><span class="no">1.</span>架构总览</h2>
+
+<section class="card">
+<h3>1.1 Monorepo 包结构（uv workspace，全部 v0.8.2，src 布局 + hatchling）</h3>
+<div class="tw"><table>
+<thead><tr><th>包目录</th><th>分发名</th><th>职责</th><th>关键内容</th></tr></thead>
+<tbody>
+<tr><td><code>packages/dbgpt-core</code></td><td><code>dbgpt</code></td><td>核心抽象层</td><td>组件系统、AWEL、Agent 框架、Model 接入（20+ provider）、RAG/Storage 抽象、CLI、tracer</td></tr>
+<tr><td><code>packages/dbgpt-app</code></td><td><code>dbgpt-app</code></td><td>应用编排层</td><td>FastAPI 主服务（<code>dbgpt_server.py</code>）、聊天场景 scene/、OpenAPI v1/v2、知识库 API、<code>agentic_data_api</code>（新主线）、前端静态资源、内置技能</td></tr>
+<tr><td><code>packages/dbgpt-serve</code></td><td><code>dbgpt-serve</code></td><td>服务组件层</td><td>24 个 Serve 模块：agent/flow/rag/model/prompt/datasource/conversation/observability/scheduled_task/session_file 等，统一 <code>/api/v1/serve/{name}</code> REST 模式</td></tr>
+<tr><td><code>packages/dbgpt-ext</code></td><td><code>dbgpt-ext</code></td><td>扩展实现层</td><td>16+ 数据源连接器、8 种向量库、图存储（TuGraph/Neo4j）、14 种文档加载器、embedding providers、RAG 检索器</td></tr>
+<tr><td><code>packages/dbgpt-client</code></td><td><code>dbgpt-client</code></td><td>Python SDK</td><td>异步客户端（httpx）、<code>chat()/chat_stream()</code> SSE、<code>dbgpt run flow</code></td></tr>
+<tr><td><code>packages/dbgpt-sandbox</code></td><td><code>dbgpt-sandbox</code></td><td>独立沙箱服务</td><td>四层架构（user/control/execution/display），Docker/Podman/nerdctl/Local 四种 runtime，默认端口 8000</td></tr>
+<tr><td><code>packages/dbgpt-accelerator/*</code></td><td><code>dbgpt-acc-*</code></td><td>加速壳包</td><td><code>dbgpt-acc-auto</code>（torch/vllm/mlx extras）、<code>dbgpt-acc-flash-attn</code>，源码基本为空</td></tr>
+</tbody>
+</table></div>
+
+<h3>1.2 依赖链与运行入口</h3>
+<div class="flow">
+<span class="node">dbgpt-app（FastAPI 主服务:5670）</span><span class="arr">→</span>
+<span class="node">dbgpt-serve（REST 服务组件）</span><span class="arr">→</span>
+<span class="node">dbgpt-ext（具体实现）</span><span class="arr">→</span>
+<span class="node green">dbgpt-core（全部抽象）</span>
+</div>
+<p class="mini">旁路：<code>dbgpt-sandbox</code> 是独立 FastAPI 微服务（当前主应用未内嵌）；<code>web/</code> 前端构建产物打进 <code>dbgpt-app/static/web/</code> 由后端托管。</p>
+
+<h3>1.3 关键运行时目录</h3>
+<table>
+<thead><tr><th>目录</th><th>内容</th></tr></thead>
+<tbody>
+<tr><td><code>ROOT_PATH</code></td><td>源码安装=仓库根；pip 安装=<code>$DBGPT_HOME/workspace</code>（默认 <code>~/.dbgpt/workspace</code>）</td></tr>
+<tr><td><code>pilot/meta_data/dbgpt.db</code></td><td>元数据库（SQLite 默认）+ Alembic 迁移配置</td></tr>
+<tr><td><code>pilot/data/</code></td><td>向量库 persist（Chroma）、知识库缓存、模型缓存、上传文件</td></tr>
+<tr><td><code>pilot/message/img</code></td><td>agent 消息图片（静态挂载于 <code>/images</code>）</td></tr>
+<tr><td><code>pilot/tmp/{conv_id}</code></td><td>每会话的代码执行工作目录</td></tr>
+<tr><td><code>skills/</code>（或 <code>~/.dbgpt/skills</code>）</td><td>技能包目录，环境变量 <code>DBGPT_SKILLS_DIR</code> 可覆盖</td></tr>
+<tr><td><code>logs/</code></td><td><code>dbgpt_webserver.log</code>、<code>dbgpt_webserver_tracer.jsonl</code>、<code>observability.db</code></td></tr>
+</tbody>
+</table>
+
+<h3>1.4 前端（<code>web/</code>）</h3>
+<p>Next.js <b>13.4.7（pages router）</b> + React 18 + Ant Design 5 + Tailwind 3 + AntV 全家桶（G2/G6/S2/AVA/gpt-vis）+ Monaco 编辑器 + reactflow（Flow 画布）。状态用 Context + ahooks（无 zustand）；i18n 用 <code>locales/{en,zh}.ts</code>；明暗双主题。</p>
+<ul>
+<li>开发模式：<code>cd web &amp;&amp; yarn install &amp;&amp; cp .env.template .env &amp;&amp; yarn dev</code>（:3000，<code>API_BASE_URL</code> 指向后端 :5670，无 Next rewrite 代理，依赖后端 CORS）</li>
+<li>生产模式：<code>bash scripts/build_web_static.sh</code> → <code>next build &amp;&amp; next export</code> → 拷入 <code>dbgpt-app/static/web/</code>（仓库已带预构建产物）；<code>[service.web] new_web_ui</code> 切换新旧 UI</li>
+<li>页面：<code>chat/</code>、<code>construct/</code>（应用构建：agent/app/flow/knowledge/models/skills…）、<code>knowledge/</code>、<code>observability/traces</code>、<code>evaluation/</code> 等</li>
+</ul>
+</section>
+</section>
+
+<!-- ================= 2. 核心抽象 ================= -->
+<section id="core">
+<h2><span class="no">2.</span>核心抽象：组件系统与 AWEL 引擎</h2>
+
+<section class="card">
+<h3>2.1 组件系统（依赖注入的地基）</h3>
+<p>位置：<code>packages/dbgpt-core/src/dbgpt/component.py</code>。所有全局服务（模型注册表、DAGManager、AgentManager、ResourceManager、SkillManager、Tracer…）都以组件形式注册。</p>
+<ul>
+<li><code>SystemApp</code>：名字键控的服务注册中心 + 生命周期广播器。<code>register(cls)/register_instance(inst)/get_component(name, type, default)</code>；持有 FastAPI 实例，驱动 <code>before_start/after_start</code>。</li>
+<li><code>BaseComponent</code>：必须实现 <code>name()</code> 与 <code>init(system_app)</code>；可选钩子 <code>before_start/after_start/run</code>（同步/异步均可，由 <code>AsyncLoopThread</code> 驱动）。</li>
+<li><code>ComponentType</code> 枚举：约 20 个全局服务键（<code>MODEL_REGISTRY、AWEL_DAG_MANAGER、AGENT_MANAGER、RESOURCE_MANAGER、SKILL_MANAGER、RAG_STORAGE_MANAGER</code>…）。<b>新增组件先在这里加常量。</b></li>
+</ul>
+<p><b>装配顺序</b>（<code>dbgpt_app/component_configs.py:assemble_component</code>）：</p>
+<div class="flow">
+<span class="node">model_config</span><span class="arr">→</span><span class="node">db + Alembic</span><span class="arr">→</span><span class="node">embedding</span><span class="arr">→</span><span class="node">AWEL</span><span class="arr">→</span><span class="node">agent</span><span class="arr">→</span><span class="node">resource_manager</span><span class="arr">→</span><span class="node">tracer/metrics</span><span class="arr">→</span><span class="node">scheduler</span><span class="arr">→</span><span class="node">24 个 Serve 组件</span>
+</div>
+<div class="box info"><span class="t">注意</span>当前版本 Serve 组件注册是 <code>serve_initialization.py</code> 中<b>手工逐个 import + register</b> 的清单（约 24 行），不是包扫描——新增 Serve 模块要在此加一行。</div>
+</section>
+
+<section class="card">
+<h3>2.2 AWEL（Agentic Workflow Expression Language）工作流引擎</h3>
+<p>位置：<code>packages/dbgpt-core/src/dbgpt/core/awel/</code>。RAG 管线、多 Agent 编排、模型调用全部以 AWEL 算子拼装。</p>
+
+<h4>DAG 与连边</h4>
+<ul>
+<li><code>DependencyMixin</code> 重载 <code>&gt;&gt;</code>/<code>&lt;&lt;</code> 运算符连边；<code>with DAG("x") as dag:</code> 上下文内创建的算子经 <code>DAGVar</code>（双栈：异步 ContextVar / 同步 threading.local）自动挂入该 DAG。</li>
+<li><code>DAG._build()</code> 重算根/叶/触发节点。<b>执行顺序由 Runner 从叶节点深度优先回溯</b>（DAG 自身不做拓扑排序；唯一的 Kahn 排序在 <code>FlowFactory</code>，用于资源实例化顺序与环检测）。</li>
+<li><code>DAGContext</code> 每次触发生成一个：<code>node_to_outputs</code>（节点输出共享表）+ <code>share_data</code>（带锁的旁路数据，仅单次触发内有效，非持久化）。</li>
+</ul>
+
+<h4>算子体系</h4>
+<div class="tw"><table>
+<thead><tr><th>算子</th><th>机制</th><th>二开要点</th></tr></thead>
+<tbody>
+<tr><td><code>MapOperator</code></td><td>单输入变换</td><td>最常用：重写 <code>async def map(self, input_value)</code></td></tr>
+<tr><td><code>JoinOperator</code></td><td><code>combine_function</code> 合并多上游</td><td>多输入解包为位置参数传入</td></tr>
+<tr><td><code>BranchOperator/Join</code></td><td><code>branches: Dict[谓词, 目标节点名]</code>；未命中分支标记 <code>SKIP_DATA</code></td><td>目标用<b>节点名</b>（FlowFactory 里是 <code>task_name=operator_key</code>）；<code>BranchJoinOperator</code> 不跳过</td></tr>
+<tr><td><code>Streamify/Unstreamify/TransformStream</code></td><td>值↔流变换三件套</td><td>流式变换全部惰性（迭代前不消耗数据）</td></tr>
+<tr><td><code>HttpTrigger</code> 等</td><td>DAG 入口，动态注册 FastAPI 路由（前缀 <code>/api/v1/awel/trigger</code>）</td><td><code>CommonLLMHttpRequestBody</code> 是聊天类应用的统一入口协议</td></tr>
+</tbody>
+</table></div>
+<p><b>元类魔法</b>：<code>BaseOperatorMeta</code> 在子类定义时自动注入默认参数（dag/system_app/executor/runner）并调用 <code>after_define()</code> —— 类一旦声明了 <code>metadata: ViewMetadata</code> 属性即自动注册进全局 <code>FlowRegistry</code>（UI 节点面板数据源）。<b>前提：模块必须被进程 import。</b></p>
+
+<h4>执行器（asyncio 模型）</h4>
+<ul>
+<li><code>DefaultWorkflowRunner._execute_node</code>：<b>深度优先递归执行上游（当前串行，并行是 TODO）</b>；同一节点一次触发只执行一次（命中缓存即返回）。</li>
+<li>流式场景的 <code>after_dag_end</code> 收尾挂在 HttpTrigger 的 <code>BackgroundTasks</code>，不在 runner 里——自定义调用 <code>call_stream</code> 时注意（钩子需幂等）。</li>
+<li><b>约束</b>：HttpTrigger 与 chat flow 都要求 DAG <b>恰好一个叶节点</b>。</li>
+</ul>
+
+<h4>声明式 DSL（UI 拖拽编排）</h4>
+<ul>
+<li><code>flow/base.py</code>：<code>Parameter/IOField/ViewMetadata/ResourceMetadata</code> + <code>@register_resource</code>/<code>@auto_register_resource</code>（后者只支持 dataclass，字段自动转参数）。运算符/资源/触发器类型枚举：<code>OperatorCategory/OperatorType/ResourceCategory</code>。</li>
+<li><code>FlowFactory.build(flow_panel)</code>：JSON → 可运行 DAG。节点分桶 → 边处理（资源连入算子参数位置）→ Kahn 拓扑排序 → 按序实例化资源与算子 → <code>with DAG(...)</code> 连边（有 mapper 的边自动插入转换算子）。<b>安全起见用注册表元数据而非前端传来的元数据。</b></li>
+<li>Flow 存储：<code>dbgpt_serve_flow</code> 表（<code>flow_data</code> 存 JSON 字符串）+ 变量表 <code>dbgpt_serve_variables</code>（secret 用 Fernet 加密）；服务前缀 <code>/api/v1/serve/awel</code>，<code>GET /nodes</code> 供前端节点面板。</li>
+<li><b>模板</b>：<code>dbgpt_serve/flow/templates/{en,zh}/*.json</code>，往目录丢 JSON 即出现在模板列表。</li>
+</ul>
+
+<h4>加载与热更新（重要真相）</h4>
+<div class="box warn"><span class="t">目录加载无热更新</span>
+DAG 文件加载只认 <code>ROOT_PATH/examples/awel/*.py</code>（启动时扫一次，<b>不递归、无 watcher</b>），可用 TOML <code>web_config.awel_dirs</code> 追加目录。运行期"热更新"只有两条路：① <code>DAGManager.register_dag/unregister_dag</code>（flow 服务 CRUD 走这条）；② flow 服务每 5 秒轮询 dbgpts 插件包。想做目录热加载需自行实现（检测变化 → unregister 旧 DAG → 重新 load + register）。</div>
+
+<h4>AWEL 的主要消费者</h4>
+<div class="tag-list">
+<span>LLM 算子（core/interface/operators/llm_operator.py）</span><span>Prompt 算子（含历史截断）</span><span>RAG 算子（知识处理分支/汇合范式）</span><span>Agent plan（AWELAgentOperator + AgentBranchOperator 动态路由，AgentDummyTrigger 入口）</span><span>数据源/缓存/意图算子</span><span>dbgpt_app/operators/*（应用层算子）</span>
+</div>
+
+<h4>自定义算子最小模板</h4>
+<pre><code><span class="c"># 放入 examples/awel/ 或 TOML awel_dirs 配置的目录（*.py 自动扫描）</span>
+<span class="k">from</span> dbgpt.core.awel <span class="k">import</span> DAG, HttpTrigger, MapOperator
+
+<span class="k">class</span> RequestHandleOperator(MapOperator[dict, str]):
+    metadata = ViewMetadata(                    <span class="c"># 声明后自动进 UI 注册表（可选）</span>
+        label=<span class="s">"My Operator"</span>, name=<span class="s">"my_operator"</span>,
+        category=OperatorCategory.COMMON, operator_type=OperatorType.MAP,
+        description=<span class="s">"..."</span>,
+        parameters=[Parameter.build_from(<span class="s">"Threshold"</span>, <span class="s">"threshold"</span>, float,
+                                         optional=<span class="k">True</span>, default=0.5)],
+        inputs=[IOField.build_from(<span class="s">"Input"</span>, <span class="s">"input"</span>, dict)],
+        outputs=[IOField.build_from(<span class="s">"Output"</span>, <span class="s">"output"</span>, str)])
+
+    <span class="k">def</span> __init__(self, threshold: float = 0.5, **kwargs):   <span class="c"># **kwargs 必须透传（元类注入）</span>
+        super().__init__(**kwargs); self._t = threshold
+
+    <span class="k">async def</span> map(self, input_value: dict) -> str:
+        <span class="k">return</span> f<span class="s">"Hello, {input_value['name']}"</span>
+
+<span class="k">with</span> DAG(<span class="s">"simple_dag_example"</span>) <span class="k">as</span> dag:
+    trigger = HttpTrigger(<span class="s">"/examples/hello"</span>, request_body=TriggerReqBody)
+    trigger >> RequestHandleOperator()
+</code></pre>
+
+<div class="box warn"><span class="t">AWEL 坑点</span>
+① 重命名/搬移算子模块会破坏库里已存 flow（存的是 <code>module.qualname</code>），必须在 <code>flow/compat.py</code> 的 <code>_register</code> 登记映射；
+② <code>share_data</code> 非持久，跨请求状态走外部存储；
+③ 同 path+method 重复注册触发器直接抛错；更新 flow 必须先 <code>unregister_dag</code>；
+④ 远程执行时算子上的函数必须可 pickle；
+⑤ <code>examples/awel</code> 目录生产启动时也会被扫描，放示例文件注意副作用。</div>
+</section>
+</section>
+
+<!-- ================= 3. Agent 框架 ================= -->
+<section id="agent">
+<h2><span class="no">3.</span>多 Agent 框架执行机制</h2>
+
+<section class="card">
+<h3>3.1 端到端调用链（多智能体应用聊天）</h3>
+<pre><code>POST /api/v1/chat/completions (chat_mode=chat_agent, gpts_name=app_code)
+ └─ MultiAgents.app_agent_chat        <span class="c">(dbgpt_serve/agent/agents/controller.py:475)</span>
+     └─ agent_chat_v2 → asyncio.create_task(agent_team_chat_new)   <span class="c">← 配置→团队的装配厂</span>
+         ├─ 遍历 GptsAppDetail: AgentManager.get_by_name → cls()
+         │    .bind(context).bind(memory).bind(llm_config).bind(resource).bind(prompt).build()
+         ├─ TeamMode 装配: single_agent / AutoPlanChatManager / DefaultAWELLayoutManager
+         │    manager.hire(employees)
+         └─ UserProxyAgent.initiate_chat(recipient=manager, message=query)
+              └─ send → receive → generate_reply（think/review/act/verify 循环）
+                   └─ 每条消息 → GptsMemory.append_message → asyncio.Queue
+ SSE ← chat_messages 消费队列直到 "[DONE]"（前端 vis 渲染）</code></pre>
+
+<h3>3.2 ConversableAgent 执行循环（<code>base_agent.py</code>，1460 行）</h3>
+<p><code>generate_reply</code>（<code>@final</code>，不可覆写，只能覆写钩子）主循环 = <b>while retry &lt; max_retry_count</b>：</p>
+<div class="flow">
+<span class="node">① Think<br><span class="mini">LLM 调用，3 次重试 + 模型 failover（失败排除该模型再选）</span></span><span class="arr">→</span>
+<span class="node alt">② Review<br><span class="mini">人审/策略钩子，默认直通</span></span><span class="arr">→</span>
+<span class="node">③ Act<br><span class="mini">多 Action 链式，parse_action 可做协议路由</span></span><span class="arr">→</span>
+<span class="node green">④ Verify<br><span class="mini">approve + 执行成功 + 非空 + correctness_check</span></span><span class="arr">→</span>
+<span class="node red">⑤ 失败：observation 回注下一轮</span>
+</div>
+<ul>
+<li><b>熔断三要素</b>：<code>max_retry_count</code>（默认 3；ManagerAgent=1；ReActAgent=30）× <code>max_timeout</code>（600s）× <code>ActionOutput.have_retry</code>（False 直接终止重试）。</li>
+<li><b>模型选择</b>：<code>LLMStrategyType.Priority</code> + <code>strategy_context</code>（JSON 优先级列表）；失败 <code>sleep(10)</code> 排除失败模型重试。<span class="pill red">二开必改</span> 无可用模型时兜底硬编码返回 <code>"deepseek-chat"</code>（base_agent.py:1202）。</li>
+<li><b>run_mode</b>：<code>DEFAULT</code>（成功一次即停）/ <code>LOOP</code>（成功后继续循环直到 <code>terminate</code>）——ReAct 类 agent 的实现方式。</li>
+<li><b>流式</b>：底层总是走 <code>generate_stream</code>，差分出 <code>delta_text/delta_thinking</code>；<code>stream_out=True</code> 时实时推入 GptsMemory vis 队列 = 前端打字机效果。</li>
+<li><b>异常兜底</b>：任何异常返回 <code>AgentMessage(success=False)</code> 不抛出，保证团队循环不被单 agent 打断。</li>
+<li><b>上下文超长</b>：捕获含 <code>context_too_long</code> 的错误 → 触发响应式压缩后重试一次。</li>
+</ul>
+
+<h3>3.3 两套多 Agent 机制</h3>
+<div class="tw"><table>
+<thead><tr><th style="width:130px">机制</th><th>原理</th><th>特点</th></tr></thead>
+<tbody>
+<tr><td><b>AutoPlan 会话式</b><br><code>AutoPlanChatManager</code></td><td>无计划时现场构造 <code>PlannerAgent</code> 生成 <code>GptsPlan[]</code>（落 <code>gpts_plans</code> 表）→ 循环取 TODO 首步 → <code>select_speaker</code>（优先用计划预分配，否则 LLM 选人）→ 注入依赖步骤结果（<code>rely_messages</code>）→ speaker 执行 → <code>complete_task</code></td><td>⚠️ 单步失败即整体失败返回（不自动重排）；<code>Team.max_round=100</code>；ManagerAgent 的 thinking 不调 LLM 直接透传</td></tr>
+<tr><td><b>AWEL DAG 编排式</b><br><code>DefaultAWELLayoutManager</code></td><td>从 <code>DAGManager</code> 取可视化编排好的 Flow DAG，<code>AgentDummyTrigger</code> 入口、<code>AWELAgentOperator</code> 节点（运行时动态构建 agent 实例）→ 叶子节点 <code>call()</code> 从叶回溯执行</td><td>支持 <code>AgentBranchOperator</code> 按 <code>next_speakers</code> 动态路由；<code>WrappedAWELLayoutManager</code> 可把 hire 的 agents 现场编译成线性 DAG；<span class="pill red">二开必改</span> 硬编码 <code>bailing_proxyllm</code> 优先策略（带 TODO）</td></tr>
+</tbody>
+</table></div>
+
+<h3>3.4 上下文预算管理（类似 Claude Code 的 context compaction）</h3>
+<p>默认预算 <code>max_context_tokens=120000</code>、预留 4096、警告 0.70 / 错误 0.90 / 危急 0.95。四层渐进压缩：</p>
+<div class="tw"><table>
+<thead><tr><th>层</th><th>触发</th><th>策略</th></tr></thead>
+<tbody>
+<tr><td>L1 <code>ObservationMicroCompact</code></td><td>≥WARNING</td><td>5 轮之前的 Observation 截断到 500 字符</td></tr>
+<tr><td>L2 <code>SessionMemoryCompact</code></td><td>≥WARNING</td><td>按 ReAct 三元组划分轮次，丢弃旧轮（保留最近 3 轮且 ≥10000 token）；依赖 <code>{{ task_progress }}</code> 做隐式摘要，无 LLM 调用</td></tr>
+<tr><td>L3 <code>FullContextCompression</code></td><td>≥ERROR</td><td>LLM 六段式摘要（原任务/已完成/现状/关键数据/错误/下一步）替换旧消息</td></tr>
+<tr><td>L4 <code>ReactiveCompact</code></td><td>LLM 报上下文超限</td><td>紧急只保留 system + 最近 2 轮</td></tr>
+</tbody>
+</table></div>
+<p>配套防线：<b>工具结果持久化</b>——单结果超 10 万字符自动落盘（<code>persisted_results/</code>），上下文替换为 1500 字符预览 + <code>read_file</code> 回读；每次成功动作后写操作快照（<code>op_snapshots/step_NNN.json</code>）并维护 <code>task_progress</code> 注入系统提示。状态事件以 <code>__CONTEXT_STATUS__</code> 前缀进 SSE，消费端需识别。</p>
+
+<h3>3.5 记忆体系</h3>
+<ul>
+<li>分层：<code>SensoryMemory/ShortTermMemory(buffer_size=5)/LongTermMemory</code>（向量库）+ <code>EnhancedShortTermMemory</code>（embedding 相似度概率增强，溢出转长期）。</li>
+<li><b>GptsMemory = 会话总线</b>：所有消息持久化（<code>gpts_messages</code> 表，生产实现 <code>MetaDbGptsMessageMemory</code>）+ 每会话一个 <code>asyncio.Queue</code> 推 vis 视图。<code>structure_clone()</code> 使团队内所有 agent 共享一条总线。</li>
+<li>MySQL 大字段：<code>content/action_report</code> 用 <code>Text().with_variant(LONGTEXT(), "mysql")</code>（#3189 修复）；自建消息存储需自行保证容量。</li>
+</ul>
+
+<h3>3.6 子 Agent 并行委派（<code>subagent/dispatcher.py</code>）</h3>
+<div class="box warn"><span class="t">范围限定</span>这不是 core 框架的通用能力，而是 <code>agentic_data_api</code> 的 ReAct 主代理专用。并发上限 <code>max_parallel_subagents</code>（默认 3，可配）。</div>
+<ul>
+<li>两阶段：<code>todowrite</code> 分解 → <code>dispatch_parallel_tasks([{goal,context,title}])</code> → <code>asyncio.gather</code> 并发（≤3）。</li>
+<li><b>子代理完全隔离</b>：独立 <code>conv_id</code>/工作目录/记忆/工具白名单（8 个工具，<b>刻意排除 <code>dispatch_parallel_tasks</code> 防递归</b>与 <code>todowrite</code>）；MCP 工具只保留只读（按 catalog <code>confirm_actions</code> 过滤）。</li>
+<li>子代理不继承父的 <code>matched</code>/<code>skill_prompt</code>/<code>auto_data</code>/<code>file_path</code>——并行子任务用技能时需在 goal 里写明技能名和文件路径。</li>
+<li>预算：15 步上限、600s 超时、观察截断 2000 字符、结果摘要 8000 字符；单个失败不破坏批次。</li>
+</ul>
+
+<h3>3.7 AgentMiddleware 与内置 Agent</h3>
+<ul>
+<li>中间件：9 个生命周期钩子（<code>before/after_init、generate_reply、thinking、act、modify_system_prompt</code>）；<code>MiddlewareManager</code> 按注册顺序执行并合并状态，<code>modify_system_prompt</code> 是链式改写管道（非严格洋葱模型）。载体 <code>MiddlewareAgent</code>。<b>注意：serve 默认装配链用的是裸 <code>cls()</code>，要用中间件需改装配代码。</b></li>
+<li>内置 13 个（<code>agent/expand/</code>）：ReActAgent（文本协议）、ToolCallingReActAgent（原生 function calling）、SimpleAssistant、DataScientist（生成 SQL+图表，correctness_check 真跑 SQL）、CodeAssistant（代码执行，LLM judge）、DashboardAssistant、DataAnalysisPlanning、Excel2Table、Summary、ToolAssistant、WebSearch、Indicator 等。</li>
+<li>serve 侧 8 个：IntentRecognition、LinkAppAssistant、StartAppAssistant（把另一个 GptsApp 当子流程）、AnomalyDetection、ReportGeneration 等。</li>
+</ul>
+
+<h3>3.8 Agent Observability（近期新增 #3212）</h3>
+<p>agent 全链路埋点（<code>agent.send/receive/thinking/review/act/verify</code> span）→ <code>SqliteSpanStorage</code> 落库（<code>logs/observability.db</code>，表 <code>observability_span</code>，索引列含 agent_name/model_name/tool_name/tokens/cost）→ serve 模块 <code>/api/v1/observability</code>（traces/health/model usage/sessions）→ 前端 <code>/observability</code> 页面。可替换为自定义 <code>ObservabilityProvider</code>（TOML <code>provider_cls</code>）或接 OTel。</p>
+
+<h3>3.9 二开扩展点</h3>
+<ol>
+<li><b>自定义 Agent</b>：继承 <code>ConversableAgent</code>，覆写 <code>profile</code>（<code>ProfileConfig + DynConfig</code>，可用系统配置表按 key 覆盖文案）、<code>_init_actions([...])</code>、可选覆写 <code>review/correctness_check/_a_init_reply_message</code>。注册：放 <code>agent/expand/</code>（<code>scan_agents()</code> 自动扫描，<b>默认只扫这个路径</b>）或显式 <code>register_agent()</code>。</li>
+<li><b>自定义 Action</b>：继承 <code>Action[T]</code>，pydantic 输出模型自动转 JSON schema 提示；<code>parse_action</code> 返回 None 跳过 / 返回其他实例做协议路由。</li>
+<li><b>工具函数</b>：<code>@tool</code> 装饰器一行变 FunctionTool（支持 OpenAI JSON Schema 格式）。</li>
+<li><b>团队模式</b>：继承 <code>ManagerAgent</code> 覆写 <code>act()</code>；注册要在 <code>controller.py</code> 与 <code>app_agent_manage.py</code> <b>两处</b>加。</li>
+</ol>
+</section>
+</section>
+
+<!-- ================= 4. Skills ================= -->
+<section id="skills">
+<h2><span class="no">4.</span>Skills 技能系统</h2>
+
+<section class="card">
+<h3>4.1 总体架构：两套并存机制</h3>
+<div class="tw"><table>
+<thead><tr><th>层</th><th>位置</th><th>角色</th></tr></thead>
+<tbody>
+<tr><td><b>A. 文件技能包层（生产主链路）</b></td><td><code>skills/</code> 目录 + <code>agent/claude_skill/</code>（FileBasedSkill/SkillRegistry）+ dbgpt-app ReAct 工具链</td><td>Claude 风格 SKILL.md 技能包，被 <code>/api/v1/chat/react-agent</code> 通过 <code>load_skill / execute_skill_script_file / get_skill_resource / html_interpreter</code> 工具消费。<b>这是当前产品真正跑通的链路</b></td></tr>
+<tr><td><b>B. 框架组件层</b></td><td><code>agent/skill/</code>（Skill/SkillBuilder/SkillManager/SkillsMiddleware）</td><td>通用技能管理组件。SkillManager 是注册的 BaseComponent，A 层脚本执行最终委托给它；Middleware/SkillsAgent 面向二开（未被主链路直接使用）</td></tr>
+</tbody>
+</table></div>
+<p>技能根目录解析优先级：① 环境变量 <code>DBGPT_SKILLS_DIR</code> → ② <code>{ROOT}/skills</code>（源码模式）→ ③ <code>~/.dbgpt/skills</code>（pip 模式）。个人技能放 <code>skills/user/</code> 子目录。</p>
+
+<h3>4.2 SKILL.md 包结构</h3>
+<pre><code>skills/my-skill/
+├── SKILL.md                    <span class="c"># 必需：YAML frontmatter + 正文指令</span>
+├── scripts/analyze.py          <span class="c"># 可执行脚本（宿主子进程执行）</span>
+├── templates/report_template.html  <span class="c"># {{UPPER_SNAKE_KEY}} 占位符模板</span>
+└── references/overview.md      <span class="c"># 供 get_skill_resource 读取</span></code></pre>
+<p>frontmatter 字段：<code>name</code>（必填，规范 <code>^[a-z0-9]+(-[a-z0-9]+)*$</code> ≤64）、<code>description</code>（必填，≤1024，<b>中文技能务必直接堆触发关键词</b>——匹配是朴素子串匹配）、可选 <code>version/author/skill_type/tags/allowed-tools/required_tools/config</code>。内置 5 个技能：<code>csv-data-analysis、financial-report-analyzer、walmart-sales-analyzer、skill-creator（元技能）、agent-browser</code>。</p>
+
+<h3>4.3 核心执行范式（以 csv-data-analysis 为钥匙）</h3>
+<div class="flow">
+<span class="node">① execute_skill_script_file<br><span class="mini">脚本 stdout：统计摘要（给 LLM）+ ###CHART_DATA_JSON_START/END### 标记（给后端）</span></span>
+<span class="arr">→</span>
+<span class="node alt">② 后端自动抽取标记 → react_state["auto_data"]<br><span class="mini">图片搬运到 /images/ 静态目录</span></span>
+<span class="arr">→</span>
+<span class="node green">③ LLM 写洞察 → html_interpreter(template_path, data)<br><span class="mini">占位符合并：auto_data + 显式 data + CHART_* 图片键</span></span>
+</div>
+<p>即「<b>脚本产出机器数据 + LLM 产出洞察文本 + 模板合成报告</b>」。模板只替换 <code>{{大写+下划线}}</code> 占位符，缺省替换为空串不报错。</p>
+
+<h3>4.4 渐进披露注入</h3>
+<p>系统提示词只注入「技能清单」（每个技能一行 <code>- **name**: description</code> + SKILL.md 绝对路径），使用守则要求 LLM「识别匹配 → 按路径读全文（<code>load_skill</code> 工具）→ 遵循步骤 → 用绝对路径访问辅助文件」。每次 <code>/api/v1/chat/react-agent</code> 请求都会全量重载技能注册表——<b>新技能下一轮对话即可见，无需注册代码</b>。</p>
+
+<h3>4.5 脚本执行契约（自建技能必读）</h3>
+<ul>
+<li>入参：脚本读 <code>sys.argv[1]</code>（JSON 字符串）；参数名用 <code>input_file/file_path/data_path</code> 等可被上传文件路径自动替换。</li>
+<li>工作目录：<code>{PILOT_PATH}/tmp/{conv_id}</code>，环境变量 <code>OUTPUT_DIR</code> 指向它；图片直接写当前目录即自动收集（限 <code>.png/.jpg/.jpeg/.gif/.svg/.webp</code>）。</li>
+<li>输出：普通文本走 stdout；需自动注入模板的数据用 <code>###MYKEY_START###...###MYKEY_END###</code> 包裹；或直接输出 <code>{"chunks":[...]}</code> JSON 透传。</li>
+<li>限制：<b>120 秒超时硬编码</b>（manage.py:1039）；依赖库需装在主环境（子进程用同一 <code>sys.executable</code>）。</li>
+</ul>
+
+<h3>4.6 技能管理（前端 <code>/construct/skills</code>）</h3>
+<p>后端端点集中在 <code>agentic_data_api.py</code>（<b>没有独立 serve 模块</b>）：<code>GET /v1/skills/list</code>（官方/个人按路径前缀区分）、<code>GET /v1/skills/detail</code>（文件树 + frontmatter + 正文）、<code>POST /v1/skills/upload</code>（zip/.skill/.md/.yaml/.json，落 <code>skills/user/</code>）、<code>POST /v1/skills/import_github</code>（支持 skills.sh）、<code>GET /v1/agent/skills/download</code>。内置技能随包发布：需同时改 <code>dbgpt-app/pyproject.toml</code> force-include 清单 + <code>hatch_build.py</code> 的 <code>_SKILLS_MAP</code>；<code>ensure_builtin_skills</code> 播种时永不覆盖已存在目录。</p>
+
+<h3>4.7 自建技能六步实操</h3>
+<ol>
+<li><code>python skills/skill-creator/scripts/init_skill.py my-skill --path skills</code> 脚手架 + <code>quick_validate.py</code> 校验；</li>
+<li>编写 SKILL.md（description 堆触发词；正文给 Core Workflow 分步骤，明确每步调哪个工具）；</li>
+<li>编写脚本遵守 §4.5 运行时契约；</li>
+<li>安装：源码模式直接放 <code>skills/</code> / 页面上传（落 <code>user/</code>）/ 自定义目录设 <code>DBGPT_SKILLS_DIR</code>；</li>
+<li>生效：A 层零代码（请求时自动重载）；B 层编程式用 <code>SkillBuilder</code> + <code>get_skill_manager().register_skill()</code>，或 <code>SkillResource</code> 绑给任意 agent；</li>
+<li>验证：<code>/construct/skills</code> 查看 → 聊天选中技能 → 右侧面板应出现 load_skill → execute_skill_script_file → html_interpreter 步骤卡。</li>
+</ol>
+
+<div class="box danger"><span class="t">Skills 关键坑点</span>
+① <b>三套同名 <code>SkillMetadata</code></b>（skill/base.py、skill/middleware.py、claude_skill/__init__.py），import 务必确认来源；
+② 根目录 <code>skills.py</code> 是死代码（与 middleware.py 重复、无引用），勿基于它开发，且与 <code>skills/</code> 目录同名有 import 歧义；
+③ <b>技能脚本在服务器本机子进程执行、无沙箱</b>——谁能往 SKILLS_DIR 写文件谁就有宿主 RCE；生产开 <code>DBGPT_DISABLE_PERSONAL_SKILL_SCRIPT_EXECUTION=1</code>；
+④ SKILL.md 正文靠前出现 <code>---</code>（如表格分隔线）会误截 frontmatter；
+⑤ 前端启停开关是纯本地状态未持久化——二开「技能启停」需自补后端；
+⑥ 子 agent 不继承技能上下文，并行子任务需在 goal 里自带技能名与文件路径；
+⑦ 管理页列表（SkillLoader 扫盘）与 SkillManager 注册表是两套数据源。</div>
+</section>
+</section>
+
+<!-- ================= 5. Text2SQL ================= -->
+<section id="text2sql">
+<h2><span class="no">5.</span>Text2SQL 与数据分析链路</h2>
+
+<section class="card">
+<h3>5.1 两代并行链路（二开前必须先判断改的是哪一代）</h3>
+<div class="tw"><table>
+<thead><tr><th style="width:150px"></th><th>Legacy Scene 链路</th><th>新一代 Agentic（ReAct）链路</th></tr></thead>
+<tbody>
+<tr><td><b>入口</b></td><td><code>POST /api/v1/chat/completions</code>（chat_mode 分发）</td><td><code>POST /api/v1/chat/react-agent</code>（<code>agentic_data_api.py</code>，3963 行）</td></tr>
+<tr><td><b>驱动方式</b></td><td>提示词模板 + 结构化输出契约 + output_parser</td><td>工具化执行（<code>sql_query/code_interpreter/html_interpreter/todowrite/dispatch_parallel_tasks</code>…）+ 技能 + 并行子代理</td></tr>
+<tr><td><b>SQL 错误重试</b></td><td><span class="pill red">没有</span> 执行异常红字展示即结束</td><td><span class="pill green">有</span> 错误作为 Observation 反馈 → LLM 修正重发（≤30 轮）</td></tr>
+<tr><td><b>写安全</b></td><td><span class="pill red">代码层无只读拦截</span>，仅靠 prompt 约束（<code>run()</code> 会真的提交 DML）</td><td><code>sql_query</code> 工具有 SELECT 白名单 + 结果截断（≤50 行/2 万字符）</td></tr>
+<tr><td><b>场景</b></td><td>chat_with_db_execute / chat_dashboard / chat_excel / chat_knowledge / chat_normal</td><td>数据分析助手、知识库 agent（<code>/v1/chat/knowledge-agent</code>）、多文件分析</td></tr>
+</tbody>
+</table></div>
+
+<h3>5.2 Scene 体系机制</h3>
+<ul>
+<li><code>ChatFactory</code>（Singleton）：懒加载 —— 函数体内 import 所有场景类，<code>BaseChat.__subclasses__()</code> 反射，按类属性 <code>chat_scene</code> 匹配。每个场景的 <code>prompt.py</code> 末尾 import 即注册进 <code>prompt_template_registry</code>。</li>
+<li><b>新增场景</b>：继承 <code>BaseChat</code> 设 <code>chat_scene</code>，并要在 <code>chat_factory.py</code> 与 <code>component_configs.py:_initialize_prompt_templates()</code> <b>两处</b>加 import。</li>
+<li><b>prompt 免发版覆盖</b>：请求带 <code>prompt_code</code> 时用 PromptService 从 DB 读运营模板动态替换（保留原 output_parser/stream_out）。</li>
+<li>模板按 <code>(chat_mode, language, llm_model)</code> 键注册，支持按模型名命中特化模板。</li>
+</ul>
+
+<h3>5.3 Text2SQL 自动执行端到端（<code>chat_db/auto_execute</code>）</h3>
+<div class="flow">
+<span class="node">用户问题 + db_name</span><span class="arr">→</span>
+<span class="node">Schema 召回：<br>DBSummaryClient.get_db_summary<br><span class="mini">向量检索最相关表结构（两级）</span></span><span class="arr">→</span>
+<span class="node alt">LLM 生成 JSON：<br>{thoughts, sql, display_type, direct_response}</span><span class="arr">→</span>
+<span class="node">DbChatOutputParser 解析<br><span class="mini">多级容错：围栏剥离/括号配对/转义修复</span></span><span class="arr">→</span>
+<span class="node green">parse_view_response 中才执行 SQL<br><span class="mini">run_to_df → 组装图表 JSON → &lt;chart-view&gt; XML</span></span>
+</div>
+<ul>
+<li>Prompt 核心约束（中文模板）：只用提供的表、默认 <code>LIMIT {top_k}</code>（默认 50）、表结构不足时固定话术拒答、选展示方式（内置 AntV 图表清单注入 <code>{display_type}</code>）、必须返回可被 <code>json.loads</code> 解析的 JSON。temperature=0.5。</li>
+<li>降级链：向量召回失败 → <code>table_simple_info()</code>（<span class="pill amber">MySQL 专用语法，非 MySQL 方言必须覆写</span>）→ 超 <code>schema_max_tokens</code>（默认 100K 字符）截断。</li>
+<li><code>professional_qa</code> 场景不执行 SQL，且 prompt 显式声明「这是只问答场景，表清单只是 Top-K，勿直接给总数」——对冲向量召回局限的补丁写法，值得借鉴。</li>
+</ul>
+
+<h3>5.4 Schema 两级召回机制（Text2SQL 的关键）</h3>
+<p><b>索引侧</b>：数据源新增/刷新时 <code>DBSchemaAssembler</code> 给每张表生成双份向量 —— 表级索引 <code>{db}_profile</code> + 字段级索引 <code>{db}_profile_field</code>；摘要文本形如 <code>table_name(col1 (comment), col2, ...) , and index keys: ...</code>（v1.0 格式支持 512 字符分片）。</p>
+<p><b>检索侧</b>（<code>DBSchemaRetriever</code>）：① 表向量库 <code>similar_search_with_scores(query, top_k)</code> 粗召回 → ② 分片表再用 <code>MetadataFilters(part="field")</code> 去字段库二次精召回 → ③ 重组成伪 <code>CREATE TABLE ... COMMENT ... Index keys:</code> 注入 prompt 的 <code>{table_info}</code>。</p>
+
+<h3>5.5 Dashboard 多图表（<code>chat_dashboard</code>）</h3>
+<p>LLM 输出 4~8 个分析维度的 JSON 数组（每图 ≤4 列、查询列必须有别名）→ 三级容错解析 → 逐图执行（单图失败静默跳过）→ <code>ReportData</code> JSON → <b>图表渲染完全在前端</b>（<code>web/components/chart/</code> 按 chart_type 分发）。模板 <code>template/report/dashboard.json</code> 只有 9 行（图表白名单 + 占位），无服务端 jinja 渲染。图表可二次编辑（<code>/v1/chart/editor/submit</code> 重跑 SQL 回写）。</p>
+
+<h3>5.6 CSV/Excel 与多文件上传</h3>
+<ul>
+<li><b>两段式</b>：上传后先走内部场景 <code>excel_learning</code>（LLM 输出列名标准化方案 → 重建 <code>data_analysis_table</code> 写 COMMENT），再进 <code>chat_excel</code>（DuckDB 执行，<code>&lt;api-call&gt;</code> XML 协议 → AntV vis）。同会话不重复学习（学习产物 <code>.duckdb</code> 按 <code>{file_id}_{conv_uid}</code> 回传）。</li>
+<li><b>多文件上传分析（#3206）与 chat_excel 无关</b>：落在新链路 + 新建的 <code>dbgpt_serve/session_file</code> 服务（表 <code>dbgpt_session_file</code>，≤20 文件/≤100MB 每个，SHA-256 去重，前缀 <code>/api/v1/agent/files</code>）。聊天时 <code>ext_info.file_ids</code> → 物化临时副本 → "## User Attachments" 注入 system prompt → 轮结束即清理。</li>
+</ul>
+
+<h3>5.7 数据源接入体系与扩展</h3>
+<ul>
+<li>抽象：<code>BaseConnector</code>（core/datasource/base.py）→ <code>RDBMSConnector</code>（SQLAlchemy 通用，构造时 <code>MetaData.reflect</code>——大库反射慢，连接器有 30 分钟 TTL 缓存 + per-db 锁）。</li>
+<li>发现：<code>ConnectorManager.on_init()</code> <b>集中 import 所有连接器类</b> + <code>BaseConnector.__subclasses__()</code> 递归找 <code>db_type</code>。</li>
+<li>现成实现 16+：MySQL/PostgreSQL/Oracle/SQLServer/SQLite/ClickHouse/DuckDB/Hive/Spark/Doris/StarRocks/OceanBase/MaxCompute/GaussDB/openGauss/Vertica（MySQL 系方言连接器仅 53 行）。</li>
+</ul>
+<details><summary>新增数据源完整七步（以虚构 mydb 为例）</summary><div class="body">
+<ol>
+<li><code>dbgpt-ext/datasource/schema.py</code> 的 <code>DBType</code> 加 <code>MyDB = DbInfo("mydb")</code>（文件型加 True）；</li>
+<li>写 <code>conn_mydb.py</code>：<code>@auto_register_resource</code> + <code>@dataclass class MyDBParameters(RDBMSDatasourceParameters)</code>（<code>__type__="mydb"</code>、driver、<code>create_connector()</code>）+ <code>class MyDBConnector(RDBMSConnector)</code>（<code>db_type/db_dialect/driver/param_class()</code>）；按需覆写 <code>get_current_db_name/table_simple_info/_sync_tables_from_db/from_uri_db</code>（默认实现多为 MySQL 语法）；</li>
+<li>如 SQLAlchemy 无官方方言：在 <code>rdbms/dialect/</code> 新建包（三种范式：继承 <code>MySQLDialect_pymysql</code> 重写内省 / 自定义 <code>name</code> 重写 SHOW 系 / 从 <code>DefaultDialect</code> 完全自建），<code>sqlalchemy.dialects.registry.register(...)</code>；</li>
+<li><b>必做：在 <code>connector_manager.py</code> 的 <code>on_init()</code> 加 import</b>——漏掉这步子类发现不到，前端类型列表和建连全部失败（最常见的坑）；</li>
+<li><code>dbgpt-ext/pyproject.toml</code> 加驱动依赖（参考现有 extras）；</li>
+<li>验证：<code>GET /v1/chat/db/support/type</code> 出现 mydb 及参数表单 → <code>POST /v1/chat/db/test/connect</code> 试连 → <code>/v1/chat/db/add</code>（自动异步建 schema 向量索引）→ 前端进 Text2SQL 场景验证；</li>
+<li>表结构变更后 <code>POST /v1/chat/db/refresh</code> 重建索引（索引不自动跟随变化）。</li>
+</ol>
+</div></details>
+</section>
+</section>
+
+<!-- ================= 6. RAG ================= -->
+<section id="rag">
+<h2><span class="no">6.</span>RAG 体系（含 GraphRAG 与 Agentic RAG）</h2>
+
+<section class="card">
+<h3>6.1 分层架构</h3>
+<div class="flow">
+<span class="node">dbgpt-core<br><span class="mini">抽象：Knowledge/Chunk/Splitter/Retriever/Embeddings/VectorStoreBase/AWEL 算子</span></span><span class="arr">→</span>
+<span class="node">dbgpt-ext<br><span class="mini">实现：14 加载器、8 向量库、图存储、BM25、transformer</span></span><span class="arr">→</span>
+<span class="node">dbgpt-serve/rag<br><span class="mini">Service/StorageManager/domain 索引/检索器/Agent 工具</span></span><span class="arr">→</span>
+<span class="node green">dbgpt-app/knowledge + chat_knowledge<br><span class="mini">Web API + 聊天场景接入</span></span>
+</div>
+
+<h3>6.2 索引构建管线</h3>
+<ul>
+<li><b>加载器</b>（<code>dbgpt-ext/rag/knowledge/</code>）：pdf（pdfplumber + 自研表格→markdown）、excel（openpyxl 合并单元格回填 + 表头行探测，每行一个 Document）、docx/pptx/csv/html/markdown/url/string、datasource（schema 反射，不查数据）、git_repo（git clone，禁 <code>ext::</code> 协议）、code_file（40+ 语言）。工厂靠 <code>Knowledge.__subclasses__()</code> + 扩展名匹配分发。</li>
+<li><b>切分器</b>：默认 <code>chunk_size=512, overlap=50</code>（按字符非 token）。策略枚举：CHUNK_BY_SIZE（Recursive）/PAGE/PARAGRAPH/SEPARATOR/MARKDOWN_HEADER。tree-sitter 代码切分支持 8 语言（<code>CodeTextSplitter</code>，当前无生产调用方）。<code>TokenTextSplitter</code> 在 ext。</li>
+<li><b>transformer</b>（LLM 抽取/摘要）：KeywordExtractor、LLMSummarizer、SimpleIntentTranslator（图谱查询意图）、GraphExtractor（三元组）等；<code>AwelIntentTranslator/AgenticIntentTranslator</code> 是空壳。</li>
+<li><b>持久化</b>：Assembler（Embedding/BM25/Summary/DBSchema）执行 load+split → <code>aload_document_with_limit</code>（分组 + 线程池 + 坏 chunk 跳过）。</li>
+</ul>
+
+<h3>6.3 向量库八种实现</h3>
+<div class="tw"><table>
+<thead><tr><th>实现</th><th>type</th><th>要点</th></tr></thead>
+<tbody>
+<tr><td><b>Chroma（默认）</b></td><td><code>chroma</code></td><td><code>CHROMA_PERSIST_PATH</code>；分数 = 1−distance（依赖 cosine 假设）；不显式声明维度</td></tr>
+<tr><td>Milvus</td><td><code>milvus</code></td><td>动态探测维度；支持 BM25 稀疏向量全文检索；<b>换 embedding 模型必须重建 collection</b></td></tr>
+<tr><td>Elasticsearch</td><td><code>elasticsearch</code></td><td>原生建 index + langchain 检索；中文 collection 名转 hex</td></tr>
+<tr><td>OceanBase</td><td><code>oceanbase</code></td><td>pyobvector；<code>OB_HOST/PORT/USER/PASSWORD/DATABASE</code> 环境变量</td></tr>
+<tr><td>PgVector</td><td><code>pgvector</code></td><td>直接包 langchain，唯一参数 connection_string</td></tr>
+<tr><td>Qdrant</td><td><code>qdrant</code></td><td>probe 文本探测维度；距离度量可配</td></tr>
+<tr><td>Valkey</td><td><code>valkey</code></td><td>glide 异步客户端；HNSW 参数可配</td></tr>
+<tr><td><span class="pill red">Weaviate</span></td><td><code>weaviate</code></td><td><b>nearVector 被注释，非真向量检索，二开勿直接信任</b></td></tr>
+</tbody>
+</table></div>
+<p>实例管理两层缓存：<code>VectorStoreConnector.pools</code> + <code>StorageManager._store_cache</code>（<b>删除空间只清前者不清后者</b>，立即重建可能拿到旧实例）。分发全部按 <code>__type__</code> 字符串（无枚举）。</p>
+
+<h3>6.4 检索与融合</h3>
+<ul>
+<li>core：<code>EmbeddingRetriever</code>（两段式：原 query 召回 → 改写 → 多 query 并发召回 → rerank）、<code>QueryRewrite</code>（LLM）、五档 Ranker（<span class="pill red">RRFRanker 是空壳</span>；服务链路实际用 <code>RerankEmbeddingsRanker</code>）。</li>
+<li>ext：<code>BM25Retriever</code>（基于 ES 的 custom_bm25）、<code>DBSchemaRetriever</code>、<code>DocTreeRetriever</code>（Header1~6 建树，只支持异步）、图谱检索。</li>
+<li><b>HYBRID 融合真相</b>：semantic + full_text + tree 三路并发 → <b>仅拼接 + 按 content 去重，无加权融合</b>。检索模式存于 <code>space.context["embedding"]["retrieve_mode"]</code>（SEMANTIC/KEYWORD/Tree/HYBRID，默认 SEMANTIC）。</li>
+<li>QA 短路链：<code>[QARetriever, EmbeddingRetriever]</code> 顺序遍历，精确命中（score=1.0）直接返回。</li>
+</ul>
+
+<h3>6.5 GraphRAG</h3>
+<ul>
+<li>默认后端 <b>TuGraph</b>（neo4j/memgraph 适配器）；核心类 <code>CommunitySummaryKnowledgeGraph</code>：GraphExtractor（LLM 三元组 + 增量去重）→ GraphEmbedder/TextEmbedder → CommunityStore（社区发现 + LLM 摘要）→ GraphRetriever。</li>
+<li>启用 <code>KnowledgeGraph</code> 索引时一次构建四张图：三元组图、文档-段落结构图（document→include→chunk→next→chunk）、markdown 标题图、代码 AST 图。</li>
+<li>检索多路：文本路（意图翻译 → Text2GQL）、实体路（关键词抽取）、三元组路（embedding 子图扩展）、文档图路；结果在 prompt 文本层合并。</li>
+<li>配置：专用模板 <code>configs/dbgpt-graphrag.toml</code>（<code>[rag.storage.graph] type="tugraph"</code>）；app 级 <code>kg_*</code> 键 14 个（<code>kg_enable_summary</code> 默认 False、<code>kg_extract_top_k=5</code>、<code>kg_community_top_k=50</code>…）。未配置图存储时 StorageManager 报带 docker 指引的错误。<code>OpenSPG</code> 是空壳。</li>
+</ul>
+
+<h3>6.6 Agentic RAG（#3160，产品新方向）</h3>
+<p>两大支柱：<b>可组合索引</b>（<code>index_methods</code>：VectorStore/FullText/KnowledgeGraph + 查询期叠加结构化树与代码图谱）与 <b>Agentic 对话循环</b>（ReAct 驱动多步检索）：</p>
+<div class="flow">
+<span class="node">question</span><span class="arr">→</span>
+<span class="node">kb_grep 精确匹配优先</span><span class="arr">→</span>
+<span class="node">semantic_search 语义兜底</span><span class="arr">→</span>
+<span class="node">kb_ls/glob/cat 文件导航</span><span class="arr">→</span>
+<span class="node">kb_codegraph_* 调用链/继承/实体</span><span class="arr">→</span>
+<span class="node green">带引用回答</span>
+</div>
+<ul>
+<li>入口 <code>POST /api/v1/chat/knowledge-agent</code>（tool_mode="knowledge"）；8 个工具闭包预绑定 space；无代码图谱的空间自动过滤 <code>kb_codegraph_*</code> 工具。</li>
+<li>大结果持久化：<code>&lt;persisted-output&gt;</code> 落盘 + <code>read_file</code> 回读，避免长输出截断丢失。</li>
+<li>Git 仓库同步：<code>POST /api/v2/serve/knowledge/{space_id}/git/sync|incremental-sync</code>（content_hash + git diff 增量）。</li>
+</ul>
+<div class="tw"><table>
+<thead><tr><th>维度</th><th>普通知识库问答（chat_knowledge）</th><th>Agentic RAG</th></tr></thead>
+<tbody>
+<tr><td>流程</td><td>一次性：召回→拼 context→生成</td><td>ReAct 循环：多轮工具调用、可重复检索</td></tr>
+<tr><td>检索决定者</td><td>代码固定（按 retrieve_mode）</td><td>LLM 自主选工具</td></tr>
+<tr><td>精确匹配</td><td>无</td><td>kb_grep 优先，语义兜底</td></tr>
+<tr><td>长结果</td><td>截断丢失</td><td>落盘 + read_file 回读</td></tr>
+<tr><td>引用</td><td>prompt 要求 [1][2] + 最长公共子串自动补</td><td>工具结果自带 [file_path] 与 score</td></tr>
+</tbody>
+</table></div>
+
+<h3>6.7 知识库管理全流程</h3>
+<p>建 space（<code>knowledge_space</code> 表）→ 上传（<code>dbgpt://</code> URI 入 <code>dbgpt_knowledge_document</code>）→ 同步（<code>asyncio.create_task</code> 后台，三分支：按 <code>domain_type</code> 打 tag 的 AWEL DAG / <code>DomainKnowledgeIndexFactory</code> ETL / EmbeddingAssembler 兜底）→ 问答（<code>KnowledgeSpaceRetriever</code> + 空间级自定义模板）。<b>每个 space 的 <code>context</code> JSON 可独立覆盖全局检索/分块参数</b>（topk/recall_score/retrieve_mode/chunk_size/chunk_overlap）。</p>
+
+<h3>6.8 RAG 二开要点</h3>
+<details><summary>新增文档加载器 / 向量库 / 图存储步骤</summary><div class="body">
+<p><b>加载器</b>：新建 <code>dbgpt_ext/rag/knowledge/mydoc.py</code>，继承 <code>Knowledge</code>（<code>type()/document_type()/_load()/support_chunk_strategy()</code>）→ 在 <code>factory.py:_get_knowledge_subclasses()</code> import 新模块即自动分发。<span class="pill red">务必用 <code>loader=</code> 传参</span>（基类形参是 <code>loader</code>，所有现有加载器传 <code>data_loader=</code> 落进 **kwargs 被丢弃——自定义 loader 注入实际失效，属现存 bug）。</p>
+<p><b>向量库</b>：四步 —— ① <code>my_store.py</code>：<code>MyVectorConfig(VectorStoreConfig)</code> 设 <code>__type__="mydb"</code> + <code>MyStore(VectorStoreBase)</code> 实现八个抽象方法；② <code>dbgpt_ext/storage/__init__.py</code> 三处注册（<code>_import_mydb()</code>、<code>_select_rag_storage</code> 加分支、<code>__vector_store__</code> 列表）；③ 可选 <code>@register_resource(category=ResourceCategory.VECTOR_STORE)</code> 进 AWEL UI；④ TOML <code>[rag.storage.vector] type = "mydb"</code>。</p>
+<p><b>图存储</b>：实现 <code>GraphStoreBase</code> + Config 子类，在 <code>graph_store/__init__.py</code> 的 <code>__all__</code> 注册（工厂按名分发）；再写 <code>*_store_adapter.py</code>（实现 <code>explore_trigraph/explore_docgraph*</code>）接入 CommunitySummaryKnowledgeGraph。</p>
+<p><b>自定义索引管线</b>：给 AWEL DAG 打 tag <code>TAG_KEY_KNOWLEDGE_FACTORY_DOMAIN_TYPE=&lt;domain_type&gt;</code>，该类型空间同步时优先调用该 DAG（可替换整条管线）。</p>
+</div></details>
+
+<div class="box warn"><span class="t">RAG 坑点</span>
+① 文档同步是进程内 <code>asyncio.create_task</code>，<b>无任务队列/重试</b>，多副本部署丢任务；<code>sync_status</code> 卡在 RUNNING 需人工处理；
+② <code>CodeFileKnowledge.document_type()</code> 返回不存在的 <code>DocumentType.CODE</code>（工厂调用会 AttributeError，仅 git 链路直接用）；
+③ <code>pdf.py</code> 有一处 <code>eval()</code> 解析表格行，处理不可信 PDF 有注入面；
+④ <code>bm25.py</code> 从 <code>dbgpt_app.base</code> import logger——ext 反向依赖 app 层；
+⑤ Agentic KB 的文件视图来自 DB 记录非真实文件系统，普通上传文档无 file_path 时 kb_ls/kb_grep 可用性有限；
+⑥ 安全加固（08959df1）后：git clone 禁 <code>ext::</code>、codegraph visualize 有路径穿越与 XSS 防护——二开涉及用户输入拼接时保持同等防护。</div>
+</section>
+</section>
+
+<!-- ================= 7. 沙箱与安全 ================= -->
+<section id="sandbox">
+<h2><span class="no">7.</span>沙箱与安全执行 <span class="pill red">生产必读</span></h2>
+
+<section class="card">
+<h3>7.1 核心结论：产品默认代码执行不走沙箱</h3>
+<p>全仓库共 <b>5 条代码执行链路</b>，默认隔离强度如下：</p>
+<div class="tw"><table>
+<thead><tr><th>#</th><th>链路</th><th>执行引擎</th><th>隔离级别</th></tr></thead>
+<tbody>
+<tr><td><span class="pill red">A</span></td><td>ReAct 数据分析 <code>code_interpreter</code>（<b>上传文件分析主路径，产品默认</b>）</td><td>宿主 <code>sys.executable</code> subprocess（<code>api_v1/tools/code_interpreter.py:39</code>）</td><td><b>无隔离，仅 60s 超时 = 宿主 RCE 面</b></td></tr>
+<tr><td><span class="pill red">B</span></td><td>ReAct <code>shell_interpreter</code></td><td><b>直接 <code>LocalRuntime()</code></b>（<code>api_v1/tools/shell_interpreter.py:59</code>），绕过 RuntimeFactory 的 opt-in 保护；黑名单可绕过；工具描述还主动鼓励 <code>curl, apt, pip, git</code></td><td>宿主进程 + 弱黑名单</td></tr>
+<tr><td><span class="pill green">C</span></td><td>skill 内联脚本 / <code>execute_analysis</code> / AWEL Code 算子</td><td>CodeServer → lyric（WASM worker 路线）</td><td>有资源配置能力（fs preopens、内存）；<code>CodeMapOperator</code> 未传任何资源配置</td></tr>
+<tr><td><span class="pill red">D</span></td><td>skill 脚本文件 <code>execute_skill_script_file</code></td><td>宿主 <code>sys.executable</code> subprocess（<code>manage.py:1031</code>）</td><td>无隔离，仅 120s 超时；信任域=谁能写 SKILLS_DIR</td></tr>
+<tr><td><span class="pill amber">E</span></td><td>多 Agent 团队 <code>CodeAssistantAgent</code>+<code>CodeAction</code></td><td><code>code_utils.execute_code</code>：装了 docker SDK 默认走容器，<b>但检测到 <code>/.dockerenv</code> 即退化为宿主裸跑</b>（官方容器部署恰好满足）</td><td>容器（弱配置）/ 无</td></tr>
+</tbody>
+</table></div>
+
+<h3>7.2 dbgpt-sandbox 独立服务架构</h3>
+<p>四层（单进程内函数调用，非分布式）：<b>user_layer</b>（FastAPI 路由 + 会话登记）→ <b>control_layer</b>（任务生命周期、每任务一把锁）→ <b>execution_layer</b>（4 种 runtime）→ <b>display_layer</b>（结果 dataclass，未被真正消费）。入口 <code>dbgpt-sandbox --host 0.0.0.0 --port 8000</code>，API 前缀 <code>/api</code>（connect/configure/execute/disconnect/status/get_file…），<b>服务自身无鉴权/限流</b>。当前主应用没有内嵌它（全仓无 <code>initialize_sandbox</code> 调用），所以“部署了 sandbox”不等于“Agentic 工具已经使用 sandbox”。</p>
+
+<div class="tw"><table>
+<thead><tr><th>维度</th><th>Docker</th><th>Podman</th><th>Nerdctl</th><th>Local</th></tr></thead>
+<tbody>
+<tr><td>隔离</td><td>namespace+cgroup</td><td>同（可 rootless）</td><td>containerd</td><td><b>无（宿主进程）</b></td></tr>
+<tr><td>内存</td><td><code>mem_limit</code></td><td><code>--memory</code></td><td><code>--memory</code></td><td>仅启动瞬间采样一次，无持续强制</td></tr>
+<tr><td>CPU</td><td><span class="pill amber">cpuset_cpus 语义错误</span>（绑核而非限额）</td><td><code>--cpus</code> ✓</td><td><code>--cpus</code> ✓</td><td>无</td></tr>
+<tr><td>超时</td><td><span class="pill red">exec_run 无 timeout</span></td><td>wait_for ✓</td><td>✓</td><td>asyncio.wait_for ✓</td></tr>
+<tr><td>网络禁用</td><td>支持（默认 False）</td><td>✓</td><td><span class="pill red">明确跳过，永远有网</span></td><td>无</td></tr>
+<tr><td>文件系统</td><td colspan="3">宿主 tempdir 以 <b>rw</b> 挂载为容器 /tmp</td><td><code>os.environ.update()</code> 污染宿主全局环境变量</td></tr>
+<tr><td>有状态会话</td><td colspan="3">容器常驻复用（依赖安装可保留）</td><td>进程级，仅文件保留</td></tr>
+</tbody>
+</table></div>
+<p class="mini">运行时选择：<code>SANDBOX_RUNTIME</code> 环境变量 &gt; 自动探测（Docker→Podman→Nerdctl）；无容器运行时且未开 <code>SANDBOX_ALLOW_LOCAL_RUNTIME</code> 时 fail-closed 拒绝（#3092）——但该保护只管独立沙箱服务，管不到 app 内工具（链路 B）。</p>
+
+<h3>7.3 当前风险清单（按严重度）</h3>
+<ol>
+<li><span class="pill red">高</span> <b>链路 A 宿主裸跑是默认行为</b>：任何能发起聊天的用户 + 任何 prompt 注入都等价宿主 RCE；</li>
+<li><span class="pill red">高</span> 链路 B 绕过沙箱工厂，黑名单易绕过（<code>rm -rf $HOME</code>/变量拼接均不拦）；</li>
+<li><span class="pill red">高</span> 链路 D skill 脚本宿主裸跑，个人技能禁用开关默认关；</li>
+<li><span class="pill amber">中</span> 沙箱服务无鉴权 + 默认 0.0.0.0:8000；session_id（<code>{user_id}_{task_id}</code>）可预测且无属主校验；空闲会话清理无调度点（容器泄漏）；</li>
+<li><span class="pill amber">中</span> 容器 runtime 弱点：/tmp rw 挂载、Docker 无超时、nerdctl 无网络隔离、cpuset 语义错误、VNC 镜像硬编码口令 <code>123456</code>、清华 pip 源硬编码；</li>
+<li><span class="pill amber">中</span> 容器化部署下链路 E 因 <code>/.dockerenv</code> 主动放弃隔离；且每次执行 <code>container.commit()</code> 镜像无限膨胀；</li>
+<li><span class="pill gray">已缓解</span> <b>路径注入防护已前移</b>：active <code>code_interpreter.py</code> 通过 <code>FILE_PATH/FILES_JSON/PLOT_DIR</code> 环境变量传递路径，不再把路径字面量插入生成代码；仍需保留上传文件名校验和工作目录白名单，旧链路/自定义工具不可照搬旧实现；</li>
+<li><span class="pill red">高</span> <b>mock 鉴权</b>：<code>get_user_from_headers</code> 信任请求头、缺省 <code>user_id="001"</code> 且 <code>role="admin"</code>；会话文件新接口有 owner 校验，但旧的 <code>GET /v1/agent/files/download</code> 路径仍需单独核对鉴权与白名单；</li>
+<li><span class="pill gray">低</span> <code>is_docker_sdk_available</code> 恒返回 True；control_layer 硬编码 512MB 与配置常量不一致。</li>
+</ol>
+
+<h3>7.4 近期安全修复（方向正确，已验证）</h3>
+<div class="tag-list">
+<span>#3104 Python 上传路径穿越（防御纵深完整：user_id 白名单 + symlink 逐级拒绝 + O_NOFOLLOW + 写后复验）</span>
+<span>#3129 MacOSTTS 命令注入 → 无 shell subprocess</span>
+<span>#3111 Jinja2 SSTI→RCE → SandboxedEnvironment</span>
+<span>#3123 CORS 非法组合 → 可配置白名单</span>
+<span>#3092 LocalRuntime fail-closed opt-in</span>
+</div>
+
+<h3>7.5 生产建议（按优先级）</h3>
+<div class="box danger"><span class="t">上生产前必做</span>
+① <b>改造三处宿主执行点</b>（<code>api_v1/tools/code_interpreter.py:39</code>、<code>api_v1/tools/shell_interpreter.py:59</code>、<code>manage.py:1031</code>）：统一替换为 <code>RuntimeFactory.create()</code>（受 <code>SANDBOX_RUNTIME=docker</code> 约束）或封装 <code>get_execution_backend()</code>，每会话一容器，<code>PILOT_PATH/tmp/{conv}</code> 作为 working_dir；
+② 在 <code>LocalRuntime.__init__</code> 补 <code>SANDBOX_ALLOW_LOCAL_RUNTIME</code> 校验，堵工厂旁路；
+③ 删掉 <code>code_utils.py:256</code> 的 <code>/.dockerenv</code> 退化逻辑或改为显式配置，给容器执行补 <code>mem_limit/timeout</code>、去掉 <code>container.commit</code>；
+④ 设 <code>DBGPT_DISABLE_PERSONAL_SKILL_SCRIPT_EXECUTION=true</code>，skill 安装走代码审查。</div>
+<p><b>推荐拓扑</b>：沙箱独立部署（绑定内网/127.0.0.1）+ 前置鉴权网关（当前服务本身无鉴权，需二开）+ 主服务经其 <code>/api/*</code> 执行；<code>network_disabled</code> 默认改 True，需要联网的工具会话显式放开。接入完成前，应用内 A/B/D 链路仍按“宿主执行”风险评估。</p>
+<p><b>容器加固</b>（改 <code>docker_runtime.py:46-57</code>）：<code>--read-only</code> + tmpfs、<code>cap_drop=ALL</code>、<code>no-new-privileges</code>、<code>pids_limit</code>、去掉 /tmp rw 挂载、<code>cpuset_cpus</code> 改 <code>nano_cpus</code>、<code>exec_run</code> 加超时；VNC 强口令按需启用。</p>
+<p><b>鉴权</b>：替换 mock 为真实 SSO/网关注入；<code>/v1/agent/files/download</code> 加鉴权并把白名单收窄到 <code>PILOT_PATH/tmp</code>。上传侧加文件类型/大小白名单；进入代码拼接的路径改用 <code>json.dumps</code>/变量传参（消灭二阶注入）。运维：为 <code>cleanup_expired_sessions</code> 加定时任务 + 审计日志。</p>
+</section>
+</section>
+
+<!-- ================= 8. 部署与运维 ================= -->
+<section id="deploy">
+<h2><span class="no">8.</span>部署与运维 <span class="pill blue">二开重点</span></h2>
+
+<section class="card">
+<h3>8.1 部署方式矩阵</h3>
+<div class="tw"><table>
+<thead><tr><th>方式</th><th>入口</th><th>适用</th><th>元数据库</th><th>端口</th></tr></thead>
+<tbody>
+<tr><td><b>源码（uv）</b></td><td><code>uv run dbgpt start webserver -c x.toml</code></td><td>开发/二开，最灵活</td><td>SQLite 默认</td><td>5670</td></tr>
+<tr><td>一键安装脚本</td><td><code>scripts/install/install.sh</code>（装到 <code>~/.dbgpt</code>）</td><td>快速单机</td><td>SQLite</td><td>5670</td></tr>
+<tr><td>Docker 单容器（base）</td><td><code>eosphorosai/dbgpt</code></td><td>容器化单机</td><td>SQLite</td><td>5670</td></tr>
+<tr><td>Docker allinone</td><td><code>eosphorosai/dbgpt-allinone</code></td><td>容器内自带 MySQL</td><td>MySQL（容器内）</td><td>3306+5670</td></tr>
+<tr><td>Compose 单机</td><td>根 <code>docker-compose.yml</code></td><td>MySQL+webserver</td><td>MySQL</td><td>3306,5670</td></tr>
+<tr><td>Compose 集群</td><td><code>compose_examples/cluster-*.yml</code></td><td>controller+worker+web 分离</td><td>SQLite/MySQL</td><td>8000/8001/8002/5670</td></tr>
+<tr><td>Compose HA</td><td><code>ha-cluster-docker-compose.yml</code></td><td>多 controller+MySQL registry</td><td>MySQL</td><td>8000/8001/8100/5670</td></tr>
+<tr><td>Compose 可观测</td><td><code>observability/docker-compose.yml</code></td><td>+ Jaeger OTel tracing</td><td>SQLite</td><td>5670,16686,4317</td></tr>
+<tr><td>集群 CLI 手动</td><td><code>dbgpt start controller/worker/apiserver -c x.toml</code></td><td>多机模型服务</td><td>—</td><td>8000/8001/8100</td></tr>
+</tbody>
+</table></div>
+<p class="mini">硬件：纯代理模式 4C×8GB 即可；本地 GPU 模型建议 ≥24GB 显存 + CUDA。</p>
+
+<h3>8.2 源码开发部署（推荐二开方式）</h3>
+<pre><code><span class="c"># 1. 安装依赖（Python 3.11，.python-version；uv 管理，不用 pip）</span>
+git clone https://github.com/eosphoros-ai/DB-GPT.git &amp;&amp; cd DB-GPT
+uv sync --all-packages \
+  --extra <span class="s">"base"</span> --extra <span class="s">"proxy_openai"</span> \
+  --extra <span class="s">"rag"</span> --extra <span class="s">"storage_chromadb"</span> --extra <span class="s">"dbgpts"</span>
+<span class="c"># 本地 GPU 额外加：--extra "cuda121" --extra "hf" --extra "quant_bnb"</span>
+<span class="c"># Ollama：--extra "proxy_ollama"；交互式命令生成：uv run install_help.py install-cmd --interactive</span>
+
+<span class="c"># 2. 启动（三选一）</span>
+OPENAI_API_KEY=sk-xxx uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
+uv run dbgpt setup --profile openai --yes &amp;&amp; uv run dbgpt start webserver   <span class="c"># 向导式</span>
+uv run dbgpt start webserver -d    <span class="c"># daemon：日志 logs/webserver_uvicorn.log；dbgpt stop webserver 停止</span>
+<span class="c"># 浏览器打开 http://localhost:5670</span></code></pre>
+<ul>
+<li><b>配置优先级</b>：显式 <code>--config</code> &gt; <code>--profile</code> 对应 <code>~/.dbgpt/configs/&lt;profile&gt;.toml</code> &gt; <code>~/.dbgpt/config.toml</code> 记录的 active profile &gt; 都没有 → 交互向导（<code>--yes</code> 时默认 openai）。用户配置目录权限 0700、TOML 0600。</li>
+<li><b>内置 profile</b>：openai / kimi / qwen / minimax / glm / custom / default；<code>dbgpt profile list/use/delete</code> 管理。</li>
+<li><b>Makefile</b>（venv <code>.venv.make</code>，仅开发/测试用，日常部署走 <code>uv sync</code>）：<code>make setup/testenv/fmt/test/test-doc/mypy/pre-commit/coverage/build/publish</code>。</li>
+</ul>
+
+<h3>8.3 启动流程（<code>dbgpt_server.py</code>，便于二开定位挂载点）</h3>
+<div class="flow">
+<span class="node">load_config<br><span class="mini">TOML + scan_configs（provider/serve/storage/app/connector 注册）</span></span><span class="arr">→</span>
+<span class="node">initialize_app<br><span class="mini">mount_routers（/api 前缀全部路由）→ assemble_component → Alembic 迁移</span></span><span class="arr">→</span>
+<span class="node">注册默认示例数据源 Walmart_Sales + 模型初始化<br><span class="mini">非 light=进程内统一模型部署；light=连外部 controller</span></span><span class="arr">→</span>
+<span class="node green">mount_static_files + run_uvicorn（CORS + 5670）</span>
+</div>
+<div class="box info"><span class="t">部署边界</span><code>run_uvicorn()</code> 当前只传入 <code>host/port/log_level</code>，没有配置 worker、reload 或进程管理器参数，因此默认是单进程。需要多副本时应由反向代理/编排平台管理实例，并先处理共享数据库、文件卷、迁移锁和同步任务幂等。</div>
+
+<h3>8.4 数据存储与迁移</h3>
+<ul>
+<li>默认 SQLite：<code>[service.web.database] type="sqlite"; path="pilot/meta_data/dbgpt.db"</code>，Alembic 启动自动迁移。</li>
+<li><b>切 MySQL/PostgreSQL</b>：<code>[service.web.database] type="mysql" host/port/database/user/password</code>（多态按 type 判别）。<b>先导入 <code>assets/schema/dbgpt.sql</code></b>。参考 <code>configs/dbgpt-proxy-siliconflow-mysql.toml</code>。需 extras <code>datasource_mysql</code>/<code>datasource_postgres</code>。</li>
+<li><b>手动迁移</b>：<code>dbgpt db migration -c &lt;config&gt; upgrade|downgrade|list|migrate -m "msg"</code>。<span class="pill amber">Alembic CLI 仅支持 SQLite</span>，MySQL/OceanBase 用 <code>assets/schema/upgrade/v0_*</code> 脚本。</li>
+<li><b>多实例共享库</b>：设 <code>[service.web] disable_alembic_upgrade = true</code>，统一执行迁移后再滚动重启。</li>
+</ul>
+
+<h3>8.5 Docker 部署</h3>
+<ul>
+<li><b>base 镜像</b>（多阶段，基于 <code>nvidia/cuda:12.4.0-devel-ubuntu22.04</code>）：<code>EXTRAS</code> 参数控制安装面；<code>build_image.sh --install-mode default|openai|vllm|llama-cpp|full</code>，openai 模式产 <code>eosphorosai/dbgpt-openai</code>（CPU/纯代理）。CMD 默认 <code>dbgpt start webserver --config configs/dbgpt-proxy-siliconflow.toml</code>。</li>
+<li><b>allinone</b>：内置 MySQL（<code>MYSQL_ROOT_PASSWORD=aa123456</code>），entrypoint 走遗留启动路径。</li>
+<li>快速跑：<code>SILICONFLOW_API_KEY=sk-xxx docker compose up -d</code>（根 compose）。</li>
+<li>镜像构建：<code>docker/base/build_image.sh</code>、<code>docker/build_all_images.sh</code>。</li>
+</ul>
+
+<h3>8.6 端口清单</h3>
+<div class="tw"><table>
+<thead><tr><th>端口</th><th>服务</th><th>端口</th><th>服务</th></tr></thead>
+<tbody>
+<tr><td><b>5670</b></td><td>webserver（UI+API，新版默认）</td><td>8100</td><td>model apiserver（OpenAI 兼容网关）</td></tr>
+<tr><td>5000</td><td>webserver（旧版/部分 compose）</td><td>3306</td><td>MySQL</td></tr>
+<tr><td><b>8000</b></td><td>model controller</td><td>2881</td><td>OceanBase</td></tr>
+<tr><td>8001</td><td>model worker（LLM）</td><td>16686</td><td>Jaeger UI</td></tr>
+<tr><td>8002/8003/8004</td><td>embedding / reranker worker</td><td>4317/4318</td><td>OTLP gRPC/HTTP</td></tr>
+<tr><td>8000（沙箱）</td><td>dbgpt-sandbox 独立服务</td><td>10000/10002</td><td>HiveServer2</td></tr>
+</tbody>
+</table></div>
+
+<h3>8.7 集群部署（model cluster）</h3>
+<ul>
+<li>组件：Controller:8000（注册/路由）→ LLM Worker:8001 / Embedding Worker:8003+ → API Server:8100（可选 OpenAI 兼容网关）→ Webserver:5670（light 模式）。</li>
+<li>TOML 节：<code>[service.model.controller]</code>（<code>heartbeat_interval_secs=20/timeout=60</code>；<code>registry.database</code> 配置则用存储型 registry，支持 sqlite/mysql/oceanbase）、<code>[service.model.worker]</code>（<code>worker_type = llm|text2vec|reranker</code>、<code>controller_addr</code>）、<code>[service.model.api]</code>（注意节名是 <code>api</code> 不是 apiserver）。</li>
+<li><b><code>controller_addr</code> 的作用</b>：worker 注册/心跳目标；支持逗号分隔多控制器（HA）。light webserver 与 apiserver 用它作 <code>ModelRegistryClient</code> 路由入口。</li>
+<li><b>light 模式</b>：<code>[service.web] light = true</code> + <code>controller_addr</code> → webserver 不起本地模型，全部推理请求走 HTTP 到集群 worker。<span class="pill gray">遗留</span> <code>remote_embedding/remote_rerank</code> 布尔无消费者，远端 embedding 由 <code>models.default_embedding</code> + <code>RemoteEmbeddingFactory</code> 自动接线。</li>
+</ul>
+<pre><code><span class="c"># 多机部署（当前 TOML 写法；完整参考 compose_examples/conf/ha-*.toml）</span>
+CONTROLLER_ADDR=http://nodeA:8000 dbgpt start controller -c controller.toml
+WORKER_TYPE=llm CONTROLLER_ADDR=http://nodeA:8000 dbgpt start worker -c worker.toml
+WORKER_TYPE=text2vec CONTROLLER_ADDR=http://nodeA:8000 dbgpt start worker -c emb-worker.toml
+CONTROLLER_ADDR=http://nodeA:8000 dbgpt start webserver -c webserver.toml   <span class="c"># light=true</span>
+CONTROLLER_ADDRESS=http://nodeA:8000 dbgpt model list                        <span class="c"># 校验</span></code></pre>
+
+<h3>8.8 可观测性 / 定时任务 / 日志</h3>
+<ul>
+<li><b>Traces</b>：零配置可用 —— JSONL（<code>logs/dbgpt_webserver_tracer.jsonl</code>）+ SQLite（<code>logs/observability.db</code>）+ 内置 <code>/observability</code> 页面。接 Jaeger：<code>TRACER_TO_OPEN_TELEMETRY=true</code> + <code>OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://jaeger:4317</code>，或 TOML <code>[trace] exporter="telemetry" otlp_endpoint=...</code>。CLI：<code>dbgpt trace list|tree|chat</code>。多副本时 SQLite/JSONL 需改为集中采集或每实例独立保留。</li>
+<li><b>定时任务</b>：内置 APScheduler，随 webserver 零配置启动（开关 <code>DBGPT_CHAT_TASK_SCHEDULER_ENABLED</code>），任务持久化在 <code>dbgpt_serve_scheduled_task</code> 表，API <code>/api/v2/serve/scheduled-tasks</code>。</li>
+<li><b>日志</b>：<code>LoggingParameters</code> 只有 level 和 file 两字段（旧版 fmt/轮转参数不存在）。按天 UTC 轮转（TimedRotatingFileHandler）。环境变量 <code>DBGPT_LOG_LEVEL</code>（默认 INFO）、<code>DBGPT_LOG_DIR</code>。落盘：<code>dbgpt_webserver.log</code>（主）、<code>webserver_uvicorn.log</code>（daemon）、集群各组件独立日志。</li>
+</ul>
+
+<h3>8.8.1 健康检查与反向代理建议</h3>
+<div class="tw"><table>
+<thead><tr><th>检查对象</th><th>可核对的路径/方式</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>Webserver</td><td>TCP <code>:5670</code> + 一个受保护的 API 请求</td><td>主应用没有统一的 readiness 契约；不要只用端口探活。当前 <code>run_uvicorn</code> 也未内置 worker/reload 管理。</td></tr>
+<tr><td>模型 Controller</td><td><code>GET /api/health</code>（默认 <code>:8000</code>）</td><td>只代表 controller 存活，不代表 worker 已注册或模型可用。</td></tr>
+<tr><td>Serve 组件</td><td>各组件的 <code>/api/v1/serve/&lt;name&gt;/health</code></td><td>部分路由带 API key 依赖，探活请求要携带同等凭据。</td></tr>
+<tr><td>反向代理</td><td>转发 SSE、上传体和 <code>/images</code></td><td>保留 <code>text/event-stream</code>、关闭响应缓冲、限制上传体积，并只暴露 5670。</td></tr>
+</tbody>
+</table></div>
+
+<h3>8.9 升级与运维要点</h3>
+<ul>
+<li>升级前备份 <code>pilot/meta_data/dbgpt.db</code> 与 <code>pilot/data/</code>；版本跨度参考 <code>assets/schema/upgrade/</code>（v0_5_1 … v0_8_2）。</li>
+<li>首启失败先查 5670 端口占用；<code>uv sync</code> 失败查 Python≥3.10/uv 版本，国内设 <code>UV_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple</code>；GPU 用 <code>CUDA_VISIBLE_DEVICES</code>/<code>DEVICE=cuda|cpu|mps</code>。</li>
+<li>卸载一键安装：手动删 <code>~/.dbgpt</code> + <code>~/.local/bin/uv</code>（无官方卸载命令）。</li>
+</ul>
+
+<h3>8.10 上线验收清单（建议逐项打勾）</h3>
+<div class="tw"><table>
+<thead><tr><th>域</th><th>验收问题</th><th>通过标准</th></tr></thead>
+<tbody>
+<tr><td><span class="pill red">安全</span></td><td>代码、Shell、Skill 三条执行路径是否都经过同一个容器后端？</td><td>宿主执行点为 0；<code>SANDBOX_RUNTIME</code> 明确为容器；<code>LocalRuntime</code> 未被旁路调用。</td></tr>
+<tr><td><span class="pill red">身份</span></td><td>请求是否由真实身份系统鉴权，并能校验资源 owner？</td><td>关闭 mock 用户；API key/SSO、文件下载、沙箱 API 均有鉴权和审计。</td></tr>
+<tr><td><span class="pill amber">数据</span></td><td>重启或扩容时，任务、上传文件、向量索引是否仍可恢复？</td><td>元数据/文件/向量库使用持久卷或外部服务；同步任务有队列、重试和幂等键。</td></tr>
+<tr><td><span class="pill amber">发布</span></td><td>多实例是否关闭启动期迁移，并完成单独迁移？</td><td><code>disable_alembic_upgrade=true</code>，迁移在发布流水线执行，应用滚动重启可回滚。</td></tr>
+<tr><td><span class="pill blue">可观测</span></td><td>一次请求能否关联到 agent、模型、工具和成本？</td><td>trace/span 可查询，日志集中收集，关键失败有告警和保留策略。</td></tr>
+</tbody>
+</table></div>
+</section>
+</section>
+
+<!-- ================= 9. 配置参考 ================= -->
+<section id="config">
+<h2><span class="no">9.</span>配置参考</h2>
+
+<section class="card">
+<h3>9.1 TOML 配置全景（<code>configs/</code> 22 个模板）</h3>
+<p>加载器 <code>ConfigurationManager</code>：TOML → 多态 dataclass（按 <code>type/provider/__type__</code> 字段选子类），<code>${env:VAR}</code>（缺失报错）/ <code>${env:VAR:-default}</code> 环境变量插值。</p>
+<div class="tw"><table>
+<thead><tr><th>模板</th><th>用途</th><th>模板</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td><code>dbgpt-app-config.example.toml</code></td><td>全量示例（二开参考母本）</td><td><code>dbgpt-proxy-{openai,deepseek,tongyi,ollama,siliconflow,aimlapi,burncloud,infiniai,litellm,orcarouter}.toml</code></td><td>各代理接入</td></tr>
+<tr><td><code>dbgpt-proxy-siliconflow.toml</code></td><td><b>代码/Docker 默认</b></td><td><code>dbgpt-local-{vllm,llama-cpp,llama-cpp-server,mlx,qwen,qwen3.example,glm}.toml</code></td><td>本地模型</td></tr>
+<tr><td><code>dbgpt-graphrag.toml</code></td><td>GraphRAG + TuGraph</td><td><code>dbgpt-bm25-rag.toml</code></td><td>RAG + ES 全文</td></tr>
+<tr><td><code>dbgpt-cloud-storage.example.toml</code></td><td>OSS/S3/COS 文件存储</td><td><code>dbgpt-proxy-siliconflow-mysql.toml</code></td><td>+ MySQL 元数据</td></tr>
+</tbody>
+</table></div>
+
+<h3>9.2 关键配置节（<code>dbgpt-app-config.example.toml</code> 结构）</h3>
+<pre><code>[system]
+language = <span class="s">"${env:DBGPT_LANG:-zh}"</span>          <span class="c"># en/zh/fr/ja/ko/ru</span>
+log_level = <span class="s">"INFO"</span>
+api_keys = []                                  <span class="c"># 服务端 API key 白名单，空=不校验</span>
+encrypt_key = <span class="s">"your_secret_key"</span>               <span class="c"># 数据加密密钥</span>
+
+[service.web]
+host = <span class="s">"0.0.0.0"</span>;  port = 5670
+cors_allowed_origins = <span class="s">"${env:DBGPT_CORS_ALLOWED_ORIGINS:-*}"</span>
+<span class="c"># light = false                 # true=连外部 controller</span>
+<span class="c"># controller_addr = "http://...:8000"</span>
+<span class="c"># disable_alembic_upgrade = false   # 生产/多实例建议 true</span>
+<span class="c"># new_web_ui = true               # 或 env USE_NEW_WEB_UI</span>
+<span class="c"># db_ssl_verify = false           # 或 env LOCAL_DB_SSL_VERIFY</span>
+
+[service.web.agent_context]               <span class="c"># Agent 上下文预算</span>
+max_context_tokens = 0                      <span class="c"># 0=按模型元数据自动探测</span>
+reserved_tokens = 4096; warning_threshold = 0.70; error_threshold = 0.90
+max_parallel_subagents = 3                  <span class="c"># env DBGPT_MAX_PARALLEL_SUBAGENTS</span>
+
+[service.web.database]                      <span class="c"># 元数据库（多态）</span>
+type = <span class="s">"sqlite"</span>; path = <span class="s">"pilot/meta_data/dbgpt.db"</span>
+<span class="c"># type="mysql": host/port/database/user/password/driver="mysql+pymysql"</span>
+
+[app]
+temperature = 0.6
+[[app.configs]]                             <span class="c"># 按应用名细粒度覆盖</span>
+name = <span class="s">"chat_excel"</span>; temperature = 0.1; force_install = true
+
+[[models.llms]]                             <span class="c"># provider 见 §9.3</span>
+name = <span class="s">"${env:LLM_MODEL_NAME:-gpt-4o}"</span>
+provider = <span class="s">"${env:LLM_MODEL_PROVIDER:-proxy/openai}"</span>
+api_base = <span class="s">"${env:OPENAI_API_BASE:-https://api.openai.com/v1}"</span>
+api_key = <span class="s">"${env:OPENAI_API_KEY}"</span>
+[[models.embeddings]]
+name = <span class="s">"text-embedding-3-small"</span>; provider = <span class="s">"proxy/openai"</span>
+api_url = <span class="s">"https://api.openai.com/v1/embeddings"</span>; api_key = <span class="s">"${env:OPENAI_API_KEY}"</span>
+[[models.rerankers]]                        <span class="c"># 如 proxy/siliconflow bge-reranker-v2-m3、qwen</span>
+
+[rag]
+chunk_size = 500; chunk_overlap = 50; similarity_top_k = 10
+query_rewrite = false; rerank_top_k = 3; bm25_k1 = 2.0; bm25_b = 0.75
+<span class="c"># kg_* 14 键（GraphRAG）：kg_enable_summary/kg_extract_top_k/kg_community_top_k...</span>
+[rag.storage.vector]
+type = <span class="s">"chroma"</span>                             <span class="c"># chroma/milvus/elasticsearch/oceanbase/pgvector/qdrant/valkey/weaviate</span>
+[rag.storage.graph]
+<span class="c"># type = "tugraph" host=... port=7687 username=... password=... enable_summary=...</span>
+[rag.storage.full_text]
+<span class="c"># type = "elasticsearch" host=... port=...</span>
+
+[[serves]]                                  <span class="c"># serve 模块配置（type 判别）</span>
+type = <span class="s">"scheduled_task"</span>
+[trace]
+<span class="c"># file/exporter="telemetry"/otlp_endpoint=...</span>
+[log]
+level = <span class="s">"INFO"</span>; file = <span class="s">"logs/dbgpt_webserver.log"</span>
+[[hooks]]                                   <span class="c"># 配置钩子，如 EnvVarSetHook 加载时设环境变量</span></code></pre>
+
+<h3>9.3 模型 provider 全景</h3>
+<ul>
+<li><b>本地</b>：<code>hf</code>（transformers）、<code>vllm</code>（Linux GPU）、<code>llama.cpp</code>/<code>llama.cpp.server</code>、<code>mlx</code>（macOS）。本地模型键：<code>path</code>（缺省从 HF 下载）。</li>
+<li><b>代理（<code>proxy/*</code>，21 种）</b>：openai、claude、ollama、deepseek、siliconflow、tongyi、zhipu、moonshot、gemini、yi、baichuan、wenxin、spark、minimax、gitee、burncloud、infiniai、aimlapi、litellm、orcarouter、volcengine。</li>
+<li>发现机制：<code>scan_model_providers()</code> 递归 import <code>dbgpt.model.proxy.llms</code> 扫 <code>LLMDeployModelParameters</code> 子类——新增 provider 无需改注册表（见 §10.3）。</li>
+</ul>
+
+<h3>9.4 常用环境变量速查</h3>
+<div class="tw"><table>
+<thead><tr><th>分类</th><th>变量</th></tr></thead>
+<tbody>
+<tr><td>通用</td><td><code>DBGPT_HOME / DBGPT_LANG / DBGPT_LOG_LEVEL / DBGPT_LOG_DIR / DBGPT_WEBSERVER_PORT / DBGPT_CORS_ALLOWED_ORIGINS / USE_NEW_WEB_UI / DEVICE / CUDA_VISIBLE_DEVICES</code></td></tr>
+<tr><td>API Key</td><td><code>OPENAI_API_KEY / MOONSHOT_API_KEY / DASHSCOPE_API_KEY / MINIMAX_API_KEY / ZHIPUAI_API_KEY / SILICONFLOW_API_KEY / AIMLAPI_API_KEY / DEEPSEEK_API_KEY</code>（install.sh 各 profile 读取对应 key）</td></tr>
+<tr><td>元数据库（遗留路径）</td><td><code>LOCAL_DB_TYPE / LOCAL_DB_PATH / LOCAL_DB_HOST / LOCAL_DB_PORT / LOCAL_DB_NAME / LOCAL_DB_USER / LOCAL_DB_PASSWORD / LOCAL_DB_POOL_SIZE / LOCAL_DB_SSL_VERIFY</code>（新路径用 <code>[service.web.database]</code>）</td></tr>
+<tr><td>向量库</td><td><code>VECTOR_STORE_TYPE</code>（默认 Chroma）、<code>CHROMA_PERSIST_PATH / MILVUS_HOST/PORT/USER/PASSWORD / ELASTICSEARCH_URL/PORT/USERNAME/PASSWORD / PGVECTOR_CONNECTION_STRING / QDRANT_HOST/PORT/API_KEY/DISTANCE / OB_HOST/PORT/USER/PASSWORD/DATABASE / VALKEY_*</code></td></tr>
+<tr><td>GraphRAG</td><td><code>KNOWLEDGE_GRAPH_EXTRACT_SEARCH_TOP_SIZE / KNOWLEDGE_GRAPH_COMMUNITY_SEARCH_TOP_SIZE / TRIPLET_GRAPH_ENABLED / DOCUMENT_GRAPH_ENABLED / KNOWLEDGE_GRAPH_EXTRACTION_BATCH_SIZE / KNOWLEDGE_GRAPH_EMBEDDING_BATCH_SIZE / COMMUNITY_SUMMARY_BATCH_SIZE</code></td></tr>
+<tr><td>沙箱/安全</td><td><code>SANDBOX_RUNTIME=docker|podman|nerdctl|local / SANDBOX_ALLOW_LOCAL_RUNTIME / DBGPT_DISABLE_PERSONAL_SKILL_SCRIPT_EXECUTION / DBGPT_SKILLS_DIR</code></td></tr>
+<tr><td>Agent</td><td><code>DBGPT_MAX_PARALLEL_SUBAGENTS / DBGPT_CHAT_TASK_SCHEDULER_ENABLED</code></td></tr>
+<tr><td>可观测</td><td><code>TRACER_TO_OPEN_TELEMETRY / OTEL_EXPORTER_OTLP_TRACES_ENDPOINT / DBGPT_OBSERVABILITY_SQLITE_PATH</code></td></tr>
+<tr><td>Docker 构建</td><td><code>BASE_IMAGE / PYTHON_VERSION / EXTRAS / PIP_INDEX_URL / CMAKE_ARGS / INSTALL_RUST</code></td></tr>
+</tbody>
+</table></div>
+</section>
+</section>
+
+<!-- ================= 10. 扩展点 Cookbook ================= -->
+<section id="extend">
+<h2><span class="no">10.</span>二次开发扩展点 Cookbook</h2>
+
+<section class="card">
+<h3>10.1 四条主干道与侵入度路线</h3>
+<div class="flow">
+<span class="node green">零侵入：TOML 配置 / AWEL DAG 目录 / Flow 模板 / Skills / dbgpts 插件</span>
+</div>
+<div class="flow">
+<span class="node">轻侵入：Serve 模块（脚手架+两行注册）/ CLI 子命令 / 前端页面</span>
+</div>
+<div class="flow">
+<span class="node alt">中侵入：LLM provider / 数据源连接器 / 自定义组件 / AgentMiddleware</span>
+</div>
+<div class="flow">
+<span class="node red">重侵入：改扫描路径/注册清单/前端布局 —— 建议 fork 管理并跟踪上游合并</span>
+</div>
+
+<h3>10.2 新增 Serve 服务模块（有官方脚手架）</h3>
+<pre><code>dbgpt new serve -n my_mod        <span class="c"># 复制 _template_files/default_serve_template/ 并替换占位符</span></code></pre>
+<ol>
+<li>产出结构：<code>config.py</code>（<code>BaseServeConfig</code>，前缀 <code>dbgpt.serve.my_mod.</code>）/ <code>models/models.py</code>（SQLAlchemy 表）/ <code>service/service.py</code> + Dao / <code>api/endpoints.py</code>（路由基于 <code>/api/v1/serve/my_mod</code>）/ <code>serve.py</code>（<code>BaseServeComponent</code>）/ <code>tests/</code>；</li>
+<li>注册：在 <code>serve_initialization.py</code> 的 import 块和 <code>_register_serve_components</code> 中各加一行（手工清单）；</li>
+<li>建表：<code>dbgpt db migration new -m "add my_mod tables"</code> + <code>upgrade</code>（Alembic 的 <code>env.py</code> 会 glob 扫描所有 <code>**/models/models.py</code> 自动收集 Model）；</li>
+<li>配置经 TOML <code>[dbgpt.serve.my_mod]</code> 段（<code>scan_serve_configs</code> 自动发现）；参考成品：<code>prompt/、flow/、dbgpts/hub/、agent/</code>（大型示例）。</li>
+</ol>
+
+<h3>10.3 新增 LLM Provider（proxy 模式，三段式）</h3>
+<p>最佳模板 <code>dbgpt/model/proxy/llms/deepseek.py</code>（~240 行）。<b>旧符号 <code>auto_client/ProxyType</code> 已不存在</b>。</p>
+<ol>
+<li>在 <code>model/proxy/llms/</code> 新建 <code>myllm.py</code>；</li>
+<li><b>参数 dataclass</b>：<code>@auto_register_resource + @dataclass class MyLLMDeployModelParameters(OpenAICompatibleDeployModelParameters)</code>，设 <code>provider = "proxy/myllm"</code>（即 TOML 匹配键），<code>api_key</code> 用 <code>${env:...}</code>；</li>
+<li><b>客户端类</b>：OpenAI 兼容 → 继承 <code>OpenAILLMClient</code> 薄覆写（<code>new_client/_build_request/param_class</code>）；非兼容 → 继承 <code>ProxyLLMClient</code> 实现 <code>generate_v1/generate_stream_v1</code>；</li>
+<li><b>模块尾部注册</b>：<code>register_proxy_model_adapter(MyLLMClient, supported_models=[ModelMetadata(...)])</code>；</li>
+<li>写 <code>configs/dbgpt-proxy-myllm.toml</code>（<code>[[models.llms]] provider = "proxy/myllm"</code>）；</li>
+<li><code>scan_model_providers()</code> 自动发现，无需改注册表。</li>
+</ol>
+
+<h3>10.4 AWEL 扩展速查</h3>
+<div class="tw"><table>
+<thead><tr><th>目标</th><th>做法</th></tr></thead>
+<tbody>
+<tr><td>自定义算子</td><td>继承 <code>MapOperator/JoinOperator/BranchOperator/Streamify…</code>，重写对应方法；可选声明 <code>metadata: ViewMetadata</code>；<b>保证模块被加载</b>（<code>examples/awel</code>、TOML <code>awel_dirs</code> 追加目录、或 dbgpts 插件包）；构造器必须透传 <code>**kwargs</code></td></tr>
+<tr><td>自定义资源（可被算子参数引用）</td><td><code>@register_resource(...)</code> 或 <code>@auto_register_resource</code>（dataclass）；<code>resource_type=CLASS</code> 时传类不传实例且不能有参数</td></tr>
+<tr><td>自定义触发器</td><td>HTTP：继承 <code>HttpTrigger</code>（<code>request_body/register_to_app</code>）；非 HTTP：继承 <code>Trigger</code> 实现 <code>async def trigger(...)</code>；DAG 放 <code>dag_dirs</code> 由 <code>DAGManager.register_dag</code> 自动登记</td></tr>
+<tr><td>工作流模板</td><td>往 <code>dbgpt_serve/flow/templates/{en|zh}/</code> 放 JSON（<code>{"flow": {FlowPanel 字段, "flow_data": {nodes, edges, viewport}}}</code>），边要带 <code>source_order/target_order</code>；或做成 dbgpts 插件（<code>define_type=python</code>），由 5 秒轮询自动装载</td></tr>
+<tr><td>运行期变量</td><td>flow 面板 <code>variables</code>（存 <code>dbgpt_serve_variables</code> 表，secret Fernet 加密）；算子参数值写 <code>{dbgpt:variables:...}</code> 占位</td></tr>
+</tbody>
+</table></div>
+
+<h3>10.5 dbgpts 插件生态（免改源码注入，五种形态）</h3>
+<p><code>agent / app / operator / flow / resource</code>，对应仓库目录 <code>agents/ apps/ operators/ workflow/ resources/</code>。包清单 <code>dbgpts.toml</code>；安装目录 <code>~/.dbgpts</code>；运行时 <code>DBGPTsLoader</code> 启动加载 + 每 10s 扫描——插件里的 agent/资源/算子自动注册。</p>
+<pre><code>dbgpt new app -n my-agent -t agent          <span class="c"># 脚手架（含 dbgpts.toml、模板代码）</span>
+dbgpt repo add -r myorg/myrepo --url https://github.com/...
+dbgpt app install my-agent                   <span class="c"># 或 Web 端市场刷新后安装</span>
+<span class="c"># Hub：新版 /api/v1/serve/dbgpts/hub|my（refresh_hub_from_git）；旧版 /api/v1/agent/hub（默认仓库 eosphoros-ai/DB-GPT-Plugins）</span></code></pre>
+
+<h3>10.6 自定义 Agent / Action / 工具</h3>
+<ul>
+<li>Agent：继承 <code>ConversableAgent</code> + <code>ProfileConfig</code>（<code>DynConfig</code> 四件套，可按 key 覆盖文案）+ <code>_init_actions([...])</code>；注册走 dbgpts <code>agent</code> 插件（推荐）或 <code>get_agent_manager().register_agent()</code>——<span class="pill amber">默认 <code>scan_agents()</code> 只扫 <code>dbgpt.agent.expand</code></span>；</li>
+<li>多智能体应用选用：前端建应用页 <code>/api/v1/agents/list</code> 拉已注册 agent，按 <code>agent_name</code> 字符串选择；团队模式 <code>single_agent/auto_plan/awel_layout/native_app</code>；</li>
+<li>Action：继承 <code>Action[T]</code>（pydantic 输出模型自动转 JSON schema）；<b>本版本没有 <code>@action</code> 装饰器</b>；函数工具用 <code>@tool</code>；</li>
+<li>中间件：继承 <code>AgentMiddleware</code>（9 钩子），<code>MiddlewareAgent.register_middleware</code>；<span class="pill amber">serve 默认装配链未接中间件，需改 <code>agent_team_chat_new</code></span>。</li>
+</ul>
+
+<h3>10.7 CLI 扩展</h3>
+<p>入口唯一：<code>dbgpt/cli/cli_scripts.py</code>。扩展模式 = <code>add_command_alias(command, name, parent_group)</code> + <code>try/except ImportError</code> 优雅降级（包没装不影响主命令）。现有接线：<code>model/start webserver/stop/db migration/knowledge/trace/new serve/app|repo|new app/run flow/net forward</code>。动态选项技巧：<code>build_lazy_click_command</code>（CLI 选项由 dataclass 元数据运行期生成）。</p>
+
+<h3>10.8 前端二开（新增页面）</h3>
+<ol>
+<li><code>web/types/xxx.ts</code> 定义类型；</li>
+<li><code>web/client/api/xxx/</code> 新建 client 函数（复用 <code>request.ts</code> 实例与 <code>apiInterceptors</code>），在 <code>client/api/index.ts</code> 导出；</li>
+<li><code>web/pages/my-page/index.tsx</code>（pages router 文件路由；复制 <code>construct/</code> 下相近页面为模板），补 <code>locales/{en,zh}</code> 文案；</li>
+<li><code>components/layout/</code> 菜单配置加路由项；后端若是新 Serve 模块按 <code>/api/v1/serve/&lt;name&gt;/...</code> 调用；</li>
+<li>主题：<code>chat-context.tsx</code> 的 <code>mode</code> + tailwind <code>darkMode:'class'</code> + antd <code>darkAlgorithm</code>；状态用 Context + ahooks（无 zustand）。</li>
+</ol>
+
+<h3>10.9 测试与发布</h3>
+<ul>
+<li>测试：根 <code>tests/{unit_tests,intetration_tests}/</code>（注意原拼写）+ 各包内嵌 <code>tests/</code>；pytest <code>pythonpath=["packages"]</code> + <code>--import-mode=importlib</code>；门禁 <code>make fmt-check/test</code>（pre-commit），CI 矩阵跑覆盖率；</li>
+<li>版本同步：<code>uv run scripts/update_version_all.py &lt;VERSION&gt; -y</code>（原子更新所有包版本，需从 <code>scripts/</code> 目录运行）；</li>
+<li>发布：<code>make build</code>（uv build --all-packages）→ <code>make publish</code>（PyPI/testpypi）；CI workflow_dispatch 自动化。</li>
+</ul>
+
+<h3>10.10 跨扩展点通用机制（二开必知）</h3>
+<div class="tw"><table>
+<thead><tr><th>机制</th><th>位置</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td><code>DynConfig(category, key)</code></td><td><code>dbgpt/util/configure/base.py</code></td><td>Agent profile/提示词运行时可被配置库覆盖</td></tr>
+<tr><td><code>ModelScanner + ScannerConfig</code></td><td><code>dbgpt/util/module_utils.py</code></td><td>按模块路径递归扫基类子类并注册（agent/serve 配置/LLM provider 均用它）</td></tr>
+<tr><td><code>PolymorphicMeta / ConfigurationManager</code></td><td><code>dbgpt/util/configure/manager.py</code></td><td>TOML → 多态 dataclass 解析 + <code>${env:...}</code> 展开</td></tr>
+<tr><td><code>@register_resource / @auto_register_resource</code></td><td><code>dbgpt/core/awel/flow/base.py</code></td><td>AWEL Flow UI 注册</td></tr>
+<tr><td><code>@tool</code></td><td><code>dbgpt/agent/resource/tool/base.py</code></td><td>普通函数 → FunctionTool</td></tr>
+<tr><td>反射发现三例</td><td>—</td><td><code>BaseChat.__subclasses__()</code>（场景）、<code>BaseConnector.__subclasses__()</code>（数据源）、<code>Knowledge.__subclasses__()</code>（加载器）——都要求模块先被 import</td></tr>
+</tbody>
+</table></div>
+</section>
+</section>
+
+<!-- ================= 11. 坑点全集 ================= -->
+<section id="pitfalls">
+<h2><span class="no">11.</span>坑点与注意事项全集（按主题）</h2>
+
+<section class="card">
+<h3>11.1 文档与代码漂移（照抄旧文档会失败）</h3>
+<ul>
+<li><code>dbgpt start</code> 系列只认 <code>-c/--config</code>，旧旗标（<code>--model_name/--light/--remote_embedding/--registry_type</code>）已移除；</li>
+<li><code>cluster-docker-compose.yml</code>、<code>observability/docker-compose.yml</code> 仍用旧旗标（照抄启动失败）；<code>ha-cluster-*</code> 才是当前正确写法；</li>
+<li>旧符号已不存在：<code>auto_client / ProxyType / @action / BaseProxyModel / dbgpt_app/agent/</code>；</li>
+<li>前端是 <b>pages router</b>（非 app router）；无 zustand；</li>
+<li>allinone entrypoint 仍走遗留启动路径；<code>dbgpt start worker --daemon</code> 有潜在 <code>KeyError:'port'</code> bug；</li>
+<li><code>LoggingParameters</code> 只剩 level/file 两字段（旧版 fmt/轮转参数不存在）；</li>
+<li>Serve 组件注册是手工清单，非包扫描。</li>
+</ul>
+
+<h3>11.2 硬编码与兜底（私有化必改）</h3>
+<ul>
+<li>Agent 模型选择兜底硬编码 <code>"deepseek-chat"</code>（base_agent.py:1202）；</li>
+<li>AWEL 团队管理器硬编码 <code>bailing_proxyllm</code> 优先（controller ~:700，带 TODO）；</li>
+<li>脚本执行超时硬编码 120s（skill）/ 60s（code_interpreter）；</li>
+<li>Docker runtime 硬编码清华 pip 源；VNC 镜像硬编码口令 <code>123456</code>；</li>
+<li>control_layer 硬编码 512MB（与 config.py 常量不一致）。</li>
+</ul>
+
+<h3>11.3 空壳与半成品（不要依赖）</h3>
+<div class="tag-list">
+<span>RRFRanker（空壳，HYBRID 仅拼接去重）</span>
+<span>Weaviate 向量检索被注释</span>
+<span>OpenSPG / AwelIntentTranslator / AgenticIntentTranslator</span>
+<span>DataAnalysisAgent 未绑动作</span>
+<span>Excel2TableAgent 基类被注释（页面不展示）</span>
+<span>CodeTextSplitter 无生产调用方</span>
+<span>GraphRagServeConfig 空 dataclass</span>
+<span>根目录 skills.py 死代码</span>
+<span>chat_db/auto_execute/example.py few-shot 未接线</span>
+<span>excel_learning/verify_sql.py 无引用</span>
+<span>chat_knowledge/v1/out_parser.py 死文件</span>
+<span>dbgpt_sandbox display_layer 未被消费</span>
+</div>
+
+<h3>11.4 数据与状态一致性</h3>
+<ul>
+<li>schema 向量索引不自动跟随表结构变化，需手动 <code>/v1/chat/db/refresh</code>；</li>
+<li>连接器 30 分钟缓存：改数据源配置后必须 <code>invalidate_connector</code>（编辑/删除接口已做）；</li>
+<li>文档同步无任务队列/重试，重启丢任务、卡 RUNNING；</li>
+<li>向量库两层实例缓存不同步（删空间后重建可能拿到旧实例）；</li>
+<li>Milvus 换 embedding 模型必须重建 collection（所有实现均无维度迁移机制）；</li>
+<li>Chroma 分数假设依赖 cosine，改距离度量要同步改分数逻辑；</li>
+<li><code>ensure_builtin_skills</code> 永不覆盖——升级内置技能对已部署用户不生效（需删旧目录或版本化目录名）；</li>
+<li>重命名/搬移算子模块会破坏库里旧 flow（走 <code>flow/compat.py</code> 登记）；</li>
+<li>AWEL <code>share_data</code> 非持久；<code>node_name</code> DAG 内必须唯一。</li>
+</ul>
+
+<h3>11.5 安全相关</h3>
+<ul>
+<li>默认代码执行三处宿主裸跑（见 §7）；mock 鉴权（请求头信任、默认 admin）；旧下载接口的鉴权和白名单需要单独复核；</li>
+<li>Legacy Text2SQL 无只读拦截（<code>run()</code> 会真提交 DML）——生产在 <code>run</code> 或 <code>do_action</code> 加白名单（参考 <code>tools/sql_query.py:31-57</code>）；</li>
+<li>旧实现存在文件名拼接进待执行代码的二阶注入风险；active <code>code_interpreter.py</code> 已改用环境变量传路径，但自定义工具仍需遵循同一边界；</li>
+<li>个人技能脚本执行禁用开关默认关；</li>
+<li>容器部署下多 Agent 代码执行因 <code>/.dockerenv</code> 退化无隔离。</li>
+</ul>
+</section>
+</section>
+
+<!-- ================= 12. 附录 ================= -->
+<section id="appendix">
+<h2><span class="no">12.</span>附录：关键文件索引</h2>
+
+<section class="card">
+<h3>12.1 按主题索引</h3>
+<div class="tw"><table>
+<thead><tr><th style="width:180px">主题</th><th>路径</th></tr></thead>
+<tbody>
+<tr><td>组件系统</td><td><code>packages/dbgpt-core/src/dbgpt/component.py</code>、<code>dbgpt_app/component_configs.py</code>、<code>dbgpt_app/initialization/serve_initialization.py</code></td></tr>
+<tr><td>AWEL 引擎</td><td><code>dbgpt/core/awel/{dag,operators,task,runner,trigger,flow,resource}/</code>、<code>dbgpt_serve/flow/</code>（service/templates）、<code>examples/awel/*.py</code></td></tr>
+<tr><td>Agent 框架</td><td><code>dbgpt/agent/core/base_agent.py</code>（1460 行循环）、<code>core/plan/</code>（planner/team_auto_plan/awel）、<code>core/context/</code>（budget/compact/manager/storage）、<code>core/memory/gpts/</code>、<code>middleware/</code>、<code>expand/</code>、<code>resource/</code></td></tr>
+<tr><td>多 Agent 控制器</td><td><code>dbgpt_serve/agent/agents/controller.py</code>（MultiAgents）、<code>app_agent_manage.py</code>、<code>db_gpts_memory.py</code>、<code>dbgpt_serve/agent/db/gpts_app.py</code></td></tr>
+<tr><td>Skills</td><td><code>skills/</code>、<code>dbgpt/agent/skill/{loader,manage,middleware,middleware_v2}.py</code>、<code>dbgpt/agent/claude_skill/</code>、<code>dbgpt_app/openapi/api_v1/tools/skill_tools.py</code>、<code>tools/html_interpreter.py</code>、<code>dbgpt_app/_builtin_skills/</code> + <code>hatch_build.py</code></td></tr>
+<tr><td>聊天场景</td><td><code>dbgpt_app/scene/{base.py,base_chat.py,chat_factory.py}</code>、<code>chat_db/auto_execute/</code>、<code>chat_db/professional_qa/</code>、<code>chat_dashboard/</code>、<code>chat_data/chat_excel/</code>、<code>chat_knowledge/v1/</code></td></tr>
+<tr><td>Agentic API（新主线）</td><td><code>dbgpt_app/openapi/api_v1/agentic_data_api.py</code>（3963 行）+ <code>api_v1/tools/{code_interpreter,shell_interpreter,skill_tools}.py</code> + <code>api_v1/subagent/{dispatcher,react_tools}.py</code></td></tr>
+<tr><td>Text2SQL</td><td><code>dbgpt/core/interface/output_parser.py</code>、<code>dbgpt_ext/rag/{schemalinker/,retriever/db_schema.py,summary/rdbms_db_summary.py}</code>、<code>dbgpt_serve/datasource/{manages/connector_manager.py,service/db_summary_client.py}</code>、<code>dbgpt/datasource/rdbms/base.py</code></td></tr>
+<tr><td>数据源</td><td><code>dbgpt/datasource/{base.py,parameter.py}</code>、<code>dbgpt_ext/datasource/{schema.py,rdbms/conn_*.py,rdbms/dialect/*}</code>、<code>dbgpt_ext/connector/catalog.json</code>（MCP 连接器，另一套体系）</td></tr>
+<tr><td>RAG</td><td><code>dbgpt/rag/</code>（core 抽象）、<code>dbgpt_ext/rag/</code>（knowledge/text_splitter/retriever/operators/graph_builder）、<code>dbgpt_serve/rag/</code>（service/domain/retriever/tools）、<code>dbgpt_app/knowledge/api.py</code>、<code>dbgpt_serve/rag/service/git_repo_sync_service.py</code></td></tr>
+<tr><td>存储</td><td><code>dbgpt/storage/{vector_store,graph_store,full_text,knowledge_graph,cache,chat_history}/</code>、<code>dbgpt_ext/storage/</code>、<code>dbgpt_serve/rag/{storage_manager.py,connector.py}</code></td></tr>
+<tr><td>模型接入</td><td><code>dbgpt/model/{cluster,adapter,proxy/llms,operators}/</code>、<code>dbgpt/model/cli.py</code>、<code>configs/dbgpt-proxy-*.toml</code></td></tr>
+<tr><td>沙箱</td><td><code>packages/dbgpt-sandbox/src/dbgpt_sandbox/sandbox/</code>、<code>dbgpt/util/code_utils.py</code>、<code>dbgpt/util/code/server.py</code>、<code>dbgpt_app/operators/code.py</code>、<code>dbgpt_serve/utils/auth.py</code>（mock 鉴权）</td></tr>
+<tr><td>可观测</td><td><code>dbgpt/observability/</code>、<code>dbgpt/util/tracer/</code>（含 sqlite_span_storage）、<code>dbgpt_serve/observability/</code>、<code>web/pages/observability/</code></td></tr>
+<tr><td>插件系统</td><td><code>dbgpt/util/dbgpts/{base,cli,repo,loader,template}.py</code>、<code>dbgpt_serve/dbgpts/{hub,my}/</code></td></tr>
+<tr><td>CLI</td><td><code>dbgpt/cli/cli_scripts.py</code>、<code>dbgpt_app/_cli.py</code>、<code>dbgpt/model/cli.py</code>、<code>dbgpt_serve/utils/cli.py</code></td></tr>
+<tr><td>前端</td><td><code>web/pages/</code>、<code>web/components/</code>、<code>web/client/api/</code>、<code>web/locales/{en,zh}.ts</code>、<code>web/next.config.js</code>、<code>scripts/build_web_static.sh</code></td></tr>
+<tr><td>数据库结构</td><td><code>assets/schema/dbgpt.sql</code>、<code>assets/schema/upgrade/v0_*/</code>、<code>pilot/meta_data/alembic/</code></td></tr>
+<tr><td>Docker</td><td><code>docker/base/</code>、<code>docker/allinone/</code>、<code>docker/compose_examples/</code>、<code>docker/examples/</code>、根 <code>docker-compose.yml</code></td></tr>
+</tbody>
+</table></div>
+
+<h3>12.2 常用命令速查</h3>
+<pre><code><span class="c"># 开发</span>
+uv sync --all-packages --extra base --extra proxy_openai --extra rag --extra storage_chromadb --extra dbgpts
+OPENAI_API_KEY=sk-xxx uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
+cd web &amp;&amp; yarn install &amp;&amp; cp .env.template .env &amp;&amp; yarn dev        <span class="c"># 前端 :3000</span>
+bash scripts/build_web_static.sh                                    <span class="c"># 前端内嵌</span>
+
+<span class="c"># 运维</span>
+dbgpt db migration -c &lt;config&gt; upgrade                              <span class="c"># 数据库迁移</span>
+dbgpt trace list --limit 20 &amp;&amp; dbgpt trace tree --trace_id &lt;ID&gt;     <span class="c"># 追踪</span>
+dbgpt stop webserver                                                <span class="c"># 停止</span>
+SILICONFLOW_API_KEY=sk-xxx docker compose up -d                     <span class="c"># Docker 单机</span>
+
+<span class="c"># 二开</span>
+dbgpt new serve -n my_mod                                           <span class="c"># Serve 脚手架</span>
+dbgpt new app -n my-agent -t agent                                  <span class="c"># 插件脚手架</span>
+dbgpt app install &lt;name&gt; / dbgpt repo add -r &lt;g/n&gt; --url &lt;git&gt;      <span class="c"># 插件管理</span>
+uv run scripts/update_version_all.py 0.9.0 -y                        <span class="c"># 版本同步（从 scripts/ 目录运行）</span>
+make fmt &amp;&amp; make pre-commit                                         <span class="c"># 质量门禁</span></code></pre>
+
+<hr>
+<p class="mini">本报告基于 main 分支 @ 28312854（v0.8.2）实际代码路径验证；8 个方向并行深度调研（Agent 框架 / AWEL / Skills / Text2SQL / RAG / 沙箱安全 / 部署运维 / 扩展点）。与上游旧版本文档不一致之处已在各节标注，二开请以本报告为准。生成日期：2026-09-01。HTML 为自包含静态文件，不依赖后端或构建工具。</p>
+</section>
+</section>
+
+<a href="#summary" class="top-link">↑ 返回顶部</a>
+</main>
+</div>
+
+<script>
+(() => {
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+  // Scroll spy keeps the long report oriented without adding dependencies.
+  const navLinks = $$('aside nav a[href^="#"]');
+  const navSections = navLinks.map(link => $(link.getAttribute('href'))).filter(Boolean);
+  const updateScrollSpy = () => {
+    let current = navSections[0];
+    for (const section of navSections) {
+      if (section.getBoundingClientRect().top <= 130) current = section;
+    }
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === `#${current.id}`);
+    });
+  };
+  document.addEventListener('scroll', updateScrollSpy, { passive: true });
+  updateScrollSpy();
+
+  // Mobile navigation drawer.
+  const menuToggle = $('#menuToggle');
+  const closeMenu = $('#closeMenu');
+  const scrim = $('#scrim');
+  const setMenu = (open) => {
+    document.body.classList.toggle('menu-open', open);
+    scrim.classList.toggle('show', open);
+    if (menuToggle) menuToggle.setAttribute('aria-expanded', String(open));
+  };
+  menuToggle?.addEventListener('click', () => setMenu(true));
+  closeMenu?.addEventListener('click', () => setMenu(false));
+  scrim?.addEventListener('click', () => setMenu(false));
+  navLinks.forEach(link => link.addEventListener('click', () => setMenu(false)));
+
+  // Deployment cards are a compact decision aid; the full matrix remains in §8.
+  const deployTabs = $$('.deploy-tab');
+  const deployPanels = $$('.deploy-panel');
+  deployTabs.forEach(tab => tab.addEventListener('click', () => {
+    const key = tab.dataset.deploy;
+    deployTabs.forEach(item => {
+      const selected = item === tab;
+      item.classList.toggle('active', selected);
+      item.setAttribute('aria-selected', String(selected));
+    });
+    deployPanels.forEach(panel => panel.classList.toggle('active', panel.dataset.deployPanel === key));
+  }));
+
+  // Add copy controls to every code block while preserving the single-file format.
+  $$('pre').forEach(pre => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-wrap';
+    pre.parentNode.insertBefore(wrapper, pre);
+    wrapper.appendChild(pre);
+    const button = document.createElement('button');
+    button.className = 'copy-code';
+    button.type = 'button';
+    button.textContent = '复制';
+    button.setAttribute('aria-label', '复制代码');
+    button.addEventListener('click', async () => {
+      const source = pre.innerText || pre.textContent || '';
+      try {
+        await navigator.clipboard.writeText(source);
+      } catch (_) {
+        const area = document.createElement('textarea');
+        area.value = source;
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand('copy');
+        area.remove();
+      }
+      const previous = button.textContent;
+      button.textContent = '已复制';
+      window.setTimeout(() => { button.textContent = previous; }, 1400);
+    });
+    wrapper.appendChild(button);
+  });
+
+  // Lightweight full-text search over section summaries and code paths.
+  const searchInput = $('#reportSearch');
+  const searchResults = $('#searchResults');
+  const searchIndex = $$('main section[id]').map(section => {
+    const heading = $('h2, h3', section);
+    const text = (section.textContent || '').replace(/\s+/g, ' ').trim();
+    return { id: section.id, title: heading ? heading.textContent.trim() : section.id, text };
+  });
+  const closeSearch = () => searchResults?.classList.remove('show');
+  const renderSearch = () => {
+    if (!searchInput || !searchResults) return;
+    const query = searchInput.value.trim().toLowerCase();
+    if (!query) { searchResults.innerHTML = ''; closeSearch(); return; }
+    const terms = query.split(/\s+/).filter(Boolean);
+    const matches = searchIndex.filter(item => terms.every(term => item.text.toLowerCase().includes(term))).slice(0, 8);
+    searchResults.innerHTML = '';
+    if (!matches.length) {
+      const empty = document.createElement('div');
+      empty.style.cssText = 'padding:12px;color:var(--muted);font-size:13px';
+      empty.textContent = '没有匹配内容';
+      searchResults.appendChild(empty);
+    } else {
+      matches.forEach(item => {
+        const link = document.createElement('a');
+        link.href = `#${item.id}`;
+        link.setAttribute('role', 'option');
+        const title = document.createElement('b');
+        title.textContent = item.title;
+        const small = document.createElement('small');
+        const pos = item.text.toLowerCase().indexOf(query.split(/\s+/)[0]);
+        const start = Math.max(0, pos - 28);
+        small.textContent = item.text.slice(start, start + 120) + (item.text.length > start + 120 ? '…' : '');
+        link.append(title, small);
+        searchResults.appendChild(link);
+      });
+    }
+    searchResults.classList.add('show');
+  };
+  searchInput?.addEventListener('input', renderSearch);
+  searchInput?.addEventListener('focus', renderSearch);
+  searchResults?.addEventListener('click', event => {
+    const link = event.target.closest('a');
+    if (!link) return;
+    closeSearch();
+    searchInput.value = '';
+    const target = $(link.getAttribute('href'));
+    target?.classList.add('focus-target');
+    window.setTimeout(() => target?.classList.remove('focus-target'), 1600);
+  });
+  document.addEventListener('click', event => {
+    if (!event.target.closest('.search-wrap')) closeSearch();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === '/' && document.activeElement !== searchInput && !/input|textarea|select/i.test(document.activeElement?.tagName || '')) {
+      event.preventDefault();
+      searchInput?.focus();
+    }
+    if (event.key === 'Escape') {
+      closeSearch();
+      if (document.body.classList.contains('menu-open')) setMenu(false);
+    }
+  });
+
+  $('#printReport')?.addEventListener('click', () => window.print());
+})();
+</script>
+</body>
+</html>
