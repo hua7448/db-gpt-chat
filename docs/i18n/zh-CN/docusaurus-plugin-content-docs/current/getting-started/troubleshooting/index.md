@@ -4,12 +4,12 @@ title: Troubleshooting
 summary: "安装、模型和环境问题的首要检查项与常见修复方式"
 read_when:
   - 遇到问题，想先走最快的排查路径
-  - DB-GPT 启动不稳定、UI 白屏或模型加载失败
+  - K-ICS 启动不稳定、UI 白屏或模型加载失败
 ---
 
 # Troubleshooting
 
-这里整理了使用 DB-GPT 时的常见问题和解决方法。
+这里整理了使用 K-ICS 时的常见问题和解决方法。
 
 ## 前 60 秒先做什么
 
@@ -62,7 +62,7 @@ docker logs db-gpt-webserver-1 -f
 
 如果这些排查文档仍然无法解决问题：
 
-1. **搜索已有 issue**：[GitHub Issues](https://github.com/eosphoros-ai/DB-GPT/issues)
+1. **搜索已有 issue**：[K-ICS GitHub Issues](https://github.com/hua7448/db-gpt-chat/issues)
 2. **向社区提问**：[GitHub Discussions](https://github.com/orgs/eosphoros-ai/discussions)
-3. **加入 Slack**：[DB-GPT Slack](https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA)
+3. **加入 Slack**：[K-ICS Slack](https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA)
 4. **查看 FAQ**：[Installation FAQ](/docs/faq/install) · [LLM FAQ](/docs/faq/llm) · [KBQA FAQ](/docs/faq/kbqa)

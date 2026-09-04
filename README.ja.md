@@ -1,43 +1,27 @@
-# <img src="./assets/LOGO_SMALL.png" alt="Logo" style="vertical-align: middle; height: 24px;" /> DB-GPT: データベースとの対話を革新するプライベートLLM技術
+# K-ICS: データベースとの対話を革新するプライベートLLM技術
 
-
-<p align="left">
-  <img src="./assets/dbgpt_vision.png" width="100%" />
-</p>
 
 <div align="center">
   <p>
-    <a href="https://github.com/eosphoros-ai/DB-GPT">
-        <img alt="stars" src="https://img.shields.io/github/stars/eosphoros-ai/db-gpt?style=social" />
+    <a href="https://github.com/hua7448/db-gpt-chat">
+        <img alt="stars" src="https://img.shields.io/github/stars/hua7448/db-gpt-chat?style=social" />
     </a>
-    <a href="https://github.com/eosphoros-ai/DB-GPT">
-        <img alt="forks" src="https://img.shields.io/github/forks/eosphoros-ai/db-gpt?style=social" />
+    <a href="https://github.com/hua7448/db-gpt-chat">
+        <img alt="forks" src="https://img.shields.io/github/forks/hua7448/db-gpt-chat?style=social" />
     </a>
-    <a href="http://dbgpt.cn/">
-        <img alt="Official Website" src="https://img.shields.io/badge/Official%20website-DB--GPT-blue?style=flat&labelColor=3366CC" />
+    <a href="https://github.com/hua7448/db-gpt-chat">
+        <img alt="Official Website" src="https://img.shields.io/badge/K--ICS-Data%20Workbench-blue?style=flat&labelColor=3366CC" />
     </a>
     <a href="https://opensource.org/licenses/MIT">
-      <img alt="License: MIT" src="https://img.shields.io/github/license/eosphoros-ai/db-gpt?style=flat&labelColor=009966&color=009933" />
+      <img alt="License: MIT" src="https://img.shields.io/github/license/hua7448/db-gpt-chat?style=flat&labelColor=009966&color=009933" />
     </a>
-     <a href="https://github.com/eosphoros-ai/DB-GPT/releases">
-      <img alt="Release Notes" src="https://img.shields.io/github/v/release/eosphoros-ai/db-gpt?style=flat&labelColor=FF9933&color=FF6633" />
+     <a href="https://github.com/hua7448/db-gpt-chat/releases">
+      <img alt="Release Notes" src="https://img.shields.io/github/v/release/hua7448/db-gpt-chat?style=flat&labelColor=FF9933&color=FF6633" />
     </a>
-    <a href="https://github.com/eosphoros-ai/DB-GPT/issues">
-      <img alt="Open Issues" src="https://img.shields.io/github/issues-raw/eosphoros-ai/db-gpt?style=flat&labelColor=666666&color=333333" />
+    <a href="https://github.com/hua7448/db-gpt-chat/issues">
+      <img alt="Open Issues" src="https://img.shields.io/github/issues-raw/hua7448/db-gpt-chat?style=flat&labelColor=666666&color=333333" />
     </a>
-    <a href="https://x.com/DBGPT_AI">
-      <img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/DBGPT_AI" />
-    </a>
-    <a href="https://medium.com/@dbgpt0506">
-      <img alt="Medium Follow" src="https://badgen.net/badge/Medium/DB-GPT/333333?icon=medium&labelColor=666666" />
-    </a>
-    <a href="https://space.bilibili.com/3537113070963392">
-      <img alt="Bilibili Space" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.bilibili.com%2Fx%2Frelation%2Fstat%3Fvmid%3D3537113070963392&query=data.follower&style=flat&logo=bilibili&logoColor=white&label=Bilibili%20Fans&labelColor=F37697&color=6495ED" />
-    </a>
-    <a href="https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA">
-      <img alt="Slack" src="https://img.shields.io/badge/Slack-Join%20us-5d6b98?style=flat&logo=slack&labelColor=7d89b0" />
-    </a>
-    <a href="https://codespaces.new/eosphoros-ai/DB-GPT">
+    <a href="https://codespaces.new/hua7448/db-gpt-chat">
       <img alt="Open in GitHub Codespaces" src="https://github.com/codespaces/badge.svg" />
     </a>
   </p>
@@ -46,47 +30,43 @@
 [![中国語](https://img.shields.io/badge/中国語-d9d9d9?style=flat-square)](README.zh.md)
 [![日本語](https://img.shields.io/badge/日本語-d9d9d9?style=flat-square)](README.ja.md) 
 
-[**ドキュメント**](http://docs.dbgpt.cn/docs/overview/) | [**チームに連絡します**](https://github.com/eosphoros-ai/DB-GPT/blob/main/README.zh.md#%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC) | [**コミュニティ**](https://github.com/eosphoros-ai/community) | [**論文**](https://arxiv.org/pdf/2312.17449.pdf)
+[**ドキュメント**](./docs/) | [**チームに連絡します**](https://github.com/hua7448/db-gpt-chat/blob/main/README.zh.md#%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC) | [**コミュニティ**](https://github.com/hua7448/db-gpt-chat/discussions) | [**上流論文**](https://arxiv.org/pdf/2312.17449.pdf)
 
 
 </div>
 
-## DB-GPTとは何か？
+## K-ICSとは何か？
 
-🤖 **DB-GPTは、AWEL（エージェントワークフロー式言語）とエージェントを備えたオープンソースのAIネイティブデータアプリ開発フレームワークです。**
+🤖 **K-ICSは、AWEL（エージェントワークフロー式言語）とエージェントを備えたオープンソースのAIネイティブデータアプリ開発フレームワークです。**
 
 大規模モデルの分野でのインフラを構築することを目的としており、SMMF（マルチモデル管理）、Text2SQL効果の最適化、RAGフレームワークと最適化、マルチエージェントフレームワークの協力、AWEL（エージェントワークフローのオーケストレーション）など、複数の技術機能の開発を通じて、データを使用した大規模モデルアプリケーションをよりシンプルで便利にします。
 
 🚀 **データ3.0時代には、モデルとデータベースを基盤として、企業や開発者がより少ないコードで独自のアプリケーションを構築できます。**
 
 ### 紹介
-DB-GPTのアーキテクチャは以下の図に示されています：
-
-<p align="center">
-  <img src="./assets/dbgpt.png" width="800" />
-</p>
+K-ICSのアーキテクチャは以下の図に示されています：
 
 コア機能には以下の部分が含まれます：
 
-- **RAG（Retrieval Augmented Generation）**：現在、RAGは最も実用的に実装され、緊急に必要とされる領域です。DB-GPTは、RAGの機能を使用して知識ベースのアプリケーションを構築できるようにする、RAGに基づくフレームワークをすでに実装しています。
+- **RAG（Retrieval Augmented Generation）**：現在、RAGは最も実用的に実装され、緊急に必要とされる領域です。K-ICSは、RAGの機能を使用して知識ベースのアプリケーションを構築できるようにする、RAGに基づくフレームワークをすでに実装しています。
 
-- **GBI（Generative Business Intelligence）**：Generative BIはDB-GPTプロジェクトのコア機能の1つであり、企業のレポート分析とビジネスインサイトを構築するための基本的なデータインテリジェンス技術を提供します。
+- **GBI（Generative Business Intelligence）**：Generative BIはK-ICSプロジェクトのコア機能の1つであり、企業のレポート分析とビジネスインサイトを構築するための基本的なデータインテリジェンス技術を提供します。
 
-- **ファインチューニングフレームワーク**：モデルのファインチューニングは、任意の企業が垂直およびニッチなドメインで実装するために不可欠な機能です。DB-GPTは、DB-GPTプロジェクトとシームレスに統合される完全なファインチューニングフレームワークを提供します。最近のファインチューニングの取り組みでは、Spiderデータセットに基づいて82.5%の実行精度を達成しています。
+- **ファインチューニングフレームワーク**：モデルのファインチューニングは、任意の企業が垂直およびニッチなドメインで実装するために不可欠な機能です。K-ICSは、K-ICSプロジェクトとシームレスに統合される完全なファインチューニングフレームワークを提供します。最近のファインチューニングの取り組みでは、Spiderデータセットに基づいて82.5%の実行精度を達成しています。
 
-- **データ駆動型マルチエージェントフレームワーク**：DB-GPTは、データに基づいて継続的に意思決定を行い、実行するためのデータ駆動型自己進化型マルチエージェントフレームワークを提供します。
+- **データ駆動型マルチエージェントフレームワーク**：K-ICSは、データに基づいて継続的に意思決定を行い、実行するためのデータ駆動型自己進化型マルチエージェントフレームワークを提供します。
 
 - **データファクトリー**：データファクトリーは、主に大規模モデルの時代における信頼できる知識とデータのクリーニングと処理に関するものです。
 
-- **データソース**：DB-GPTのコア機能に生産ビジネスデータをシームレスに接続するために、さまざまなデータソースを統合します。
+- **データソース**：K-ICSのコア機能に生産ビジネスデータをシームレスに接続するために、さまざまなデータソースを統合します。
 
 #### サブモジュール
 - [DB-GPT-Hub](https://github.com/eosphoros-ai/DB-GPT-Hub) 大規模言語モデル（LLM）上での教師ありファインチューニング（SFT）を適用することにより、高性能なText-to-SQLワークフロー。
 
-- [dbgpts](https://github.com/eosphoros-ai/dbgpts)  dbgptsは、DB-GPT上で構築されたいくつかのデータアプリ、AWELオペレータ、AWELワークフローテンプレート、およびエージェントを含む公式リポジトリです。
+- [dbgpts](https://github.com/eosphoros-ai/dbgpts)  dbgptsは、K-ICS上で構築されたいくつかのデータアプリ、AWELオペレータ、AWELワークフローテンプレート、およびエージェントを含む公式リポジトリです。
 
 #### DeepWiki
-- [DB-GPT](https://deepwiki.com/eosphoros-ai/DB-GPT)
+- [K-ICS](https://deepwiki.com/hua7448/db-gpt-chat)
 - [DB-GPT-HUB](https://deepwiki.com/eosphoros-ai/DB-GPT-Hub)
 - [dbgpts](https://deepwiki.com/eosphoros-ai/dbgpts)
 
@@ -111,12 +91,12 @@ DB-GPTのアーキテクチャは以下の図に示されています：
 
 [Text2SQLファインチューニングに関する詳細情報](https://github.com/eosphoros-ai/DB-GPT-Hub)
 
-- [DB-GPT-Plugins](https://github.com/eosphoros-ai/DB-GPT-Plugins) Auto-GPTプラグインを直接実行できるDB-GPTプラグイン
+- [DB-GPT-Plugins](https://github.com/eosphoros-ai/DB-GPT-Plugins) Auto-GPTプラグインを直接実行できるK-ICSプラグイン
 - [GPT-Vis](https://github.com/eosphoros-ai/GPT-Vis) 可視化プロトコル
 
 
 ### AIネイティブデータアプリ
-- 🔥🔥🔥 [V0.7.0 リリース | 重要なアップグレードのセット](http://docs.dbgpt.cn/blog/db-gpt-v070-release)
+- 🔥🔥🔥 [V0.7.0 リリース | 重要なアップグレードのセット](./docs/blog/2025-03-24-dbgpt-v0.7.0-release.md)
   - [サポート MCP Protocol](https://github.com/eosphoros-ai/DB-GPT/pull/2497)
   - [サポート DeepSeek R1](https://github.com/deepseek-ai/DeepSeek-R1)
   - [サポート QwQ-32B](https://huggingface.co/Qwen/QwQ-32B)
@@ -130,7 +110,7 @@ DB-GPTのアーキテクチャは以下の図に示されています：
 
 ---
 
-## なぜDB-GPTなのか？
+## なぜK-ICSなのか？
 
 ### 1. エージェント型データ分析
 タスクを計画し、作業をステップに分解し、ツールを呼び出して、分析ワークフローをエンドツーエンドで完了します。
@@ -161,29 +141,28 @@ SQLとコードを生成してデータをクエリし、データセットを�
 ![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
-[**使用チュートリアル**](http://docs.dbgpt.cn/docs/overview)
-- [**インストール**](http://docs.dbgpt.cn/docs/installation)
-  - [Docker](http://docs.dbgpt.cn/docs/installation/docker)
-  - [ソースコード](http://docs.dbgpt.cn/docs/getting-started/deploy/source-code)
-- [**クイックスタート**](http://docs.dbgpt.cn/docs/overview)
-- [**アプリケーション**](http://docs.dbgpt.cn/docs/use_cases)
-  - [AWELフローの使用](http://docs.dbgpt.cn/docs/application/awel_flow_usage)
-- [**デバッグ**](http://docs.dbgpt.cn/docs/operation_manual/advanced_tutorial/debugging)
-- [**高度な使用法**](http://docs.dbgpt.cn/docs/application/advanced_tutorial/cli)
-  - [SMMF](http://docs.dbgpt.cn/docs/application/advanced_tutorial/smmf)
-  - [ファインチューニング](http://docs.dbgpt.cn/docs/application/fine_tuning_manual/dbgpt_hub)
-  - [AWEL](http://docs.dbgpt.cn/docs/awel/tutorial)
+[**使用チュートリアル**](./docs/)
+- [**インストール**](./docs/docs/installation/index.md)
+  - [Docker](./docs/docs/installation/docker.md)
+  - [ソースコード](./docs/docs/installation/sourcecode.md)
+- [**クイックスタート**](./docs/docs/quickstart.md)
+- [**アプリケーション**](./docs/docs/application/apps/app_explore.md)
+  - [AWELフローの使用](./docs/docs/application/awel.md)
+- [**デバッグ**](./docs/docs/application/advanced_tutorial/debugging.md)
+- [**高度な使用法**](./docs/docs/application/advanced_tutorial/cli.md)
+  - [モデル管理](./docs/docs/application/llms.md)
+  - [ファインチューニング](./docs/docs/application/fine_tuning_manual/text_to_sql.md)
 
 ## 特徴
 
 現在、私たちはいくつかの主要な機能を紹介して、現在の能力を示しています：
 - **プライベートドメインQ&A＆データ処理**
 
-  DB-GPTプロジェクトは、知識ベースの構築を改善し、構造化および非構造化データの両方の効率的なストレージと検索を可能にする一連の機能を提供します。これらの機能には、複数のファイル形式のアップロードのサポート、カスタムデータ抽出プラグインの統合、および大量の情報を効果的に管理するための統一されたベクトルストレージと検索機能が含まれます。
+  K-ICSプロジェクトは、知識ベースの構築を改善し、構造化および非構造化データの両方の効率的なストレージと検索を可能にする一連の機能を提供します。これらの機能には、複数のファイル形式のアップロードのサポート、カスタムデータ抽出プラグインの統合、および大量の情報を効果的に管理するための統一されたベクトルストレージと検索機能が含まれます。
 
 - **マルチデータソース＆GBI（Generative Business Intelligence）**
 
-  DB-GPTプロジェクトは、Excel、データベース、データウェアハウスなどのさまざまなデータソースとの自然言語のシームレスな対話を容易にします。これらのソースから情報を照会および取得するプロセスを簡素化し、直感的な会話を行い、洞察を得ることができます。さらに、DB-GPTは分析レポートの生成をサポートし、ユーザーに貴重なデータの要約と解釈を提供します。
+  K-ICSプロジェクトは、Excel、データベース、データウェアハウスなどのさまざまなデータソースとの自然言語のシームレスな対話を容易にします。これらのソースから情報を照会および取得するプロセスを簡素化し、直感的な会話を行い、洞察を得ることができます。さらに、K-ICSは分析レポートの生成をサポートし、ユーザーに貴重なデータの要約と解釈を提供します。
 
 - **マルチエージェント＆プラグイン**
 
@@ -304,25 +283,25 @@ SQLとコードを生成してデータをクエリし、データセットを�
         </tr>
       </tbody>
     </table>
-  - [サポートされているLLMの詳細](http://docs.dbgpt.cn/docs/modules/smmf)
+  - [サポートされているLLMの詳細](./docs/docs/application/llms.md)
 
 - **プライバシーとセキュリティ**
 
   私たちは、さまざまな技術を実装することにより、データのプライバシーとセキュリティを確保しています。これには、大規模モデルのプライベート化とプロキシの非識別化が含まれます。
 
 - サポートされているデータソース
-  - [データソース](http://docs.dbgpt.cn/docs/modules/connections)
+  - [データソース](./docs/docs/application/datasources.md)
 
 ## 画像
 🌐 [AutoDLイメージ](https://www.codewithgpu.com/i/eosphoros-ai/DB-GPT/dbgpt)
 
 ## 貢献
 
-- 新しい貢献のための詳細なガイドラインを確認するには、[貢献方法](https://github.com/eosphoros-ai/DB-GPT/blob/main/CONTRIBUTING.md)を参照してください。
+- 新しい貢献のための詳細なガイドラインを確認するには、[貢献方法](https://github.com/hua7448/db-gpt-chat/blob/main/CONTRIBUTING.md)を参照してください。
 
 ### 貢献者ウォール
-<a href="https://github.com/eosphoros-ai/DB-GPT/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=eosphoros-ai/DB-GPT&max=200" />
+<a href="https://github.com/hua7448/db-gpt-chat/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=hua7448/db-gpt-chat&max=200" />
 </a>
 
 ## ライセンス
@@ -331,9 +310,9 @@ MITライセンス（MIT）
 ## 引用
 もし`DB-GPT`があなたの研究や開発に役立つと感じた場合、以下の論文を引用してください。
 
-DB-GPTの全体的なアーキテクチャについて知りたい場合は、<a href="https://arxiv.org/abs/2312.17449" target="_blank">論文</a>と<a href="https://arxiv.org/abs/2404.10209" target="_blank">論文</a>を引用してください。
+K-ICSの全体的なアーキテクチャについて知りたい場合は、<a href="https://arxiv.org/abs/2312.17449" target="_blank">論文</a>と<a href="https://arxiv.org/abs/2404.10209" target="_blank">論文</a>を引用してください。
 
-DB-GPTを使用してAgent開発に関する内容について知りたい場合は、<a href="https://arxiv.org/abs/2412.13520" target="_blank">論文</a>を引用してください。 
+K-ICSを使用してAgent開発に関する内容について知りたい場合は、<a href="https://arxiv.org/abs/2412.13520" target="_blank">論文</a>を引用してください。
 ```bibtex
 @article{xue2023dbgpt,
       title={DB-GPT: Empowering Database Interactions with Private Large Language Models}, 
@@ -364,4 +343,4 @@ DB-GPTを使用してAgent開発に関する内容について知りたい場合
 コミュニティを構築するために取り組んでいます。コミュニティの構築に関するアイデアがあれば、お気軽にお問い合わせください。
 [![](https://dcbadge.vercel.app/api/server/7uQnPuveTY?compact=true&style=flat)](https://discord.gg/7uQnPuveTY)
 
-[![Star History Chart](https://api.star-history.com/svg?repos=csunny/DB-GPT&type=Date)](https://star-history.com/#csunny/DB-GPT)
+[![Star History Chart](https://api.star-history.com/svg?repos=hua7448/db-gpt-chat&type=Date)](https://star-history.com/#hua7448/db-gpt-chat)

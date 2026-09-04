@@ -65,7 +65,7 @@ title: 知识库
 
 ## 存储类型
 
-DB-GPT 支持多种向量存储后端：
+K-ICS 支持多种向量存储后端：
 
 | 后端 | 说明 | 安装 Extra |
 |---|---|---|
@@ -84,7 +84,7 @@ uv sync --all-packages --extra "storage_milvus" ...
 <details>
 <summary><strong>Graph RAG</strong></summary>
 
-DB-GPT 支持基于知识图谱的结构化检索：
+K-ICS 支持基于知识图谱的结构化检索：
 
 - 从文档中抽取实体及其关系
 - 在向量检索之外支持图谱检索

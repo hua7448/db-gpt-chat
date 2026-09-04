@@ -5,12 +5,12 @@ title: Qwen (Tongyi)
 
 # Qwen (Tongyi)
 
-配置 DB-GPT 通过 DashScope API 使用阿里云的 Qwen 模型。
+配置 K-ICS 通过 DashScope API 使用阿里云的 Qwen 模型。
 
 ## 前置条件
 
 - 一个可用的 [DashScope API key](https://dashscope.console.aliyun.com/)
-- 已安装带 `proxy_openai` 扩展的 DB-GPT
+- 已安装带 `proxy_openai` 扩展的 K-ICS
 
 ## 安装依赖
 

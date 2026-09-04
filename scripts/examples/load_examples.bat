@@ -16,8 +16,8 @@ if %ERRORLEVEL% neq 0 (
 )
 
 :: Default file paths
-set DEFAULT_DB_FILE=DB-GPT\pilot\data\default_sqlite.db
-set DEFAULT_SQL_FILE=DB-GPT\docker\examples\sqls\*_sqlite.sql
+set DEFAULT_DB_FILE=K-ICS\pilot\data\default_sqlite.db
+set DEFAULT_SQL_FILE=K-ICS\docker\examples\sqls\*_sqlite.sql
 set DB_FILE=%WORK_DIR%\pilot\data\default_sqlite.db
 set SQL_FILE=
 

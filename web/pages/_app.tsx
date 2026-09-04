@@ -71,9 +71,10 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
 
     // MOCK User info
     const user = {
+      // Keep the wire-level channel stable so existing conversations remain visible.
       user_channel: `dbgpt`,
       user_no: `001`,
-      nick_name: `dbgpt`,
+      nick_name: `K-ICS`,
     };
     if (user) {
       localStorage.setItem(STORAGE_USERINFO_KEY, JSON.stringify(user));

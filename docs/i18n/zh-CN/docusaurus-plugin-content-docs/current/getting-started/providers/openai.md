@@ -5,12 +5,12 @@ title: OpenAI
 
 # OpenAI
 
-配置 DB-GPT 使用 OpenAI 的 GPT 模型与 embedding 模型。
+配置 K-ICS 使用 OpenAI 的 GPT 模型与 embedding 模型。
 
 ## 前置条件
 
 - 一个可用的 [OpenAI API key](https://platform.openai.com/api-keys)
-- 已安装带 `proxy_openai` 扩展的 DB-GPT
+- 已安装带 `proxy_openai` 扩展的 K-ICS
 
 ## 安装依赖
 

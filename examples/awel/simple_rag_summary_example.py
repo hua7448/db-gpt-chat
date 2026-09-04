@@ -24,7 +24,7 @@ This example shows how to use AWEL to build a simple rag summary example.
 
         curl -X POST http://127.0.0.1:5555/api/v1/awel/trigger/examples/rag/summary \
         -H "Content-Type: application/json" -d '{
-            "url": "http://docs.dbgpt.cn/docs/awel/"
+            "url": "https://github.com/hua7448/db-gpt-chat/tree/main/docs"
         }'
 """
 

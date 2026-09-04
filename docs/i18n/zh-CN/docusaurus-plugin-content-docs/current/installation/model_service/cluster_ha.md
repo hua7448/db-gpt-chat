@@ -37,7 +37,7 @@ and deploy a model worker, an embedding model worker, and a web server on anothe
 
 ```sql
 
--- For deploy model cluster of DB-GPT(StorageModelRegistry)
+-- For deploying the model cluster of K-ICS (StorageModelRegistry)
 CREATE TABLE IF NOT EXISTS `dbgpt_cluster_registry_instance` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Auto increment id',
   `model_name` varchar(128) NOT NULL COMMENT 'Model name',
@@ -138,16 +138,16 @@ dbgpt start webserver \
 CONTROLLER_ADDRESS="http://server1:8000,http://server2:8000" dbgpt model list
 ```
 
-Congratulations! You have successfully deployed a high availability cluster of DB-GPT.
+Congratulations! You have successfully deployed a high availability cluster of K-ICS.
 
 
 ## Deploy High Availability Cluster With Docker Compose
 
-If your want know more about deploying a high availability DB-GPT cluster, you can see 
+If your want know more about deploying a high availability K-ICS cluster, you can see
 the example of docker compose in `docker/compose_examples/ha-cluster-docker-compose.yml`.
 It uses OpenAI LLM and OpenAI embedding model, so you can run it directly.
 
-Here we will show you how to deploy a high availability cluster of DB-GPT with docker compose.
+Here we will show you how to deploy a high availability cluster of K-ICS with docker compose.
 
 First, build the docker image just include openai dependencies:
 

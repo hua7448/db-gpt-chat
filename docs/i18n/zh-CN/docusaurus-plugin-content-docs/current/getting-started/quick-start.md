@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 title: 快速开始
-summary: "从 clone 仓库到跑通 DB-GPT 对话的最短路径"
+summary: "从 clone 仓库到跑通 K-ICS 对话的最短路径"
 read_when:
   - 你希望用最少步骤完成第一次成功启动
   - 你需要一份明确的首跑清单和快速验证方式
@@ -12,7 +12,7 @@ read_when:
 目标：用最少配置从零开始跑通第一次可用对话。
 
 :::info 最快路径
-使用 **API 代理模式**（OpenAI 或 DeepSeek）—— 不需要 GPU。一般 5 分钟内就可以跑通一个可用的 DB-GPT 对话。
+使用 **API 代理模式**（OpenAI 或 DeepSeek）—— 不需要 GPU。一般 5 分钟内就可以跑通一个可用的 K-ICS 对话。
 :::
 
 ## 你需要准备什么
@@ -32,8 +32,8 @@ import TabItem from '@theme/TabItem';
 ### 第 1 步 —— 克隆仓库
 
 ```bash
-git clone https://github.com/eosphoros-ai/DB-GPT.git
-cd DB-GPT
+git clone git@github.com:hua7448/db-gpt-chat.git K-ICS
+cd K-ICS
 ```
 
 ### 第 2 步 —— 安装依赖
@@ -170,7 +170,7 @@ uv run dbgpt start webserver --config configs/dbgpt-proxy-ollama.toml
 打开浏览器访问 **[http://localhost:5670](http://localhost:5670)**。
 
 :::tip 验证是否成功
-如果 Web UI 能打开，并且你可以发起聊天对话，就说明 DB-GPT 已经可以使用了。
+如果 Web UI 能打开，并且你可以发起聊天对话，就说明 K-ICS 已经可以使用了。
 :::
 
 ## 验证清单
@@ -189,7 +189,7 @@ uv run dbgpt start webserver --config configs/dbgpt-proxy-ollama.toml
   - 从这里开始排查：[模型提供方](/docs/getting-started/providers/)
 - **Web UI 无法打开**
   - 确认服务在 `5670` 端口监听
-  - 查看启动 DB-GPT 的终端日志
+  - 查看启动 K-ICS 的终端日志
 - **本地模型没有响应**
   - 确认 Ollama 或本地推理后端已经运行
 

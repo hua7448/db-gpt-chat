@@ -14,7 +14,7 @@
 
 **检索增强生成(RAG)** 通过从外部知识源检索相关信息、作为上下文喂给 LLM 再生成回答来填补这一缺口,确保回答基于真实数据而非记忆中的模式。
 
-DB-GPT 实现的 **多源 RAG(MS-RAG)** 框架远超基础文档问答:它支持多种知识源(文档、URL、数据库、知识图谱、git 仓库)、多种索引策略,并与 DB-GPT 的 agent 和工作流生态深度集成。知识库对话由 **agentic RAG** 循环完成——agent 可以改写问题、多次检索、融合并重排结果、产出带引用的回答——而不是单次"检索-生成"。
+K-ICS 实现的 **多源 RAG(MS-RAG)** 框架远超基础文档问答:它支持多种知识源(文档、URL、数据库、知识图谱、git 仓库)、多种索引策略,并与 K-ICS 的 agent 和工作流生态深度集成。知识库对话由 **agentic RAG** 循环完成——agent 可以改写问题、多次检索、融合并重排结果、产出带引用的回答——而不是单次"检索-生成"。
 
 # 架构
 
@@ -82,7 +82,7 @@ Knowledge.load()  →  ChunkManager.split()  →  Assembler.persist()  →  Asse
 
 # 索引
 
-DB-GPT 通过 `index_methods`(字符串列表)按知识空间选择要建哪些索引。三种索引*方法*是持久化的;**结构索引**和**代码图谱**是叠加在它们之上的两种形态。所有索引都作用在*同一批 chunk* 上,所以切分质量决定检索质量。
+K-ICS 通过 `index_methods`(字符串列表)按知识空间选择要建哪些索引。三种索引*方法*是持久化的;**结构索引**和**代码图谱**是叠加在它们之上的两种形态。所有索引都作用在*同一批 chunk* 上,所以切分质量决定检索质量。
 
 | 索引 | `index_methods` 值 | 同步时建? | 能给你什么 |
 |---|---|---|---|
@@ -98,7 +98,7 @@ DB-GPT 通过 `index_methods`(字符串列表)按知识空间选择要建哪些�
 
 # 对话:agentic RAG
 
-用户在知识库上提问时,DB-GPT **不是**单次"检索-生成",而是由 **agent** 驱动循环:
+用户在知识库上提问时,K-ICS **不是**单次"检索-生成",而是由 **agent** 驱动循环:
 
 ```
 问题
@@ -116,7 +116,7 @@ DB-GPT 通过 `index_methods`(字符串列表)按知识空间选择要建哪些�
 拼上下文,生成带引用的回答
 ```
 
-正是这个 agentic 循环——多步检索、问题改写、结果融合重排、引用——让 DB-GPT 能回答单次 RAG 应付不了的复杂或多部分问题。完整流程见 [Agentic RAG 对话原理](/docs/design/agentic_rag_principles)。
+正是这个 agentic 循环——多步检索、问题改写、结果融合重排、引用——让 K-ICS 能回答单次 RAG 应付不了的复杂或多部分问题。完整流程见 [Agentic RAG 对话原理](/docs/design/agentic_rag_principles)。
 
 ## 检索策略
 
@@ -152,7 +152,7 @@ DB-GPT 通过 `index_methods`(字符串列表)按知识空间选择要建哪些�
 
 # 知识源
 
-DB-GPT 支持从多种类型的源加载知识。Web UI 上传时可选数据源类型:
+K-ICS 支持从多种类型的源加载知识。Web UI 上传时可选数据源类型:
 
 <p align="center">
   <img src={'/img/rag/knowledge_datasource_type.png'} width="720px" />
@@ -227,7 +227,7 @@ DB-GPT 支持从多种类型的源加载知识。Web UI 上传时可选数据源
 
 # 知识图谱 RAG
 
-启用 **KnowledgeGraph** 索引方法时,DB-GPT 构建的是**一组图**,而非单张图。它们共用一条构建链路,都支持沿边检索:
+启用 **KnowledgeGraph** 索引方法时,K-ICS 构建的是**一组图**,而非单张图。它们共用一条构建链路,都支持沿边检索:
 
 1. **LLM 三元组图** —— 用 LLM 从每个 chunk 抽取 `(主语, 谓词, 宾语)` 三元组,以 `实体 -边- 实体` 形式 upsert 进图存储(TuGraph、Neo4j 或 Memgraph)。每条边记得来自哪个 chunk,所以答案仍可溯源。
 2. **文档-段落图** —— `document → chunk → chunk`(`include`/`next` 边)的结构骨架,让检索能从实体跳到包含它的 chunk 和文档。(启用社区汇总变体时,还会做社区检测并用 LLM 总结每个社区。)
@@ -249,7 +249,7 @@ retriever 还支持 `CALLS`/`INHERITS`/`IMPLEMENTS` 边,但当前代码图谱 bu
 
 # 切分策略
 
-切分是 RAG 质量的关键——它是所有索引的共同地基。DB-GPT 支持多种切分策略:
+切分是 RAG 质量的关键——它是所有索引的共同地基。K-ICS 支持多种切分策略:
 
 <p align="center">
   <img src={'/img/rag/file_chunk.png'} width="720px" />
@@ -280,7 +280,7 @@ retriever 还支持 `CALLS`/`INHERITS`/`IMPLEMENTS` 边,但当前代码图谱 bu
 
 # Embedding 模型
 
-DB-GPT 支持多种把文本转向量的 embedding 模型:
+K-ICS 支持多种把文本转向量的 embedding 模型:
 
 ## 本地模型
 
@@ -337,7 +337,7 @@ DB-GPT 支持多种把文本转向量的 embedding 模型:
 
 ### 第 5 步 —— 配置检索策略(可选)
 
-可配置检索策略。DB-GPT 支持 Semantic / Keyword / Hybrid / Tree 等多种模式,按场景在知识库设置里选择。
+可配置检索策略。K-ICS 支持 Semantic / Keyword / Hybrid / Tree 等多种模式,按场景在知识库设置里选择。
 
 <p align="center">
   <img src={'/img/rag/embedding_retrieve_mode.png'} width="720px" />
@@ -384,4 +384,4 @@ chunks = await retriever.aretrieve("What is the main topic?")
 | RAG 概念 | [RAG](/docs/getting-started/concepts/rag) |
 | Graph RAG 设置 | [Graph RAG](/docs/application/graph_rag) |
 | AWEL RAG 算子 | [AWEL](/docs/getting-started/concepts/awel) |
-| 源代码 | [GitHub](https://github.com/eosphoros-ai/DB-GPT/tree/main/packages/dbgpt-core/src/dbgpt/rag) |
+| 源代码 | [K-ICS GitHub](https://github.com/hua7448/db-gpt-chat/tree/main/packages/dbgpt-core/src/dbgpt/rag) |

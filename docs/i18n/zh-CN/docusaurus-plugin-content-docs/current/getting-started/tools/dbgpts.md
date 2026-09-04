@@ -5,7 +5,7 @@ title: dbgpts 生态
 
 # dbgpts 生态
 
-**[dbgpts](https://github.com/eosphoros-ai/dbgpts)** 是 DB-GPT 官方的社区组件仓库，包含可复用的应用、AWEL 算子、工作流模板以及 Agent。
+**[dbgpts](https://github.com/eosphoros-ai/dbgpts)** 是 K-ICS 官方的社区组件仓库，包含可复用的应用、AWEL 算子、工作流模板以及 Agent。
 
 ## dbgpts 中包含什么？
 
@@ -18,7 +18,7 @@ title: dbgpts 生态
 
 ## 安装
 
-当你安装带有 `dbgpts` extra 的 DB-GPT 时，会同时安装 `dbgpts` CLI：
+当你安装带有 `dbgpts` extra 的 K-ICS 时，会同时安装 `dbgpts` CLI：
 
 ```bash
 uv sync --all-packages --extra "dbgpts" ...

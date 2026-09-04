@@ -5,7 +5,7 @@ title: Sandbox Overview
 
 # Sandbox Overview
 
-DB-GPT uses a sandbox to let agents execute code and tools in an isolated runtime
+K-ICS uses a sandbox to let agents execute code and tools in an isolated runtime
 instead of running directly in the host environment.
 
 This matters for agent workflows because an agent often needs to do more than
@@ -17,7 +17,7 @@ manageable.
 
 ## What is a sandbox?
 
-In DB-GPT, a sandbox is an isolated execution environment used by an agent when it
+In K-ICS, a sandbox is an isolated execution environment used by an agent when it
 needs to execute code, run commands, or manipulate files as part of a task.
 
 Instead of letting the agent operate directly on the host system, the sandbox
@@ -62,7 +62,7 @@ flowchart TB
 ## Why agents need a sandbox
 
 An agent that can execute code without isolation is difficult to operate safely in
-real environments. The sandbox gives DB-GPT a dedicated runtime for actions such
+real environments. The sandbox gives K-ICS a dedicated runtime for actions such
 as:
 
 - code execution
@@ -74,9 +74,9 @@ as:
 This is especially important for data analysis, report generation, and tool-driven
 workflows where the agent must combine reasoning with real execution.
 
-## DB-GPT's current sandbox solution
+## K-ICS's current sandbox solution
 
-DB-GPT's sandbox implementation lives in:
+K-ICS's sandbox implementation lives in:
 
 - `packages/dbgpt-sandbox/`
 
@@ -96,12 +96,12 @@ Implementation anchor:
 
 - `packages/dbgpt-sandbox/src/dbgpt_sandbox/sandbox/execution_layer/runtime_factory.py`
 
-This allows DB-GPT to prefer container isolation when available and fall back to a
+This allows K-ICS to prefer container isolation when available and fall back to a
 local execution mode for development or environments without container support.
 
 ## Layered architecture in `dbgpt-sandbox`
 
-DB-GPT's sandbox is implemented as a small runtime system with several layers.
+K-ICS's sandbox is implemented as a small runtime system with several layers.
 
 ### 1. Execution layer
 
@@ -151,7 +151,7 @@ Implementation anchor:
 
 ## Session model and stateful execution
 
-One important part of the DB-GPT sandbox design is that it supports **session-based
+One important part of the K-ICS sandbox design is that it supports **session-based
 stateful execution**.
 
 That means:
@@ -164,9 +164,9 @@ That means:
 This is important for agent workflows where a task is solved through multiple
 reasoning and execution rounds rather than a single tool call.
 
-## Current integration in DB-GPT app
+## Current integration in K-ICS app
 
-Today, DB-GPT already uses sandbox execution in application-side agent tooling.
+Today, K-ICS already uses sandbox execution in application-side agent tooling.
 
 For example, the `shell_interpreter` tool in:
 
@@ -187,9 +187,9 @@ So the repo currently contains both:
 - a more complete `dbgpt-sandbox` design for reusable sandbox sessions
 - a practical app-side integration already using sandboxed execution for tools
 
-## What DB-GPT supports today
+## What K-ICS supports today
 
-Based on the current `dbgpt-sandbox` implementation, DB-GPT is moving toward a
+Based on the current `dbgpt-sandbox` implementation, K-ICS is moving toward a
 general-purpose agent runtime that supports:
 
 - multi-runtime sandbox execution
@@ -206,7 +206,7 @@ This makes the sandbox suitable for agent scenarios such as:
 - report generation agents
 - browser/computer style execution runtimes in future extensions
 
-## High-level view of the current DB-GPT sandbox direction
+## High-level view of the current K-ICS sandbox direction
 
 ```mermaid
 flowchart TB

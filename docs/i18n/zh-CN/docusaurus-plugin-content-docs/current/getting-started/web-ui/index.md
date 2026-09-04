@@ -1,22 +1,22 @@
 ---
 sidebar_position: 0
 title: Web UI 总览
-summary: "了解 DB-GPT Web UI 中有哪些主要能力，以及它们分别在哪里"
+summary: "了解 K-ICS Web UI 中有哪些主要能力，以及它们分别在哪里"
 read_when:
-  - 你已经启动了 DB-GPT，想知道先点哪里
+  - 你已经启动了 K-ICS，想知道先点哪里
   - 你想快速了解 chat、knowledge、dashboard 和 app 界面的分布
 ---
 
 # Web UI 总览
 
-DB-GPT 默认自带 Web 界面，地址为 **[http://localhost:5670](http://localhost:5670)**。
+K-ICS 默认自带 Web 界面，地址为 **[http://localhost:5670](http://localhost:5670)**。
 
 ## 主要区域
 
 - [Chat](/docs/getting-started/web-ui/chat) —— 普通对话、数据对话、Excel 对话、知识库对话
 - [Knowledge Base](/docs/getting-started/web-ui/knowledge-base) —— 上传文件并构建 RAG 数据集
 - [Dashboard](/docs/getting-started/web-ui/dashboard) —— 从自然语言生成图表和报告
-- [App Management](/docs/getting-started/web-ui/app-management) —— 创建和管理 DB-GPT 应用
+- [App Management](/docs/getting-started/web-ui/app-management) —— 创建和管理 K-ICS 应用
 
 ## 功能地图
 
@@ -33,7 +33,7 @@ DB-GPT 默认自带 Web 界面，地址为 **[http://localhost:5670](http://loca
 
 ## 访问 Web UI
 
-启动 DB-GPT 服务后，可以通过以下地址访问 Web UI：
+启动 K-ICS 服务后，可以通过以下地址访问 Web UI：
 
 ```
 http://localhost:5670

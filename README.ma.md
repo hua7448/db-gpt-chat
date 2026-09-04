@@ -1,44 +1,27 @@
-# <img src="./assets/LOGO_SMALL.png" alt="ലോഗോ" സ്റ്റൈൽ="ലംബ-അലൈൻ: മധ്യഭാഗം; ഉയരം: 24px;" /> DB-GPT: AWEL ഉം ഏജന്റുമാരുമൊത്തുള്ള AI നേറ്റീവ് ഡാറ്റ ആപ്പ് ഡെവലപ്‌മെന്റ് ഫ്രെയിംവർക്ക്
-
-<p align="left">
-
-<img src="./assets/dbgpt_vision.png" width="100%" />
-</p>
+# K-ICS: AWEL ഉം ഏജന്റുമാരുമൊത്തുള്ള AI നേറ്റീവ് ഡാറ്റ ആപ്പ് ഡെവലപ്‌മെന്റ് ഫ്രെയിംവർക്ക്
 
 <div align="center">
 <p>
 
-<a href="https://github.com/eosphoros-ai/DB-GPT">
-<img alt="stars" src="https://img.shields.io/github/stars/eosphoros-ai/db-gpt?style=social" />
+<a href="https://github.com/hua7448/db-gpt-chat">
+<img alt="stars" src="https://img.shields.io/github/stars/hua7448/db-gpt-chat?style=social" />
 </a>
-<a href="https://github.com/eosphoros-ai/DB-GPT">
-<img alt="forks" src="https://img.shields.io/github/forks/eosphoros-ai/db-gpt?style=social" />
+<a href="https://github.com/hua7448/db-gpt-chat">
+<img alt="forks" src="https://img.shields.io/github/forks/hua7448/db-gpt-chat?style=social" />
 </a>
-<a href="http://dbgpt.cn/">
-<img alt="ഔദ്യോഗിക വെബ്‌സൈറ്റ്" src="https://img.shields.io/badge/Official%20website-DB--GPT-blue?style=flat&labelColor=3366CC" />
+<a href="https://github.com/hua7448/db-gpt-chat">
+<img alt="ഔദ്യോഗിക വെബ്‌സൈറ്റ്" src="https://img.shields.io/badge/K--ICS-Data%20Workbench-blue?style=flat&labelColor=3366CC" />
 </a>
 <a href="https://opensource.org/licenses/MIT">
-<img alt="ലൈസൻസ്: MIT" src="https://img.shields.io/github/license/eosphoros-ai/db-gpt?style=flat&labelColor=009966&color=009933" />
+<img alt="ലൈസൻസ്: MIT" src="https://img.shields.io/github/license/hua7448/db-gpt-chat?style=flat&labelColor=009966&color=009933" />
 </a>
-<a href="https://github.com/eosphoros-ai/DB-GPT/releases">
-      <img alt="റിലീസ് നോട്ടുകൾ" src="https://img.shields.io/github/v/release/eosphoros-ai/db-gpt?style=flat&labelColor=FF9933&color=FF6633" />
+<a href="https://github.com/hua7448/db-gpt-chat/releases">
+      <img alt="റിലീസ് നോട്ടുകൾ" src="https://img.shields.io/github/v/release/hua7448/db-gpt-chat?style=flat&labelColor=FF9933&color=FF6633" />
     </a>
-    <a href="https://github.com/eosphoros-ai/DB-GPT/issues">
-      <img alt="തുറന്ന പ്രശ്നങ്ങൾ" src="https://img.shields.io/github/issues-raw/eosphoros-ai/db-gpt?style=flat&labelColor=666666&color=333333" />
+    <a href="https://github.com/hua7448/db-gpt-chat/issues">
+      <img alt="തുറന്ന പ്രശ്നങ്ങൾ" src="https://img.shields.io/github/issues-raw/hua7448/db-gpt-chat?style=flat&labelColor=666666&color=333333" />
     </a>
-    <a href="https://x.com/DBGPT_AI">
-      <img alt="X (മുൻപ് ട്വിറ്റർ) പിന്തുടരുക" src="https://img.shields.io/twitter/follow/DBGPT_AI" />
-    </a>
-    <a href="https://medium.com/@dbgpt0506">
-      <img alt="മീഡിയം പിന്തുടരുക" src="https://badgen.net/badge/Medium/DB-GPT/333333?icon=medium&labelColor=666666" />
-    </a>
-    <a href="https://space.bilibili.com/3537113070963392">
-      <img alt="ബിലിബിലി സ്പേസ്" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.bilibili.com%2Fx%2Frelation%2Fstat%3Fvmid%3D3537113070963392&query=data.follower&style=flat&logo=bilibili&logoColor=white&label=Bilibili%20Fans&labelColor=F37697&color=6495ED" />
-    </a>
-    <a href="https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA">
-      <img alt="സ്ലാക്ക്" src="https://img.shields.io/badge/Slack-Join%20us-5d6b98?style=flat&logo=slack&labelColor=7d89b0" />
-    </a>
-    <a href="https://codespaces.new/eosphoros-ai/DB-GPT">
+    <a href="https://codespaces.new/hua7448/db-gpt-chat">
       <img alt="ഗിറ്റ്ഹബ് കോഡ്സ്പേസുകളിൽ തുറക്കുക" src="https://github.com/codespaces/badge.svg" />
     </a>
   </p>
@@ -48,46 +31,41 @@
 [![简体中文](https://img.shields.io/badge/简体中文-d9d9d9?style=flat-square)](README.zh.md)
 [![日本語](https://img.shields.io/badge/日本語-d9d9d9?style=flat-square)](README.ja.md) 
 
-[**രേഖകൾ**](http://docs.dbgpt.cn/docs/overview/) | [**ഞങ്ങളെ സമീപിക്കുക**](https://github.com/eosphoros-ai/DB-GPT/blob/main/README.zh.md#%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC) | [**സമൂഹം**](https://github.com/eosphoros-ai/community) | [**പേപ്പർ**](https://arxiv.org/pdf/2312.17449.pdf)
+[**രേഖകൾ**](./docs/) | [**ഞങ്ങളെ സമീപിക്കുക**](https://github.com/hua7448/db-gpt-chat/blob/main/README.zh.md#%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC) | [**സമൂഹം**](https://github.com/hua7448/db-gpt-chat/discussions) | [**അപ്‌സ്ട്രീം പേപ്പർ**](https://arxiv.org/pdf/2312.17449.pdf)
 
 </div>
 
-## DB-GPT എന്താണ്?
+## K-ICS എന്താണ്?
 
-🤖 **DB-GPT എന്നത് AWEL (Agentic Workflow Expression Language) മറ്റും ഏജന്റുകളും ഉൾപ്പെടുന്ന ഒരു ഓപ്പൺ സോഴ്സ് AI നേറ്റീവ് ഡാറ്റ ആപ്പ് ഡെവലപ്മെന്റ് ഫ്രെയിംവർക്കാണ്**.
+🤖 **K-ICS എന്നത് AWEL (Agentic Workflow Expression Language) മറ്റും ഏജന്റുകളും ഉൾപ്പെടുന്ന ഒരു ഓപ്പൺ സോഴ്സ് AI നേറ്റീവ് ഡാറ്റ ആപ്പ് ഡെവലപ്മെന്റ് ഫ്രെയിംവർക്കാണ്**.
 
 ലക്ഷ്യം വലിയ മോഡലുകളുടെ മേഖലയിൽ ഇൻഫ്രാസ്ട്രക്ചർ നിർമ്മിക്കുക എന്നതാണ്, മൾട്ടി-മോഡൽ മാനേജ്മെന്റ് (SMMF), Text2SQL ഇഫക്ട് ഒപ്റ്റിമൈസേഷൻ, RAG ഫ്രെയിംവർക്ക് മറ്റും ഒപ്റ്റിമൈസേഷൻ, മൾട്ടി-ഏജന്റുകൾ ഫ്രെയിംവർക്ക് സഹകരണം, AWEL (ഏജന്റ് വർക്ക്ഫ്ലോ ഓർക്കസ്ട്രേഷൻ) എന്നിവ പോലുള്ള ഒന്നിലധികം സാങ്കേതിക കഴിവുകളുടെ വികസനത്തിലൂടെ. ഇത് വലിയ മോഡൽ ആപ്ലിക്കേഷനുകളെ ഡാറ്റയോടെ ലളിതവും സൗകര്യപ്രദവുമാക്കുന്നു.
 
 🚀 **ഡാറ്റ 3.0 യുഗത്തിൽ, മോഡലുകളും ഡാറ്റാബേസുകളും അടിസ്ഥാനമാക്കി, എന്റർപ്രൈസുകളും ഡെവലപ്പർമാരും കുറച്ച് കോഡോടെ അവരുടെ സ്വന്തം വിശേഷിത ആപ്ലിക്കേഷനുകൾ നിർമ്മിക്കാൻ കഴിയും.**
 
 ### ആമുഖം
-DB-GPT-യുടെ ആർക്കിടെക്ചർ ഇനിപ്പറയുന്ന ചിത്രത്തിൽ കാണിച്ചിരിക്കുന്നു:
+K-ICS-യുടെ ആർക്കിടെക്ചർ ഇനിപ്പറയുന്ന ചിത്രത്തിൽ കാണിച്ചിരിക്കുന്നു:
 
-<p align="center">
-  <img src="./assets/dbgpt.png" width="800" />
-</p>
 
-കോർ കഴിവുകൾ ഇനിപ്പറയുന്ന ഭാഗങ്ങളെ ഉൾക്കൊള്ളുന്നു:
+- **RAG (Retrieval Augmented Generation)**: RAG നിലവിൽ ഏറ്റവും പ്രായോഗികമായി നടപ്പിലാക്കിയതും അത്യാവശ്യമായതുമായ ഡൊമെയ്നാണ്. K-ICS ഇതിനകം RAG അടിസ്ഥാനമാക്കിയ ഒരു ഫ്രെയിംവർക്ക് നടപ്പിലാക്കിയിട്ടുണ്ട്, ഇത് ഉപയോക്താക്കൾക്ക് K-ICS-യുടെ RAG കഴിവുകൾ ഉപയോഗിച്ച് അറിവ് അടിസ്ഥാനമാക്കിയ ആപ്ലിക്കേഷനുകൾ നിർമ്മിക്കാൻ അനുവദിക്കുന്നു.
 
-- **RAG (Retrieval Augmented Generation)**: RAG നിലവിൽ ഏറ്റവും പ്രായോഗികമായി നടപ്പിലാക്കിയതും അത്യാവശ്യമായതുമായ ഡൊമെയ്നാണ്. DB-GPT ഇതിനകം RAG അടിസ്ഥാനമാക്കിയ ഒരു ഫ്രെയിംവർക്ക് നടപ്പിലാക്കിയിട്ടുണ്ട്, ഇത് ഉപയോക്താക്കൾക്ക് DB-GPT-യുടെ RAG കഴിവുകൾ ഉപയോഗിച്ച് അറിവ് അടിസ്ഥാനമാക്കിയ ആപ്ലിക്കേഷനുകൾ നിർമ്മിക്കാൻ അനുവദിക്കുന്നു.
+- **GBI (Generative Business Intelligence)**: ജനറേറ്റീവ് BI, K-ICS പ്രോജക്റ്റിന്റെ കോർ കഴിവുകളിൽ ഒന്നാണ്, എന്റർപ്രൈസ് റിപ്പോർട്ട് അനലിസിസ് മറ്റും ബിസിനസ് ഇൻസൈറ്റുകൾ നിർമ്മിക്കുന്നതിനുള്ള അടിസ്ഥാന ഡാറ്റ ഇന്റലിജൻസ് സാങ്കേതികത നൽകുന്നു.
 
-- **GBI (Generative Business Intelligence)**: ജനറേറ്റീവ് BI, DB-GPT പ്രോജക്റ്റിന്റെ കോർ കഴിവുകളിൽ ഒന്നാണ്, എന്റർപ്രൈസ് റിപ്പോർട്ട് അനലിസിസ് മറ്റും ബിസിനസ് ഇൻസൈറ്റുകൾ നിർമ്മിക്കുന്നതിനുള്ള അടിസ്ഥാന ഡാറ്റ ഇന്റലിജൻസ് സാങ്കേതികത നൽകുന്നു.
+- **ഫൈൻ-ട്യൂണിംഗ് ഫ്രെയിംവർക്ക്**: മോഡൽ ഫൈൻ-ട്യൂണിംഗ് എന്നത് ഏതൊരു എന്റർപ്രൈസും വർട്ടിക്കൽ മറ്റും നിഷ് ഡൊമെയ്നുകളിൽ നടപ്പിലാക്കേണ്ടത് അനിവാര്യമായ കഴിവാണ്. K-ICS ഒരു പൂർണ്ണ ഫൈൻ-ട്യൂണിംഗ് ഫ്രെയിംവർക്ക് നൽകുന്നു, ഇത് K-ICS പ്രോജക്റ്റുമായി തടസ്സമില്ലാതെ സംയോജിപ്പിക്കുന്നു. സമീപകാല ഫൈൻ-ട്യൂണിംഗ് ശ്രമങ്ങളിൽ, Spider ഡാറ്റാസെറ്റ് അടിസ്ഥാനമാക്കി 82.5% അക്യുറസി നിരക്ക് നേടിയിട്ടുണ്ട്.
 
-- **ഫൈൻ-ട്യൂണിംഗ് ഫ്രെയിംവർക്ക്**: മോഡൽ ഫൈൻ-ട്യൂണിംഗ് എന്നത് ഏതൊരു എന്റർപ്രൈസും വർട്ടിക്കൽ മറ്റും നിഷ് ഡൊമെയ്നുകളിൽ നടപ്പിലാക്കേണ്ടത് അനിവാര്യമായ കഴിവാണ്. DB-GPT ഒരു പൂർണ്ണ ഫൈൻ-ട്യൂണിംഗ് ഫ്രെയിംവർക്ക് നൽകുന്നു, ഇത് DB-GPT പ്രോജക്റ്റുമായി തടസ്സമില്ലാതെ സംയോജിപ്പിക്കുന്നു. സമീപകാല ഫൈൻ-ട്യൂണിംഗ് ശ്രമങ്ങളിൽ, Spider ഡാറ്റാസെറ്റ് അടിസ്ഥാനമാക്കി 82.5% അക്യുറസി നിരക്ക് നേടിയിട്ടുണ്ട്.
-
-- **ഡാറ്റ-ഡ്രൈവൻ മൾട്ടി-ഏജന്റുകൾ ഫ്രെയിംവർക്ക്**: DB-GPT ഒരു ഡാറ്റ-ഡ്രൈവൻ സെൽഫ്-ഇവോൾവിംഗ് മൾട്ടി-ഏജന്റുകൾ ഫ്രെയിംവർക്ക് നൽകുന്നു, ഇത് ഡാറ്റയെ അടിസ്ഥാനമാക്കി തുടർച്ചയായി തീരുമാനങ്ങൾ എടുത്ത് നടപ്പിലാക്കാൻ ലക്ഷ്യമിടുന്നു.
+- **ഡാറ്റ-ഡ്രൈവൻ മൾട്ടി-ഏജന്റുകൾ ഫ്രെയിംവർക്ക്**: K-ICS ഒരു ഡാറ്റ-ഡ്രൈവൻ സെൽഫ്-ഇവോൾവിംഗ് മൾട്ടി-ഏജന്റുകൾ ഫ്രെയിംവർക്ക് നൽകുന്നു, ഇത് ഡാറ്റയെ അടിസ്ഥാനമാക്കി തുടർച്ചയായി തീരുമാനങ്ങൾ എടുത്ത് നടപ്പിലാക്കാൻ ലക്ഷ്യമിടുന്നു.
 
 - **ഡാറ്റ ഫാക്ടറി**: ഡാറ്റ ഫാക്ടറി പ്രധാനമായും വലിയ മോഡലുകളുടെ യുഗത്തിൽ വിശ്വസ്ത അറിവും ഡാറ്റയും ക്ലീൻ ചെയ്യുന്നതും പ്രോസസ്സ് ചെയ്യുന്നതുമാണ്.
 
-- **ഡാറ്റ സോഴ്സുകൾ**: വിവിധ ഡാറ്റ സോഴ്സുകൾ സംയോജിപ്പിച്ച് പ്രൊഡക്ഷൻ ബിസിനസ് ഡാറ്റ DB-GPT-യുടെ കോർ കഴിവുകളിലേക്ക് തടസ്സമില്ലാതെ കണക്ട് ചെയ്യുന്നു.
+- **ഡാറ്റ സോഴ്സുകൾ**: വിവിധ ഡാറ്റ സോഴ്സുകൾ സംയോജിപ്പിച്ച് പ്രൊഡക്ഷൻ ബിസിനസ് ഡാറ്റ K-ICS-യുടെ കോർ കഴിവുകളിലേക്ക് തടസ്സമില്ലാതെ കണക്ട് ചെയ്യുന്നു.
 
 #### സബ്മോഡ്യൂൾ
 - [DB-GPT-Hub](https://github.com/eosphoros-ai/DB-GPT-Hub) ലാർജ് ലാംഗ്വേജ് മോഡലുകളിൽ (LLMs) സൂപ്പർവൈസ്ഡ് ഫൈൻ-ട്യൂണിംഗ് (SFT) പ്രയോഗിച്ച് ഉയർന്ന പ്രകടനം ഉള്ള Text-to-SQL വർക്ക്ഫ്ലോ.
 
-- [dbgpts](https://github.com/eosphoros-ai/dbgpts)  dbgpts എന്നത് ഔദ്യോഗിക റിപ്പോസിറ്ററിയാണ്, ഇത് DB-GPT-യിൽ നിർമ്മിച്ച ചില ഡാറ്റ ആപ്പുകൾ, AWEL ഓപ്പറേറ്റർമാർ, AWEL വർക്ക്ഫ്ലോ ടെംപ്ലേറ്റുകൾ മറ്റും ഏജന്റുകൾ ഉൾക്കൊള്ളുന്നു.
+- [dbgpts](https://github.com/eosphoros-ai/dbgpts)  dbgpts എന്നത് ഔദ്യോഗിക റിപ്പോസിറ്ററിയാണ്, ഇത് K-ICS-യിൽ നിർമ്മിച്ച ചില ഡാറ്റ ആപ്പുകൾ, AWEL ഓപ്പറേറ്റർമാർ, AWEL വർക്ക്ഫ്ലോ ടെംപ്ലേറ്റുകൾ മറ്റും ഏജന്റുകൾ ഉൾക്കൊള്ളുന്നു.
 
 #### ഡീപ്വിക്കി
-- [DB-GPT](https://deepwiki.com/eosphoros-ai/DB-GPT)
+- [K-ICS](https://deepwiki.com/hua7448/db-gpt-chat)
 - [DB-GPT-HUB](https://deepwiki.com/eosphoros-ai/DB-GPT-Hub)
 - [dbgpts](https://deepwiki.com/eosphoros-ai/dbgpts)
 
@@ -110,12 +88,12 @@ DB-GPT-യുടെ ആർക്കിടെക്ചർ ഇനിപ്പറ�
 
 [Text2SQL ഫൈൻട്യൂണിനെക്കുറിച്ച് കൂടുതൽ വിവരങ്ങൾ](https://github.com/eosphoros-ai/DB-GPT-Hub)
 
-- [DB-GPT-Plugins](https://github.com/eosphoros-ai/DB-GPT-Plugins) DB-GPT പ്ലഗിനുകൾ, Auto-GPT പ്ലഗിൻ നേരിട്ട് പ്രവർത്തിപ്പിക്കാൻ കഴിയും
+- [DB-GPT-Plugins](https://github.com/eosphoros-ai/DB-GPT-Plugins) K-ICS പ്ലഗിനുകൾ, Auto-GPT പ്ലഗിൻ നേരിട്ട് പ്രവർത്തിപ്പിക്കാൻ കഴിയും
 - [GPT-Vis](https://github.com/eosphoros-ai/GPT-Vis) വിഷ്വലൈസേഷൻ പ്രോട്ടോക്കോൾ
 
 ### AI-നേറ്റീവ് ഡാറ്റ ആപ്പ് 
 ---
-- 🔥🔥🔥 [V0.7.0 റിലീസ് ചെയ്തു | ഒരു കൂട്ടം പ്രധാന അപ്ഗ്രേഡുകൾ](http://docs.dbgpt.cn/blog/db-gpt-v070-release)
+- 🔥🔥🔥 [V0.7.0 റിലീസ് ചെയ്തു | ഒരു കൂട്ടം പ്രധാന അപ്ഗ്രേഡുകൾ](./docs/blog/2025-03-24-dbgpt-v0.7.0-release.md)
   - [MCP പ്രോട്ടോക്കോൾ പിന്തുണയ്ക്കുക](https://github.com/eosphoros-ai/DB-GPT/pull/2497)
   - [DeepSeek R1 പിന്തുണയ്ക്കുക](https://github.com/deepseek-ai/DeepSeek-R1)
   - [QwQ-32B പിന്തുണയ്ക്കുക](https://huggingface.co/Qwen/QwQ-32B)
@@ -128,7 +106,7 @@ DB-GPT-യുടെ ആർക്കിടെക്ചർ ഇനിപ്പറ�
     - [dbgpt-ext](./packages/dbgpt-ext)
 ---
 
-## എന്തിനാണ് DB-GPT?
+## എന്തിനാണ് K-ICS?
 
 ### 1. ഏജന്റ് അധിഷ്ഠിത ഡാറ്റാ അനലിസിസ്
 ടാസ്ക്കുകൾ പ്ലാൻ ചെയ്യുക, വര്ക്ക് സ്റ്റെപ്പുകളായി വിഭജിക്കുക, ടൂളുകൾ വിളിക്കുക, അനലിസിസ് വർക്ക്ഫ്ലോകൾ അവസാനിപ്പിക്കുക.
@@ -160,19 +138,18 @@ DB-GPT-യുടെ ആർക്കിടെക്ചർ ഇനിപ്പറ�
 ![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
-[**ഉപയോഗ ട്യൂട്ടോറിയൽ**](http://docs.dbgpt.cn/docs/overview)
-- [**ഇൻസ്റ്റാൾ ചെയ്യുക**](http://docs.dbgpt.cn/docs/installation)
-  - [Docker](http://docs.dbgpt.cn/docs/installation/docker)
-  - [സോഴ്സ് കോഡ്](http://docs.dbgpt.cn/docs/getting-started/deploy/source-code)
-- [**ക്വിക്ക്‌സ്റ്റാർട്ട്**](http://docs.dbgpt.cn/docs/overview)
-- [**അപ്ലിക്കേഷൻ**](http://docs.dbgpt.cn/docs/use_cases)
-  - [ഡെവലപ്‌മെന്റ് ഗൈഡ്](http://docs.dbgpt.cn/docs/cookbook/app/data_analysis_app_develop) 
-  - [AWEL ഫ്ളോ ഉപയോഗം](http://docs.dbgpt.cn/docs/application/awel_flow_usage)
-- [**ഡീബഗ്ഗിംഗ്**](http://docs.dbgpt.cn/docs/operation_manual/advanced_tutorial/debugging)
-- [**അഡ്വാൻസ്ഡ് ഉപയോഗം**](http://docs.dbgpt.cn/docs/application/advanced_tutorial/cli)
-  - [SMMF](http://docs.dbgpt.cn/docs/application/advanced_tutorial/smmf)
-  - [ഫൈൻട്യൂൺ](http://docs.dbgpt.cn/docs/application/fine_tuning_manual/dbgpt_hub)
-  - [AWEL](http://docs.dbgpt.cn/docs/awel/tutorial)
+[**ഉപയോഗ ട്യൂട്ടോറിയൽ**](./docs/)
+- [**ഇൻസ്റ്റാൾ ചെയ്യുക**](./docs/docs/installation/index.md)
+  - [Docker](./docs/docs/installation/docker.md)
+  - [സോഴ്സ് കോഡ്](./docs/docs/installation/sourcecode.md)
+- [**ക്വിക്ക്‌സ്റ്റാർട്ട്**](./docs/docs/quickstart.md)
+- [**അപ്ലിക്കേഷൻ**](./docs/docs/application/apps/app_explore.md)
+  - [ഡെവലപ്‌മെന്റ് ഗൈഡ്](./docs/docs/cookbook/app/data_analysis_app_develop.md)
+  - [AWEL ഫ്ളോ ഉപയോഗം](./docs/docs/application/awel.md)
+- [**ഡീബഗ്ഗിംഗ്**](./docs/docs/application/advanced_tutorial/debugging.md)
+- [**അഡ്വാൻസ്ഡ് ഉപയോഗം**](./docs/docs/application/advanced_tutorial/cli.md)
+  - [മോഡൽ മാനേജ്മെന്റ്](./docs/docs/application/llms.md)
+  - [ഫൈൻട്യൂൺ](./docs/docs/application/fine_tuning_manual/text_to_sql.md)
 
 
 ## സവിശേഷതകൾ
@@ -180,11 +157,11 @@ DB-GPT-യുടെ ആർക്കിടെക്ചർ ഇനിപ്പറ�
 ഇപ്പോൾ, ഞങ്ങളുടെ നിലവിലെ കഴിവുകൾ പ്രദർശിപ്പിക്കുന്നതിനായി നിരവധി പ്രധാന സവിശേഷതകൾ ഞങ്ങൾ അവതരിപ്പിച്ചിട്ടുണ്ട്:
 - **സ്വകാര്യ ഡൊമെയ്ൻ Q&A & ഡാറ്റാ പ്രോസസ്സിംഗ്**
 
-  DB-GPT പ്രോജക്റ്റ് നോളജ് ബേസ് നിർമ്മാണം മെച്ചപ്പെടുത്താനും സ്ട്രക്ചർഡ് മറ്റെങ്കിലും അൻസ്ട്രക്ചർഡ് ഡാറ്റയുടെ കാര്യക്ഷമമായ സംഭരണവും വീണ്ടെടുക്കലും സാധ്യമാക്കാനും രൂപകൽപ്പന ചെയ്തിരിക്കുന്ന നിരവധി പ്രവർത്തനങ്ങൾ വാഗ്ദാനം ചെയ്യുന്നു. ഇവയിൽ മൾട്ടിപ്പിൾ ഫയൽ ഫോർമാറ്റുകൾ അപ്‌ലോഡ് ചെയ്യുന്നതിനുള്ള ബിൽറ്റ്-ഇൻ സപ്പോർട്ട്, കസ്റ്റം ഡാറ്റാ എക്സ്ട്രാക്ഷൻ പ്ലഗ്-ഇൻസ് സംയോജിപ്പിക്കാനുള്ള കഴിവ്, മറ്റെങ്കിലും വലിയ അളവിലുള്ള വിവരങ്ങൾ ഫലപ്രദമായി നിയന്ത്രിക്കുന്നതിനുള്ള യൂണിഫൈഡ് വെക്ടർ സംഭരണവും വീണ്ടെടുക്കലും ഉൾപ്പെടുന്നു.
+  K-ICS പ്രോജക്റ്റ് നോളജ് ബേസ് നിർമ്മാണം മെച്ചപ്പെടുത്താനും സ്ട്രക്ചർഡ് മറ്റെങ്കിലും അൻസ്ട്രക്ചർഡ് ഡാറ്റയുടെ കാര്യക്ഷമമായ സംഭരണവും വീണ്ടെടുക്കലും സാധ്യമാക്കാനും രൂപകൽപ്പന ചെയ്തിരിക്കുന്ന നിരവധി പ്രവർത്തനങ്ങൾ വാഗ്ദാനം ചെയ്യുന്നു. ഇവയിൽ മൾട്ടിപ്പിൾ ഫയൽ ഫോർമാറ്റുകൾ അപ്‌ലോഡ് ചെയ്യുന്നതിനുള്ള ബിൽറ്റ്-ഇൻ സപ്പോർട്ട്, കസ്റ്റം ഡാറ്റാ എക്സ്ട്രാക്ഷൻ പ്ലഗ്-ഇൻസ് സംയോജിപ്പിക്കാനുള്ള കഴിവ്, മറ്റെങ്കിലും വലിയ അളവിലുള്ള വിവരങ്ങൾ ഫലപ്രദമായി നിയന്ത്രിക്കുന്നതിനുള്ള യൂണിഫൈഡ് വെക്ടർ സംഭരണവും വീണ്ടെടുക്കലും ഉൾപ്പെടുന്നു.
 
 - **മൾട്ടി-ഡാറ്റാ സോഴ്സ് & GBI(ജെനറേറ്റീവ് ബിസിനസ് ഇന്റലിജൻസ്)**
 
-  DB-GPT പ്രോജക്റ്റ് Excel, ഡാറ്റാബേസുകൾ, മറ്റെങ്കിലും ഡാറ്റാ വെയർഹൗസുകൾ എന്നിവയുൾപ്പെടെയുള്ള വൈവിധ്യമാർന്ന ഡാറ്റാ സോഴ്സുകളുമായി സീംലെസ് നാച്ചുറൽ ലാംഗ്വേജ് ഇന്ററാക്ഷൻ സാധ്യമാക്കുന്നു. ഇത് ഈ സോഴ്സുകളിൽ നിന്ന് വിവരങ്ങൾ ചോദ്യം ചെയ്യാനും വീണ്ടെടുക്കാനുമുള്ള പ്രക്രിയയെ ലളിതമാക്കുന്നു, ഉപയോക്താക്കളെ ഇന്റ്യൂട്ടീവ് സംഭാഷണങ്ങളിൽ പങ്കെടുക്കാനും ഇൻസൈറ്റുകൾ നേടാനും പ്രാപ്തരാക്കുന്നു. കൂടാതെ, DB-GPT അനലിറ്റിക്കൽ റിപ്പോർട്ടുകളുടെ ജനറേഷൻ സപ്പോർട്ട് ചെയ്യുന്നു, ഉപയോക്താക്കൾക്ക് മൂല്യവത്തായ ഡാറ്റാ സമ്മറികളും വ്യാഖ്യാനങ്ങളും നൽകുന്നു.
+  K-ICS പ്രോജക്റ്റ് Excel, ഡാറ്റാബേസുകൾ, മറ്റെങ്കിലും ഡാറ്റാ വെയർഹൗസുകൾ എന്നിവയുൾപ്പെടെയുള്ള വൈവിധ്യമാർന്ന ഡാറ്റാ സോഴ്സുകളുമായി സീംലെസ് നാച്ചുറൽ ലാംഗ്വേജ് ഇന്ററാക്ഷൻ സാധ്യമാക്കുന്നു. ഇത് ഈ സോഴ്സുകളിൽ നിന്ന് വിവരങ്ങൾ ചോദ്യം ചെയ്യാനും വീണ്ടെടുക്കാനുമുള്ള പ്രക്രിയയെ ലളിതമാക്കുന്നു, ഉപയോക്താക്കളെ ഇന്റ്യൂട്ടീവ് സംഭാഷണങ്ങളിൽ പങ്കെടുക്കാനും ഇൻസൈറ്റുകൾ നേടാനും പ്രാപ്തരാക്കുന്നു. കൂടാതെ, K-ICS അനലിറ്റിക്കൽ റിപ്പോർട്ടുകളുടെ ജനറേഷൻ സപ്പോർട്ട് ചെയ്യുന്നു, ഉപയോക്താക്കൾക്ക് മൂല്യവത്തായ ഡാറ്റാ സമ്മറികളും വ്യാഖ്യാനങ്ങളും നൽകുന്നു.
 
 - **മൾട്ടി-ഏജന്റ്സ് & പ്ലഗ്-ഇൻസ്**
 
@@ -307,14 +284,14 @@ DB-GPT-യുടെ ആർക്കിടെക്ചർ ഇനിപ്പറ�
       </tbody>
     </table>
 
-- [കൂടുതൽ പിന്തുണയ്ക്കുന്ന LLMs](http://docs.dbgpt.cn/docs/modules/smmf)
+  - [കൂടുതൽ പിന്തുണയ്ക്കുന്ന LLMs](./docs/docs/application/llms.md)
 
 - **സ്വകാര്യതയും സുരക്ഷയും**
   
   വിവിധ സാങ്കേതിക വിദ്യകൾ നടപ്പിലാക്കുന്നതിലൂടെ ഡാറ്റയുടെ സ്വകാര്യതയും സുരക്ഷയും ഞങ്ങൾ ഉറപ്പാക്കുന്നു, ഇതിൽ സ്വകാര്യമാക്കിയ വലിയ മോഡലുകളും പ്രോക്സി ഡിസെൻസിറ്റൈസേഷനും ഉൾപ്പെടുന്നു.
 
 - പിന്തുണയ്ക്കുന്ന ഡാറ്റാസോഴ്സുകൾ
-  - [ഡാറ്റാസോഴ്സുകൾ](http://docs.dbgpt.cn/docs/modules/connections)
+  - [ഡാറ്റാസോഴ്സുകൾ](./docs/docs/application/datasources.md)
 
 ## ഇമേജ്
 🌐 [AutoDL ഇമേജ്](https://www.codewithgpu.com/i/eosphoros-ai/DB-GPT/dbgpt)
@@ -323,11 +300,11 @@ DB-GPT-യുടെ ആർക്കിടെക്ചർ ഇനിപ്പറ�
 
 ## സംഭാവന
 
-- പുതിയ സംഭാവനകൾക്കുള്ള വിശദമായ മാർഗ്ഗനിർദ്ദേശങ്ങൾ പരിശോധിക്കാൻ, ദയവായി [സംഭാവന ചെയ്യുന്നതെങ്ങനെ](https://github.com/eosphoros-ai/DB-GPT/blob/main/CONTRIBUTING.md) എന്നതിലേക്ക് പരിശോധിക്കുക
+- പുതിയ സംഭാവനകൾക്കുള്ള വിശദമായ മാർഗ്ഗനിർദ്ദേശങ്ങൾ പരിശോധിക്കാൻ, ദയവായി [സംഭാവന ചെയ്യുന്നതെങ്ങനെ](https://github.com/hua7448/db-gpt-chat/blob/main/CONTRIBUTING.md) എന്നതിലേക്ക് പരിശോധിക്കുക
 
 ### സംഭാവകരുടെ വാൾ
-<a href="https://github.com/eosphoros-ai/DB-GPT/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=eosphoros-ai/DB-GPT&max=200" />
+<a href="https://github.com/hua7448/db-gpt-chat/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=hua7448/db-gpt-chat&max=200" />
 </a>
 
 
@@ -338,9 +315,9 @@ The MIT License (MIT)
 - [ഡിസ്ക്ലെയിമർ](./DISCKAIMER.md)
 
 ## സൈറ്റേഷൻ
-DB-GPT-യുടെ മൊത്തം ആർക്കിടെക്ചർ മനസ്സിലാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുവെങ്കിൽ, ദയവായി <a href="https://arxiv.org/abs/2312.17449" target="_blank">പേപ്പർ</a> മറ്റെങ്കിലും <a href="https://arxiv.org/abs/2404.10209" target="_blank">പേപ്പർ</a> സൈറ്റ് ചെയ്യുക
+K-ICS-യുടെ മൊത്തം ആർക്കിടെക്ചർ മനസ്സിലാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുവെങ്കിൽ, ദയവായി <a href="https://arxiv.org/abs/2312.17449" target="_blank">പേപ്പർ</a> മറ്റെങ്കിലും <a href="https://arxiv.org/abs/2404.10209" target="_blank">പേപ്പർ</a> സൈറ്റ് ചെയ്യുക
 
-ഏജന്റ് ഡെവലപ്‌മെന്റിനായി DB-GPT ഉപയോഗിക്കുന്നതിനെക്കുറിച്ച് പഠിക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുവെങ്കിൽ, ദയവായി <a href="https://arxiv.org/abs/2412.13520" target="_blank">പേപ്പർ</a> സൈറ്റ് ചെയ്യുക
+ഏജന്റ് ഡെവലപ്‌മെന്റിനായി K-ICS ഉപയോഗിക്കുന്നതിനെക്കുറിച്ച് പഠിക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുവെങ്കിൽ, ദയവായി <a href="https://arxiv.org/abs/2412.13520" target="_blank">പേപ്പർ</a> സൈറ്റ് ചെയ്യുക
 ```bibtex
 @article{xue2023dbgpt,
       title={DB-GPT: Empowering Database Interactions with Private Large Language Models}, 
@@ -369,13 +346,12 @@ DB-GPT-യുടെ മൊത്തം ആർക്കിടെക്ചർ മ�
 
 
 ## കോൺടാക്റ്റ് വിവരം
-DB-GPT-യിലേക്ക് സംഭാവന ചെയ്ത എല്ലാവർക്കും നന്ദി! നിങ്ങളുടെ ആശയങ്ങൾ, കോഡ്, അഭിപ്രായങ്ങൾ, മറ്റെങ്കിലും ഇവന്റുകളിലും സോഷ്യൽ പ്ലാറ്റ്ഫോമുകളിലും പങ്കിടുന്നത് DB-GPT-യെ മെച്ചപ്പെടുത്തും.
+K-ICS-യിലേക്ക് സംഭാവന ചെയ്ത എല്ലാവർക്കും നന്ദി! നിങ്ങളുടെ ആശയങ്ങൾ, കോഡ്, അഭിപ്രായങ്ങൾ, മറ്റെങ്കിലും ഇവന്റുകളിലും സോഷ്യൽ പ്ലാറ്റ്ഫോമുകളിലും പങ്കിടുന്നത് K-ICS-യെ മെച്ചപ്പെടുത്തും.
 ഞങ്ങൾ ഒരു കമ്മ്യൂണിറ്റി നിർമ്മിക്കുന്നതിൽ പ്രവർത്തിക്കുന്നു, കമ്മ്യൂണിറ്റി നിർമ്മിക്കുന്നതിനുള്ള എന്തെങ്കിലും ആശയങ്ങൾ നിങ്ങൾക്കുണ്ടെങ്കിൽ, ഞങ്ങളെ സമീപിക്കാൻ മടിക്കരുത്.  
 
-- [Github ഇഷ്യൂകൾ](https://github.com/eosphoros-ai/DB-GPT/issues) ⭐️：GB-DPT ഉപയോഗിക്കുന്നതിനെക്കുറിച്ചുള്ള ചോദ്യങ്ങൾക്ക്, CONTRIBUTING എന്നതിൽ കാണുക.  
+- [Github ഇഷ്യൂകൾ](https://github.com/hua7448/db-gpt-chat/issues) ⭐️：K-ICS ഉപയോഗിക്കുന്നതിനെക്കുറിച്ചുള്ള ചോദ്യങ്ങൾക്ക്, CONTRIBUTING എന്നതിൽ കാണുക.
 - [Github ചർച്ചകൾ](https://github.com/orgs/eosphoros-ai/discussions) ⭐️：നിങ്ങളുടെ അനുഭവം അല്ലെങ്കിൽ അദ്വിതീയ ആപ്പുകൾ പങ്കിടുക.  
-- [ട്വിറ്റർ](https://x.com/DBGPT_AI) ⭐️：ദയവായി ഞങ്ങളോട് സംസാരിക്കാൻ മടിക്കരുത്.  
+- [GitHub Discussions](https://github.com/hua7448/db-gpt-chat/discussions)：ദയവായി ഞങ്ങളോട് സംസാരിക്കാൻ മടിക്കരുത്.
 
 
-[![സ്റ്റാർ ചരിത്ര ചാർട്ട്](https://api.star-history.com/svg?repos=csunny/DB-GPT&type=Date)](https://star-history.com/#csunny/DB-GPT)
-
+[![സ്റ്റാർ ചരിത്ര ചാർട്ട്](https://api.star-history.com/svg?repos=hua7448/db-gpt-chat&type=Date)](https://star-history.com/#hua7448/db-gpt-chat)

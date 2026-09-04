@@ -1,10 +1,10 @@
 ---
 id: docker-build-guide
-title: DB-GPT Docker 镜像构建指南
+title: K-ICS Docker 镜像构建指南
 sidebar_label: Docker 镜像构建
-description: 全面介绍如何使用各种配置构建 DB-GPT Docker 镜像
+description: 全面介绍如何使用各种配置构建 K-ICS Docker 镜像
 keywords:
-  - DB-GPT
+  - K-ICS
   - Docker
   - Build
   - CUDA
@@ -17,13 +17,13 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-# DB-GPT Docker 镜像构建指南
+# K-ICS Docker 镜像构建指南
 
-本指南详细介绍如何使用 `docker/base/build_image.sh` 脚本，以各种配置构建 DB-GPT Docker 镜像。
+本指南详细介绍如何使用 `docker/base/build_image.sh` 脚本，以各种配置构建 K-ICS Docker 镜像。
 
 ## 概述
 
-DB-GPT 构建脚本允许你根据具体需求创建定制化的 Docker 镜像。你可以选择预定义的安装模式，也可以通过指定额外依赖、环境变量等参数来自定义构建。
+K-ICS 构建脚本允许你根据具体需求创建定制化的 Docker 镜像。你可以选择预定义的安装模式，也可以通过指定额外依赖、环境变量等参数来自定义构建。
 
 ## 可用安装模式
 
@@ -97,7 +97,7 @@ bash docker/base/build_image.sh --help
 
 ### Python 版本
 
-DB-GPT 要求 Python 3.10 或更高版本。默认使用 Python 3.11，你也可以指定其他版本：
+K-ICS 要求 Python 3.10 或更高版本。默认使用 Python 3.11，你也可以指定其他版本：
 
 ```bash
 bash docker/base/build_image.sh --python-version 3.10
@@ -188,11 +188,11 @@ bash docker/base/build_image.sh --language zh
 | `llama_cpp` | Llama-cpp Python 绑定 |
 | `llama_cpp_server` | Llama-cpp HTTP 服务器 |
 
-你可以在本地 DB-GPT 仓库中运行 `uv run install_help.py list` 查看所有可用的额外依赖。
+你可以在本地 K-ICS 仓库中运行 `uv run install_help.py list` 查看所有可用的额外依赖。
 
 ### 环境变量
 
-DB-GPT 构建支持通过环境变量进行特殊配置。主要使用的环境变量是 `CMAKE_ARGS`，对于 Llama-cpp 编译尤为重要。
+K-ICS 构建支持通过环境变量进行特殊配置。主要使用的环境变量是 `CMAKE_ARGS`，对于 Llama-cpp 编译尤为重要。
 
 <Tabs>
   <TabItem value="override-env" label="覆盖环境变量" default>
@@ -334,6 +334,6 @@ bash docker/base/build_image.sh --network host
 
 ## 相关资源
 
-- [DB-GPT 文档](https://github.com/eosphoros-ai/DB-GPT)
+- [K-ICS 文档](https://github.com/hua7448/db-gpt-chat)
 - [Docker 文档](https://docs.docker.com/)
 - [CUDA 文档](https://docs.nvidia.com/cuda/)

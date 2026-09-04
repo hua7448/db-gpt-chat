@@ -1,5 +1,5 @@
 """
-Example: Using Claude-style SKILL files with DB-GPT agents.
+Example: Using Claude-style SKILL files with K-ICS agents.
 
 This demonstrates how to use the Claude SKILL mechanism
 where skills are defined in Markdown files.

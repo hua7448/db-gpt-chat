@@ -1,6 +1,6 @@
 # Vertica
 
-Vertica is an analytical SQL data warehouse supported by DB-GPT through the native
+Vertica is an analytical SQL data warehouse supported by K-ICS through the native
 connector in `dbgpt_ext.datasource.rdbms.conn_vertica`.
 
 ### Install Dependencies
@@ -18,7 +18,7 @@ uv sync --all-packages \
 
 ### Prepare Vertica
 
-Prepare a Vertica instance and start the DB-GPT webserver:
+Prepare a Vertica instance and start the K-ICS webserver:
 
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml

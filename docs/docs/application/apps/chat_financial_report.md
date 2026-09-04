@@ -65,7 +65,8 @@ git clone https://www.modelscope.cn/models/AI-ModelScope/bge-large-zh-v1.5
 #*******************************************************************#
 #**                     FINANCIAL CHAT Config                     **#
 #*******************************************************************#
-FIN_REPORT_MODEL=/app/DB-GPT/models/bge-large-zh-v1.5
+# Use the absolute path where the embedding model was cloned.
+FIN_REPORT_MODEL=/app/models/bge-large-zh-v1.5
 ```
 
 Step 5: create  knowledge space, choose `FinancialReport` doamin type
@@ -84,6 +85,5 @@ Step 8:  chat with financial report
 <p align="left">
   <img src={'/img/chat_knowledge/fin_report/chat.jpg'} width="1000px"/>
 </p>
-
 
 

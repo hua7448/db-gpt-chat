@@ -1,7 +1,7 @@
 ---
 sidebar_position: 0
 title: Model Providers
-summary: "Which DB-GPT model provider to choose and where each provider guide lives"
+summary: "Which K-ICS model provider to choose and where each provider guide lives"
 read_when:
   - You need to pick a provider for your first setup
   - You want to know whether to use API models, Ollama, or vLLM
@@ -9,7 +9,7 @@ read_when:
 
 # Model Providers
 
-DB-GPT supports API providers and local runtimes. For a first run, use an API provider unless you specifically want local inference.
+K-ICS supports API providers and local runtimes. For a first run, use an API provider unless you specifically want local inference.
 
 :::info Quick pick
 Not sure which provider to choose? Start with **OpenAI** or **DeepSeek** for the fastest setup (API proxy, no GPU needed). Use **Ollama** if you want to run models locally without complex setup.
@@ -65,7 +65,7 @@ You can use environment variable syntax in TOML configs: `"${env:VARIABLE_NAME:-
 
 ## More providers
 
-DB-GPT also supports additional providers through its proxy system. See [Advanced LLM Configuration](/docs/installation/advanced_usage/More_proxyllms) for:
+K-ICS also supports additional providers through its proxy system. See [Advanced LLM Configuration](/docs/installation/advanced_usage/More_proxyllms) for:
 
 - Azure OpenAI
 - Google Gemini

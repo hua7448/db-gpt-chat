@@ -15,7 +15,7 @@
         if there are no data in vector store, please run examples/awel/simple_rag_embedding_example.py
 
 
-    ensure your embedding model in DB-GPT/models/.
+    ensure your embedding model in the K-ICS models/ directory.
 
     Examples:
         ..code-block:: shell

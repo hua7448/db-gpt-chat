@@ -58,7 +58,7 @@ Options:
 Commands:
   delete  Delete your knowledge space or document in space
   list    List knowledge space
-  load    Load your local documents to DB-GPT
+  load    Load your local documents to K-ICS
 ```
 
 #### Load command
@@ -69,14 +69,13 @@ Commands:
 Already connect 'dbgpt'
 Usage: dbgpt knowledge load [OPTIONS]
 
-  Load your local documents to DB-GPT
+  Load your local documents to K-ICS
 
 Options:
   --space_name TEXT         Your knowledge space name  [default: default]
   --vector_store_type TEXT  Vector store type.  [default: Chroma]
   --local_doc_path TEXT     Your document directory or document file path.
-                            [default: /Users/magic/workspace/github/eosphoros-
-                            ai/DB-GPT/pilot/datasets]
+                            [default: /path/to/K-ICS/pilot/datasets]
   --skip_wrong_doc          Skip wrong document.
   --overwrite               Overwrite existing document(they has same name).
   --max_workers INTEGER     The maximum number of threads that can be used to

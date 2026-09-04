@@ -1,9 +1,9 @@
 """Adapted from OpenAI API types.
 
 All types are adapted from the OpenAI API types. They will be used to provide the OpenAI
-compatible types for the DB-GPT apiserver.
+compatible types for the K-ICS API server.
 
-Note: the are not the internal types of the DB-GPT.
+Note: these are not the internal K-ICS types.
 """
 
 from typing import Iterable, Optional, TypeAlias, Union

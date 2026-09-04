@@ -67,20 +67,7 @@ const ChatWelcome: React.FC<ChatWelcomeProps> = ({
       )}
     >
       <div className='flex flex-col items-center max-w-2xl w-full'>
-        <div className='flex items-center justify-center w-20 h-20 mb-6 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg'>
-          <Image
-            src='/pictures/logo.png'
-            alt='DB-GPT'
-            width={48}
-            height={48}
-            className='object-contain'
-            onError={e => {
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-            }}
-          />
-        </div>
-
+        <Image src='/k.png' alt='K-ICS' width={64} height={64} className='object-contain mb-6' />
         <h1 className='text-2xl sm:text-3xl font-semibold text-[var(--oc-text-strong)] mb-2 text-center'>
           {getGreeting()}
           {userName ? `, ${userName}` : ''}
@@ -127,7 +114,7 @@ const ChatWelcome: React.FC<ChatWelcomeProps> = ({
 
         <div className='mt-8 flex items-center gap-2 text-xs text-[var(--oc-text-weaker)]'>
           <span>Powered by</span>
-          <span className='font-medium text-[var(--oc-text-weak)]'>DB-GPT</span>
+          <span className='font-medium text-[var(--oc-text-weak)]'>K-ICS</span>
         </div>
       </div>
     </div>

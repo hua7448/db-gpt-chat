@@ -5,7 +5,7 @@ title: Environment Variables
 
 # Environment Variables
 
-Reference for commonly used environment variables in DB-GPT.
+Reference for commonly used environment variables in K-ICS.
 
 :::tip
 Most configuration is done through TOML config files. Environment variables are useful for secrets, Docker deployments, and overriding defaults.
@@ -55,7 +55,7 @@ Most configuration is done through TOML config files. Environment variables are 
 
 ## Using environment variables in TOML configs
 
-DB-GPT supports environment variable substitution in TOML config files:
+K-ICS supports environment variable substitution in TOML config files:
 
 ```toml
 [[models.llms]]

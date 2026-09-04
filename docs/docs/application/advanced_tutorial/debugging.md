@@ -1,12 +1,12 @@
 # Debugging
-DB-GPT provides a series of tools to help developers troubleshoot and solve some problems they may encounter.
+K-ICS provides a series of tools to help developers troubleshoot and solve some problems they may encounter.
 
 ## View Trace Logs With Command
 
-DB-GPT writes some key system runtime information to trace logs. By default, they are located in `logs/dbgpt*.jsonl`.
+K-ICS writes some key system runtime information to trace logs. By default, they are located in `logs/dbgpt*.jsonl`.
 
 
-DB-GPT also provides a command line tool `dbgpt trace` to help analyze these trace logs. You can check the specific usage through the following command:
+K-ICS also provides a command line tool `dbgpt trace` to help analyze these trace logs. You can check the specific usage through the following command:
 
 
 ```python

@@ -76,7 +76,6 @@ function SideBar() {
     pathname.startsWith('/observability');
   const { t, i18n } = useTranslation();
   const startNewTask = useStartNewTask();
-  const [logo, setLogo] = useState<string>('/logo_zh_latest.png');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [dialogueList, setDialogueList] = useState<IChatDialogueSchema[]>([]);
   const [loadingDialogues, setLoadingDialogues] = useState(false);
@@ -292,10 +291,6 @@ function SideBar() {
   }, [i18n.language]);
 
   useEffect(() => {
-    setLogo(mode === 'dark' ? '/logo_s_latest.png' : '/logo_zh_latest.png');
-  }, [mode]);
-
-  useEffect(() => {
     fetchDialogueList();
   }, [fetchDialogueList]);
 
@@ -306,7 +301,7 @@ function SideBar() {
         <div>
           <div className='flex flex-col items-center pb-2'>
             <Link href='/' className='flex justify-center items-center pb-2'>
-              <Image src='/LOGO_SMALL.png' alt='DB-GPT' width={40} height={40} />
+              <Image src='/k.png' alt='K-ICS' width={40} height={40} className='object-contain' />
             </Link>
             <Tooltip title={t('Show_Sidebar') || '展开侧栏'} placement='right'>
               <div
@@ -364,10 +359,10 @@ function SideBar() {
   // ============ EXPANDED SIDEBAR ============
   return (
     <div className='flex flex-col h-screen w-[240px] min-w-[240px] px-4 pt-4 bg-bar dark:bg-[#232734] animate-fade animate-duration-300'>
-      {/* LOGO + Collapse Toggle */}
+      {/* Brand + Collapse Toggle */}
       <div className='flex items-center justify-between p-2 pb-4'>
         <Link href='/' className='flex items-center'>
-          <Image src={logo} alt='DB-GPT' width={140} height={32} />
+          <Image src='/k.png' alt='K-ICS' width={40} height={40} className='object-contain' />
         </Link>
         <Tooltip title={t('Close_Sidebar') || '收起侧栏'}>
           <div

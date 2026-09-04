@@ -1,6 +1,6 @@
-# Multimodal Support in DB-GPT
+# Multimodal Support in K-ICS
 
-DB-GPT supports multimodal capabilities, allowing you to work with various data types such as text, images, and audio. This guide will help you set up and use multimodal features in DB-GPT.
+K-ICS supports multimodal capabilities, allowing you to work with various data types such as text, images, and audio. This guide will help you set up and use multimodal features in K-ICS.
 
 This guide includes run local model and proxy model.
 
@@ -51,9 +51,9 @@ You can run the model using the following command:
 uv run dbgpt start webserver --config {your_config_file}
 ```
 
-### Step 4: Use The Model In DB-GPT
+### Step 4: Use The Model In K-ICS
 
-Now, DB-GPT just support image input, and only the `Chat Normal` scenario is supported.
+Now, K-ICS just support image input, and only the `Chat Normal` scenario is supported.
 
 You can click the `+` button in the chat window to upload an image. Then type your question in the input box and hit enter. The model will process the image and provide a response based on the content of the image.
 
@@ -134,7 +134,7 @@ You can run the model using the following command:
 uv run dbgpt start webserver --config {your_config_file}
 ```
 
-### Step 4: Use The Model In DB-GPT
+### Step 4: Use The Model In K-ICS
 
 <p align="left">
   <img src={'/img/installation/advanced_usage/dbgpt-multimodal-proxy.jpg'} width="720px"/>

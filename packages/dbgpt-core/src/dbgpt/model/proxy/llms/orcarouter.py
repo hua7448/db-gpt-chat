@@ -19,8 +19,8 @@ from ..base import (
 from .chatgpt import OpenAICompatibleDeployModelParameters, OpenAILLMClient
 
 ORCAROUTER_HEADERS = {
-    "HTTP-Referer": "https://github.com/eosphoros-ai/DB-GPT",
-    "X-Title": "DB GPT",
+    "HTTP-Referer": "https://github.com/hua7448/db-gpt-chat",
+    "X-Title": "K-ICS",
 }
 
 if TYPE_CHECKING:

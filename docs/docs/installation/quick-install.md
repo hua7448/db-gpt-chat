@@ -1,9 +1,9 @@
 ---
 sidebar_position: 1
 title: Quick Install
-summary: "The fastest way to install DB-GPT with the installer script from the README"
+summary: "The fastest way to install K-ICS with the installer script from the README"
 read_when:
-  - You want the shortest path to a working DB-GPT web UI
+  - You want the shortest path to a working K-ICS web UI
   - You prefer the installer script over a manual source setup
 ---
 
@@ -11,13 +11,13 @@ import CommandCopyCard from "@site/src/components/mdx/CommandCopyCard";
 
 # Quick Install
 
-The fastest way to get DB-GPT running. The installer script prepares a local DB-GPT workspace, generates a provider profile, and gives you a ready-to-run webserver command.
+The fastest way to get K-ICS running. The installer script prepares a local K-ICS workspace, generates a provider profile, and gives you a ready-to-run webserver command.
 
 ## Recommended: installer script
 
-Use the installer script if you want the shortest path from zero to a working DB-GPT web UI.
+Use the installer script if you want the shortest path from zero to a working K-ICS web UI.
 
-<CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh | bash`} />
+<CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh | bash`} />
 
 ## System requirements
 
@@ -29,7 +29,7 @@ This quick-install flow is designed for:
 - an API key if you plan to use a hosted model provider immediately
 
 :::tip Best fit
-Choose this path if you want to try DB-GPT quickly without managing the repository structure yourself.
+Choose this path if you want to try K-ICS quickly without managing the repository structure yourself.
 :::
 
 ## Install with a provider profile
@@ -38,22 +38,22 @@ If you already know which provider you want, pass the profile and API key direct
 
 ### OpenAI-compatible profile
 
-<CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh \
+<CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh \
   | OPENAI_API_KEY=sk-xxx bash -s -- --profile openai`} />
 
 ### Kimi 2.5 via Moonshot API
 
-<CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh \
+<CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh \
   | MOONSHOT_API_KEY=sk-xxx bash -s -- --profile kimi`} />
 
 ### MiniMax via an OpenAI-compatible API
 
-<CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh \
+<CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh \
   | MINIMAX_API_KEY=sk-xxx bash -s -- --profile minimax`} />
 
 ## Reuse an existing local checkout
 
-Already have a local DB-GPT repository? Reuse it instead of cloning into `~/.dbgpt/DB-GPT`.
+Already have a local K-ICS repository? Reuse it instead of cloning into `~/.dbgpt/K-ICS`.
 
 ### Reuse local repo with OpenAI
 
@@ -74,16 +74,16 @@ Already have a local DB-GPT repository? Reuse it instead of cloning into `~/.dbg
 
 The installer script sets up the common runtime layout for you:
 
-- a DB-GPT checkout under `~/.dbgpt/DB-GPT` unless `--repo-dir` is used
+- a K-ICS checkout under `~/.dbgpt/K-ICS` unless `--repo-dir` is used
 - generated provider configs under `~/.dbgpt/configs/`
-- the DB-GPT home directory under `~/.dbgpt/`
+- the K-ICS home directory under `~/.dbgpt/`
 - a ready-to-run webserver command using the generated profile
 
-## Start DB-GPT after installation
+## Start K-ICS after installation
 
 After installation completes, start the webserver with the generated profile config:
 
-<CommandCopyCard command={`cd ~/.dbgpt/DB-GPT && uv run dbgpt start webserver --profile <profile>`} />
+<CommandCopyCard command={`cd ~/.dbgpt/K-ICS && uv run dbgpt start webserver --profile <profile>`} />
 
 Then open [http://localhost:5670](http://localhost:5670).
 
@@ -100,7 +100,7 @@ Your install is working if:
 If you prefer to inspect the installer before running it:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh -o install.sh
+curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh -o install.sh
 less install.sh
 bash install.sh --profile openai
 ```
@@ -122,6 +122,6 @@ Use [CLI Install](/docs/getting-started/cli-quickstart) or [Source Install](/doc
 
 Use [Source Install](/docs/getting-started/deploy/source-code). It exposes the full repository layout and `uv sync` workflow.
 
-### The install completed, but DB-GPT does not start cleanly
+### The install completed, but K-ICS does not start cleanly
 
 Check the generated config under `~/.dbgpt/configs/`, then see [Installation Issues](/docs/getting-started/troubleshooting/installation).

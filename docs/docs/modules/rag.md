@@ -15,7 +15,7 @@ Large Language Models (LLMs) are powerful, but they can only answer based on the
 
 **Retrieval-Augmented Generation (RAG)** bridges this gap by retrieving relevant information from external knowledge sources and feeding it as context to the LLM before generating a response. This ensures answers are grounded in real data rather than memorized patterns.
 
-DB-GPT implements a **Multi-Source RAG (MS-RAG)** framework that goes beyond basic document Q&A. It supports multiple knowledge sources (documents, URLs, databases, knowledge graphs, git repos), multiple indexing strategies, and integrates deeply with the DB-GPT agent and workflow ecosystem. Conversation over a knowledge base is performed by an **agentic RAG** loop — the agent can rewrite the query, retrieve multiple times, fuse and rerank results, and produce a cited answer — rather than a single retrieve-then-generate pass.
+K-ICS implements a **Multi-Source RAG (MS-RAG)** framework that goes beyond basic document Q&A. It supports multiple knowledge sources (documents, URLs, databases, knowledge graphs, git repos), multiple indexing strategies, and integrates deeply with the K-ICS agent and workflow ecosystem. Conversation over a knowledge base is performed by an **agentic RAG** loop — the agent can rewrite the query, retrieve multiple times, fuse and rerank results, and produce a cited answer — rather than a single retrieve-then-generate pass.
 
 # Architecture
 
@@ -84,7 +84,7 @@ Knowledge.load()  →  ChunkManager.split()  →  Assembler.persist()  →  Asse
 
 # Indexes
 
-DB-GPT selects which indexes to build per knowledge space via `index_methods` (a string list). Three index *methods* are persisted; **structural index** and **code graph** are two extra shapes layered on top. All indexes operate on the *same chunks*, so chunking quality dominates retrieval quality.
+K-ICS selects which indexes to build per knowledge space via `index_methods` (a string list). Three index *methods* are persisted; **structural index** and **code graph** are two extra shapes layered on top. All indexes operate on the *same chunks*, so chunking quality dominates retrieval quality.
 
 | Index | `index_methods` value | Built at sync time? | What it gives you |
 |---|---|---|---|
@@ -100,7 +100,7 @@ The knowledge-graph index is **not one graph but a family**: an LLM-extracted tr
 
 # Conversation: agentic RAG
 
-When a user asks a question over a knowledge base, DB-GPT does **not** do a single retrieve-then-generate. Instead an **agent** drives the loop:
+When a user asks a question over a knowledge base, K-ICS does **not** do a single retrieve-then-generate. Instead an **agent** drives the loop:
 
 ```
 question
@@ -118,7 +118,7 @@ fusion + rerank
 assemble context, generate answer with citations
 ```
 
-This agentic loop — multi-step retrieval, query rewriting, result fusion and reranking, and citation — is what lets DB-GPT answer complex or multi-part questions that a one-shot RAG cannot. The full flow is documented in [Agentic RAG Conversation Principles](/docs/design/agentic_rag_principles).
+This agentic loop — multi-step retrieval, query rewriting, result fusion and reranking, and citation — is what lets K-ICS answer complex or multi-part questions that a one-shot RAG cannot. The full flow is documented in [Agentic RAG Conversation Principles](/docs/design/agentic_rag_principles).
 
 ## Retrieval strategies
 
@@ -154,7 +154,7 @@ Beyond raw retrieval, the agentic loop provides advanced query processing:
 
 # Knowledge Sources
 
-DB-GPT supports loading knowledge from multiple source types. In the Web UI, you can select a datasource type when uploading:
+K-ICS supports loading knowledge from multiple source types. In the Web UI, you can select a datasource type when uploading:
 
 <p align="center">
   <img src={'/img/rag/knowledge_datasource_type.png'} width="720px" />
@@ -229,7 +229,7 @@ When creating a knowledge base, you choose which index store(s) to use — one o
 
 # Knowledge Graph RAG
 
-When the **KnowledgeGraph** index method is enabled, DB-GPT builds a **family of graphs**, not a single one. They share one build path and all support edge-traversal retrieval:
+When the **KnowledgeGraph** index method is enabled, K-ICS builds a **family of graphs**, not a single one. They share one build path and all support edge-traversal retrieval:
 
 1. **LLM triplet graph** — An LLM extracts `(subject, predicate, object)` triplets from each chunk; triplets are upserted as `entity -edge- entity` into the graph store (TuGraph, Neo4j, or Memgraph). Each edge remembers the chunk it came from, so answers stay citable.
 2. **Document–paragraph graph** — a structural skeleton of `document → chunk → chunk` (`include` / `next` edges) so retrieval can hop from an entity to the chunk and document that contain it. (With the community-summary variant, communities are also detected and summarised by an LLM.)
@@ -251,7 +251,7 @@ At query time, the `GraphRetriever` combines several sub-strategies:
 
 # Chunking Strategies
 
-Document chunking is a critical step in RAG quality — it is the shared foundation under every index. DB-GPT supports multiple chunking strategies:
+Document chunking is a critical step in RAG quality — it is the shared foundation under every index. K-ICS supports multiple chunking strategies:
 
 <p align="center">
   <img src={'/img/rag/file_chunk.png'} width="720px" />
@@ -282,7 +282,7 @@ Document chunking is a critical step in RAG quality — it is the shared foundat
 
 # Embedding Models
 
-DB-GPT supports a wide range of embedding models for converting text into vector representations:
+K-ICS supports a wide range of embedding models for converting text into vector representations:
 
 ## Local Models
 
@@ -339,7 +339,7 @@ Choose a chunking strategy and set parameters:
 
 ### Step 5 — Configure Retrieval Strategy (Optional)
 
-You can configure the retrieval strategy for your knowledge base. DB-GPT supports multiple retrieve modes — **Semantic**, **Keyword**, **Hybrid**, and **Tree** — to suit different query scenarios. Select the mode that best fits your use case in the knowledge base settings.
+You can configure the retrieval strategy for your knowledge base. K-ICS supports multiple retrieve modes — **Semantic**, **Keyword**, **Hybrid**, and **Tree** — to suit different query scenarios. Select the mode that best fits your use case in the knowledge base settings.
 
 <p align="center">
   <img src={'/img/rag/embedding_retrieve_mode.png'} width="720px" />
@@ -386,4 +386,4 @@ chunks = await retriever.aretrieve("What is the main topic?")
 | RAG Concepts | [RAG](/docs/getting-started/concepts/rag) |
 | Graph RAG Setup | [Graph RAG](/docs/application/graph_rag) |
 | AWEL RAG Operators | [AWEL](/docs/getting-started/concepts/awel) |
-| Source Code | [GitHub](https://github.com/eosphoros-ai/DB-GPT/tree/main/packages/dbgpt-core/src/dbgpt/rag) |
+| Source Code | [K-ICS GitHub](https://github.com/hua7448/db-gpt-chat/tree/main/packages/dbgpt-core/src/dbgpt/rag) |

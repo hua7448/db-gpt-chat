@@ -7,18 +7,18 @@ body:
     attributes:
       value: >
         Thank you for taking the time to report a bug. The `[Module Name]` in title see 
-        [here](https://github.com/eosphoros-ai/DB-GPT/labels?q=Module), 
+        [here](https://github.com/hua7448/db-gpt-chat/labels?q=Module),
         if you don't know the module name, you don't have to fill it in.
 
   - type: checkboxes
     attributes:
       label: Search before asking
       description: >
-        Please make sure to search in the [issues](https://github.com/eosphoros-ai/DB-GPT/issues?q=is%3Aissue)
+        Please make sure to search in the [issues](https://github.com/hua7448/db-gpt-chat/issues?q=is%3Aissue)
         first to see whether the same issue was reported already.
       options:
         - label: >
-            I had searched in the [issues](https://github.com/eosphoros-ai/DB-GPT/issues?q=is%3Aissue) and found
+            I had searched in the [issues](https://github.com/hua7448/db-gpt-chat/issues?q=is%3Aissue) and found
             no similar issues.
           required: true
 
@@ -52,9 +52,9 @@ body:
   - type: dropdown
     id: code-version
     attributes:
-      label: DB-GPT version
+      label: K-ICS version
       description: >
-        Which version of DB-GPT are you running?
+        Which version of K-ICS are you running?
       options:
         - main
         - latest release
@@ -84,13 +84,13 @@ body:
       description: Select your installation method
       options:
         - label: >
-            [Installation From Source](https://db-gpt.readthedocs.io/en/latest/getting_started/install/deploy/deploy.html)
+            [Installation From Source](https://github.com/hua7448/db-gpt-chat/blob/main/docs/docs/getting-started/deploy/source-code.md)
         - label: >
-            [Docker Installation](https://db-gpt.readthedocs.io/en/latest/getting_started/install/docker/docker.html)
+            [Docker Installation](https://github.com/hua7448/db-gpt-chat/blob/main/docs/docs/getting-started/deploy/docker.md)
         - label: >
-            [Docker Compose Installation](https://db-gpt.readthedocs.io/en/latest/getting_started/install/docker/docker.html)
+            [Docker Compose Installation](https://github.com/hua7448/db-gpt-chat/blob/main/docs/docs/getting-started/deploy/docker-compose.md)
         - label: >
-            [Cluster Installation](https://db-gpt.readthedocs.io/en/latest/getting_started/install/llm/cluster/model_cluster.html)
+            [Cluster Installation](https://github.com/hua7448/db-gpt-chat/blob/main/docs/docs/getting-started/deploy/cluster.md)
         - label: AutoDL Image
         - label: Other
 
@@ -151,7 +151,7 @@ body:
       label: How to reproduce
       description: >
         What should we do to reproduce the problem? If you are not able to provide a reproducible case,
-        please open a [Discussion](https://github.com/orgs/eosphoros-ai/discussions) instead.
+        please open a [Discussion](https://github.com/hua7448/db-gpt-chat/discussions) instead.
       placeholder: >
         Steps to reproduce the behavior:
 
@@ -177,7 +177,7 @@ body:
       label: Are you willing to submit PR?
       description: >
         It's completely optional, but if you're interested in contributing, we're here to help! 
-        If you have insights on the solution, that's even better. DB-GPT thrives on community support, 
+        If you have insights on the solution, that's even better. K-ICS thrives on community support,
         and we warmly welcome new contributors.
       options:
         - label: Yes I am willing to submit a PR!

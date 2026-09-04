@@ -855,7 +855,7 @@
                                 "optional": true,
                                 "default": null,
                                 "placeholder": null,
-                                "description": "大语言模型客户端，用于连接到大语言模型，若未提供，则使用 DB-GPT 部署的默认客户端。",
+                                "description": "大语言模型客户端，用于连接到大语言模型，若未提供，则使用 K-ICS 部署的默认客户端。",
                                 "value": null,
                                 "options": null
                             },
@@ -1400,7 +1400,7 @@
                                 "optional": true,
                                 "default": null,
                                 "placeholder": null,
-                                "description": "大语言模型客户端，用于连接到大语言模型，若未提供，则使用 DB-GPT 部署的默认客户端。",
+                                "description": "大语言模型客户端，用于连接到大语言模型，若未提供，则使用 K-ICS 部署的默认客户端。",
                                 "value": null,
                                 "options": null
                             }

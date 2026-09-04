@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 
 class Serve(BaseServe):
-    """Serve component for DB-GPT Agent observability."""
+    """Serve component for K-ICS Agent observability."""
 
     name = SERVE_APP_NAME
 

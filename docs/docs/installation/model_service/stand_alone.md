@@ -3,9 +3,9 @@
 ## Preparation
 ```bash
 # download source code
-git clone https://github.com/eosphoros-ai/DB-GPT.git
+git clone https://github.com/hua7448/db-gpt-chat.git K-ICS
 
-cd DB-GPT
+cd K-ICS
 ```
 
 ## Environment installation
@@ -120,4 +120,3 @@ Bot: Hello! How can I assist you today?
 
 You: 
 ```
-

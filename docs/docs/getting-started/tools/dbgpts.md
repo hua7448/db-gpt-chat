@@ -5,7 +5,7 @@ title: dbgpts Ecosystem
 
 # dbgpts Ecosystem
 
-**[dbgpts](https://github.com/eosphoros-ai/dbgpts)** is the official community repository of reusable components for DB-GPT — including apps, AWEL operators, workflow templates, and agents.
+**[dbgpts](https://github.com/eosphoros-ai/dbgpts)** is the official community repository of reusable components for K-ICS — including apps, AWEL operators, workflow templates, and agents.
 
 ## What's in dbgpts?
 
@@ -18,7 +18,7 @@ title: dbgpts Ecosystem
 
 ## Installation
 
-The `dbgpts` CLI is included when you install DB-GPT with the `dbgpts` extra:
+The `dbgpts` CLI is included when you install K-ICS with the `dbgpts` extra:
 
 ```bash
 uv sync --all-packages --extra "dbgpts" ...

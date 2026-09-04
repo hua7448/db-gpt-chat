@@ -2,7 +2,7 @@
 
 DuckDB is a high-performance analytical database system. It is designed to execute analytical SQL queries fast and efficiently, and it can also be used as an embedded analytical database.
 
-In this example, we will show how to use DuckDB as in DB-GPT Datasource. Using DuckDB to implement Datasource can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
+In this example, we will show how to use DuckDB as in K-ICS Datasource. Using DuckDB to implement Datasource can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
 
 ### Install Dependencies
 

@@ -12,7 +12,7 @@ Example:
         export API_SERVER_EMBEDDINGS_MODEL="text-embedding-ada-002"
         python examples/rag/rag_embedding_api_example.py
 
-    Test with DB-GPT `API Server
+    Test with K-ICS `API Server
     <https://docs.dbgpt.site/docs/installation/advanced_usage/OpenAI_SDK_call#start-apiserver>`_.
 
     .. code-block:: shell

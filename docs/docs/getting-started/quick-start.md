@@ -1,9 +1,9 @@
 ---
 sidebar_position: 2
 title: Getting Started
-summary: "Shortest path from clone to a working DB-GPT chat"
+summary: "Shortest path from clone to a working K-ICS chat"
 read_when:
-  - You want the first successful DB-GPT run with the least setup
+  - You want the first successful K-ICS run with the least setup
   - You need a concrete first-run checklist and quick verification
 ---
 
@@ -12,7 +12,7 @@ read_when:
 Goal: go from zero to a first working chat with minimal setup.
 
 :::info Fastest path
-Use an **API proxy** (OpenAI or DeepSeek) — no GPU required. You will have a working DB-GPT chat in under 5 minutes.
+Use an **API proxy** (OpenAI or DeepSeek) — no GPU required. You will have a working K-ICS chat in under 5 minutes.
 :::
 
 ## What you need
@@ -32,8 +32,8 @@ import TabItem from '@theme/TabItem';
 ### Step 1 — Clone the repository
 
 ```bash
-git clone https://github.com/eosphoros-ai/DB-GPT.git
-cd DB-GPT
+git clone git@github.com:hua7448/db-gpt-chat.git K-ICS
+cd K-ICS
 ```
 
 ### Step 2 — Install dependencies
@@ -170,7 +170,7 @@ uv run dbgpt start webserver --config configs/dbgpt-proxy-ollama.toml
 Open your browser and visit **[http://localhost:5670](http://localhost:5670)**.
 
 :::tip Verify it works
-If the Web UI loads and you can start a chat conversation, your DB-GPT is ready for use.
+If the Web UI loads and you can start a chat conversation, your K-ICS is ready for use.
 :::
 
 ## Verify
@@ -189,7 +189,7 @@ If the Web UI loads and you can start a chat conversation, your DB-GPT is ready 
   - Start here: [Model Providers](/docs/getting-started/providers/)
 - **Web UI does not load**
   - Confirm the server is listening on port `5670`
-  - Check the server logs in the terminal where you started DB-GPT
+  - Check the server logs in the terminal where you started K-ICS
 - **Local model does not respond**
   - Confirm Ollama or your local inference backend is already running
 

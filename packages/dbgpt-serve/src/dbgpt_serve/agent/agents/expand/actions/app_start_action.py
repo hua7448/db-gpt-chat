@@ -70,7 +70,7 @@ class StartAppAction(Action[LinkAppInput]):
                 return ActionOutput(
                     is_exe_success=False,
                     content=ai_message,
-                    view=f"[DBGPT Warning] Intent definition application cannot be "
+                    view=f"[K-ICS Warning] Intent definition application cannot be "
                     f"found [{param.app_code}]{param.app_name}",
                     have_retry=False,
                 )
@@ -78,7 +78,7 @@ class StartAppAction(Action[LinkAppInput]):
                 return ActionOutput(
                     is_exe_success=False,
                     content=ai_message,
-                    view="[DBGPT Warning] Native application connection startup is not"
+                    view="[K-ICS Warning] Native application connection startup is not"
                     " supported for the time being.",
                     have_retry=False,
                 )
@@ -104,7 +104,7 @@ class StartAppAction(Action[LinkAppInput]):
             return ActionOutput(
                 is_exe_success=False,
                 content=ai_message,
-                view=f"[DBGPT Warning] An exception occurred during the answering "
+                view=f"[K-ICS Warning] An exception occurred during the answering "
                 f"process of linked application [{param.app_code}]{param.intent},"
                 f"{str(e)}",
                 have_retry=False,

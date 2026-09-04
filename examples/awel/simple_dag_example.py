@@ -1,6 +1,6 @@
 """AWEL: Simple dag example
 
-DB-GPT will automatically load and execute the current file after startup.
+K-ICS will automatically load and execute the current file after startup.
 
 Example:
 

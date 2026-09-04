@@ -1139,7 +1139,7 @@ const Playground: NextPage = () => {
     return null;
   };
 
-  // Fetch Skills/DBGPTs list
+  // Fetch skills and installed K-ICS apps.
   const { data: skillsList, loading: _loadingSkills } = useRequest(async () => {
     try {
       const response = await axios.get(`${process.env.API_BASE_URL ?? ''}/api/v1/skills/list`);
@@ -3966,10 +3966,8 @@ const Playground: NextPage = () => {
             // Welcome Mode: Display Hero Section
             <div className='flex-1 flex flex-col items-center justify-center px-6 py-4 pb-20 overflow-y-auto'>
               <div className='w-full max-w-[860px] flex flex-col items-center animate-fade-in-up'>
-                <h1 className='text-4xl md:text-5xl font-serif text-gray-900 dark:text-gray-100 mb-4 text-center flex items-center gap-4'>
-                  <div className='w-12 h-12 rounded-xl bg-white dark:bg-[#1a1b1e] shadow-md flex items-center justify-center flex-shrink-0'>
-                    <Image src='/LOGO_SMALL.png' alt='DB-GPT' width={32} height={32} className='object-contain' />
-                  </div>
+                <Image src='/k.png' alt='K-ICS' width={72} height={72} className='object-contain mb-5' priority />
+                <h1 className='text-4xl md:text-5xl font-serif text-gray-900 dark:text-gray-100 mb-4 text-center'>
                   {t('home_title')}
                 </h1>
 
@@ -4802,7 +4800,7 @@ const Playground: NextPage = () => {
           {messages.length === 0 && (
             <div className='absolute bottom-6 left-0 right-0 flex justify-center'>
               <div className='bg-white/60 dark:bg-[#1e1f24]/60 backdrop-blur-sm px-5 py-2.5 rounded-full border border-gray-100 dark:border-gray-700/50 flex items-center gap-3 shadow-sm cursor-pointer hover:shadow-md hover:bg-white/90 dark:hover:bg-[#1e1f24]/90 transition-all duration-300'>
-                <Image src='/LOGO_SMALL.png' alt='DB-GPT' width={22} height={22} className='object-contain' />
+                <Image src='/k.png' alt='K-ICS' width={22} height={22} className='object-contain' />
                 <span className='text-xs font-medium text-gray-600 dark:text-gray-300 tracking-wide'>
                   {t('home_subtitle')}
                 </span>

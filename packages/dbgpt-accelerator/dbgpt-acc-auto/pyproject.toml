@@ -18,10 +18,10 @@ build-backend = "hatchling.build"
 packages = ["src/dbgpt_acc_auto"]
 
 [project.urls]
-Homepage = "https://github.com/eosphoros-ai/DB-GPT"
-Documentation = "http://docs.dbgpt.cn/docs/overview"
-Repository = "https://github.com/eosphoros-ai/DB-GPT.git"
-Issues = "https://github.com/eosphoros-ai/DB-GPT/issues"
+Homepage = "https://github.com/hua7448/db-gpt-chat"
+Documentation = "https://github.com/hua7448/db-gpt-chat/tree/main/docs"
+Repository = "https://github.com/hua7448/db-gpt-chat.git"
+Issues = "https://github.com/hua7448/db-gpt-chat/issues"
 
 [project.optional-dependencies]
 # Auto install dependencies

@@ -45,13 +45,13 @@ import { ConfigDetail } from "@site/src/components/mdx/ConfigDetail";
       "name": "fixed_bucket",
       "type": "string",
       "required": false,
-      "description": "The fixed bucket name to use. If set, all logical buckets in DB-GPT will be mapped to this bucket. We suggest you set this value to avoid bucket name conflicts."
+      "description": "The fixed bucket name to use. If set, all logical buckets in K-ICS will be mapped to this bucket. We suggest you set this value to avoid bucket name conflicts."
     },
     {
       "name": "bucket_prefix",
       "type": "string",
       "required": false,
-      "description": "The prefix of the bucket name. If set, all logical buckets in DB-GPT will be prefixed with this value. Just work when fixed_bucket is None.",
+      "description": "The prefix of the bucket name. If set, all logical buckets in K-ICS will be prefixed with this value. Just work when fixed_bucket is None.",
       "defaultValue": "dbgpt-fs-"
     },
     {

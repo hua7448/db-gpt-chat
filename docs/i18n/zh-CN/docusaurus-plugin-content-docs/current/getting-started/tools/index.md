@@ -1,15 +1,15 @@
 ---
 sidebar_position: 0
 title: Tools & Plugins
-summary: "理解 DB-GPT 如何通过 MCP、dbgpts 和 AWEL Flow 扩展 agent 能力"
+summary: "理解 K-ICS 如何通过 MCP、dbgpts 和 AWEL Flow 扩展 agent 能力"
 read_when:
-  - 你想为 DB-GPT 增加工具或外部集成
+  - 你想为 K-ICS 增加工具或外部集成
   - 你想理解 MCP、dbgpts 和 AWEL Flow 之间的区别
 ---
 
 # Tools & Plugins
 
-通过外部工具、社区包和可视化工作流扩展 DB-GPT。
+通过外部工具、社区包和可视化工作流扩展 K-ICS。
 
 - [MCP Protocol](/docs/getting-started/tools/mcp) —— 把外部工具和服务接入 agent
 - [dbgpts Ecosystem](/docs/getting-started/tools/dbgpts) —— 安装社区应用、operator、workflow 和 agent
@@ -17,7 +17,7 @@ read_when:
 
 ## Overview
 
-DB-GPT 目前主要支持三种扩展机制：
+K-ICS 目前主要支持三种扩展机制：
 
 | 机制 | 作用 | 适用场景 |
 |---|---|---|
@@ -38,7 +38,7 @@ graph LR
   Tools --> API[External APIs]
 ```
 
-DB-GPT 中的 agent 可以通过工具完成：
+K-ICS 中的 agent 可以通过工具完成：
 
 1. **访问数据** —— 查询数据库、搜索知识库
 2. **调用 API** —— 通过 MCP 与外部服务交互

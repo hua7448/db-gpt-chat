@@ -1,8 +1,8 @@
 # Keyword Search RAG User Manual
 
-In this example, we will show how to use the Full Text Search RAG framework in DB-GPT. Using traditional full-text search to implement RAG can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
+In this example, we will show how to use the Full Text Search RAG framework in K-ICS. Using traditional full-text search to implement RAG can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
 
-You can refer to the python example file `DB-GPT/examples/rag/keyword_rag_example.py` in the source code. This example demonstrates how to load knowledge from a document and persist it in a full text store. Subsequently, it recalls knowledge relevant to your question by searching for keywords in the full text store.
+You can refer to [`examples/rag/keyword_rag_example.py`](https://github.com/hua7448/db-gpt-chat/blob/main/examples/rag/keyword_rag_example.py) in the K-ICS source tree. This example demonstrates how to load knowledge from a document and persist it in a full text store. Subsequently, it recalls knowledge relevant to your question by searching for keywords in the full text store.
 
 ### The Constraints of Vector Retrieve 
 Vector Retrieve offers clear advantages, the technology does have some constraints:
@@ -48,7 +48,7 @@ Install Elasticsearch refer https://www.elastic.co/guide/en/elasticsearch/refere
 
 ### Keyword Search Configuration
 
-Set variables below in `.env` file, let DB-GPT know how to connect to Full Text Search Engine Storage.
+Set variables below in `.env` file, let K-ICS know how to connect to Full Text Search Engine Storage.
 
 ```
 ELASTICSEARCH_URL=localhost

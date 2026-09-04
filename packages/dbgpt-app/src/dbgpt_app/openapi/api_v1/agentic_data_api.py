@@ -2467,7 +2467,7 @@ print(json.dumps(summary, ensure_ascii=False))
         # Simplified prompt for skill mode - only skill-related tools +
         # html_interpreter
         workflow_prompt = f"""
-You are the DB-GPT intelligent assistant, executing the skill task selected by the user.
+You are the K-ICS intelligent assistant, executing the skill task selected by the user.
 Please always response in the same language as the user's input language.
 
 ## Autonomous Decision Principles
@@ -2650,7 +2650,7 @@ Thought/Action/Action Input format shown above.
             else ""
         )
         workflow_prompt = f"""
-You are the DB-GPT intelligent assistant, capable of autonomously selecting tools
+You are the K-ICS intelligent assistant, capable of autonomously selecting tools
 to solve problems based on user tasks.
 Please always response in the same language as the user's input language.
 

@@ -1899,7 +1899,7 @@ const TerminalRenderer: React.FC<{
         {/* Command line */}
         {command && (
           <div className='whitespace-pre-wrap break-all'>
-            <span className='text-[#3fb950] font-semibold'>dbgpt@sandbox</span>
+            <span className='text-[#3fb950] font-semibold'>k-ics@sandbox</span>
             <span className='text-[#8b949e]'>:</span>
             <span className='text-[#58a6ff] font-semibold'>~</span>
             <span className='text-[#8b949e]'>$ </span>
@@ -1916,7 +1916,7 @@ const TerminalRenderer: React.FC<{
         {/* Next prompt line / cursor */}
         {(resultText || errorText || command) && (
           <div className='mt-1'>
-            <span className='text-[#3fb950] font-semibold'>dbgpt@sandbox</span>
+            <span className='text-[#3fb950] font-semibold'>k-ics@sandbox</span>
             <span className='text-[#8b949e]'>:</span>
             <span className='text-[#58a6ff] font-semibold'>~</span>
             <span className='text-[#8b949e]'>$ </span>
@@ -1927,7 +1927,7 @@ const TerminalRenderer: React.FC<{
         {/* Empty state while running */}
         {!command && !resultText && !errorText && isRunning && (
           <div>
-            <span className='text-[#3fb950] font-semibold'>dbgpt@sandbox</span>
+            <span className='text-[#3fb950] font-semibold'>k-ics@sandbox</span>
             <span className='text-[#8b949e]'>:</span>
             <span className='text-[#58a6ff] font-semibold'>~</span>
             <span className='text-[#8b949e]'>$ </span>

@@ -1,42 +1,26 @@
-<img src="./assets/LOGO_SMALL.png" alt="Logo" style="vertical-align: middle; height: 24px;" /> DB-GPT: AI Native Data App Development framework with AWEL and Agents
-
-<p align="left">
-  <img src="./assets/dbgpt_vision.png" width="100%" />
-</p>
+# K-ICS: AI Native Data App Development framework with AWEL and Agents
 
 <div align="center">
   <p>
-    <a href="https://github.com/eosphoros-ai/DB-GPT">
-        <img alt="stars" src="https://img.shields.io/github/stars/eosphoros-ai/db-gpt?style=social" />
+    <a href="https://github.com/hua7448/db-gpt-chat">
+        <img alt="stars" src="https://img.shields.io/github/stars/hua7448/db-gpt-chat?style=social" />
     </a>
-    <a href="https://github.com/eosphoros-ai/DB-GPT">
-        <img alt="forks" src="https://img.shields.io/github/forks/eosphoros-ai/db-gpt?style=social" />
+    <a href="https://github.com/hua7448/db-gpt-chat">
+        <img alt="forks" src="https://img.shields.io/github/forks/hua7448/db-gpt-chat?style=social" />
     </a>
-    <a href="http://dbgpt.cn/">
-        <img alt="Official Website" src="https://img.shields.io/badge/Official%20website-DB--GPT-blue?style=flat&labelColor=3366CC" />
+    <a href="https://github.com/hua7448/db-gpt-chat">
+        <img alt="Official Website" src="https://img.shields.io/badge/K--ICS-Data%20Workbench-blue?style=flat&labelColor=3366CC" />
     </a>
     <a href="https://opensource.org/licenses/MIT">
-      <img alt="License: MIT" src="https://img.shields.io/github/license/eosphoros-ai/db-gpt?style=flat&labelColor=009966&color=009933" />
+      <img alt="License: MIT" src="https://img.shields.io/github/license/hua7448/db-gpt-chat?style=flat&labelColor=009966&color=009933" />
     </a>
-     <a href="https://github.com/eosphoros-ai/DB-GPT/releases">
-      <img alt="Release Notes" src="https://img.shields.io/github/v/release/eosphoros-ai/db-gpt?style=flat&labelColor=FF9933&color=FF6633" />
+     <a href="https://github.com/hua7448/db-gpt-chat/releases">
+      <img alt="Release Notes" src="https://img.shields.io/github/v/release/hua7448/db-gpt-chat?style=flat&labelColor=FF9933&color=FF6633" />
     </a>
-    <a href="https://github.com/eosphoros-ai/DB-GPT/issues">
-      <img alt="Open Issues" src="https://img.shields.io/github/issues-raw/eosphoros-ai/db-gpt?style=flat&labelColor=666666&color=333333" />
+    <a href="https://github.com/hua7448/db-gpt-chat/issues">
+      <img alt="Open Issues" src="https://img.shields.io/github/issues-raw/hua7448/db-gpt-chat?style=flat&labelColor=666666&color=333333" />
     </a>
-    <a href="https://x.com/DBGPT_AI">
-      <img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/DBGPT_AI" />
-    </a>
-    <a href="https://medium.com/@dbgpt0506">
-      <img alt="Medium Follow" src="https://badgen.net/badge/Medium/DB-GPT/333333?icon=medium&labelColor=666666" />
-    </a>
-    <a href="https://space.bilibili.com/3537113070963392">
-      <img alt="Bilibili Space" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.bilibili.com%2Fx%2Frelation%2Fstat%3Fvmid%3D3537113070963392&query=data.follower&style=flat&logo=bilibili&logoColor=white&label=Bilibili%20Fans&labelColor=F37697&color=6495ED" />
-    </a>
-    <a href="https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA">
-      <img alt="Slack" src="https://img.shields.io/badge/Slack-Join%20us-5d6b98?style=flat&logo=slack&labelColor=7d89b0" />
-    </a>
-    <a href="https://codespaces.new/eosphoros-ai/DB-GPT">
+    <a href="https://codespaces.new/hua7448/db-gpt-chat">
       <img alt="Open in GitHub Codespaces" src="https://github.com/codespaces/badge.svg" />
     </a>
   </p>
@@ -46,46 +30,42 @@
 [![简体中文](https://img.shields.io/badge/简体中文-d9d9d9?style=flat-square)](README.zh.md)
 [![日本語](https://img.shields.io/badge/日本語-d9d9d9?style=flat-square)](README.ja.md) 
 
-[**दस्तावेज़**](http://docs.dbgpt.cn/docs/overview/) | [**हमसे संपर्क करें**](https://github.com/eosphoros-ai/DB-GPT/blob/main/README.zh.md#%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC) | [**समुदाय**](https://github.com/eosphoros-ai/community) | [**पेपर**](https://arxiv.org/pdf/2312.17449.pdf)
+[**दस्तावेज़**](./docs/) | [**हमसे संपर्क करें**](https://github.com/hua7448/db-gpt-chat/blob/main/README.zh.md#%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC) | [**समुदाय**](https://github.com/hua7448/db-gpt-chat/discussions) | [**अपस्ट्रीम पेपर**](https://arxiv.org/pdf/2312.17449.pdf)
 
 </div>
 
-## DB-GPT क्या है?
+## K-ICS क्या है?
 
-🤖 **DB-GPT AWEL (Agentic Workflow Expression Language) और एजेंटों के साथ एक ओपन सोर्स AI नेटिव डेटा ऐप डेवलपमेंट फ्रेमवर्क है**। 
+🤖 **K-ICS AWEL (Agentic Workflow Expression Language) और एजेंटों के साथ एक ओपन सोर्स AI नेटिव डेटा ऐप डेवलपमेंट फ्रेमवर्क है**।
 
 उद्देश्य बड़े मॉडलों के क्षेत्र में बुनियादी ढांचा बनाना है, मल्टी-मॉडल प्रबंधन (SMMF), Text2SQL प्रभाव अनुकूलन, RAG फ्रेमवर्क और अनुकूलन, मल्टी-एजेंट फ्रेमवर्क सहयोग, AWEL (एजेंट वर्कफ्लो ऑर्केस्ट्रेशन) आदि जैसे कई तकनीकी क्षमताओं के विकास के माध्यम से। जो बड़े मॉडल अनुप्रयोगों को डेटा के साथ सरल और अधिक सुविधाजनक बनाता है।
 
 🚀 **डेटा 3.0 युग में, मॉडलों और डेटाबेस पर आधारित, उद्यम और डेवलपर्स कम कोड के साथ अपने खुद के विशेष अनुप्रयोग बना सकते हैं।**
 
 ### परिचय 
-DB-GPT की वास्तुकला निम्नलिखित चित्र में दिखाई गई है:
-
-<p align="center">
-  <img src="./assets/dbgpt.png" width="800" />
-</p>
+K-ICS की वास्तुकला निम्नलिखित चित्र में दिखाई गई है:
 
 कोर क्षमताओं में निम्नलिखित भाग शामिल हैं:
 
-- **RAG (Retrieval Augmented Generation)**: RAG वर्तमान में सबसे व्यावहारिक रूप से कार्यान्वित और अत्यंत आवश्यक डोमेन है। DB-GPT ने पहले ही RAG पर आधारित एक फ्रेमवर्क लागू किया है, जो उपयोगकर्ताओं को DB-GPT की RAG क्षमताओं का उपयोग करके ज्ञान-आधारित अनुप्रयोग बनाने की अनुमति देता है।
+- **RAG (Retrieval Augmented Generation)**: RAG वर्तमान में सबसे व्यावहारिक रूप से कार्यान्वित और अत्यंत आवश्यक डोमेन है। K-ICS ने पहले ही RAG पर आधारित एक फ्रेमवर्क लागू किया है, जो उपयोगकर्ताओं को K-ICS की RAG क्षमताओं का उपयोग करके ज्ञान-आधारित अनुप्रयोग बनाने की अनुमति देता है।
 
-- **GBI (Generative Business Intelligence)**: जनरेटिव BI DB-GPT परियोजना की कोर क्षमताओं में से एक है, जो उद्यम रिपोर्ट विश्लेषण और व्यावसायिक अंतर्दृष्टि बनाने के लिए आधारभूत डेटा बुद्धिमत्ता तकनीक प्रदान करता है।
+- **GBI (Generative Business Intelligence)**: जनरेटिव BI K-ICS परियोजना की कोर क्षमताओं में से एक है, जो उद्यम रिपोर्ट विश्लेषण और व्यावसायिक अंतर्दृष्टि बनाने के लिए आधारभूत डेटा बुद्धिमत्ता तकनीक प्रदान करता है।
 
-- **फाइन-ट्यूनिंग फ्रेमवर्क**: मॉडल फाइन-ट्यूनिंग किसी भी उद्यम के लिए लंबवत और विशिष्ट डोमेन में कार्यान्वित करने के लिए एक अनिवार्य क्षमता है। DB-GPT एक पूर्ण फाइन-ट्यूनिंग फ्रेमवर्क प्रदान करता है जो DB-GPT परियोजना के साथ सहज रूप से एकीकृत होता है। हालिया फाइन-ट्यूनिंग प्रयासों में, स्पाइडर डेटासेट पर आधारित एक सटीकता दर 82.5% हासिल की गई है।
+- **फाइन-ट्यूनिंग फ्रेमवर्क**: मॉडल फाइन-ट्यूनिंग किसी भी उद्यम के लिए लंबवत और विशिष्ट डोमेन में कार्यान्वित करने के लिए एक अनिवार्य क्षमता है। K-ICS एक पूर्ण फाइन-ट्यूनिंग फ्रेमवर्क प्रदान करता है जो K-ICS परियोजना के साथ सहज रूप से एकीकृत होता है। हालिया फाइन-ट्यूनिंग प्रयासों में, स्पाइडर डेटासेट पर आधारित एक सटीकता दर 82.5% हासिल की गई है।
 
-- **डेटा-ड्रिवन मल्टी-एजेंट फ्रेमवर्क**: DB-GPT एक डेटा-ड्रिवन स्व-विकासशील मल्टी-एजेंट फ्रेमवर्क प्रदान करता है, जिसका उद्देश्य निरंतर डेटा पर आधारित निर्णय लेना और निष्पादित करना है।
+- **डेटा-ड्रिवन मल्टी-एजेंट फ्रेमवर्क**: K-ICS एक डेटा-ड्रिवन स्व-विकासशील मल्टी-एजेंट फ्रेमवर्क प्रदान करता है, जिसका उद्देश्य निरंतर डेटा पर आधारित निर्णय लेना और निष्पादित करना है।
 
 - **डेटा फैक्टरी**: डेटा फैक्टरी मुख्य रूप से बड़े मॉडलों के युग में विश्वसनीय ज्ञान और डेटा को साफ करने और संसाधित करने के बारे में है।
 
-- **डेटा स्रोत**: विभिन्न डेटा स्रोतों को एकीकृत करना ताकि उत्पादन व्यावसायिक डेटा को DB-GPT की कोर क्षमताओं से सहज रूप से जोड़ा जा सके।
+- **डेटा स्रोत**: विभिन्न डेटा स्रोतों को एकीकृत करना ताकि उत्पादन व्यावसायिक डेटा को K-ICS की कोर क्षमताओं से सहज रूप से जोड़ा जा सके।
 
 #### सबमॉड्यूल
 - [DB-GPT-Hub](https://github.com/eosphoros-ai/DB-GPT-Hub) बड़े भाषा मॉडलों (LLMs) पर पर्यवेक्षित फाइन-ट्यूनिंग (SFT) लागू करके उच्च प्रदर्शन के साथ Text-to-SQL वर्कफ्लो।
 
-- [dbgpts](https://github.com/eosphoros-ai/dbgpts)  dbgpts आधिकारिक रिपॉजिटरी है जिसमें कुछ डेटा ऐप्स, AWEL ऑपरेटर्स, AWEL वर्कफ्लो टेम्प्लेट और एजेंट शामिल हैं जो DB-GPT पर बनाए गए हैं।
+- [dbgpts](https://github.com/eosphoros-ai/dbgpts)  dbgpts आधिकारिक रिपॉजिटरी है जिसमें कुछ डेटा ऐप्स, AWEL ऑपरेटर्स, AWEL वर्कफ्लो टेम्प्लेट और एजेंट शामिल हैं जो K-ICS पर बनाए गए हैं।
 
 #### डीपविकी
-- [DB-GPT](https://deepwiki.com/eosphoros-ai/DB-GPT)
+- [K-ICS](https://deepwiki.com/hua7448/db-gpt-chat)
 - [DB-GPT-HUB](https://deepwiki.com/eosphoros-ai/DB-GPT-Hub)
 - [dbgpts](https://deepwiki.com/eosphoros-ai/dbgpts)
 
@@ -109,12 +89,12 @@ DB-GPT की वास्तुकला निम्नलिखित चि�
 
 [Text2SQL फाइनट्यून के बारे में अधिक जानकारी](https://github.com/eosphoros-ai/DB-GPT-Hub)
 
-- [DB-GPT-Plugins](https://github.com/eosphoros-ai/DB-GPT-Plugins) DB-GPT प्लगइन्स जो Auto-GPT प्लगइन को सीधे चला सकते हैं
+- [DB-GPT-Plugins](https://github.com/eosphoros-ai/DB-GPT-Plugins) K-ICS प्लगइन्स जो Auto-GPT प्लगइन को सीधे चला सकते हैं
 - [GPT-Vis](https://github.com/eosphoros-ai/GPT-Vis) विज़ुअलाइज़ेशन प्रोटोकॉल
 
 ### AI-नेटिव डेटा ऐप 
 ---
-- 🔥🔥🔥 [रिलीज़ V0.7.0 | महत्वपूर्ण अपग्रेड का एक सेट](http://docs.dbgpt.cn/blog/db-gpt-v070-release)
+- 🔥🔥🔥 [रिलीज़ V0.7.0 | महत्वपूर्ण अपग्रेड का एक सेट](./docs/blog/2025-03-24-dbgpt-v0.7.0-release.md)
   - [MCP प्रोटोकॉल का समर्थन](https://github.com/eosphoros-ai/DB-GPT/pull/2497)
   - [DeepSeek R1 का समर्थन](https://github.com/deepseek-ai/DeepSeek-R1)
   - [QwQ-32B का समर्थन](https://huggingface.co/Qwen/QwQ-32B)
@@ -127,7 +107,7 @@ DB-GPT की वास्तुकला निम्नलिखित चि�
     - [dbgpt-ext](./packages/dbgpt-ext)
 ---
 
-## क्यों DB-GPT?
+## क्यों K-ICS?
 
 ### 1. एजेंटिक डेटा विश्लेषण
 कार्यों की योजना बनाएं, कार्य को चरणों में विभाजित करें, टूल्स को कॉल करें, और विश्लेषण वर्कफ़्लो को अंत तक पूरा करें।
@@ -159,19 +139,18 @@ DB-GPT की वास्तुकला निम्नलिखित चि�
 ![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
-[**उपयोग ट्यूटोरियल**](http://docs.dbgpt.cn/docs/overview)
-- [**इंस्टॉल**](http://docs.dbgpt.cn/docs/installation)
-  - [Docker](http://docs.dbgpt.cn/docs/installation/docker)
-  - [सोर्स कोड](http://docs.dbgpt.cn/docs/getting-started/deploy/source-code)
-- [**क्विकस्टार्ट**](http://docs.dbgpt.cn/docs/overview)
-- [**अनुप्रयोग**](http://docs.dbgpt.cn/docs/use_cases)
-  - [डेवलपमेंट गाइड](http://docs.dbgpt.cn/docs/cookbook/app/data_analysis_app_develop) 
-  - [AWEL फ्लो उपयोग](http://docs.dbgpt.cn/docs/application/awel_flow_usage)
-- [**डिबगिंग**](http://docs.dbgpt.cn/docs/operation_manual/advanced_tutorial/debugging)
-- [**उन्नत उपयोग**](http://docs.dbgpt.cn/docs/application/advanced_tutorial/cli)
-  - [SMMF](http://docs.dbgpt.cn/docs/application/advanced_tutorial/smmf)
-  - [फाइनट्यून](http://docs.dbgpt.cn/docs/application/fine_tuning_manual/dbgpt_hub)
-  - [AWEL](http://docs.dbgpt.cn/docs/awel/tutorial)
+[**उपयोग ट्यूटोरियल**](./docs/)
+- [**इंस्टॉल**](./docs/docs/installation/index.md)
+  - [Docker](./docs/docs/installation/docker.md)
+  - [सोर्स कोड](./docs/docs/installation/sourcecode.md)
+- [**क्विकस्टार्ट**](./docs/docs/quickstart.md)
+- [**अनुप्रयोग**](./docs/docs/application/apps/app_explore.md)
+  - [डेवलपमेंट गाइड](./docs/docs/cookbook/app/data_analysis_app_develop.md)
+  - [AWEL फ्लो उपयोग](./docs/docs/application/awel.md)
+- [**डिबगिंग**](./docs/docs/application/advanced_tutorial/debugging.md)
+- [**उन्नत उपयोग**](./docs/docs/application/advanced_tutorial/cli.md)
+  - [मॉडल प्रबंधन](./docs/docs/application/llms.md)
+  - [फाइनट्यून](./docs/docs/application/fine_tuning_manual/text_to_sql.md)
 
 
 ## विशेषताएं
@@ -179,11 +158,11 @@ DB-GPT की वास्तुकला निम्नलिखित चि�
 वर्तमान में, हमने अपनी वर्तमान क्षमताओं को प्रदर्शित करने के लिए कई प्रमुख विशेषताओं का परिचय दिया है:
 - **प्राइवेट डोमेन Q&A & डेटा प्रोसेसिंग**
 
-  DB-GPT परियोजना ज्ञान आधार निर्माण में सुधार करने और संरचित और असंरचित डेटा दोनों के कुशल भंडारण और पुनर्प्राप्ति को सक्षम करने के लिए डिज़ाइन की गई कार्यक्षमताओं की एक श्रृंखला प्रदान करती है। इन कार्यक्षमताओं में कई फ़ाइल स्वरूपों को अपलोड करने के लिए अंतर्निहित समर्थन, कस्टम डेटा एक्सट्रैक्शन प्लग-इन्स को एकीकृत करने की क्षमता, और बड़ी मात्रा में जानकारी को प्रभावी ढंग से प्रबंधित करने के लिए एकीकृत वेक्टर भंडारण और पुनर्प्राप्ति क्षमताएं शामिल हैं।
+  K-ICS परियोजना ज्ञान आधार निर्माण में सुधार करने और संरचित और असंरचित डेटा दोनों के कुशल भंडारण और पुनर्प्राप्ति को सक्षम करने के लिए डिज़ाइन की गई कार्यक्षमताओं की एक श्रृंखला प्रदान करती है। इन कार्यक्षमताओं में कई फ़ाइल स्वरूपों को अपलोड करने के लिए अंतर्निहित समर्थन, कस्टम डेटा एक्सट्रैक्शन प्लग-इन्स को एकीकृत करने की क्षमता, और बड़ी मात्रा में जानकारी को प्रभावी ढंग से प्रबंधित करने के लिए एकीकृत वेक्टर भंडारण और पुनर्प्राप्ति क्षमताएं शामिल हैं।
 
 - **मल्टी-डेटा स्रोत & GBI (जनरेटिव बिजनेस इंटेलिजेंस)**
 
-  DB-GPT परियोजना Excel, डेटाबेस और डेटा गोदाम सहित विविध डेटा स्रोतों के साथ सहज प्राकृतिक भाषा इंटरैक्शन को सुविधाजनक बनाती है। यह इन स्रोतों से जानकारी को क्वेरी और पुनर्प्राप्त करने की प्रक्रिया को सरल बनाता है, उपयोगकर्ताओं को सहज बातचीत में संलग्न होने और अंतर्दृष्टि प्राप्त करने में सक्षम बनाता है। इसके अलावा, DB-GPT विश्लेषणात्मक रिपोर्ट उत्पन्न करने का समर्थन करता है, उपयोगकर्ताओं को मूल्यवान डेटा सारांश और व्याख्याएं प्रदान करता है।
+  K-ICS परियोजना Excel, डेटाबेस और डेटा गोदाम सहित विविध डेटा स्रोतों के साथ सहज प्राकृतिक भाषा इंटरैक्शन को सुविधाजनक बनाती है। यह इन स्रोतों से जानकारी को क्वेरी और पुनर्प्राप्त करने की प्रक्रिया को सरल बनाता है, उपयोगकर्ताओं को सहज बातचीत में संलग्न होने और अंतर्दृष्टि प्राप्त करने में सक्षम बनाता है। इसके अलावा, K-ICS विश्लेषणात्मक रिपोर्ट उत्पन्न करने का समर्थन करता है, उपयोगकर्ताओं को मूल्यवान डेटा सारांश और व्याख्याएं प्रदान करता है।
 
 - **मल्टी-एजेंट और प्लगइन्स**
 
@@ -305,14 +284,14 @@ DB-GPT की वास्तुकला निम्नलिखित चि�
       </tbody>
     </table>
 
-- [अधिक समर्थित LLMs](http://docs.dbgpt.cn/docs/modules/smmf)
+  - [अधिक समर्थित LLMs](./docs/docs/application/llms.md)
 
 - **गोपनीयता और सुरक्षा**
   
   हम विभिन्न तकनीकों के कार्यान्वयन के माध्यम से डेटा की गोपनीयता और सुरक्षा सुनिश्चित करते हैं, जिसमें निजीकरण बड़े मॉडल और प्रॉक्सी डेसेंसिटाइज़ेशन शामिल हैं।
 
 - समर्थित डेटा स्रोत
-  - [डेटा स्रोत](http://docs.dbgpt.cn/docs/modules/connections)
+  - [डेटा स्रोत](./docs/docs/application/datasources.md)
 
 ## छवि
 🌐 [AutoDL छवि](https://www.codewithgpu.com/i/eosphoros-ai/DB-GPT/dbgpt)
@@ -321,11 +300,11 @@ DB-GPT की वास्तुकला निम्नलिखित चि�
 
 ## योगदान
 
-- नए योगदान के लिए विस्तृत दिशानिर्देशों की जांच करने के लिए, कृपया [कैसे योगदान करें](https://github.com/eosphoros-ai/DB-GPT/blob/main/CONTRIBUTING.md) देखें
+- नए योगदान के लिए विस्तृत दिशानिर्देशों की जांच करने के लिए, कृपया [कैसे योगदान करें](https://github.com/hua7448/db-gpt-chat/blob/main/CONTRIBUTING.md) देखें
 
 ### योगदानकर्ता दीवार
-<a href="https://github.com/eosphoros-ai/DB-GPT/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=eosphoros-ai/DB-GPT&max=200" />
+<a href="https://github.com/hua7448/db-gpt-chat/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=hua7448/db-gpt-chat&max=200" />
 </a>
 
 
@@ -336,9 +315,9 @@ MIT लाइसेंस (MIT)
 - [डिस्क्लेमर](./DISCKAIMER.md)
 
 ## उद्धरण
-यदि आप DB-GPT की समग्र वास्तुकला को समझना चाहते हैं, तो कृपया <a href="https://arxiv.org/abs/2312.17449" target="_blank">पेपर</a> और <a href="https://arxiv.org/abs/2404.10209" target="_blank">पेपर</a> का उद्धरण करें
+यदि आप K-ICS की समग्र वास्तुकला को समझना चाहते हैं, तो कृपया <a href="https://arxiv.org/abs/2312.17449" target="_blank">पेपर</a> और <a href="https://arxiv.org/abs/2404.10209" target="_blank">पेपर</a> का उद्धरण करें
 
-यदि आप एजेंट विकास के लिए DB-GPT का उपयोग सीखना चाहते हैं, तो कृपया <a href="https://arxiv.org/abs/2412.13520" target="_blank">पेपर</a> का उद्धरण करें
+यदि आप एजेंट विकास के लिए K-ICS का उपयोग सीखना चाहते हैं, तो कृपया <a href="https://arxiv.org/abs/2412.13520" target="_blank">पेपर</a> का उद्धरण करें
 ```bibtex
 @article{xue2023dbgpt,
       title={DB-GPT: Empowering Database Interactions with Private Large Language Models}, 
@@ -367,12 +346,12 @@ MIT लाइसेंस (MIT)
 
 
 ## संपर्क जानकारी
-DB-GPT में योगदान करने वाले सभी लोगों को धन्यवाद! आपकी विचार, कोड, टिप्पणियां, और यहां तक कि घटनाओं और सोशल प्लेटफार्मों पर उन्हें साझा करना DB-GPT को बेहतर बना सकता है।
+K-ICS में योगदान करने वाले सभी लोगों को धन्यवाद! आपकी विचार, कोड, टिप्पणियां, और यहां तक कि घटनाओं और सोशल प्लेटफार्मों पर उन्हें साझा करना K-ICS को बेहतर बना सकता है।
 हम एक समुदाय बनाने पर काम कर रहे हैं, यदि आपके पास समुदाय बनाने के लिए कोई विचार हैं, तो कृपया हमसे संपर्क करें।  
 
-- [GitHub मुद्दे](https://github.com/eosphoros-ai/DB-GPT/issues) ⭐️: GB-DPT का उपयोग करने के बारे में प्रश्नों के लिए, CONTRIBUTING देखें।  
+- [GitHub मुद्दे](https://github.com/hua7448/db-gpt-chat/issues) ⭐️: K-ICS का उपयोग करने के बारे में प्रश्नों के लिए, CONTRIBUTING देखें।
 - [GitHub चर्चाएं](https://github.com/orgs/eosphoros-ai/discussions) ⭐️: अपना अनुभव या अद्वितीय ऐप्स साझा करें।  
-- [ट्विटर](https://x.com/DBGPT_AI) ⭐️: कृपया हमसे बात करने के लिए स्वतंत्र महसूस करें।  
+- [GitHub Discussions](https://github.com/hua7448/db-gpt-chat/discussions): कृपया हमसे बात करने के लिए स्वतंत्र महसूस करें。
 
 
-[![स्टार इतिहास चार्ट](https://api.star-history.com/svg?repos=csunny/DB-GPT&type=Date)](https://star-history.com/#csunny/DB-GPT)
+[![स्टार इतिहास चार्ट](https://api.star-history.com/svg?repos=hua7448/db-gpt-chat&type=Date)](https://star-history.com/#hua7448/db-gpt-chat)

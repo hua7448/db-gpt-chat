@@ -444,22 +444,6 @@ img:not(.navbar__logo img):not(.menu__list-item-collapsible img):not(.footer img
   margin: 0 auto;
 }
 
-@keyframes floating {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
-}
-
-.homepage-hero-logo {
-  width: min(420px, 70vw);
-  height: auto;
-  margin-bottom: 0.5rem;
-  border: none !important;
-  box-shadow: none !important;
-  animation: floating 6s ease-in-out infinite;
-  filter: drop-shadow(0 15px 30px rgba(15, 107, 76, 0.25));
-}
-
 .homepage-hero-title {
   font-size: clamp(2.5rem, 6vw, 3.5rem);
   font-weight: 700;
@@ -676,11 +660,6 @@ img:not(.navbar__logo img):not(.menu__list-item-collapsible img):not(.footer img
 @media (max-width: 768px) {
   .homepage-hero {
     padding: 2.5rem 1.5rem 2rem;
-  }
-
-  .homepage-hero-logo {
-    width: min(320px, 80vw);
-    height: auto;
   }
 
   .homepage-content {

@@ -2,11 +2,13 @@ import { ReadOutlined, SmileOutlined } from '@ant-design/icons';
 import { FloatButton } from 'antd';
 import React from 'react';
 
+const docsUrl = process.env.NEXT_PUBLIC_K_ICS_DOCS_URL || 'https://github.com/hua7448/db-gpt-chat/tree/main/docs';
+
 const FloatHelper: React.FC = () => {
   return (
     <div className='fixed right-4 md:right-6 bottom-[240px] md:bottom-[220px] z-[997]'>
       <FloatButton.Group trigger='hover' icon={<SmileOutlined />}>
-        <FloatButton icon={<ReadOutlined />} href='http://docs.dbgpt.cn' target='_blank' tooltip='Documents' />
+        <FloatButton icon={<ReadOutlined />} href={docsUrl} target='_blank' tooltip='Documents' />
       </FloatButton.Group>
     </div>
   );

@@ -5,7 +5,7 @@ title: 安装问题
 
 # 安装问题
 
-这里整理了 DB-GPT 安装过程中常见的问题及对应的解决方法。
+这里整理了 K-ICS 安装过程中常见的问题及对应的解决方法。
 
 ## Python 版本错误
 
@@ -209,5 +209,5 @@ mysql -h127.0.0.1 -uroot -p < ./assets/schema/dbgpt.sql
 ## 还是没解决？
 
 - 查看更详细的 [FAQ](/docs/faq/install)
-- 搜索 [GitHub Issues](https://github.com/eosphoros-ai/DB-GPT/issues)
+- 搜索 [K-ICS GitHub Issues](https://github.com/hua7448/db-gpt-chat/issues)
 - 在 [GitHub Discussions](https://github.com/orgs/eosphoros-ai/discussions) 中提问

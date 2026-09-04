@@ -5,13 +5,13 @@ title: vLLM
 
 # vLLM
 
-配置 DB-GPT 使用 [vLLM](https://docs.vllm.ai/) 在 NVIDIA GPU 上进行高吞吐本地推理。
+配置 K-ICS 使用 [vLLM](https://docs.vllm.ai/) 在 NVIDIA GPU 上进行高吞吐本地推理。
 
 ## 前置条件
 
 - 安装了 CUDA 12.1+ 的 **NVIDIA GPU**
 - 模型所需显存足够（7B 模型通常至少 8 GB+）
-- 已安装带 `vllm` 扩展的 DB-GPT
+- 已安装带 `vllm` 扩展的 K-ICS
 
 ## 安装依赖
 

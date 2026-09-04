@@ -5,12 +5,12 @@ title: OpenAI
 
 # OpenAI
 
-Configure DB-GPT to use OpenAI's GPT models and embedding models.
+Configure K-ICS to use OpenAI's GPT models and embedding models.
 
 ## Prerequisites
 
 - An [OpenAI API key](https://platform.openai.com/api-keys)
-- DB-GPT installed with `proxy_openai` extra
+- K-ICS installed with `proxy_openai` extra
 
 ## Install dependencies
 

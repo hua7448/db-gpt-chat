@@ -1,4 +1,4 @@
-# DB-GPT Sandbox Agent 架构
+# K-ICS Sandbox Agent 架构
 
 本项目实现了一个可扩展的多容器/本地沙箱执行框架，支持 Python、Shell、Node.js 等多语言代码的有状态执行，统一接口、插件化扩展、依赖安装、环境变更等能力。
 

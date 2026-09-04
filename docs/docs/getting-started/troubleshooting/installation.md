@@ -5,7 +5,7 @@ title: Installation Issues
 
 # Installation Issues
 
-Common problems during DB-GPT installation and how to fix them.
+Common problems during K-ICS installation and how to fix them.
 
 ## Python version errors
 
@@ -209,5 +209,5 @@ mysql -h127.0.0.1 -uroot -p < ./assets/schema/dbgpt.sql
 ## Still stuck?
 
 - Check the detailed [FAQ](/docs/faq/install) for more solutions
-- Search [GitHub Issues](https://github.com/eosphoros-ai/DB-GPT/issues)
+- Search [K-ICS GitHub Issues](https://github.com/hua7448/db-gpt-chat/issues)
 - Ask in [GitHub Discussions](https://github.com/orgs/eosphoros-ai/discussions)

@@ -1,21 +1,21 @@
-# DB-GPT 数据分析应用实践案例
+# K-ICS 数据分析应用实践案例
 
-本实践案例旨在帮助入门者使用 DB-GPT 创建数据分析的多智能体应用对 Superstore 数据集进行分析。通过本案例，您将学会如何部署项目、配置环境、准备数据，并成功运行针对 Superstore 销售数据的分析应用。
+本实践案例旨在帮助入门者使用 K-ICS 创建数据分析的多智能体应用对 Superstore 数据集进行分析。通过本案例，您将学会如何部署项目、配置环境、准备数据，并成功运行针对 Superstore 销售数据的分析应用。
 
 ## 1. 项目部署
 
 ### 1.1 克隆代码库
 
-首先，从 GitHub 克隆 DB-GPT 项目代码：
+首先，从 GitHub 克隆 K-ICS 项目代码：
 
 ```bash
-git clone https://github.com/eosphoros-ai/DB-GPT.git
-cd DB-GPT
+git clone https://github.com/hua7448/db-gpt-chat.git K-ICS
+cd K-ICS
 ```
 
 ### 1.2 环境准备
 
-DB-GPT 支持多种部署方式，推荐使用 uv 工具进行依赖管理：
+K-ICS 支持多种部署方式，推荐使用 uv 工具进行依赖管理：
 
 ```bash
 # 安装 uv 工具
@@ -196,7 +196,7 @@ provider = "hf"
 
 ## 4. 数据分析
 
-使用配置文件启动 DB-GPT 服务：
+使用配置文件启动 K-ICS 服务：
 
 ```bash
 # 使用 OpenAI 代理模型配置启动

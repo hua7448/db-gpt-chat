@@ -1,10 +1,10 @@
 ---
 id: docker-build-guide
-title: DB-GPT Docker Build Guide
+title: K-ICS Docker Build Guide
 sidebar_label: Docker Build Guide
-description: Comprehensive guide for building DB-GPT Docker images with various configurations
+description: Comprehensive guide for building K-ICS Docker images with various configurations
 keywords:
-  - DB-GPT
+  - K-ICS
   - Docker
   - Build
   - CUDA
@@ -17,13 +17,13 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-# DB-GPT Docker Build Guide
+# K-ICS Docker Build Guide
 
-This guide provides comprehensive instructions for building DB-GPT Docker images with various configurations using the `docker/base/build_image.sh` script.
+This guide provides comprehensive instructions for building K-ICS Docker images with various configurations using the `docker/base/build_image.sh` script.
 
 ## Overview
 
-The DB-GPT build script allows you to create Docker images tailored to your specific requirements. You can choose from predefined installation modes or customize the build with specific extras, environment variables, and other settings.
+The K-ICS build script allows you to create Docker images tailored to your specific requirements. You can choose from predefined installation modes or customize the build with specific extras, environment variables, and other settings.
 
 ## Available Installation Modes
 
@@ -97,7 +97,7 @@ bash docker/base/build_image.sh --help
 
 ### Python Version
 
-DB-GPT requires Python 3.10 or higher. The default is Python 3.11, but you can specify a different version:
+K-ICS requires Python 3.10 or higher. The default is Python 3.11, but you can specify a different version:
 
 ```bash
 bash docker/base/build_image.sh --python-version 3.10
@@ -189,11 +189,11 @@ Here are some useful extras you can add:
 | `llama_cpp` | Llama-cpp Python bindings |
 | `llama_cpp_server` | Llama-cpp HTTP server |
 
-You can run `uv run install_help.py list` in your local DB-GPT repository to see all available extras.
+You can run `uv run install_help.py list` in your local K-ICS repository to see all available extras.
 
 ### Environment Variables
 
-DB-GPT build supports environment variables for specialized builds. The main environment variable used is `CMAKE_ARGS` which is particularly important for Llama-cpp compilation.
+K-ICS build supports environment variables for specialized builds. The main environment variable used is `CMAKE_ARGS` which is particularly important for Llama-cpp compilation.
 
 <Tabs>
   <TabItem value="override-env" label="Override Env Vars" default>
@@ -234,7 +234,7 @@ bash docker/base/build_image.sh --dockerfile Dockerfile.custom
 
 ## Example Scenarios
 
-### Enterprise DB-GPT with PostgreSQL and Elasticsearch
+### Enterprise K-ICS with PostgreSQL and Elasticsearch
 
 Build a full-featured enterprise version with PostgreSQL and Elasticsearch support:
 
@@ -335,6 +335,6 @@ bash docker/base/build_image.sh --network host
 
 ## Additional Resources
 
-- [DB-GPT Documentation](https://github.com/eosphoros-ai/DB-GPT)
+- [K-ICS Documentation](https://github.com/hua7448/db-gpt-chat)
 - [Docker Documentation](https://docs.docker.com/)
 - [CUDA Documentation](https://docs.nvidia.com/cuda/)

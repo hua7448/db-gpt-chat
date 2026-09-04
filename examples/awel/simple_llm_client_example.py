@@ -1,6 +1,6 @@
 """AWEL: Simple llm client example
 
-    DB-GPT will automatically load and execute the current file after startup.
+    K-ICS will automatically load and execute the current file after startup.
 
     Examples:
 
@@ -121,5 +121,5 @@ if __name__ == "__main__":
         dags = [client_generate_dag, client_count_token_dag]
         setup_dev_environment(dags, port=5555)
     else:
-        # Production mode, DB-GPT will automatically load and execute the current file after startup.
+        # Production mode, K-ICS will automatically load and execute the current file after startup.
         pass

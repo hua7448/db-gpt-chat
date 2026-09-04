@@ -5,12 +5,12 @@ title: SiliconFlow
 
 # SiliconFlow
 
-Configure DB-GPT to use SiliconFlow's hosted model API. SiliconFlow provides access to multiple open-source models through a unified API, hosted in China.
+Configure K-ICS to use SiliconFlow's hosted model API. SiliconFlow provides access to multiple open-source models through a unified API, hosted in China.
 
 ## Prerequisites
 
 - A [SiliconFlow API key](https://siliconflow.cn/)
-- DB-GPT installed with `proxy_openai` extra
+- K-ICS installed with `proxy_openai` extra
 
 ## Install dependencies
 

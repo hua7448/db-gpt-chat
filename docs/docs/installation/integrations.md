@@ -1,6 +1,6 @@
-# DB-GPT Integrations
+# K-ICS Integrations
 
-DB-GPT integrates with many datasources and rag storage providers.
+K-ICS integrates with many datasources and rag storage providers.
 
 Integration Packages
 

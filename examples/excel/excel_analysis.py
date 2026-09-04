@@ -43,7 +43,7 @@ def query_excel():
     try:
         df = pd.read_excel(file_path)
         # Placeholder logic for querying the Excel file:
-        # This should be replaced with DB-GPT integration for natural language queries.
+        # This should be replaced with K-ICS integration for natural language queries.
         response = f"Query on {len(df)} rows completed."
         return jsonify({"query_result": response})
     except Exception as e:

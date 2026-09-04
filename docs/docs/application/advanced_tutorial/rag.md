@@ -1,8 +1,7 @@
 # RAG Parameter Adjustment
 Each knowledge space supports argument customization, including the relevant arguments for vector retrieval and the arguments for knowledge question-answering prompts.
 
-As shown in the figure below, clicking on the "Knowledge" will trigger a pop-up dialog box. Click the "Arguments" button to enter the parameter tuning interface.
-![image](https://github.com/eosphoros-ai/DB-GPT/assets/13723926/f02039ea-01d7-493a-acd9-027020d54267)
+Open **Knowledge**, select a knowledge space, and choose **Arguments** to configure its retrieval, prompt, and summary settings. Labels can vary slightly between releases.
 
 
 <Tabs
@@ -13,8 +12,6 @@ As shown in the figure below, clicking on the "Knowledge" will trigger a pop-up 
     {label: 'Summary Argument', value: 'Summary'},
   ]}>
   <TabItem value="Embedding" label="Embedding Argument">
-
-![image](https://github.com/eosphoros-ai/DB-GPT/assets/13723926/8a69aba0-3b28-449d-8fd8-ce5bf8dbf7fc)
 
 :::tip Embedding Arguments
 * topk:the top k vectors based on similarity score.
@@ -28,8 +25,6 @@ As shown in the figure below, clicking on the "Knowledge" will trigger a pop-up 
 
 <TabItem value="Prompt" label="Prompt Argument">
 
-![image](https://github.com/eosphoros-ai/DB-GPT/assets/13723926/00f12903-8d70-4bfb-9f58-26f03a6a4773)
-
 :::tip Prompt Arguments
 * scene:A contextual parameter used to define the setting or environment in which the prompt is being used.
 * template:A pre-defined structure or format for the prompt, which can help ensure that the AI system generates responses that are consistent with the desired style or tone.
@@ -39,8 +34,6 @@ As shown in the figure below, clicking on the "Knowledge" will trigger a pop-up 
  </TabItem>
 
 <TabItem value="Summary" label="Summary Argument">
-
-![image](https://github.com/eosphoros-ai/DB-GPT/assets/13723926/96782ba2-e9a2-4173-a003-49d44bf874cc)
 
 :::tip summary arguments
 * max_iteration: summary max iteration call with llm, default 5. the bigger and better for document summary but time will cost longer.
@@ -78,7 +71,7 @@ set ``VECTOR_STORE_TYPE`` in ``.env`` file.
 ```shell
 ### Chroma vector db config
 VECTOR_STORE_TYPE=Chroma
-#CHROMA_PERSIST_PATH=/root/DB-GPT/pilot/data
+#CHROMA_PERSIST_PATH=/root/K-ICS/pilot/data
 ```
  </TabItem>
 

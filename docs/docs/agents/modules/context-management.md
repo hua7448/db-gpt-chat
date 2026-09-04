@@ -105,7 +105,7 @@ without deleting the original tool result file
 
 The context manager counts the tokens in the current `AgentMessage` list before
 the model call. Counting uses `ProxyTokenizerWrapper` with the active
-`model_name`. If the tokenizer cannot count the content, DB-GPT falls back to a
+`model_name`. If the tokenizer cannot count the content, K-ICS falls back to a
 rough estimate of four characters per token.
 
 The usable context window is:
@@ -217,7 +217,7 @@ has already rejected the prompt.
 
 Tool observations can be large: SQL result tables, generated code output,
 interpreter logs, file paths, report metadata, and intermediate computed values
-may quickly dominate the prompt. DB-GPT keeps the prompt compact by separating
+may quickly dominate the prompt. K-ICS keeps the prompt compact by separating
 the full operation detail from the text that must stay in the model context.
 
 When an action succeeds, the agent writes a JSON snapshot for the full operation.
@@ -240,7 +240,7 @@ By default, snapshots are written under:
 $DBGPT_HOME/workspace/op_snapshots/<conv_id>/
 ```
 
-If `AgentContext.output_dir` is set, DB-GPT uses that directory instead.
+If `AgentContext.output_dir` is set, K-ICS uses that directory instead.
 
 Each snapshot file is named by step and action:
 
@@ -310,5 +310,5 @@ With this setup, switching models also switches the effective context budget.
 - Layer 4 is a last-resort retry path for model-side context overflow errors.
 - The frontend receives `context.status` events independently from normal chat
   text, so UI indicators can update without polluting the conversation.
-- Compaction is progressive: after each layer, DB-GPT recounts tokens and stops
+- Compaction is progressive: after each layer, K-ICS recounts tokens and stops
   escalating if the prompt returns to a safe state.

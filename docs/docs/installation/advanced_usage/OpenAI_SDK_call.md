@@ -1,5 +1,5 @@
 # OpenAI SDK Calls Local Multi-model
-The call of multi-model services is compatible with the OpenAI interface, and the models deployed in DB-GPT can be directly called through the OpenAI SDK. 
+The call of multi-model services is compatible with the OpenAI interface, and the models deployed in K-ICS can be directly called through the OpenAI SDK.
 
 :::info note
 

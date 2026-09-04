@@ -1,6 +1,6 @@
 # SQLite
 
-SQLite 是轻量级嵌入式关系型数据库。DB-GPT 在
+SQLite 是轻量级嵌入式关系型数据库。K-ICS 在
 `dbgpt_ext.datasource.rdbms.conn_sqlite` 中内置了原生 SQLite 连接器。
 
 ### 安装依赖

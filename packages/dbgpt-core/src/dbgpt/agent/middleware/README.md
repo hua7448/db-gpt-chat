@@ -1,6 +1,6 @@
-# Agent Middleware System for DB-GPT
+# Agent Middleware System for K-ICS
 
-This module implements a middleware system for DB-GPT agents, inspired by deepagents' AgentMiddleware pattern.
+This module implements a middleware system for K-ICS agents, inspired by deepagents' AgentMiddleware pattern.
 
 ## Architecture
 
@@ -145,7 +145,7 @@ license: MIT
 
 ## Comparison with DeepAgents
 
-| Feature | DeepAgents | DB-GPT (New) |
+| Feature | DeepAgents | K-ICS (New) |
 |---------|-------------|----------------|
 | Backend Support | Filesystem, State, Remote | Filesystem (planned) |
 | Middleware Hooks | before_agent, wrap_model_call | Full lifecycle hooks |
@@ -222,4 +222,4 @@ dbgpt/agent/
 
 ## License
 
-This module is part of DB-GPT and follows the same license.
+This module is part of K-ICS and follows the same license.

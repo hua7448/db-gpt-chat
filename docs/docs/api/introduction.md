@@ -1,9 +1,9 @@
 # Introduction
 
-This is the introduction to the DB-GPT API documentation. You can interact with the API through HTTP requests from any language, via our official Python Client bindings.
+This is the introduction to the K-ICS API documentation. You can interact with the API through HTTP requests from any language, via our official Python Client bindings.
 
 ## Authentication
-The DB-GPT API uses API keys for authentication. Visit your API Keys page to retrieve the API key you'll use in your requests.
+The K-ICS API uses API keys for authentication. Visit your API Keys page to retrieve the API key you'll use in your requests.
 
 Production requests must be routed through your own backend server where your API key can be securely loaded from an environment variable or key management service.
 
@@ -12,13 +12,13 @@ All API requests should include your API key in an Authorization HTTP header as 
     ```http
     Authorization: Bearer DBGPT_API_KEY
     ```
-Example with the DB-GPT API curl command:
+Example with the K-ICS API curl command:
 
     ```bash
     curl "http://localhost:5670/api/v2/chat/completions" \
     -H "Authorization: Bearer $DBGPT_API_KEY" \
     ```
-Example with the DB-GPT Client Python package:
+Example with the K-ICS Client Python package:
     
     ```python
     from dbgpt_client import Client
@@ -34,9 +34,9 @@ API_KEYS - The list of API keys that are allowed to access the API. Each of the 
 API_KEYS=dbgpt
 ```
 
-## Using the DB-GPT official Python Client
+## Using the K-ICS official Python Client
 
-If you use Python, you should install the official DB-GPT Client package from PyPI:
+If you use Python, you should install the official K-ICS Client package from PyPI:
 
 ```bash
 pip install "dbgpt-client>=0.7.1rc0"
@@ -44,7 +44,7 @@ pip install "dbgpt-client>=0.7.1rc0"
 
 ## Using the OpenAI Python SDK
 
-In some chat cases, you can use the OpenAI Python SDK to interact with the DB-GPT API. The DB-GPT API is compatible with the OpenAI API.
+In some chat cases, you can use the OpenAI Python SDK to interact with the K-ICS API. The K-ICS API is compatible with the OpenAI API.
 
 ```bash
 pip install openai

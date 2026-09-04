@@ -10,9 +10,9 @@ reflecting the personalities of the agent, and social information, detailing the
 For instance, if the application aims to study human cognitive process, then the psychology information becomes pivotal.
 
 
-## Profiles In DB-GPT Agents
+## Profiles In K-ICS Agents
 
-Profiles are essential for agents in DB-GPT, as they are used to influence the agent's behaviors.
+Profiles are essential for agents in K-ICS, as they are used to influence the agent's behaviors.
 
 You have already seen a basic example of a profile in the [Write Your Custom Agent](../../introduction/custom_agents.md) section.
 

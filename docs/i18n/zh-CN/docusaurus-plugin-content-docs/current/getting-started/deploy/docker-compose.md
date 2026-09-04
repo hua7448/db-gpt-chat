@@ -5,7 +5,7 @@ title: Docker Compose 部署
 
 # Docker Compose 部署
 
-通过 Docker Compose 搭配 MySQL 部署 DB-GPT。这种方式适合生产场景，并支持持久化存储。
+通过 Docker Compose 搭配 MySQL 部署 K-ICS。这种方式适合生产场景，并支持持久化存储。
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -17,7 +17,7 @@ import TabItem from '@theme/TabItem';
 
 ## 快速开始
 
-根目录下的 `docker-compose.yml` 会部署一个带 MySQL 数据库的 DB-GPT，并默认使用 SiliconFlow 作为 LLM provider。
+根目录下的 `docker-compose.yml` 会部署一个带 MySQL 数据库的 K-ICS，并默认使用 SiliconFlow 作为 LLM provider。
 
 ### 第一步：设置 API Key
 
@@ -85,7 +85,7 @@ Webserver 会等待 MySQL 初始化完成。如果第一次启动失败，容器
 | 服务 | 镜像 | 端口 | 用途 |
 |---|---|---|---|
 | `db` | `mysql/mysql-server` | 3306 | 用于元数据存储的 MySQL 数据库 |
-| `webserver` | `eosphorosai/dbgpt-openai:latest` | 5670 | DB-GPT 应用服务 |
+| `webserver` | `eosphorosai/dbgpt-openai:latest` | 5670 | K-ICS 应用服务 |
 
 ## 常见操作
 
@@ -153,7 +153,7 @@ webserver:
 
 ## 其他 Compose 示例
 
-DB-GPT 还提供了适用于不同场景的 Compose 文件：
+K-ICS 还提供了适用于不同场景的 Compose 文件：
 
 | 文件 | 适用场景 |
 |---|---|

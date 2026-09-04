@@ -12,7 +12,7 @@ This guide will help you get started with contributing to this project.
 2. Clone the repository to your local machine using the following command:
 
 ```
-git clone https://github.com/<YOUR-GITHUB-USERNAME>/DB-GPT
+git clone https://github.com/<YOUR-GITHUB-USERNAME>/db-gpt-chat K-ICS
 ```
 Please replace `<YOUR-GITHUB-USERNAME>` with your GitHub username.
 
@@ -28,7 +28,7 @@ conda activate dbgpt_env
 
 2. Change to the project directory using the following command:
 ```
-cd DB-GPT
+cd K-ICS
 ```
 
 3. Install uv package manager:

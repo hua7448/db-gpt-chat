@@ -1,6 +1,6 @@
 """AWEL: Simple chat with history example
 
-    DB-GPT will automatically load and execute the current file after startup.
+    K-ICS will automatically load and execute the current file after startup.
 
     Examples:
 
@@ -181,5 +181,5 @@ if __name__ == "__main__":
 
         setup_dev_environment([multi_round_dag], port=5555)
     else:
-        # Production mode, DB-GPT will automatically load and execute the current file after startup.
+        # Production mode, K-ICS will automatically load and execute the current file after startup.
         pass

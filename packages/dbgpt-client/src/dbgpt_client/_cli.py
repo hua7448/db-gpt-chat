@@ -1,4 +1,4 @@
-"""CLI for DB-GPT client."""
+"""CLI for the K-ICS client."""
 
 import asyncio
 import functools

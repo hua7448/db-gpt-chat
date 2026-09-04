@@ -20,7 +20,7 @@ SMMF consists of two parts: model inference layer and model deployment layer. Th
   <img src={'/img/module/smmf.png'} width="600px" />
 </p>
 
-In DB-GPT, SMMF is specifically shown in the figure above: the top layer corresponds to the service and application layer (such as DB-GPT WebServer, Agents system, applications, etc.). The next layer is the model deployment framework layer, which includes the API Server and Model Handle that provide model services to the application layer, the Metadata Management and Control Center Model Controller of the entire deployment framework, and the Model Worker that directly interfaces with the inference framework and the underlying environment. The next layer is the inference framework layer, which includes vLLM, llama.cpp and FastChat (since DB-GPT directly uses the inference interface of FastChat, here we also classify FastChat as an inference framework), large language models (Vicuna, Llama, Baichuan, ChatGLM), etc. are deployed in the inference framework. The bottom layer is the actual deployment environment, including Kubernetes, Ray, AWS, Alibaba Cloud, private cloud, etc
+In K-ICS, SMMF is specifically shown in the figure above: the top layer corresponds to the service and application layer (such as K-ICS WebServer, Agents system, applications, etc.). The next layer is the model deployment framework layer, which includes the API Server and Model Handle that provide model services to the application layer, the Metadata Management and Control Center Model Controller of the entire deployment framework, and the Model Worker that directly interfaces with the inference framework and the underlying environment. The next layer is the inference framework layer, which includes vLLM, llama.cpp and FastChat (since K-ICS directly uses the inference interface of FastChat, here we also classify FastChat as an inference framework), large language models (Vicuna, Llama, Baichuan, ChatGLM), etc. are deployed in the inference framework. The bottom layer is the actual deployment environment, including Kubernetes, Ray, AWS, Alibaba Cloud, private cloud, etc
 
 ## SMMF features
 - Supports multiple models and multiple inference frameworks
@@ -38,7 +38,7 @@ The current development in the field of large models is changing with each passi
 
 For most users exploring and implementing AIGC application scenarios, this situation has both advantages and disadvantages. A typical drawback is to be "led by the nose" by the model, and it is necessary to constantly try and explore new models and new reasoning frameworks.
 
-In DB-GPT, seamless support for FastChat, vLLM and llama.cpp is directly provided. In theory, DB-GPT supports all the models they support. If you have needs for reasoning speed and tactical capabilities, you can directly use vLLM , if you want the CPU or Mac's M1/M2 chip to also get good inference performance, you can use llama.cpp. In addition, DB-GPT also supports proxy models, such as: OpenAI, Azure, Google Bard, Tongyi, Baichuan, Xun Feixinghuo, Baidu Wenxin, Zhipu AI, etc
+In K-ICS, seamless support for FastChat, vLLM and llama.cpp is directly provided. In theory, K-ICS supports all the models they support. If you have needs for reasoning speed and tactical capabilities, you can directly use vLLM , if you want the CPU or Mac's M1/M2 chip to also get good inference performance, you can use llama.cpp. In addition, K-ICS also supports proxy models, such as: OpenAI, Azure, Google Bard, Tongyi, Baichuan, Xun Feixinghuo, Baidu Wenxin, Zhipu AI, etc
 
 
 ### Support LLMs
@@ -76,7 +76,7 @@ In DB-GPT, seamless support for FastChat, vLLM and llama.cpp is directly provide
 
 
 :::info
-More LLMs, please refer to the [source code](https://github.com/eosphoros-ai/DB-GPT/blob/main/pilot/configs/model_config.py)
+More LLMs, please refer to the [source code](https://github.com/hua7448/db-gpt-chat/blob/main/packages/dbgpt-core/src/dbgpt/configs/model_config.py)
 :::
 
 ###  Scalability and stability
@@ -116,7 +116,7 @@ These are the basis for further optimization of the entire application.
 ### Lightweight
 Considering the numerous supported models and inference frameworks, we need to work hard to avoid unnecessary dependencies and ensure that users can install them as needed.
 
-In DB-GPT, users can install their own dependencies on demand. Some of the main optional dependencies are as follows:
+In K-ICS, users can install their own dependencies on demand. Some of the main optional dependencies are as follows:
 
 - Install the most basic dependencies `pip install -e .` or  `pip install -e ".[core]"`
 
@@ -141,7 +141,7 @@ In DB-GPT, users can install their own dependencies on demand. Some of the main 
 - Install data source dependencies `pip install -e ".[datasource]"`
 
 ## Implementation
-For multi-model related implementation, please refer to the [source code](https://github.com/eosphoros-ai/DB-GPT/tree/main/pilot/model)
+For multi-model related implementation, please refer to the [source code](https://github.com/hua7448/db-gpt-chat/tree/main/packages/dbgpt-core/src/dbgpt/model)
 
 # Appendix
 `[1]` `[2]` Capabilities such as automatic scaling and observability are still in incubation and have not yet been implemented.

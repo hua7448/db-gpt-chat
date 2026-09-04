@@ -1,26 +1,22 @@
 ---
 sidebar_position: 0
-title: DB-GPT
+title: K-ICS
 ---
 
 import CommandCopyCard from "@site/src/components/mdx/CommandCopyCard";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-# DB-GPT
-
-<p align="center">
-  <img src={'/img/dbgpt_vision.png'} width="860px" />
-</p>
+# K-ICS
 
 <div style={{textAlign: 'center'}}>
   <strong>An open-source AI data assistant that connects to your data, writes SQL and code, runs skills in sandboxed environments, and turns analysis into reports, insights, and action.</strong><br />
-  DB-GPT is also a platform for building AI-native data agents, workflows, and applications with agents, AWEL, RAG, and multi-model support.
+  K-ICS is also a platform for building AI-native data agents, workflows, and applications with agents, AWEL, RAG, and multi-model support.
 </div>
 
 <div style={{textAlign: 'center'}}>
-  <a href="https://github.com/eosphoros-ai/DB-GPT">GitHub</a> ·
-  <a href="https://github.com/eosphoros-ai/DB-GPT/releases">Releases</a> ·
+  <a href="https://github.com/hua7448/db-gpt-chat">GitHub</a> ·
+  <a href="https://github.com/hua7448/db-gpt-chat/releases">Releases</a> ·
   <a href="https://github.com/orgs/eosphoros-ai/discussions">Community</a>
 </div>
 
@@ -30,20 +26,20 @@ import TabItem from "@theme/TabItem";
   <Tabs className="quickstart-tabs" groupId="install-method">
     <TabItem value="script" label="📜  Shell Quick Start" default>
       <div className="quickstart-tab-inner">
-        <span className="quickstart-tab-desc">One-line installer for macOS &amp; Linux — downloads, configures, and sets up DB-GPT automatically.</span>
+        <span className="quickstart-tab-desc">One-line installer for macOS &amp; Linux — downloads, configures, and sets up K-ICS automatically.</span>
         <div className="quickstart-numbered-steps">
           <div className="quickstart-ns">
             <span className="quickstart-ns-num">1</span>
             <div className="quickstart-ns-body">
-              <span className="quickstart-ns-label">Install DB-GPT</span>
-              <CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh | bash`} />
+              <span className="quickstart-ns-label">Install K-ICS</span>
+              <CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh | bash`} />
             </div>
           </div>
           <div className="quickstart-ns">
             <span className="quickstart-ns-num">2</span>
             <div className="quickstart-ns-body">
               <span className="quickstart-ns-label">Start the server</span>
-              <CommandCopyCard command={`cd ~/.dbgpt/DB-GPT && uv run dbgpt start webserver --profile <profile>`} />
+              <CommandCopyCard command={`cd ~/.dbgpt/K-ICS && uv run dbgpt start webserver --profile <profile>`} />
             </div>
           </div>
         </div>
@@ -51,7 +47,7 @@ import TabItem from "@theme/TabItem";
     </TabItem>
     <TabItem value="cli" label="⚡  PIP Quick Start">
       <div className="quickstart-tab-inner">
-        <span className="quickstart-tab-desc">Install with pip and start in seconds — the fastest way to try DB-GPT on any platform.</span>
+        <span className="quickstart-tab-desc">Install with pip and start in seconds — the fastest way to try K-ICS on any platform.</span>
         <div className="quickstart-numbered-steps">
           <div className="quickstart-ns">
             <span className="quickstart-ns-num">1</span>
@@ -68,7 +64,7 @@ import TabItem from "@theme/TabItem";
           <div className="quickstart-ns">
             <span className="quickstart-ns-num">2</span>
             <div className="quickstart-ns-body">
-              <span className="quickstart-ns-label">Start DB-GPT</span>
+              <span className="quickstart-ns-label">Start K-ICS</span>
               <CommandCopyCard command={`dbgpt start`} />
             </div>
           </div>
@@ -78,9 +74,9 @@ import TabItem from "@theme/TabItem";
   </Tabs>
 </div>
 
-## What is DB-GPT?
+## What is K-ICS?
 
-DB-GPT is an open-source **agentic AI data assistant** for the next generation of **AI + Data** products.
+K-ICS is an open-source **agentic AI data assistant** for the next generation of **AI + Data** products.
 
 It helps users and teams:
 
@@ -91,7 +87,7 @@ It helps users and teams:
 - generate **charts, dashboards, HTML reports, and analysis summaries**
 - execute tasks safely in **sandboxed environments**
 
-## Why DB-GPT?
+## Why K-ICS?
 
 <div className="overview-cards-grid">
   <div className="overview-card overview-card--static">
@@ -252,7 +248,7 @@ It helps users and teams:
   <a href="./application/fine_tuning_manual/dbgpt_hub" className="overview-card">
     <div className="overview-card-icon">🎛️</div>
     <div className="overview-card-content">
-      <h3 className="overview-card-title">DB-GPT-Hub</h3>
+      <h3 className="overview-card-title">Text2SQL Hub</h3>
       <p className="overview-card-description">Text2SQL and fine-tuning workflows for domain adaptation and model improvement.</p>
     </div>
   </a>
@@ -269,8 +265,8 @@ It helps users and teams:
 
 | Term | Description |
 |------|-------------|
-| **DB-GPT** | DataBase Generative Pre-trained Transformer — open-source framework around databases and LLMs |
-| **Data App** | An intelligent data application built on DB-GPT |
+| **K-ICS** | Downstream-branded agentic AI data workbench for databases and LLMs |
+| **Data App** | An intelligent data application built on K-ICS |
 | **Text2SQL** | Generate SQL from natural language using LLM capabilities |
 | **KBQA** | Knowledge-Based Q&A system |
 | **GBI** | Generative Business Intelligence — analysis and decisions through dialogue |
@@ -283,4 +279,4 @@ It helps users and teams:
 
 ## Community
 
-If you encounter problems, submit an [issue](https://github.com/eosphoros-ai/DB-GPT/issues), join [discussions](https://github.com/orgs/eosphoros-ai/discussions), or check the [releases](https://github.com/eosphoros-ai/DB-GPT/releases).
+If you encounter problems, submit an [issue](https://github.com/hua7448/db-gpt-chat/issues), join [discussions](https://github.com/hua7448/db-gpt-chat/discussions), or check the [releases](https://github.com/hua7448/db-gpt-chat/releases).

@@ -6,7 +6,7 @@
 
 ## Actions Overview
 
-In DB-GPT, any agent must have an action.
+In K-ICS, any agent must have an action.
 
 
 There are four perspectives according the paper 
@@ -53,7 +53,7 @@ as moving their positions, collecting items, and constructing buildings.
 including updating memories, forming new plans, acquiring novel knowledge, and more.
 3. Triggering new actions: In the task completion process, one agent action can be triggered by another one.
 
-## Actions In DB-GPT Agents
+## Actions In K-ICS Agents
 
 In previous [Write Your Custom Agent](../../introduction/custom_agents#create-a-custom-action), 
 you have seen a basic example of an action in the agent. It is a simple way to define the agent's action.

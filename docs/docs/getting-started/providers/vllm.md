@@ -5,13 +5,13 @@ title: vLLM
 
 # vLLM
 
-Configure DB-GPT to use [vLLM](https://docs.vllm.ai/) for high-throughput local model inference on NVIDIA GPUs.
+Configure K-ICS to use [vLLM](https://docs.vllm.ai/) for high-throughput local model inference on NVIDIA GPUs.
 
 ## Prerequisites
 
 - **NVIDIA GPU** with CUDA 12.1+
 - Sufficient VRAM for your chosen model (8 GB+ for 7B models)
-- DB-GPT installed with `vllm` extra
+- K-ICS installed with `vllm` extra
 
 ## Install dependencies
 

@@ -39,8 +39,8 @@ ENV NUM_VERSION=$NUM_VERSION
 
 # Commit the changes to the repository, just for local testing
 # Sometimes, we just want to test the changes in the Dockerfile
-RUN git config --global user.email "dbgpt@example.com" && \
-    git config --global user.name "DB-GPT" && \
+RUN git config --global user.email "k-ics@example.invalid" && \
+    git config --global user.name "K-ICS" && \
     git add . && git commit --no-verify -m "Commit message" || exit 1
 
 # New logic for building versions directly in Dockerfile

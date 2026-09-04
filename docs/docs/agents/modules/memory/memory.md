@@ -9,7 +9,7 @@
 
 ### Memory Operations
 
-In DB-GPT agents, there are three main memory operations:
+In K-ICS agents, there are three main memory operations:
 
 1. **Memory reading**: The objective of memory reading is to extract meaningful 
 information from memory to enhance the agent’s actions.
@@ -24,7 +24,7 @@ infer more abstract, complex and high-level information.
 
 ### Memory Structure
 
-In DB-GPT agents, there are four main memory structures:
+In K-ICS agents, there are four main memory structures:
 1. **Sensory memory**: Like human sensory memory, the sensory memory is registers 
 perceptual inputs, and it will receive the observations from the environment, some of sensory
 memory will be transferred to short-term memory.
@@ -34,7 +34,7 @@ some of the sensory memory, and it can be enhanced by other observations or retr
 information from short-term memory, and it will consolidates important information over time.
 4. **Hybrid memory**: Hybrid memory is a combination of sensory memory, short-term memory, and long-term memory.
 
-## Memory In DB-GPT Agents
+## Memory In K-ICS Agents
 
 ### Some Concepts Of Memory
 
@@ -421,7 +421,7 @@ class JoyAgent(ConversableAgent):
         await self.memory.write(fragment)
 ```
 
-In the above example, we override the `read_memories` to read the memories from the memory, in DB-GPT,
+In the above example, we override the `read_memories` to read the memories from the memory, in K-ICS,
 the most recent memories will form the `most_recent_memories` in the prompt template, 
 And override the `write_memories` to write the memories to the memory.
 
@@ -429,5 +429,5 @@ And override the `write_memories` to write the memories to the memory.
 
 ## Summary
 
-In this document, we introduced the memory module in DB-GPT agents, and how to use the memory in agents.
-In following sections, we will introduce how to use each memory structure in DB-GPT agents.
+In this document, we introduced the memory module in K-ICS agents, and how to use the memory in agents.
+In following sections, we will introduce how to use each memory structure in K-ICS agents.

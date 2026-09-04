@@ -1,6 +1,6 @@
 # LLama.cpp Server
 
-DB-GPT supports native [llama.cpp server](https://github.com/ggerganov/llama.cpp/blob/master/examples/server/README.md), 
+K-ICS supports native [llama.cpp server](https://github.com/ggerganov/llama.cpp/blob/master/examples/server/README.md),
 which supports concurrent requests and continuous batching inference.
 
 

@@ -1,42 +1,26 @@
-# <img src="./assets/LOGO_SMALL.png" alt="Logo" style="vertical-align: middle; height: 24px;" /> DB-GPT: Open-Source Agentic AI Data Assistant
-
-<p align="left">
-  <img src="./assets/dbgpt_vision.png" width="100%" />
-</p>
+# K-ICS: Open-Source Agentic AI Data Assistant
 
 <div align="center">
   <p>
-    <a href="https://github.com/eosphoros-ai/DB-GPT">
-        <img alt="stars" src="https://img.shields.io/github/stars/eosphoros-ai/db-gpt?style=social" />
+    <a href="https://github.com/hua7448/db-gpt-chat">
+        <img alt="stars" src="https://img.shields.io/github/stars/hua7448/db-gpt-chat?style=social" />
     </a>
-    <a href="https://github.com/eosphoros-ai/DB-GPT">
-        <img alt="forks" src="https://img.shields.io/github/forks/eosphoros-ai/db-gpt?style=social" />
+    <a href="https://github.com/hua7448/db-gpt-chat">
+        <img alt="forks" src="https://img.shields.io/github/forks/hua7448/db-gpt-chat?style=social" />
     </a>
-    <a href="http://dbgpt.cn/">
-        <img alt="Official Website" src="https://img.shields.io/badge/Official%20website-DB--GPT-blue?style=flat&labelColor=3366CC" />
+    <a href="https://github.com/hua7448/db-gpt-chat">
+        <img alt="K-ICS website" src="https://img.shields.io/badge/K--ICS-Data%20Workbench-blue?style=flat&labelColor=3366CC" />
     </a>
     <a href="https://opensource.org/licenses/MIT">
-      <img alt="License: MIT" src="https://img.shields.io/github/license/eosphoros-ai/db-gpt?style=flat&labelColor=009966&color=009933" />
+      <img alt="License: MIT" src="https://img.shields.io/github/license/hua7448/db-gpt-chat?style=flat&labelColor=009966&color=009933" />
     </a>
-     <a href="https://github.com/eosphoros-ai/DB-GPT/releases">
-      <img alt="Release Notes" src="https://img.shields.io/github/v/release/eosphoros-ai/db-gpt?style=flat&labelColor=FF9933&color=FF6633" />
+     <a href="https://github.com/hua7448/db-gpt-chat/releases">
+      <img alt="Release Notes" src="https://img.shields.io/github/v/release/hua7448/db-gpt-chat?style=flat&labelColor=FF9933&color=FF6633" />
     </a>
-    <a href="https://github.com/eosphoros-ai/DB-GPT/issues">
-      <img alt="Open Issues" src="https://img.shields.io/github/issues-raw/eosphoros-ai/db-gpt?style=flat&labelColor=666666&color=333333" />
+    <a href="https://github.com/hua7448/db-gpt-chat/issues">
+      <img alt="Open Issues" src="https://img.shields.io/github/issues-raw/hua7448/db-gpt-chat?style=flat&labelColor=666666&color=333333" />
     </a>
-    <a href="https://x.com/DBGPT_AI">
-      <img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/DBGPT_AI" />
-    </a>
-    <a href="https://medium.com/@dbgpt0506">
-      <img alt="Medium Follow" src="https://badgen.net/badge/Medium/DB-GPT/333333?icon=medium&labelColor=666666" />
-    </a>
-    <a href="https://space.bilibili.com/3537113070963392">
-      <img alt="Bilibili Space" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.bilibili.com%2Fx%2Frelation%2Fstat%3Fvmid%3D3537113070963392&query=data.follower&style=flat&logo=bilibili&logoColor=white&label=Bilibili%20Fans&labelColor=F37697&color=6495ED" />
-    </a>
-    <a href="https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA">
-      <img alt="Slack" src="https://img.shields.io/badge/Slack-Join%20us-5d6b98?style=flat&logo=slack&labelColor=7d89b0" />
-    </a>
-    <a href="https://codespaces.new/eosphoros-ai/DB-GPT">
+    <a href="https://codespaces.new/hua7448/db-gpt-chat">
       <img alt="Open in GitHub Codespaces" src="https://github.com/codespaces/badge.svg" />
     </a>
   </p>
@@ -46,17 +30,17 @@
 [![简体中文](https://img.shields.io/badge/简体中文-d9d9d9?style=flat-square)](README.zh.md)
 [![日本語](https://img.shields.io/badge/日本語-d9d9d9?style=flat-square)](README.ja.md) 
 
-[**Documents**](http://docs.dbgpt.cn/docs/overview/) | [**Contact Us**](https://github.com/eosphoros-ai/DB-GPT/blob/main/README.zh.md#%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC) | [**Community**](https://github.com/eosphoros-ai/community) | [**Paper**](https://arxiv.org/pdf/2312.17449.pdf)
+[**Documents**](./docs/) | [**Contact Us**](https://github.com/hua7448/db-gpt-chat/blob/main/README.zh.md#%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC) | [**Community**](https://github.com/hua7448/db-gpt-chat/discussions) | [**Upstream Papers**](https://arxiv.org/pdf/2312.17449.pdf)
 
 </div>
 
-> **An open-source AI data assistant that connects to your data, writes SQL and code, runs skills in sandboxed environments, and turns analysis into reports, insights, and action.**
+> **K-ICS is an open-source AI data assistant that connects to your data, writes SQL and code, runs skills in sandboxed environments, and turns analysis into reports, insights, and action.**
 
 ![welcome_page](https://github.com/user-attachments/assets/ff9beb32-7db5-487a-bd81-d4489d853ea5)
 
-## What is DB-GPT?
+## What is K-ICS?
 
-DB-GPT is an open-source **agentic AI data assistant** for the next generation of **AI + Data** products.
+K-ICS is an open-source **agentic AI data assistant** for the next generation of **AI + Data** products.
 
 It helps users and teams:
 - connect to **databases, CSV / Excel files, warehouses, and knowledge bases**
@@ -66,9 +50,9 @@ It helps users and teams:
 - generate **charts, dashboards, HTML reports, and analysis summaries**
 - execute tasks safely in **sandboxed environments**
 
-DB-GPT is also a platform for building **AI-native data agents, workflows, and applications** with agents, AWEL, RAG, and multi-model support.
+K-ICS is also a platform for building **AI-native data agents, workflows, and applications** with agents, AWEL, RAG, and multi-model support.
 
-## Why DB-GPT?
+## Why K-ICS?
 
 ### 1. Agentic data analysis
 Plan tasks, break work into steps, call tools, and complete analysis workflows end to end.
@@ -99,7 +83,7 @@ Run code and tools in isolated environments for safer, more reliable analysis.
 
 
 
-## What you can do with DB-GPT
+## What you can do with K-ICS
 
 - **Analyze CSV / Excel files** and generate visual reports
 - **Connect to databases** and produce profiling reports
@@ -126,34 +110,34 @@ Produce charts, dashboards, HTML reports, and decision-ready outputs.
 
 ## Quick Start
 
-Get DB-GPT running in minutes with the one-line installer (macOS & Linux):
+Get K-ICS running in minutes with the one-line installer (macOS & Linux):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh | bash
 ```
 
 Or specify a profile and API key directly:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh \
+curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh \
   | OPENAI_API_KEY=sk-xxx bash -s -- --profile openai
 ```
 
 For Kimi 2.5 via Moonshot API:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh \
+curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh \
   | MOONSHOT_API_KEY=sk-xxx bash -s -- --profile kimi
 ```
 
 For MiniMax via the OpenAI-compatible API:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh \
+curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh \
   | MINIMAX_API_KEY=sk-xxx bash -s -- --profile minimax
 ```
 
-Already have a local DB-GPT checkout? Reuse it instead of cloning `~/.dbgpt/DB-GPT`:
+Already have a local K-ICS checkout? Reuse it instead of cloning the default `~/.dbgpt/K-ICS` path:
 
 ```bash
 OPENAI_API_KEY=sk-xxx \
@@ -177,21 +161,21 @@ MINIMAX_API_KEY=sk-xxx \
 After installation, start the server with the generated profile config:
 
 ```bash
-cd ~/.dbgpt/DB-GPT && uv run dbgpt start webserver --profile <profile>
+cd ~/.dbgpt/K-ICS && uv run dbgpt start webserver --profile <profile>
 ```
 
 Then open [http://localhost:5670](http://localhost:5670).
 
 > **Prefer to review the script first?**
 > ```bash
-> curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh -o install.sh
+> curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh -o install.sh
 > less install.sh
 > bash install.sh --profile openai
 > ```
 
 ### Install via PyPI
 
-Install DB-GPT from PyPI and start it with a single command — no source checkout required.
+Install the K-ICS runtime from PyPI and start it with a single command — no source checkout required.
 
 > **Prerequisites:** Python **3.10+** and [uv](https://docs.astral.sh/uv/getting-started/installation/) (recommended) or pip.
 
@@ -228,18 +212,17 @@ Visit [http://localhost:5670](http://localhost:5670) — you're all set! 🎉
 
 For Docker, local GPU models (vLLM, llama.cpp), or manual source-code setup, see the full docs:
 
-- [**Install**](http://docs.dbgpt.cn/docs/installation)
-  - [Docker](http://docs.dbgpt.cn/docs/installation/docker)
-  - [Source Code](http://docs.dbgpt.cn/docs/getting-started/deploy/source-code)
-- [**Quickstart**](http://docs.dbgpt.cn/docs/overview)
-- [**Application**](http://docs.dbgpt.cn/docs/use_cases)
-  - [Development Guide](http://docs.dbgpt.cn/docs/cookbook/app/data_analysis_app_develop)
-  - [AWEL Flow Usage](http://docs.dbgpt.cn/docs/application/awel_flow_usage)
-- [**Debugging**](http://docs.dbgpt.cn/docs/operation_manual/advanced_tutorial/debugging)
-- [**Advanced Usage**](http://docs.dbgpt.cn/docs/application/advanced_tutorial/cli)
-  - [SMMF](http://docs.dbgpt.cn/docs/application/advanced_tutorial/smmf)
-  - [Finetune](http://docs.dbgpt.cn/docs/application/fine_tuning_manual/dbgpt_hub)
-  - [AWEL](http://docs.dbgpt.cn/docs/awel/tutorial)
+- [**Installation**](./docs/docs/installation/index.md)
+  - [Docker](./docs/docs/installation/docker.md)
+  - [Source Code](./docs/docs/installation/sourcecode.md)
+- [**Quick Start**](./docs/docs/quickstart.md)
+- [**Applications**](./docs/docs/application/apps/app_explore.md)
+  - [Development Guide](./docs/docs/cookbook/app/data_analysis_app_develop.md)
+  - [AWEL](./docs/docs/application/awel.md)
+- [**Debugging**](./docs/docs/application/advanced_tutorial/debugging.md)
+- [**Advanced Usage**](./docs/docs/application/advanced_tutorial/cli.md)
+  - [Model Management](./docs/docs/application/llms.md)
+  - [Fine-tuning](./docs/docs/application/fine_tuning_manual/text_to_sql.md)
 
 
 ## Core Capabilities
@@ -407,14 +390,14 @@ For Docker, local GPU models (vLLM, llama.cpp), or manual source-code setup, see
       </tbody>
     </table>
 
-  - [More Supported LLMs](http://docs.dbgpt.cn/docs/modules/smmf)
+  - [More Supported LLMs](./docs/docs/application/llms.md)
 
 ### Privacy and Security
 
 We protect data privacy and execution safety through private model deployment, proxy desensitization, and sandboxed execution mechanisms.
 
 ### Data Sources
-- [Datasources](http://docs.dbgpt.cn/docs/modules/connections)
+- [Datasources](./docs/docs/application/datasources.md)
 
 ## Vision
 
@@ -428,16 +411,16 @@ The next generation of **AI + Data** products will be:
 - capable of writing **SQL and code**
 - able to turn analysis into **reports, decisions, and action**
 
-DB-GPT aims to help developers and enterprises build that future.
+K-ICS aims to help developers and enterprises build that future.
 
 
 ## Contribution
 
-- To check detailed guidelines for new contributions, please refer [how to contribute](https://github.com/eosphoros-ai/DB-GPT/blob/main/CONTRIBUTING.md)
+- To check detailed guidelines for new contributions, please refer [how to contribute](https://github.com/hua7448/db-gpt-chat/blob/main/CONTRIBUTING.md)
 
 ### Contributors Wall
-<a href="https://github.com/eosphoros-ai/DB-GPT/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=eosphoros-ai/DB-GPT&max=200" />
+<a href="https://github.com/hua7448/db-gpt-chat/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=hua7448/db-gpt-chat&max=200" />
 </a>
 
 
@@ -448,9 +431,9 @@ The MIT License (MIT)
 - [disckaimer](./DISCKAIMER.md)
 
 ## Citation
-If you want to understand the overall architecture of DB-GPT, please cite <a href="https://arxiv.org/abs/2312.17449" target="_blank">Paper</a> and <a href="https://arxiv.org/abs/2404.10209" target="_blank">Paper</a>
+K-ICS is derived from DB-GPT. For the upstream architecture and research, cite <a href="https://arxiv.org/abs/2312.17449" target="_blank">the DB-GPT paper</a> and <a href="https://arxiv.org/abs/2404.10209" target="_blank">its follow-up paper</a>.
 
-If you want to learn about using DB-GPT for Agent development, please cite the <a href="https://arxiv.org/abs/2412.13520" target="_blank">Paper</a>
+For the upstream Agent research, cite <a href="https://arxiv.org/abs/2412.13520" target="_blank">the DB-GPT Agent paper</a>.
 ```bibtex
 @article{xue2023dbgpt,
       title={DB-GPT: Empowering Database Interactions with Private Large Language Models}, 
@@ -479,12 +462,12 @@ If you want to learn about using DB-GPT for Agent development, please cite the <
 
 
 ## Contact Information
-Thanks to everyone who has contributed to DB-GPT! Your ideas, code, comments, and even sharing them at events and on social platforms can make DB-GPT better.
+Thanks to everyone who contributes to K-ICS! Your ideas, code, comments, and community feedback help make the project better.
 We are working on building a community, if you have any ideas for building the community, feel free to contact us.  
 
-- [Github Issues](https://github.com/eosphoros-ai/DB-GPT/issues) ⭐️：For questions about using GB-DPT, see the CONTRIBUTING.  
-- [Github Discussions](https://github.com/orgs/eosphoros-ai/discussions) ⭐️：Share your experience or unique apps.  
-- [Twitter](https://x.com/DBGPT_AI) ⭐️：Please feel free to talk to us.  
+- [Github Issues](https://github.com/hua7448/db-gpt-chat/issues) ⭐️: For questions about using K-ICS, see CONTRIBUTING.
+- [GitHub Discussions](https://github.com/hua7448/db-gpt-chat/discussions) ⭐️: Share your experience or unique apps.
+- [Upstream Twitter](https://x.com/DBGPT_AI) ⭐️: Follow DB-GPT upstream updates.
 
 
-[![Star History Chart](https://api.star-history.com/svg?repos=csunny/DB-GPT&type=Date)](https://star-history.com/#csunny/DB-GPT)
+[![Star History Chart](https://api.star-history.com/svg?repos=hua7448/db-gpt-chat&type=Date)](https://star-history.com/#hua7448/db-gpt-chat)

@@ -74,7 +74,7 @@ ollama serve
 # Or check: curl http://localhost:11434/api/tags
 ```
 
-2. If running DB-GPT in Docker, use the host network address instead of `localhost`:
+2. If running K-ICS in Docker, use the host network address instead of `localhost`:
 
 ```toml
 [[models.llms]]
@@ -184,4 +184,4 @@ api_key = "${env:SILICONFLOW_API_KEY}"
 
 - Check [LLM FAQ](/docs/faq/llm) for more solutions
 - Review the [Model Providers](/docs/getting-started/providers/) documentation
-- Search [GitHub Issues](https://github.com/eosphoros-ai/DB-GPT/issues)
+- Search [K-ICS GitHub Issues](https://github.com/hua7448/db-gpt-chat/issues)

@@ -1,6 +1,6 @@
 # Resource Introduction
 
-Resources are a bridge for DB-GPT agents to interact with the outside world. They include
+Resources are a bridge for K-ICS agents to interact with the outside world. They include
 tools, databases, knowledge bases, etc.
 
 ## What Includes In Resources?
@@ -22,4 +22,4 @@ You can wrap optional tools into `ToolPack`, or wrap all resources into `Resourc
 
 ## What's Next?
 
-In following sections, we will introduce most of the resources that can be used in DB-GPT.
+In following sections, we will introduce most of the resources that can be used in K-ICS.

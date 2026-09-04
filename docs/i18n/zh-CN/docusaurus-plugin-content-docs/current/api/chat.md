@@ -188,11 +188,11 @@ ID of the model to use. See the model endpoint compatibility table for details o
 ________
 <b>chat_mode</b> <font color="gray"> string </font> <font color="red"> Optional </font>
 
-The DB-GPT chat mode, which can be one of the following: `chat_normal`, `chat_app`, `chat_knowledge`, `chat_flow`, default is `chat_normal`.
+The K-ICS chat mode, which can be one of the following: `chat_normal`, `chat_app`, `chat_knowledge`, `chat_flow`, default is `chat_normal`.
 ________
 <b>chat_param</b> <font color="gray"> string </font> <font color="red"> Optional </font>
 
-The DB-GPT The chat param value of chat mode: `{app_id}`, `{space_id}`, `{flow_id}`, default is `None`.
+The K-ICS The chat param value of chat mode: `{app_id}`, `{space_id}`, `{flow_id}`, default is `None`.
 ________
 <b>max_new_tokens</b> <font color="gray"> integer </font> <font color="red"> Optional </font>
 

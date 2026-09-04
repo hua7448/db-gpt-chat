@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 # ╔════════════════════════════════════════════════════════════════════════════╗
-# ║  DB-GPT Quick Installer                                                  ║
+# ║  K-ICS Quick Installer                                                    ║
 # ║                                                                          ║
 # ║  One-line usage:                                                         ║
-# ║    curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/\    ║
+# ║    curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/\    ║
 # ║      main/scripts/install/install.sh | bash                             ║
 # ║                                                                          ║
 # ║  What this script does:                                                  ║
 # ║    1. Detect OS (macOS / Linux)                                          ║
 # ║    2. Ensure git and curl are available                                  ║
 # ║    3. Install uv (if not already present)                                ║
-# ║    4. Clone (or update) the DB-GPT repository                           ║
+# ║    4. Clone (or update) the upstream repository                          ║
 # ║    5. Run `uv sync` with the extras for the chosen profile              ║
 # ║    6. Generate config via dbgpt setup wizard                             ║
 # ║    7. Print next-steps (start command, URL)                              ║
@@ -27,7 +27,10 @@ set -euo pipefail
 # When piped from curl, BASH_SOURCE is empty.  In that case we download the
 # helper libs from GitHub on the fly.
 SCRIPT_DIR=""
-REMOTE_BASE="https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install"
+# Keep the installer self-hosted by the downstream repository.  The URL can be
+# overridden for private mirrors or an explicitly selected upstream build.
+REPO_URL="${DBGPT_REPO_URL:-https://github.com/hua7448/db-gpt-chat.git}"
+REMOTE_BASE="${DBGPT_INSTALL_SCRIPT_BASE:-https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install}"
 
 _resolve_script_dir() {
   if [[ -n "${BASH_SOURCE[0]:-}" && "${BASH_SOURCE[0]}" != "bash" ]]; then
@@ -70,7 +73,7 @@ USER_CONFIG=""
 # ── Usage ─────────────────────────────────────────────────────────────────────
 usage() {
   cat <<'EOF'
-DB-GPT Quick Installer
+K-ICS Quick Installer
 
 Usage:
   install.sh [options]
@@ -80,10 +83,10 @@ Options:
   --config <path>        Use existing TOML config (skip config generation)
   --install-dir <path>   Where to install (default: ~/.dbgpt)
   --version <git-ref>    Git tag or branch to check out (default: main)
-  --repo-dir <path>      Use an existing local DB-GPT checkout
+  --repo-dir <path>      Use an existing local K-ICS/upstream checkout
   --mirror china         Use China PyPI mirror (Tsinghua)
   --yes                  Non-interactive — accept all defaults
-  --start                Start DB-GPT server after install
+  --start                Start K-ICS server after install
   -h, --help             Show this help
 
 Environment variables:
@@ -93,7 +96,7 @@ Environment variables:
   MINIMAX_API_KEY        Automatically injected into MiniMax config
   ZHIPUAI_API_KEY        Automatically injected into GLM config
   DBGPT_INSTALL_DIR      Override default install directory
-  DBGPT_REPO_DIR         Reuse an existing local DB-GPT repo
+  DBGPT_REPO_DIR         Reuse an existing local K-ICS/upstream repo
   DBGPT_VERSION          Override default git ref
 
 Examples:
@@ -287,7 +290,7 @@ step_prepare_dirs() {
 
 resolve_repo_dir() {
   if [[ -z "${REPO_DIR}" ]]; then
-    REPO_DIR="${INSTALL_DIR}/DB-GPT"
+    REPO_DIR="${INSTALL_DIR}/K-ICS"
     return
   fi
 
@@ -297,7 +300,7 @@ resolve_repo_dir() {
 
   local resolved_repo_dir
   resolved_repo_dir="$(git -C "${REPO_DIR}" rev-parse --show-toplevel 2>/dev/null)" \
-    || die "--repo-dir must point to a DB-GPT git checkout: ${REPO_DIR}"
+    || die "--repo-dir must point to a valid git checkout: ${REPO_DIR}"
 
   REPO_DIR="${resolved_repo_dir}"
 
@@ -315,9 +318,9 @@ step_clone_or_update_repo() {
   fi
 
   if [[ ! -e "${repo_dir}" ]]; then
-    run "Cloning DB-GPT repository..." \
+    run "Cloning K-ICS repository..." \
       git clone --depth 1 --branch "${VERSION}" \
-      https://github.com/eosphoros-ai/DB-GPT.git "${repo_dir}"
+      "${REPO_URL}" "${repo_dir}"
     return
   fi
 
@@ -325,7 +328,7 @@ step_clone_or_update_repo() {
     die "Directory exists but is not a git repo: ${repo_dir}. Remove it and re-run."
   fi
 
-  info "Existing DB-GPT repo found: ${repo_dir}"
+  info "Existing K-ICS repo found: ${repo_dir}"
   if confirm "Update to version '${VERSION}'?"; then
     run "Fetching latest..." git -C "${repo_dir}" fetch --tags --prune
     run "Checking out ${VERSION}..." git -C "${repo_dir}" checkout "${VERSION}"
@@ -418,7 +421,7 @@ step_print_summary() {
 
   printf '%b' "
 ${COLOR_GREEN}════════════════════════════════════════════════════════════${COLOR_RESET}
-${COLOR_GREEN}  DB-GPT installed successfully!${COLOR_RESET}
+${COLOR_GREEN}  K-ICS installed successfully!${COLOR_RESET}
 ${COLOR_GREEN}════════════════════════════════════════════════════════════${COLOR_RESET}
 
   Profile:    ${PROFILE}
@@ -430,7 +433,7 @@ ${COLOR_GREEN}══════════════════════
   1. Review / Edit your config (set Custom API key Or BaseURL if not done):
      ${COLOR_YELLOW}${config_path}${COLOR_RESET}
 
-  2. Start DB-GPT:
+  2. Start K-ICS:
      ${COLOR_YELLOW}cd \"${repo_dir}\" && uv run dbgpt start webserver --profile ${PROFILE}${COLOR_RESET}
 
   3. Open your browser:
@@ -445,7 +448,7 @@ step_start_if_requested() {
   fi
 
   local repo_dir="${REPO_DIR}"
-  info "Starting DB-GPT server..."
+  info "Starting K-ICS server..."
   (
     cd "${repo_dir}"
     if [[ -n "${USER_CONFIG:-}" ]]; then
@@ -461,12 +464,7 @@ main() {
   printf '%b' "${COLOR_GREEN}"
   cat <<'BANNER'
 
-  ____  ____        ____ ____ _____
- |  _ \| __ )      / ___|  _ \_   _|
- | | | |  _ \ ____| |  _| |_) || |
- | |_| | |_) |____| |_| |  __/ | |
- |____/|____/      \____|_|    |_|
-
+  K-ICS
   Quick Installer
 
 BANNER

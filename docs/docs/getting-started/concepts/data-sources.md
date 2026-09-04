@@ -5,7 +5,7 @@ title: Data Sources
 
 # Data Sources
 
-DB-GPT connects to a wide range of data sources, enabling natural language interaction with your databases, spreadsheets, and data warehouses.
+K-ICS connects to a wide range of data sources, enabling natural language interaction with your databases, spreadsheets, and data warehouses.
 
 ## Supported data sources
 
@@ -44,7 +44,7 @@ flowchart LR
 
 ### Via Web UI
 
-1. Open the DB-GPT Web UI
+1. Open the K-ICS Web UI
 2. Go to **Data Sources** in the sidebar
 3. Click **Add Data Source**
 4. Select the database type and fill in connection details
@@ -56,7 +56,7 @@ Data source connections can also be configured in the TOML config file or manage
 
 ## Text2SQL
 
-DB-GPT excels at converting natural language to SQL queries:
+K-ICS excels at converting natural language to SQL queries:
 
 - **Schema linking** — Automatically maps natural language terms to table/column names
 - **Multi-turn conversation** — Refine queries through follow-up questions

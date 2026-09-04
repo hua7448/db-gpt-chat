@@ -7,18 +7,18 @@ body:
     attributes:
       value: >
         Thank you for taking the time to suggest an idea for this project. 
-        The `[Module Name]` in title see [here](https://github.com/eosphoros-ai/DB-GPT/labels?q=Module), 
+        The `[Module Name]` in title see [here](https://github.com/hua7448/db-gpt-chat/labels?q=Module),
         if you don't know the module name, you don't have to fill it in.
 
   - type: checkboxes
     attributes:
       label: Search before asking
       description: >
-        Please make sure to search in the [issues](https://github.com/eosphoros-ai/DB-GPT/issues?q=is%3Aissue) first
+        Please make sure to search in the [issues](https://github.com/hua7448/db-gpt-chat/issues?q=is%3Aissue) first
         to see whether the same feature was requested already.
       options:
         - label: >
-            I had searched in the [issues](https://github.com/eosphoros-ai/DB-GPT/issues?q=is%3Aissue) and found no
+            I had searched in the [issues](https://github.com/hua7448/db-gpt-chat/issues?q=is%3Aissue) and found no
             similar feature requirement.
           required: true
 
@@ -54,7 +54,7 @@ body:
       label: Are you willing to submit PR?
       description: >
         It's completely optional, but if you're interested in contributing, we're here to help! 
-        If you have insights on the solution, that's even better. DB-GPT thrives on community support, 
+        If you have insights on the solution, that's even better. K-ICS thrives on community support,
         and we warmly welcome new contributors.
       options:
         - label: Yes I am willing to submit a PR!

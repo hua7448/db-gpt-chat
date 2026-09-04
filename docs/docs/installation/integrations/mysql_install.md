@@ -1,6 +1,6 @@
 # MySQL
 
-MySQL is a widely used open-source relational database system. DB-GPT includes a
+MySQL is a widely used open-source relational database system. K-ICS includes a
 native MySQL datasource connector in `dbgpt_ext.datasource.rdbms.conn_mysql`.
 
 ### Install Dependencies
@@ -18,7 +18,7 @@ uv sync --all-packages \
 
 ### Prepare MySQL
 
-Prepare a MySQL service and database, then start the DB-GPT webserver:
+Prepare a MySQL service and database, then start the K-ICS webserver:
 
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml

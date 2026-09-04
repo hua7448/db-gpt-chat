@@ -5,7 +5,7 @@ title: Scheduled Tasks
 
 # Scheduled Tasks
 
-**Scheduled Tasks** turn a one-off conversation into a recurring job. Run a data analysis once, save it as a task, and DB-GPT replays the whole ReAct Agent flow on a cron schedule — generating a fresh report every time.
+**Scheduled Tasks** turn a one-off conversation into a recurring job. Run a data analysis once, save it as a task, and K-ICS replays the whole ReAct Agent flow on a cron schedule — generating a fresh report every time.
 
 Every run produces a brand-new conversation you can replay later, so you always have a full history of what was generated and when.
 

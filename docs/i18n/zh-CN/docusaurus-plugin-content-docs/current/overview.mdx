@@ -1,26 +1,22 @@
 ---
 sidebar_position: 0
-title: DB-GPT
+title: K-ICS
 ---
 
 import CommandCopyCard from "@site/src/components/mdx/CommandCopyCard";
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-# DB-GPT
-
-<p align="center">
-  <img src={'/img/dbgpt_vision_zh.png'} width="860px" />
-</p>
+# K-ICS
 
 <div style={{textAlign: 'center'}}>
   <strong>一个开源的 AI 数据助手，能够连接你的数据、编写 SQL 和代码、在沙箱环境中运行技能，并将分析过程转化为报告、洞察与行动。</strong><br />
-  DB-GPT 也是一个用于构建 AI Native 数据 Agent、工作流与应用的平台，支持 Agents、AWEL、RAG 和多模型能力。
+  K-ICS 也是一个用于构建 AI Native 数据 Agent、工作流与应用的平台，支持 Agents、AWEL、RAG 和多模型能力。
 </div>
 
 <div style={{textAlign: 'center'}}>
-  <a href="https://github.com/eosphoros-ai/DB-GPT">GitHub</a> ·
-  <a href="https://github.com/eosphoros-ai/DB-GPT/releases">Releases</a> ·
+  <a href="https://github.com/hua7448/db-gpt-chat">GitHub</a> ·
+  <a href="https://github.com/hua7448/db-gpt-chat/releases">Releases</a> ·
   <a href="https://github.com/orgs/eosphoros-ai/discussions">Community</a>
 </div>
 
@@ -30,20 +26,20 @@ import TabItem from "@theme/TabItem";
   <Tabs className="quickstart-tabs" groupId="install-method">
     <TabItem value="script" label="📜  Shell 快速开始" default>
       <div className="quickstart-tab-inner">
-        <span className="quickstart-tab-desc">适用于 macOS 和 Linux 的一键安装脚本——自动下载、配置并完成 DB-GPT 环境搭建。</span>
+        <span className="quickstart-tab-desc">适用于 macOS 和 Linux 的一键安装脚本——自动下载、配置并完成 K-ICS 环境搭建。</span>
         <div className="quickstart-numbered-steps">
           <div className="quickstart-ns">
             <span className="quickstart-ns-num">1</span>
             <div className="quickstart-ns-body">
-              <span className="quickstart-ns-label">安装 DB-GPT</span>
-              <CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh | bash`} />
+              <span className="quickstart-ns-label">安装 K-ICS</span>
+              <CommandCopyCard command={`curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh | bash`} />
             </div>
           </div>
           <div className="quickstart-ns">
             <span className="quickstart-ns-num">2</span>
             <div className="quickstart-ns-body">
               <span className="quickstart-ns-label">启动服务</span>
-              <CommandCopyCard command={`cd ~/.dbgpt/DB-GPT && uv run dbgpt start webserver --profile <profile>`} />
+              <CommandCopyCard command={`cd ~/.dbgpt/K-ICS && uv run dbgpt start webserver --profile <profile>`} />
             </div>
           </div>
         </div>
@@ -51,7 +47,7 @@ import TabItem from "@theme/TabItem";
     </TabItem>
     <TabItem value="cli" label="⚡  PIP 快速开始">
       <div className="quickstart-tab-inner">
-        <span className="quickstart-tab-desc">通过 pip 安装，几秒内即可启动——全平台最快的 DB-GPT 体验方式。</span>
+        <span className="quickstart-tab-desc">通过 pip 安装，几秒内即可启动——全平台最快的 K-ICS 体验方式。</span>
         <div className="quickstart-numbered-steps">
           <div className="quickstart-ns">
             <span className="quickstart-ns-num">1</span>
@@ -68,7 +64,7 @@ import TabItem from "@theme/TabItem";
           <div className="quickstart-ns">
             <span className="quickstart-ns-num">2</span>
             <div className="quickstart-ns-body">
-              <span className="quickstart-ns-label">启动 DB-GPT</span>
+              <span className="quickstart-ns-label">启动 K-ICS</span>
               <CommandCopyCard command={`dbgpt start`} />
             </div>
           </div>
@@ -78,9 +74,9 @@ import TabItem from "@theme/TabItem";
   </Tabs>
 </div>
 
-## 什么是 DB-GPT？
+## 什么是 K-ICS？
 
-DB-GPT 是一个面向下一代 **AI + Data** 产品的开源 **Agentic AI 数据助手**。
+K-ICS 是一个面向下一代 **AI + Data** 产品的开源 **Agentic AI 数据助手**。
 
 它帮助个人与团队：
 
@@ -91,7 +87,7 @@ DB-GPT 是一个面向下一代 **AI + Data** 产品的开源 **Agentic AI 数�
 - 生成 **图表、仪表盘、HTML 报告与分析摘要**
 - 在 **沙箱环境** 中安全执行任务
 
-## 为什么选择 DB-GPT？
+## 为什么选择 K-ICS？
 
 <div className="overview-cards-grid">
   <div className="overview-card overview-card--static">
@@ -252,7 +248,7 @@ DB-GPT 是一个面向下一代 **AI + Data** 产品的开源 **Agentic AI 数�
   <a href="./application/fine_tuning_manual/dbgpt_hub" className="overview-card">
     <div className="overview-card-icon">🎛️</div>
     <div className="overview-card-content">
-      <h3 className="overview-card-title">DB-GPT-Hub</h3>
+      <h3 className="overview-card-title">Text2SQL Hub</h3>
       <p className="overview-card-description">用于领域适配与模型增强的 Text2SQL 与微调工作流。</p>
     </div>
   </a>
@@ -269,8 +265,8 @@ DB-GPT 是一个面向下一代 **AI + Data** 产品的开源 **Agentic AI 数�
 
 | 术语 | 说明 |
 |------|-------------|
-| **DB-GPT** | DataBase Generative Pre-trained Transformer，一个围绕数据库与大模型构建的开源框架 |
-| **Data App** | 基于 DB-GPT 构建的智能数据应用 |
+| **K-ICS** | 面向数据库与大模型的下游 Agentic AI 数据工作台 |
+| **Data App** | 基于 K-ICS 构建的智能数据应用 |
 | **Text2SQL** | 利用大模型能力将自然语言转换为 SQL |
 | **KBQA** | 基于知识库的问答系统 |
 | **GBI** | Generative Business Intelligence，通过对话完成分析与决策 |
@@ -283,4 +279,4 @@ DB-GPT 是一个面向下一代 **AI + Data** 产品的开源 **Agentic AI 数�
 
 ## 社区
 
-如果你在使用过程中遇到问题，可以提交 [issue](https://github.com/eosphoros-ai/DB-GPT/issues)、参与 [discussions](https://github.com/orgs/eosphoros-ai/discussions)，或查看 [releases](https://github.com/eosphoros-ai/DB-GPT/releases)。
+如果你在使用过程中遇到问题，可以提交 [issue](https://github.com/hua7448/db-gpt-chat/issues)、参与 [discussions](https://github.com/hua7448/db-gpt-chat/discussions)，或查看 [releases](https://github.com/hua7448/db-gpt-chat/releases)。

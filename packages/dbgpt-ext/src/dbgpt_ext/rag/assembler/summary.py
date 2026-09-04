@@ -18,7 +18,7 @@ class SummaryAssembler(BaseAssembler):
     Example:
        .. code-block:: python
 
-           pdf_path = "../../../DB-GPT/docs/docs/awel.md"
+           pdf_path = "../../../docs/docs/awel/awel.md"
            OPEN_AI_KEY = "{your_api_key}"
            OPEN_AI_BASE = "{your_api_base}"
            llm_client = OpenAILLMClient(api_key=OPEN_AI_KEY, api_base=OPEN_AI_BASE)

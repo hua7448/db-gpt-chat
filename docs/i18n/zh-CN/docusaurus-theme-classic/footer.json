@@ -36,7 +36,7 @@
     "description": "Footer link: Twitter"
   },
   "footer.copyright": {
-    "message": "版权所有 © {year} DB-GPT",
+    "message": "版权所有 © {year} K-ICS",
     "description": "Footer copyright"
   },
   "link.title.Community": {
@@ -61,7 +61,7 @@
   },
   "link.item.label.Github": {
     "message": "Github",
-    "description": "The label of footer link with label=Github linking to https://github.com/eosphoros-ai/DB-GPT"
+    "description": "The label of footer link with label=Github for the K-ICS project"
   },
   "link.item.label.HuggingFace": {
     "message": "HuggingFace",
@@ -76,7 +76,7 @@
     "description": "The label of footer link with label=Twitter linking to https://twitter.com/DbGpt80100"
   },
   "copyright": {
-    "message": "Copyright © 2026 DB-GPT",
+    "message": "Copyright © 2026 K-ICS",
     "description": "The footer copyright"
   }
 }

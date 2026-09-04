@@ -5,7 +5,7 @@ title: Dashboard
 
 # Dashboard
 
-Create data visualizations and reports using natural language. DB-GPT converts your questions into SQL queries and renders the results as interactive charts.
+Create data visualizations and reports using natural language. K-ICS converts your questions into SQL queries and renders the results as interactive charts.
 
 ## How it works
 
@@ -18,7 +18,7 @@ graph LR
 ```
 
 1. You ask a question about your data in natural language
-2. DB-GPT generates the appropriate SQL query
+2. K-ICS generates the appropriate SQL query
 3. The query runs against your connected database
 4. Results are rendered as charts, tables, or reports
 
@@ -26,7 +26,7 @@ graph LR
 
 ### Prerequisites
 
-- A database connected to DB-GPT (see [Data Sources](/docs/getting-started/concepts/data-sources))
+- A database connected to K-ICS (see [Data Sources](/docs/getting-started/concepts/data-sources))
 - Test data loaded (optional — use the built-in examples)
 
 ### Using the Dashboard
@@ -46,7 +46,7 @@ Create a pie chart of customer distribution by region
 
 ## Chart types
 
-DB-GPT's visualization engine ([GPT-Vis](https://github.com/eosphoros-ai/GPT-Vis)) supports:
+K-ICS's visualization engine ([GPT-Vis](https://github.com/eosphoros-ai/GPT-Vis)) supports:
 
 | Chart Type | Best For |
 |---|---|
@@ -63,7 +63,7 @@ Include the desired chart type in your question for more precise results: *"Show
 
 ## Loading test data
 
-DB-GPT includes sample data for testing:
+K-ICS includes sample data for testing:
 
 ```bash
 # Linux / macOS

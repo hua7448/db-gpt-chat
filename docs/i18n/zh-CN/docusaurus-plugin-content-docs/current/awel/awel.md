@@ -35,9 +35,9 @@ The preliminary version of AWEL has alse been released, and we have provided som
 ## Operators
 
 ### Example of API-RAG 
-You can find [source code](https://github.com/eosphoros-ai/DB-GPT/blob/main/examples/awel/simple_rag_example.py) from `examples/awel/simple_rag_example.py`
+You can find [source code](https://github.com/hua7448/db-gpt-chat/blob/main/examples/awel/simple_rag_summary_example.py) from `examples/awel/simple_rag_summary_example.py`
 ```python
-with DAG("simple_rag_example") as dag:
+with DAG("simple_rag_summary_example") as dag:
     trigger_task = HttpTrigger(
         "/examples/simple_rag", methods="POST", request_body=ConversationVo
     )
@@ -131,5 +131,4 @@ END;
 ## Executable environment
 - Stand-alone environment
 - Ray environment
-
 

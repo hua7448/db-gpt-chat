@@ -1,10 +1,10 @@
 # Write Your Own `Chat Data` With `AWEL`
 
 In this guide, we will show you how to write your own `Chat Data` with `AWEL`, just 
-link the scene of `Chat Data` in DB-GPT.
+link the scene of `Chat Data` in K-ICS.
 
 This guide is a little bit advanced, may take you some time to understand it. If you have any questions,
-please feel free to ask in the [DB-GPT issues](https://github.com/eosphoros-ai/DB-GPT/issues). 
+please feel free to ask in the [K-ICS issues](https://github.com/hua7448/db-gpt-chat/issues).
 
 ## Introduction
 
@@ -715,4 +715,3 @@ And the graph of the `chat_data_dag` is:
 <p align="left">
   <img src={'/img/awel/cookbook/chat_data_chat_data_dag.png'} width="1000px"/>
 </p>
-

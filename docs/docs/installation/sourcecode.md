@@ -13,11 +13,11 @@
 ### Download Source Code
 
 :::tip
-Download DB-GPT
+Download K-ICS
 :::
 
 ```bash
-git clone https://github.com/eosphoros-ai/DB-GPT.git
+git clone git@github.com:hua7448/db-gpt-chat.git K-ICS
 ```
 
 :::info note
@@ -64,7 +64,7 @@ Then, you can run `uv --version` to check if uv is installed successfully.
 uv --version
 ```
 
-## Deploy DB-GPT 
+## Deploy K-ICS
 
 ### Install Dependencies
 
@@ -90,7 +90,7 @@ uv sync --all-packages \
 
 ### Run Webserver
 
-To run DB-GPT with OpenAI proxy, you must provide the OpenAI API key in the `configs/dbgpt-proxy-openai.toml` configuration file or privide it in the environment variable with key `OPENAI_API_KEY`.
+To run K-ICS with OpenAI proxy, you must provide the OpenAI API key in the `configs/dbgpt-proxy-openai.toml` configuration file or privide it in the environment variable with key `OPENAI_API_KEY`.
 
 ```toml
 # Model Configurations
@@ -130,7 +130,7 @@ uv sync --all-packages \
 
 ### Run Webserver
 
-To run DB-GPT with DeepSeek proxy, you must provide the DeepSeek API key in the `configs/dbgpt-proxy-deepseek.toml`.
+To run K-ICS with DeepSeek proxy, you must provide the DeepSeek API key in the `configs/dbgpt-proxy-deepseek.toml`.
 
 And you can specify your embedding model in the `configs/dbgpt-proxy-deepseek.toml` configuration file, the default embedding model is `BAAI/bge-large-zh-v1.5`. If you want to use other embedding models, you can modify the `configs/dbgpt-proxy-deepseek.toml` configuration file and specify the `name` and `provider` of the embedding model in the `[[models.embeddings]]` section. The provider can be `hf`.
 
@@ -181,7 +181,7 @@ uv sync --all-packages \
 
 ### Run Webserver
 
-To run DB-GPT with the local model. You can modify the `configs/dbgpt-local-glm.toml` configuration file to specify the model path and other parameters.
+To run K-ICS with the local model. You can modify the `configs/dbgpt-local-glm.toml` configuration file to specify the model path and other parameters.
 
 ```toml
 # Model Configurations
@@ -223,13 +223,13 @@ You can also run the web front-end separately:
 ```bash
 cd web && npm install
 cp .env.template .env
-// Set API_BASE_URL to your DB-GPT server address, usually http://localhost:5670
+// Set API_BASE_URL to your K-ICS server address, usually http://localhost:5670
 npm run dev
 ```
 Open your browser and visit [`http://localhost:3000`](http://localhost:3000)
 
 
-## Install DB-GPT Application Database
+## Install K-ICS Application Database
 <Tabs
   defaultValue="sqlite"
   values={[
@@ -240,7 +240,7 @@ Open your browser and visit [`http://localhost:3000`](http://localhost:3000)
 
 :::tip NOTE
 
-You do not need to separately create the database tables related to the DB-GPT application in SQLite; 
+You do not need to separately create the database tables related to the K-ICS application in SQLite;
 they will be created automatically for you by default.
 
 :::
@@ -286,7 +286,7 @@ Please replace the `host`, `port`, `user`, `database`, and `password` with your 
 
 
 ## Test data (optional)
-The DB-GPT project has a part of test data built-in by default, which can be loaded into the local database for testing through the following command
+The K-ICS project has a part of test data built-in by default, which can be loaded into the local database for testing through the following command
 - **Linux**
 
 ```bash

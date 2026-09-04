@@ -41,8 +41,8 @@ ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fi
 sys.path.append(ROOT_PATH)
 
 app = create_app(
-    title=_("DB-GPT Open API"),
-    description=_("DB-GPT Open API"),
+    title=_("K-ICS Open API"),
+    description=_("K-ICS Open API"),
     version=version,
     openapi_tags=[],
 )
@@ -368,7 +368,7 @@ def load_config(config_file: str = None) -> ApplicationConfig:
 def parse_args():
     import argparse
 
-    parser = argparse.ArgumentParser(description="DB-GPT Webserver")
+    parser = argparse.ArgumentParser(description="K-ICS Webserver")
     parser.add_argument(
         "-c",
         "--config",

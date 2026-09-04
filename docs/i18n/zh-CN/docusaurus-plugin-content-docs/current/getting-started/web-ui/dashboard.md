@@ -5,7 +5,7 @@ title: 仪表盘
 
 # 仪表盘
 
-使用自然语言创建数据可视化和报告。DB-GPT 会将你的问题转换为 SQL 查询，并将结果渲染为交互式图表。
+使用自然语言创建数据可视化和报告。K-ICS 会将你的问题转换为 SQL 查询，并将结果渲染为交互式图表。
 
 ## 工作原理
 
@@ -18,7 +18,7 @@ graph LR
 ```
 
 1. 你使用自然语言提出与数据相关的问题
-2. DB-GPT 自动生成对应的 SQL 查询
+2. K-ICS 自动生成对应的 SQL 查询
 3. 查询在已连接的数据库上执行
 4. 查询结果会被渲染为图表、表格或报告
 
@@ -26,7 +26,7 @@ graph LR
 
 ### 前置条件
 
-- 已连接一个 DB-GPT 支持的数据库（参考 [Data Sources](/docs/getting-started/concepts/data-sources)）
+- 已连接一个 K-ICS 支持的数据库（参考 [Data Sources](/docs/getting-started/concepts/data-sources)）
 - 已加载测试数据（可选，也可以使用内置示例）
 
 ### 使用 Dashboard
@@ -46,7 +46,7 @@ Create a pie chart of customer distribution by region
 
 ## 图表类型
 
-DB-GPT 的可视化引擎（[GPT-Vis](https://github.com/eosphoros-ai/GPT-Vis)）支持以下图表：
+K-ICS 的可视化引擎（[GPT-Vis](https://github.com/eosphoros-ai/GPT-Vis)）支持以下图表：
 
 | 图表类型 | 适用场景 |
 |---|---|
@@ -63,7 +63,7 @@ DB-GPT 的可视化引擎（[GPT-Vis](https://github.com/eosphoros-ai/GPT-Vis)�
 
 ## 加载测试数据
 
-DB-GPT 内置了可用于测试的示例数据：
+K-ICS 内置了可用于测试的示例数据：
 
 ```bash
 # Linux / macOS

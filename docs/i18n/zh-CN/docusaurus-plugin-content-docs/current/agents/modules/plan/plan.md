@@ -9,7 +9,7 @@ In previous sections [Agents Planning](../../introduction/planning), we have see
 
 ## Planning With AWEL
 
-Here we will introduce how to use the planning module in DB-GPT with `WrappedAWELLayoutManager`.
+Here we will introduce how to use the planning module in K-ICS with `WrappedAWELLayoutManager`.
 `WrappedAWELLayoutManager` will run the agents in a sequence, and the agents can be added to the manager by `hire` method.
 
 Here is an example of how to use the `WrappedAWELLayoutManager`:

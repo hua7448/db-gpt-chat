@@ -212,7 +212,7 @@ const ChatSider: React.FC<{
             item={{
               label: t('assistant'),
               key: 'default',
-              icon: <Image src='/LOGO_SMALL.png' alt='default' width={24} height={24} className='flex-1' />,
+              icon: <Image src='/k.png' alt='K-ICS' width={24} height={24} className='object-contain' />,
               default: true,
             }}
             order={order}

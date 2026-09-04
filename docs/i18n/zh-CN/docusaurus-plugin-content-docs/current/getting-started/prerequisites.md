@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 title: 前置条件
-summary: "在本地或通过 Docker 运行 DB-GPT 前需要准备的环境"
+summary: "在本地或通过 Docker 运行 K-ICS 前需要准备的环境"
 read_when:
   - 你想在安装前确认 Python、uv、Docker 或 GPU 相关要求
   - 你正在 API 代理模式和本地模型模式之间做选择
@@ -9,7 +9,7 @@ read_when:
 
 # 前置条件
 
-这里列出了安装 DB-GPT 之前需要准备的全部内容。
+这里列出了安装 K-ICS 之前需要准备的全部内容。
 
 :::tip 快速检查
 如果你已经安装了 Python 3.10+ 和 uv，可以直接跳到 [快速开始](/docs/getting-started/quick-start)。
@@ -25,7 +25,7 @@ read_when:
 
 ### Python
 
-DB-GPT 需要 **Python 3.10+**。推荐使用 Python 3.11 以获得更好的兼容性。
+K-ICS 需要 **Python 3.10+**。推荐使用 Python 3.11 以获得更好的兼容性。
 
 ```bash
 python --version
@@ -38,7 +38,7 @@ python --version
 
 ### uv（包管理器）
 
-从 v0.7.0 开始，DB-GPT 使用 [uv](https://docs.astral.sh/uv/) 进行环境与依赖管理，依赖解析更快也更稳定。
+从 v0.7.0 开始，K-ICS 使用 [uv](https://docs.astral.sh/uv/) 进行环境与依赖管理，依赖解析更快也更稳定。
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

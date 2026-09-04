@@ -1,15 +1,15 @@
 ---
 sidebar_position: 0
-title: DB-GPT
-summary: "快速开始总览：了解 DB-GPT、最短上手路径，以及下一步阅读建议"
+title: K-ICS
+summary: "快速开始总览：了解 K-ICS、最短上手路径，以及下一步阅读建议"
 read_when:
-  - 你希望从 clone 仓库到跑通 DB-GPT 对话，走最短路径
+  - 你希望从 clone 仓库到跑通 K-ICS 对话，走最短路径
   - 你希望在深入之前先了解核心文档地图
 ---
 
-# DB-GPT
+# K-ICS
 
-DB-GPT 是一个开源框架，用于构建结合 **LLM、RAG、智能体、AWEL 工作流与数据库集成** 的 AI Native 数据应用。
+K-ICS 是一个开源框架，用于构建结合 **LLM、RAG、智能体、AWEL 工作流与数据库集成** 的 AI Native 数据应用。
 
 如果你想最快跑通：选择一个 API 模型提供方，启动 webserver，然后打开 Web UI。
 
@@ -24,8 +24,8 @@ DB-GPT 是一个开源框架，用于构建结合 **LLM、RAG、智能体、AWEL
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/eosphoros-ai/DB-GPT.git
-cd DB-GPT
+git clone https://github.com/hua7448/db-gpt-chat.git K-ICS
+cd K-ICS
 
 # 2. 安装依赖（以 OpenAI 代理模式为例）
 uv sync --all-packages \
@@ -46,7 +46,7 @@ uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
 
 如果 UI 能正常打开，并且你可以发起对话，说明基础环境已经可用。
 
-## DB-GPT 包含什么
+## K-ICS 包含什么
 
 - **SMMF**：模型管理与提供方切换
 - **RAG**：文档与知识检索

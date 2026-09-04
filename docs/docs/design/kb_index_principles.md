@@ -6,7 +6,7 @@ sidebar_label: KB Indexing Principles
 
 # Knowledge Base Indexing Principles
 
-> How DB-GPT indexes an uploaded document — from raw file to searchable indexes.
+> How K-ICS indexes an uploaded document — from raw file to searchable indexes.
 > Intended for product / design readers. No code, but the mechanisms match the implementation.
 
 ## What "indexing" means here
@@ -34,7 +34,7 @@ A knowledge space declares which indexes to build via `index_methods` (a string 
 | Code graph | *(layered on `KnowledgeGraph` / `GIT_REPO`)* | yes | AST of code files as `function` / `class` nodes |
 
 > In short: **vector, keyword, knowledge-graph** are the three persisted index methods. **Structural**
-> index and **code graph** are two extra shapes of indexing that DB-GPT builds on top of those.
+> index and **code graph** are two extra shapes of indexing that K-ICS builds on top of those.
 
 ---
 
@@ -48,7 +48,7 @@ tree so retrieval can walk up to a parent section and then back down to its chil
 treating every chunk as an isolated island.
 
 ### Why it's a separate concept (even though it has no own index method)
-During indexing, DB-GPT **persists** the heading path on each chunk but does **not** persist the tree.
+During indexing, K-ICS **persists** the heading path on each chunk but does **not** persist the tree.
 At **retrieve time** the retriever reconstructs the tree from those `HeaderN` fields in memory and
 walks it ("find this leaf chunk, then expand its whole parent section, then rank"). So the "structural
 index" is really *structural metadata + a tree-view retriever*, not a separate store.

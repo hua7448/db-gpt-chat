@@ -5,7 +5,7 @@ title: 聊天
 
 # 聊天
 
-DB-GPT 在 Web UI 中提供了多种聊天模式，每种模式都针对不同的使用场景进行了设计。
+K-ICS 在 Web UI 中提供了多种聊天模式，每种模式都针对不同的使用场景进行了设计。
 
 ## 聊天模式
 
@@ -39,7 +39,7 @@ DB-GPT 在 Web UI 中提供了多种聊天模式，每种模式都针对不同�
 
 ## Chat Data (Text2SQL)
 
-你可以使用自然语言查询已连接的数据库。DB-GPT 会将问题转换为 SQL，执行查询，并展示结果。
+你可以使用自然语言查询已连接的数据库。K-ICS 会将问题转换为 SQL，执行查询，并展示结果。
 
 **使用方式：**
 
@@ -52,7 +52,7 @@ DB-GPT 在 Web UI 中提供了多种聊天模式，每种模式都针对不同�
 
 ```
 User: Show me the top 10 customers by total order amount
-DB-GPT: [生成 SQL，执行后以表格形式展示结果]
+K-ICS: [生成 SQL，执行后以表格形式展示结果]
 ```
 
 :::info 支持的数据库
@@ -73,7 +73,7 @@ DB-GPT: [生成 SQL，执行后以表格形式展示结果]
 
 ```
 User: What is the average sales amount per region?
-DB-GPT: [分析文件并展示结果]
+K-ICS: [分析文件并展示结果]
 ```
 
 ## Chat Knowledge

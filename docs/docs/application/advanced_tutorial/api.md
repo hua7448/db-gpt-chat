@@ -1,12 +1,12 @@
 # API Interface Usage
 
-The DB-GPT project currently also provides various APIs for use. Currently APIs are mainly divided into two categories. 1. Model API 2. Application service layer AP
+The K-ICS project currently also provides various APIs for use. Currently APIs are mainly divided into two categories. 1. Model API 2. Application service layer AP
 
-Model API mainly means that DB-GPT adapts to various models and is uniformly packaged into models compatible with OpenAI SDK output. The service layer API refers to the API exposed by the DB-GPT service layer. The following is a brief introduction to the use of both.
+Model API mainly means that K-ICS adapts to various models and is uniformly packaged into models compatible with OpenAI SDK output. The service layer API refers to the API exposed by the K-ICS service layer. The following is a brief introduction to the use of both.
 
 ## Model API
 
-In the DB-GPT project, we defined a service-oriented multi-model management framework (SMMF). Through the capabilities of SMMF, we can deploy multiple models, and these models provide external services through services. In order to allow clients to achieve seamless switching, we uniformly support the OpenAI SDK standards.
+In the K-ICS project, we defined a service-oriented multi-model management framework (SMMF). Through the capabilities of SMMF, we can deploy multiple models, and these models provide external services through services. In order to allow clients to achieve seamless switching, we uniformly support the OpenAI SDK standards.
 - Detail usage tutorial: [OpenAI SDK calls local multi-model ](../../installation/advanced_usage/OpenAI_SDK_call.md)
 
 **Example:** The following is an example of calling through openai sdk

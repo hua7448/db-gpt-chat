@@ -1,6 +1,6 @@
 # Built-in Skills 总览
 
-DB-GPT 在项目级 `skills/` 目录下内置了一批可直接使用的 skills。
+K-ICS 在项目级 `skills/` 目录下内置了一批可直接使用的 skills。
 
 这个小节按照仓库结构组织，为每一个 built-in skill 提供单独页面说明。
 

@@ -7,7 +7,7 @@ hallucination problems, which are hard to be resolved by themselves.
 So, we need to use some tools to help LLMs to complete the tasks.
 
 :::note
-In DB-GPT agents, most LLMs support tool calls as long as their own capabilities are not too weak.
+In K-ICS agents, most LLMs support tool calls as long as their own capabilities are not too weak.
 (Such as `glm-4-9b-chat`, `Yi-1.5-34B-Chat`, `Qwen2-72B-Instruct`, etc.)
 :::
 
@@ -179,4 +179,4 @@ In the above code, we use the `ToolAssistantAgent` to select and call the approp
 In the above code, we use the `tool` decorator to define the tool function. It will wrap the function to a 
 `FunctionTool` object. And `FunctionTool` is a subclass of `BaseTool`, which is a base class of all tools.
 
-Actually, **tool** is a special **resource** in the `DB-GPT` agent. You will see more details in the [Resource](../modules/resource/resource.md) section.
+Actually, **tool** is a special **resource** in the K-ICS agent. You will see more details in the [Resource](../modules/resource/resource.md) section.

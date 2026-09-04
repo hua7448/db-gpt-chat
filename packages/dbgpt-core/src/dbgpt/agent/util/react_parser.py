@@ -293,7 +293,7 @@ class ReActOutputParser:
         """Parse the single step that should be executed in the current round.
 
         Some reasoning models incorrectly emit a whole ReAct trajectory in one
-        response. DB-GPT executes one action per round, so callers that are about
+        response. K-ICS executes one action per round, so callers that are about
         to run tools should use only the first actionable step while preserving
         ``parse()`` for history and diagnostics.
         """

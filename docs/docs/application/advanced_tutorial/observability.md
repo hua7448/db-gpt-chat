@@ -6,22 +6,22 @@ is the ability to understand the internal state of the system by examining its o
 This is important for debugging, monitoring, and maintaining the system.
 
 
-## Observability In DB-GPT
+## Observability In K-ICS
 
-DB-GPT provides observability through the following mechanisms:
-- **Logging**: DB-GPT logs various events and metrics to help you understand the internal state of the system.
-- **Tracing**: DB-GPT provides tracing capabilities to help you understand the flow of requests through the system.
+K-ICS provides observability through the following mechanisms:
+- **Logging**: K-ICS logs various events and metrics to help you understand the internal state of the system.
+- **Tracing**: K-ICS provides tracing capabilities to help you understand the flow of requests through the system.
 
 ## Logging
 
-You can configure the logging level and storage location for DB-GPT logs. By default, 
-logs are stored in the `logs` directory in the DB-GPT root directory. You can change 
+You can configure the logging level and storage location for K-ICS logs. By default,
+logs are stored in the `logs` directory in the K-ICS root directory. You can change
 the log level and storage location by setting the `DBGPT_LOG_LEVEL` and `DBGPT_LOG_DIR` environment.
 
 
 ## Tracing
 
-DB-GPT has built-in tracing capabilities that allow you to trace the flow of requests 
+K-ICS has built-in tracing capabilities that allow you to trace the flow of requests
 through the system. 
 
 
@@ -29,7 +29,7 @@ through the system.
 
 ### Local Storage
 
-DB-GPT will store traces in the `traces` directory in the DB-GPT logs directory, by default, 
+K-ICS will store traces in the `traces` directory in the K-ICS logs directory, by default,
 they are located in `logs/dbgpt*.jsonl`. 
 
 If you want to know more about the local storage of traces and how to use them, you 
@@ -38,7 +38,7 @@ can refer to the [Debugging](./debugging) documentation.
 
 ### OpenTelemetry Support
 
-DB-GPT also supports [OpenTelemetry](https://opentelemetry.io/) for distributed tracing. 
+K-ICS also supports [OpenTelemetry](https://opentelemetry.io/) for distributed tracing.
 Now, you can export traces to open-telemetry compatible backends like Jaeger, Zipkin, 
 and others with OpenTelemetry Protocol (OTLP).
 
@@ -51,7 +51,7 @@ pip install opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp
 Then, modify your `.env` file to enable OpenTelemetry tracing:
 
 ```bash
-## Whether to enable DB-GPT send trace to OpenTelemetry
+## Whether to enable K-ICS to send traces to OpenTelemetry
 TRACER_TO_OPEN_TELEMETRY=True
 ## More details see https://opentelemetry-python.readthedocs.io/en/latest/exporter/otlp/otlp.html
 OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317
@@ -59,11 +59,11 @@ OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317
 In the above configuration, you can change the `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` to 
 your OTLP collector or backend, we use gRPC endpoint by default.
 
-Here, we use Jaeger as an example to show how to use OpenTelemetry to trace DB-GPT.
+Here, we use Jaeger as an example to show how to use OpenTelemetry to trace K-ICS.
 
 ### Jaeger Support
 
-Here is an example of how to use Jaeger to trace DB-GPT with docker:
+Here is an example of how to use Jaeger to trace K-ICS with docker:
 
 Run the Jaeger all-in-one image:
 
@@ -89,7 +89,7 @@ TRACER_TO_OPEN_TELEMETRY=True
 OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317
 ```
 
-Start the DB-GPT server:
+Start the K-ICS server:
 
 ```bash
 dbgpt start webserver
@@ -126,7 +126,7 @@ Here are some examples of screenshot of Jaeger UI:
 
 ### Jaeger Support With Docker Compose
 
-If you want to use docker-compose to start DB-GPT and Jaeger, you can use the following
+If you want to use docker-compose to start K-ICS and Jaeger, you can use the following
 `docker-compose.yml` file:
 
 ```yaml
@@ -159,6 +159,7 @@ services:
       - jaeger-badger:/badger
     user: root
   controller:
+    # Keep the upstream image for this deployment example.
     image: eosphorosai/dbgpt:latest
     command: dbgpt start controller
     restart: unless-stopped
@@ -244,4 +245,4 @@ After the cluster is started, you can access the Jaeger UI at `http://localhost:
   <img src={'/img/application/advanced_tutorial/observability_img5.png'} width="720px"/>
 </p>
 
-In the above screenshot, you can see the trace of cross-service communication between the DB-GPT controller, LLM worker, and webserver.
+In the above screenshot, you can see the trace of cross-service communication between the K-ICS controller, LLM worker, and webserver.

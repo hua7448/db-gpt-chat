@@ -5,7 +5,7 @@ title: 数据源
 
 # 数据源
 
-DB-GPT 可以连接多种数据源，让你通过自然语言与数据库、电子表格和数据仓库交互。
+K-ICS 可以连接多种数据源，让你通过自然语言与数据库、电子表格和数据仓库交互。
 
 ## 支持的数据源
 
@@ -44,7 +44,7 @@ flowchart LR
 
 ### 通过 Web UI
 
-1. 打开 DB-GPT Web UI
+1. 打开 K-ICS Web UI
 2. 在侧边栏进入 **Data Sources**
 3. 点击 **Add Data Source**
 4. 选择数据库类型并填写连接信息
@@ -56,7 +56,7 @@ flowchart LR
 
 ## Text2SQL
 
-DB-GPT 擅长将自然语言转换为 SQL 查询：
+K-ICS 擅长将自然语言转换为 SQL 查询：
 
 - **Schema linking** —— 自动将自然语言映射到表名和字段名
 - **多轮对话** —— 通过追问逐步修正查询

@@ -5,7 +5,7 @@ title: SMMF
 
 # SMMF (Service-oriented Multi-Model Management Framework)
 
-SMMF is DB-GPT's model management layer. It provides a unified interface for managing, switching, and deploying multiple LLM and embedding models — whether they are API proxies or locally hosted.
+SMMF is K-ICS's model management layer. It provides a unified interface for managing, switching, and deploying multiple LLM and embedding models — whether they are API proxies or locally hosted.
 
 ## Why SMMF?
 
@@ -64,7 +64,7 @@ You can define multiple LLMs and embeddings in the same config file.
 
 ### Standalone
 
-All models run in the same process as the DB-GPT server. Simple and suitable for development or single-machine deployments.
+All models run in the same process as the K-ICS server. Simple and suitable for development or single-machine deployments.
 
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml
@@ -76,7 +76,7 @@ Models run on separate worker nodes, managed by a controller. Suitable for produ
 
 ```mermaid
 flowchart LR
-    Server["DB-GPT Server"] --> Controller["Model Controller"]
+    Server["K-ICS Server"] --> Controller["Model Controller"]
     Controller --> Worker1["Worker (LLM)"]
     Controller --> Worker2["Worker (Embedding)"]
     Controller --> Worker3["Worker (LLM 2)"]

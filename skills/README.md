@@ -1,8 +1,8 @@
-# SKILL 机制 - DB-GPT Agent 技能加载系统
+# SKILL 机制 - K-ICS Agent 技能加载系统
 
 ## 概述
 
-SKILL 机制是 DB-GPT Agent 框架的高级特性，允许 Agent 加载和管理预定义的技能包，实现 Agent 能力的模块化和可复用性。
+SKILL 机制是 K-ICS Agent 框架的高级特性，允许 Agent 加载和管理预定义的技能包，实现 Agent 能力的模块化和可复用性。
 
 ## 核心文件
 
@@ -143,7 +143,7 @@ await agent.bind(context).bind(llm_config).bind(memory).build()
     "name": "web_search_assistant",
     "description": "Web search assistant",
     "version": "1.0.0",
-    "author": "DB-GPT Team",
+    "author": "K-ICS Team",
     "skill_type": "web_search",
     "tags": ["web", "search"]
   },

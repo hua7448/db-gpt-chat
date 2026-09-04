@@ -1,22 +1,22 @@
 ---
 sidebar_position: 0
 title: Web UI Overview
-summary: "What is available in the DB-GPT Web UI and where each main feature lives"
+summary: "What is available in the K-ICS Web UI and where each main feature lives"
 read_when:
-  - You already started DB-GPT and want to know what to click first
+  - You already started K-ICS and want to know what to click first
   - You want a quick map of chat, knowledge, dashboard, and app screens
 ---
 
 # Web UI Overview
 
-DB-GPT ships with a web interface at **[http://localhost:5670](http://localhost:5670)**.
+K-ICS ships with a web interface at **[http://localhost:5670](http://localhost:5670)**.
 
 ## Main areas
 
 - [Chat](/docs/getting-started/web-ui/chat) — normal chat, data chat, Excel chat, knowledge chat
 - [Knowledge Base](/docs/getting-started/web-ui/knowledge-base) — upload files and build RAG datasets
 - [Dashboard](/docs/getting-started/web-ui/dashboard) — generate charts and reports from natural language
-- [App Management](/docs/getting-started/web-ui/app-management) — create and manage DB-GPT applications
+- [App Management](/docs/getting-started/web-ui/app-management) — create and manage K-ICS applications
 
 ## Feature map
 
@@ -33,7 +33,7 @@ DB-GPT ships with a web interface at **[http://localhost:5670](http://localhost:
 
 ## Accessing the Web UI
 
-After starting the DB-GPT server, the Web UI is available at:
+After starting the K-ICS server, the Web UI is available at:
 
 ```
 http://localhost:5670

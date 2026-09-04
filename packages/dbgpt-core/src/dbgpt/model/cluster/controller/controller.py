@@ -289,7 +289,7 @@ def _create_registry(controller_params: ModelControllerParameters) -> ModelRegis
             db_name = db_config.database
         else:
             raise ValueError(
-                "DB-GPT only support SQLite, MySQL and OceanBase database as metadata "
+                "K-ICS only supports SQLite, MySQL and OceanBase databases as metadata "
                 "storage database"
             )
         connector = db_config.create_connector()
@@ -316,7 +316,7 @@ def _create_registry(controller_params: ModelControllerParameters) -> ModelRegis
 def parse_args():
     import argparse
 
-    parser = argparse.ArgumentParser(description="DB-GPT API Server")
+    parser = argparse.ArgumentParser(description="K-ICS API Server")
     parser.add_argument(
         "-c",
         "--config",

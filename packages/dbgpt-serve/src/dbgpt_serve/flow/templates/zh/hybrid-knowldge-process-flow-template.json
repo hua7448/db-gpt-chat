@@ -1211,7 +1211,7 @@
             "label": "默认大语言模型客户端",
             "custom_label": null,
             "name": "default_llm_client",
-            "description": "默认大语言模型客户端（连接到你的 DB-GPT 模型服务）",
+            "description": "默认大语言模型客户端（连接到你的 K-ICS 模型服务）",
             "category": "llm_client",
             "category_label": "LLM Client",
             "flow_type": "resource",

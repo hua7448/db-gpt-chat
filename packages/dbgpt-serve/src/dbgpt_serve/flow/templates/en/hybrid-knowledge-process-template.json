@@ -341,7 +341,7 @@
             "label": "Default Large Language Model Client",
             "custom_label": null,
             "name": "default_llm_client",
-            "description": "Default large language model client (connecting to your DB-GPT model service)",
+            "description": "Default large language model client (connecting to your K-ICS model service)",
             "category": "llm_client",
             "category_label": "LLM Client",
             "flow_type": "resource",

@@ -1,45 +1,27 @@
-# <img src="./assets/LOGO_SMALL.png" alt="லோகோ" ஸ்டைல்="செங்குத்து-சீரமைப்பு: நடு; உயரம்: 24px;" /> DB-GPT: AWEL மற்றும் முகவர்களுடன் AI நேட்டிவ் டேட்டா ஆப் டெவலப்மென்ட் கட்டமைப்பு
-
-<p align="left">
-
-<img src="./assets/dbgpt_vision.png" width="100%" />
-</p>
+# K-ICS: AWEL மற்றும் முகவர்களுடன் AI நேட்டிவ் டேட்டா ஆப் டெவலப்மென்ட் கட்டமைப்பு
 
 <div align="center">
 <p>
 
-<a href="https://github.com/eosphoros-ai/DB-GPT">
-<img alt="stars" src="https://img.shields.io/github/stars/eosphoros-ai/db-gpt?style=social" />
+<a href="https://github.com/hua7448/db-gpt-chat">
+<img alt="stars" src="https://img.shields.io/github/stars/hua7448/db-gpt-chat?style=social" />
 </a>
-<a href="https://github.com/eosphoros-ai/DB-GPT">
-<img alt="forks" src="https://img.shields.io/github/forks/eosphoros-ai/db-gpt?style=social" />
+<a href="https://github.com/hua7448/db-gpt-chat">
+<img alt="forks" src="https://img.shields.io/github/forks/hua7448/db-gpt-chat?style=social" />
 </a>
-<a href="http://dbgpt.cn/">
-<img alt="அதிகாரப்பூர்வ வலைத்தளம்" src="https://img.shields.io/badge/Official%20website-DB--GPT-blue?style=flat&labelColor=3366CC" />
+<a href="https://github.com/hua7448/db-gpt-chat">
+<img alt="அதிகாரப்பூர்வ வலைத்தளம்" src="https://img.shields.io/badge/K--ICS-Data%20Workbench-blue?style=flat&labelColor=3366CC" />
 </a>
 <a href="https://opensource.org/licenses/MIT">
-<img alt="உரிமம்: MIT" src="https://img.shields.io/github/license/eosphoros-ai/db-gpt?style=flat&labelColor=009966&color=009933" />
+<img alt="உரிமம்: MIT" src="https://img.shields.io/github/license/hua7448/db-gpt-chat?style=flat&labelColor=009966&color=009933" />
 </a>
-<a href="https://github.com/eosphoros-ai/DB-GPT/releases">
-<img alt="வெளியீட்டு குறிப்புகள்" src="https://img.shields.io/github/v/release/eosphoros-ai/db-gpt?style=flat&labelColor=FF9933&color=FF6633" />
+<a href="https://github.com/hua7448/db-gpt-chat/releases">
+<img alt="வெளியீட்டு குறிப்புகள்" src="https://img.shields.io/github/v/release/hua7448/db-gpt-chat?style=flat&labelColor=FF9933&color=FF6633" />
 </a>
-<a href="https://github.com/eosphoros-ai/DB-GPT/issues">
-<img alt="திறந்த சிக்கல்கள்" src="https://img.shields.io/github/issues-raw/eosphoros-ai/db-gpt?style=flat&labelColor=66666&color=33333" />
+<a href="https://github.com/hua7448/db-gpt-chat/issues">
+<img alt="திறந்த சிக்கல்கள்" src="https://img.shields.io/github/issues-raw/hua7448/db-gpt-chat?style=flat&labelColor=66666&color=33333" />
 </a>
-<a href="https://x.com/DBGPT_AI">
-<img alt="X (முன்னர் ட்விட்டர்) "பின்தொடருங்கள்" src="https://img.shields.io/twitter/follow/DBGPT_AI" />
-</a>
-
-<a href="https://medium.com/@dbgpt0506">
-<img alt="நடுத்தர பின்தொடருங்கள்" src="https://badgen.net/badge/Medium/DB-GPT/333333?icon=medium&labelColor=66666" />
-</a>
-<a href="https://space.bilibili.com/3537113070963392">
-<img alt="பிலிபிலி ஸ்பேஸ்" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.bilibili.com%2Fx%2Frelation%2Fstat%3Fvmid%3D3537113070963392&query=data.follower&style=flat&logo=bilibili&logoColor=white&label=Bilibili%20Fans&labelColor=F37697&color=6495ED" />
-</a>
-<a href="https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA">
-<img alt="Slack" src="https://img.shields.io/badge/Slack-Join%20us-5d6b98?style=flat&logo=slack&labelColor=7d89b0" />
-</a>
-<a href="https://codespaces.new/eosphoros-ai/DB-GPT">
+<a href="https://codespaces.new/hua7448/db-gpt-chat">
 <img alt="GitHub Codespaces இல் திறக்கவும்" src="https://github.com/codespaces/badge.svg" />
 </a>
 </p>
@@ -47,45 +29,41 @@
 [![简体中文](https://img.shields.io/badge/简体中文-d9d9d9?style=flat-square)](README.zh.md)
 [![日本語](https://img.shields.io/badge/日本語-d9d9d9?style=flat-square)](README.ja.md) 
 
-[**ஆவணங்கள்**](http://docs.dbgpt.cn/docs/overview/) | [**எங்களைத் தொடர்பு கொள்ளவும்**](https://github.com/eosphoros-ai/DB-GPT/blob/main/README.zh.md#%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC) | [**சமூகம்**](https://github.com/eosphoros-ai/community) | [**Paper**](https://arxiv.org/pdf/2312.17449.pdf)
+[**ஆவணங்கள்**](./docs/) | [**எங்களைத் தொடர்பு கொள்ளவும்**](https://github.com/hua7448/db-gpt-chat/blob/main/README.zh.md#%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC) | [**சமூகம்**](https://github.com/hua7448/db-gpt-chat/discussions) | [**Upstream Paper**](https://arxiv.org/pdf/2312.17449.pdf)
 
 </div>
-## DB-GPT என்றால் என்ன?
+## K-ICS என்றால் என்ன?
 
-🤖 **DB-GPT என்பது AWEL (Agentic Workflow Expression Language) மற்றும் முகவர்கள்** ஆகியவற்றைக் கொண்ட ஒரு திறந்த மூல AI நேட்டிவ் டேட்டா ஆப் டெவலப்மென்ட் கட்டமைப்பாகும். 
+🤖 **K-ICS என்பது AWEL (Agentic Workflow Expression Language) மற்றும் முகவர்கள்** ஆகியவற்றைக் கொண்ட ஒரு திறந்த மூல AI நேட்டிவ் டேட்டா ஆப் டெவலப்மென்ட் கட்டமைப்பாகும்.
 
 மல்டி-மாடல் மேனேஜ்மென்ட் (SMMF), Text2SQL எஃபெக்ட் ஆப்டிமைசேஷன், RAG ஃப்ரேம்வொர்க் மற்றும் ஆப்டிமைசேஷன், மல்டி-ஏஜென்ட்ஸ் ஃப்ரேம்வொர்க் ஒத்துழைப்பு, AWEL (ஏஜென்ட் வொர்க்ஃப்ளோ ஆர்கெஸ்ட்ரேஷன்) போன்ற பல தொழில்நுட்ப திறன்களை மேம்படுத்துவதன் மூலம், பெரிய மாடல்களின் துறையில் உள்கட்டமைப்பை உருவாக்குவதே இதன் நோக்கமாகும். இது டேட்டாவுடன் கூடிய பெரிய மாடல் பயன்பாடுகளை எளிமையாகவும் வசதியாகவும் ஆக்குகிறது.
 
 🚀 **டேட்டா 3.0 சகாப்தத்தில், மாதிரிகள் மற்றும் தரவுத்தளங்களின் அடிப்படையில், நிறுவனங்கள் மற்றும் டெவலப்பர்கள் குறைந்த குறியீட்டைக் கொண்டு தங்கள் சொந்த தனிப்பயனாக்கப்பட்ட பயன்பாடுகளை உருவாக்க முடியும்.**
 ### அறிமுகம் 
 
-DB-GPT இன் கட்டமைப்பு பின்வரும் படத்தில் காட்டப்பட்டுள்ளது:
-
-<p align="center">
-<img src="./assets/dbgpt.png" width="800" />
-</p>
+K-ICS இன் கட்டமைப்பு பின்வரும் படத்தில் காட்டப்பட்டுள்ளது:
 
 முக்கிய திறன்களில் பின்வரும் பகுதிகள் அடங்கும்:
 
-- **RAG (மீட்டெடுப்பு ஆக்மென்டட் ஜெனரேஷன்)**: RAG தற்போது மிகவும் நடைமுறையில் செயல்படுத்தப்பட்ட மற்றும் அவசரமாகத் தேவைப்படும் டொமைன் ஆகும். DB-GPT ஏற்கனவே RAG அடிப்படையிலான ஒரு கட்டமைப்பை செயல்படுத்தியுள்ளது, இது பயனர்கள் DB-GPT இன் RAG திறன்களைப் பயன்படுத்தி அறிவு சார்ந்த பயன்பாடுகளை உருவாக்க அனுமதிக்கிறது.
+- **RAG (மீட்டெடுப்பு ஆக்மென்டட் ஜெனரேஷன்)**: RAG தற்போது மிகவும் நடைமுறையில் செயல்படுத்தப்பட்ட மற்றும் அவசரமாகத் தேவைப்படும் டொமைன் ஆகும். K-ICS ஏற்கனவே RAG அடிப்படையிலான ஒரு கட்டமைப்பை செயல்படுத்தியுள்ளது, இது பயனர்கள் K-ICS இன் RAG திறன்களைப் பயன்படுத்தி அறிவு சார்ந்த பயன்பாடுகளை உருவாக்க அனுமதிக்கிறது.
 
-- **GBI (ஜெனரேட்டிவ் பிசினஸ் இன்டலிஜென்ஸ்)**: ஜெனரேட்டிவ் BI என்பது DB-GPT திட்டத்தின் முக்கிய திறன்களில் ஒன்றாகும், இது நிறுவன அறிக்கை பகுப்பாய்வு மற்றும் வணிக நுண்ணறிவுகளை உருவாக்குவதற்கான அடிப்படை தரவு நுண்ணறிவு தொழில்நுட்பத்தை வழங்குகிறது.
+- **GBI (ஜெனரேட்டிவ் பிசினஸ் இன்டலிஜென்ஸ்)**: ஜெனரேட்டிவ் BI என்பது K-ICS திட்டத்தின் முக்கிய திறன்களில் ஒன்றாகும், இது நிறுவன அறிக்கை பகுப்பாய்வு மற்றும் வணிக நுண்ணறிவுகளை உருவாக்குவதற்கான அடிப்படை தரவு நுண்ணறிவு தொழில்நுட்பத்தை வழங்குகிறது.
 
-- **ஃபைன்-ட்யூனிங் ஃப்ரேம்வொர்க்**: மாடல் ஃபைன்-ட்யூனிங் என்பது எந்தவொரு நிறுவனமும் செங்குத்து மற்றும் முக்கிய டொமைன்களில் செயல்படுத்த ஒரு தவிர்க்க முடியாத திறனாகும். DB-GPT, DB-GPT திட்டத்துடன் தடையின்றி ஒருங்கிணைக்கும் ஒரு முழுமையான ஃபைன்-ட்யூனிங் கட்டமைப்பை வழங்குகிறது. சமீபத்திய ஃபைன்-ட்யூனிங் முயற்சிகளில், ஸ்பைடர் தரவுத்தொகுப்பை அடிப்படையாகக் கொண்ட துல்லிய விகிதம் 82.5% ஆக அடையப்பட்டுள்ளது.
+- **ஃபைன்-ட்யூனிங் ஃப்ரேம்வொர்க்**: மாடல் ஃபைன்-ட்யூனிங் என்பது எந்தவொரு நிறுவனமும் செங்குத்து மற்றும் முக்கிய டொமைன்களில் செயல்படுத்த ஒரு தவிர்க்க முடியாத திறனாகும். K-ICS, K-ICS திட்டத்துடன் தடையின்றி ஒருங்கிணைக்கும் ஒரு முழுமையான ஃபைன்-ட்யூனிங் கட்டமைப்பை வழங்குகிறது. சமீபத்திய ஃபைன்-ட்யூனிங் முயற்சிகளில், ஸ்பைடர் தரவுத்தொகுப்பை அடிப்படையாகக் கொண்ட துல்லிய விகிதம் 82.5% ஆக அடையப்பட்டுள்ளது.
 
-- **டேட்டா-டிரைவன் மல்டி-ஏஜென்ட்ஸ் ஃப்ரேம்வொர்க்**: DB-GPT தரவு-இயக்கப்படும் சுய-வளர்ச்சியடைந்த மல்டி-ஏஜென்ட்ஸ் ஃப்ரேம்வொர்க்கை வழங்குகிறது, இது தொடர்ந்து முடிவுகளை எடுத்து தரவுகளின் அடிப்படையில் செயல்படுத்துவதை நோக்கமாகக் கொண்டுள்ளது.
+- **டேட்டா-டிரைவன் மல்டி-ஏஜென்ட்ஸ் ஃப்ரேம்வொர்க்**: K-ICS தரவு-இயக்கப்படும் சுய-வளர்ச்சியடைந்த மல்டி-ஏஜென்ட்ஸ் ஃப்ரேம்வொர்க்கை வழங்குகிறது, இது தொடர்ந்து முடிவுகளை எடுத்து தரவுகளின் அடிப்படையில் செயல்படுத்துவதை நோக்கமாகக் கொண்டுள்ளது.
 
 - **தரவு தொழிற்சாலை**: பெரிய மாதிரிகளின் சகாப்தத்தில் நம்பகமான அறிவு மற்றும் தரவை சுத்தம் செய்தல் மற்றும் செயலாக்குவது பற்றியது தரவு தொழிற்சாலை.
 
-- **தரவு மூலங்கள்**: உற்பத்தி வணிகத் தரவை DB-GPT இன் முக்கிய திறன்களுடன் தடையின்றி இணைக்க பல்வேறு தரவு மூலங்களை ஒருங்கிணைத்தல்.
+- **தரவு மூலங்கள்**: உற்பத்தி வணிகத் தரவை K-ICS இன் முக்கிய திறன்களுடன் தடையின்றி இணைக்க பல்வேறு தரவு மூலங்களை ஒருங்கிணைத்தல்.
 
 #### துணை தொகுதி
 - [DB-GPT-Hub](https://github.com/eosphoros-ai/DB-GPT-Hub) பெரிய மொழி மாதிரிகளில் (LLMs) மேற்பார்வையிடப்பட்ட ஃபைன்-ட்யூனிங் (SFT) ஐப் பயன்படுத்துவதன் மூலம் உயர் செயல்திறனுடன் உரையிலிருந்து SQL பணிப்பாய்வு.
 
-- [dbgpts](https://github.com/eosphoros-ai/dbgpts) dbgpts என்பது DB-GPT-ஐ அடிப்படையாகக் கொண்ட சில தரவு பயன்பாடுகள், AWEL ஆபரேட்டர்கள், AWEL பணிப்பாய்வு டெம்ப்ளேட்கள் மற்றும் முகவர்களைக் கொண்ட அதிகாரப்பூர்வ களஞ்சியமாகும்.
+- [dbgpts](https://github.com/eosphoros-ai/dbgpts) dbgpts என்பது K-ICS-ஐ அடிப்படையாகக் கொண்ட சில தரவு பயன்பாடுகள், AWEL ஆபரேட்டர்கள், AWEL பணிப்பாய்வு டெம்ப்ளேட்கள் மற்றும் முகவர்களைக் கொண்ட அதிகாரப்பூர்வ களஞ்சியமாகும்.
 
 #### DeepWiki
-- [DB-GPT](https://deepwiki.com/eosphoros-ai/DB-GPT)
+- [K-ICS](https://deepwiki.com/hua7448/db-gpt-chat)
 - [DB-GPT-HUB](https://deepwiki.com/eosphoros-ai/DB-GPT-Hub)
 - [dbgpts](https://deepwiki.com/eosphoros-ai/dbgpts)
 
@@ -107,13 +85,13 @@ DB-GPT இன் கட்டமைப்பு பின்வரும் ப�
 
   [Text2SQL finetune பற்றிய கூடுதல் தகவல்கள்](https://github.com/eosphoros-ai/DB-GPT-Hub)
 
-- [DB-GPT-Plugins](https://github.com/eosphoros-ai/DB-GPT-Plugins) தானியங்கு-GPT செருகுநிரலை நேரடியாக இயக்கக்கூடிய DB-GPT செருகுநிரல்கள்
+- [DB-GPT-Plugins](https://github.com/eosphoros-ai/DB-GPT-Plugins) தானியங்கு-GPT செருகுநிரலை நேரடியாக இயக்கக்கூடிய K-ICS செருகுநிரல்கள்
 - [GPT-Vis](https://github.com/eosphoros-ai/GPT-Vis) காட்சிப்படுத்தல் நெறிமுறை
 
 ### AI-நேட்டிவ் டேட்டா ஆப் 
 ---
 
-- 🔥🔥🔥 [Released V0.7.0 | A set of significant upgrades](http://docs.dbgpt.cn/blog/db-gpt-v070-release)
+- 🔥🔥🔥 [Released V0.7.0 | A set of significant upgrades](./docs/blog/2025-03-24-dbgpt-v0.7.0-release.md)
   - [Support MCP Protocol](https://github.com/eosphoros-ai/DB-GPT/pull/2497)
   - [Support DeepSeek R1](https://github.com/deepseek-ai/DeepSeek-R1)
   - [Support QwQ-32B](https://huggingface.co/Qwen/QwQ-32B)
@@ -129,7 +107,7 @@ DB-GPT இன் கட்டமைப்பு பின்வரும் ப�
 ![app_chat_v0 6](https://github.com/user-attachments/assets/a2f0a875-df8c-4f0d-89a3-eed321c02113)
 ---
 
-## ஏன் DB-GPT?
+## ஏன் K-ICS?
 
 ### 1. முகவர் அடிப்படையான தரவு பகுப்பாய்வு
 பணிகளைத் திட்டமிடுங்கள், வேலையைப் படிகளாகப் பிரிங்கள், கருவிகளை அழைக்கவும், முழுமையான பகுப்பாய்வு பணிப்பாய்வுகளை முடிக்கவும்.
@@ -161,26 +139,25 @@ DB-GPT இன் கட்டமைப்பு பின்வரும் ப�
 ![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
-[**Usage Tutorial**](http://docs.dbgpt.cn/docs/overview)
-- [**Install**](http://docs.dbgpt.cn/docs/installation)
-  - [Docker](http://docs.dbgpt.cn/docs/installation/docker)
-  - [Source Code](http://docs.dbgpt.cn/docs/getting-started/deploy/source-code)
-- [**Quickstart**](http://docs.dbgpt.cn/docs/overview)
-- [**Application**](http://docs.dbgpt.cn/docs/use_cases)
-  - [Development Guide](http://docs.dbgpt.cn/docs/cookbook/app/data_analysis_app_develop) 
-  - [AWEL Flow Usage](http://docs.dbgpt.cn/docs/application/awel_flow_usage)
-- [**Debugging**](http://docs.dbgpt.cn/docs/operation_manual/advanced_tutorial/debugging)
-- [**Advanced Usage**](http://docs.dbgpt.cn/docs/application/advanced_tutorial/cli)
-  - [SMMF](http://docs.dbgpt.cn/docs/application/advanced_tutorial/smmf)
-  - [Finetune](http://docs.dbgpt.cn/docs/application/fine_tuning_manual/dbgpt_hub)
-  - [AWEL](http://docs.dbgpt.cn/docs/awel/tutorial)
+[**Usage Tutorial**](./docs/)
+- [**Install**](./docs/docs/installation/index.md)
+  - [Docker](./docs/docs/installation/docker.md)
+  - [Source Code](./docs/docs/installation/sourcecode.md)
+- [**Quickstart**](./docs/docs/quickstart.md)
+- [**Application**](./docs/docs/application/apps/app_explore.md)
+  - [Development Guide](./docs/docs/cookbook/app/data_analysis_app_develop.md)
+  - [AWEL Flow Usage](./docs/docs/application/awel.md)
+- [**Debugging**](./docs/docs/application/advanced_tutorial/debugging.md)
+- [**Advanced Usage**](./docs/docs/application/advanced_tutorial/cli.md)
+  - [Model Management](./docs/docs/application/llms.md)
+  - [Finetune](./docs/docs/application/fine_tuning_manual/text_to_sql.md)
 
   ## அம்சங்கள்
 
 தற்போது, ​​எங்கள் தற்போதைய திறன்களை வெளிப்படுத்த பல முக்கிய அம்சங்களை அறிமுகப்படுத்தியுள்ளோம்:
 - **தனியார் டொமைன் கேள்வி பதில் & தரவு செயலாக்கம்**
 
-DB-GPT திட்டம் அறிவுத் தளக் கட்டமைப்பை மேம்படுத்தவும், கட்டமைக்கப்பட்ட மற்றும் கட்டமைக்கப்படாத தரவு இரண்டையும் திறம்படச் சேமித்து மீட்டெடுக்கவும் வடிவமைக்கப்பட்ட பல்வேறு செயல்பாடுகளை வழங்குகிறது. இந்த செயல்பாடுகளில் பல கோப்பு வடிவங்களைப் பதிவேற்றுவதற்கான உள்ளமைக்கப்பட்ட ஆதரவு, தனிப்பயன் தரவு பிரித்தெடுக்கும் செருகுநிரல்களை ஒருங்கிணைக்கும் திறன் மற்றும் பெரிய அளவிலான தகவல்களை திறம்பட நிர்வகிப்பதற்கான ஒருங்கிணைந்த திசையன் சேமிப்பு மற்றும் மீட்டெடுப்பு திறன்கள் ஆகியவை அடங்கும்.
+K-ICS திட்டம் அறிவுத் தளக் கட்டமைப்பை மேம்படுத்தவும், கட்டமைக்கப்பட்ட மற்றும் கட்டமைக்கப்படாத தரவு இரண்டையும் திறம்படச் சேமித்து மீட்டெடுக்கவும் வடிவமைக்கப்பட்ட பல்வேறு செயல்பாடுகளை வழங்குகிறது. இந்த செயல்பாடுகளில் பல கோப்பு வடிவங்களைப் பதிவேற்றுவதற்கான உள்ளமைக்கப்பட்ட ஆதரவு, தனிப்பயன் தரவு பிரித்தெடுக்கும் செருகுநிரல்களை ஒருங்கிணைக்கும் திறன் மற்றும் பெரிய அளவிலான தகவல்களை திறம்பட நிர்வகிப்பதற்கான ஒருங்கிணைந்த திசையன் சேமிப்பு மற்றும் மீட்டெடுப்பு திறன்கள் ஆகியவை அடங்கும்.
 
 - **மல்டி-டேட்டா சோர்ஸ் & ஜிபிஐ (ஜெனரேட்டிவ் பிசினஸ் இன்டலிஜென்ஸ்)**
 
@@ -307,23 +284,23 @@ LLaMA/LLaMA2, Baichuan, ChatGLM, Wenxin, Tongyi, Zhipu மற்றும் ப
       </tbody>
     </table>
 
-- [மேலும் ஆதரிக்கப்படும் LLMகள்](http://docs.dbgpt.cn/docs/modules/smmf)
+  - [மேலும் ஆதரிக்கப்படும் LLMகள்](./docs/docs/application/llms.md)
 
 - **தனியுரிமை மற்றும் பாதுகாப்பு**
 
 தனியார்மயமாக்கப்பட்ட பெரிய மாதிரிகள் மற்றும் ப்ராக்ஸி உணர்திறன் நீக்கம் உள்ளிட்ட பல்வேறு தொழில்நுட்பங்களை செயல்படுத்துவதன் மூலம் தரவின் தனியுரிமை மற்றும் பாதுகாப்பை நாங்கள் உறுதி செய்கிறோம்.
 
 - ஆதரவு தரவுமூலங்கள்
-- [தரவுமூலங்கள்](http://docs.dbgpt.cn/docs/modules/connections)
+  - [தரவுமூலங்கள்](./docs/docs/application/datasources.md)
 
 
 ## பங்களிப்பு
 
-- புதிய பங்களிப்புகளுக்கான விரிவான வழிகாட்டுதல்களைச் சரிபார்க்க, [பங்களிப்பது எப்படி] (https://github.com/eosphoros-ai/DB-GPT/blob/main/CONTRIBUTING.md) ஐப் பார்க்கவும்.
+- புதிய பங்களிப்புகளுக்கான விரிவான வழிகாட்டுதல்களைச் சரிபார்க்க, [பங்களிப்பது எப்படி] (https://github.com/hua7448/db-gpt-chat/blob/main/CONTRIBUTING.md) ஐப் பார்க்கவும்.
 
 ### பங்களிப்பாளர்கள் சுவர்
-<a href="https://github.com/eosphoros-ai/DB-GPT/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=eosphoros-ai/DB-GPT&max=200" />
+<a href="https://github.com/hua7448/db-gpt-chat/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=hua7448/db-gpt-chat&max=200" />
 </a>
 
 ## உரிமம்
@@ -333,9 +310,9 @@ MIT உரிமம் (MIT)
 - [disckaimer](./DISCKAIMER.md)
 
 ## மேற்கோள்
-DB-GPT இன் ஒட்டுமொத்த கட்டமைப்பைப் புரிந்து கொள்ள விரும்பினால், <a href="https://arxiv.org/abs/2312.17449" target="_blank">காகிதம்</a> மற்றும் <a href="https://arxiv.org/abs/2404.10209" target="_blank">காகிதம்</a> ஆகியவற்றை மேற்கோள் காட்டுங்கள்.
+K-ICS இன் ஒட்டுமொத்த கட்டமைப்பைப் புரிந்து கொள்ள விரும்பினால், <a href="https://arxiv.org/abs/2312.17449" target="_blank">காகிதம்</a> மற்றும் <a href="https://arxiv.org/abs/2404.10209" target="_blank">காகிதம்</a> ஆகியவற்றை மேற்கோள் காட்டுங்கள்.
 
-முகவர் மேம்பாட்டிற்கு DB-GPT ஐப் பயன்படுத்துவது பற்றி அறிய விரும்பினால், தயவுசெய்து <a href="https://arxiv.org/abs/2412.13520" target="_blank">Paper</a>
+முகவர் மேம்பாட்டிற்கு K-ICS ஐப் பயன்படுத்துவது பற்றி அறிய விரும்பினால், தயவுசெய்து <a href="https://arxiv.org/abs/2412.13520" target="_blank">Paper</a>
 ```bibtex
 @article{xue2023dbgpt,
       title={DB-GPT: Empowering Database Interactions with Private Large Language Models}, 
@@ -364,11 +341,11 @@ DB-GPT இன் ஒட்டுமொத்த கட்டமைப்பை�
 
 
 ## தொடர்புத் தகவல்
-DB-GPT-க்கு பங்களித்த அனைவருக்கும் நன்றி! உங்கள் யோசனைகள், குறியீடு, கருத்துகள் மற்றும் நிகழ்வுகளிலும் சமூக தளங்களிலும் அவற்றைப் பகிர்வது கூட DB-GPT-ஐ மேம்படுத்தும்.
+K-ICS-க்கு பங்களித்த அனைவருக்கும் நன்றி! உங்கள் யோசனைகள், குறியீடு, கருத்துகள் மற்றும் நிகழ்வுகளிலும் சமூக தளங்களிலும் அவற்றைப் பகிர்வது கூட K-ICS-ஐ மேம்படுத்தும்.
 நாங்கள் ஒரு சமூகத்தை உருவாக்குவதில் பணியாற்றி வருகிறோம், சமூகத்தை உருவாக்குவதற்கான ஏதேனும் யோசனைகள் உங்களிடம் இருந்தால், எங்களைத் தொடர்பு கொள்ள தயங்க வேண்டாம்.
 
-- [Github சிக்கல்கள்](https://github.com/eosphoros-ai/DB-GPT/issues) ⭐️: GB-DPT ஐப் பயன்படுத்துவது பற்றிய கேள்விகளுக்கு, பங்களிப்பைப் பார்க்கவும். 
+- [Github சிக்கல்கள்](https://github.com/hua7448/db-gpt-chat/issues) ⭐️: K-ICS ஐப் பயன்படுத்துவது பற்றிய கேள்விகளுக்கு, பங்களிப்பைப் பார்க்கவும்.
 - [Github விவாதங்கள்](https://github.com/orgs/eosphoros-ai/discussions) ⭐️: உங்கள் அனுபவத்தை அல்லது தனித்துவமான பயன்பாடுகளைப் பகிரவும். 
-- [Twitter](https://x.com/DBGPT_AI) ⭐️: தயவுசெய்து எங்களுடன் பேச தயங்க வேண்டாம். 
+- [GitHub Discussions](https://github.com/hua7448/db-gpt-chat/discussions): தயவுசெய்து எங்களுடன் பேச தயங்க வேண்டாம்.
 
-[![நட்சத்திர வரலாற்று விளக்கப்படம்](https://api.star-history.com/svg?repos=csunny/DB-GPT&type=Date)](https://star-history.com/#csunny/DB-GPT)
+[![நட்சத்திர வரலாற்று விளக்கப்படம்](https://api.star-history.com/svg?repos=hua7448/db-gpt-chat&type=Date)](https://star-history.com/#hua7448/db-gpt-chat)

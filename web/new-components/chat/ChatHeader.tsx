@@ -52,21 +52,9 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
         )}
 
         <div className='flex items-center gap-2'>
-          <div className='flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600'>
-            <Image
-              src='/pictures/logo.png'
-              alt='DB-GPT'
-              width={20}
-              height={20}
-              className='object-contain'
-              onError={e => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-              }}
-            />
-          </div>
+          <Image src='/k.png' alt='K-ICS' width={28} height={28} className='object-contain' />
           <div className='flex flex-col'>
-            <span className='text-sm font-semibold text-[var(--oc-text-strong)]'>{title || 'DB-GPT'}</span>
+            <span className='text-sm font-semibold text-[var(--oc-text-strong)]'>{title || 'K-ICS'}</span>
             {modelName && <span className='text-xs text-[var(--oc-text-weak)]'>{modelName}</span>}
           </div>
         </div>

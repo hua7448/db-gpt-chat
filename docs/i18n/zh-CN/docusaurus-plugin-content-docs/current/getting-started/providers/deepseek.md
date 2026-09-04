@@ -5,12 +5,12 @@ title: DeepSeek
 
 # DeepSeek
 
-配置 DB-GPT 使用 DeepSeek 的语言模型进行聊天与推理。
+配置 K-ICS 使用 DeepSeek 的语言模型进行聊天与推理。
 
 ## 前置条件
 
 - 一个可用的 [DeepSeek API key](https://platform.deepseek.com/)
-- 已安装带 `proxy_openai` 扩展的 DB-GPT
+- 已安装带 `proxy_openai` 扩展的 K-ICS
 
 ## 安装依赖
 

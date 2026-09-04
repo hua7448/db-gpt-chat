@@ -1,6 +1,6 @@
 """AWEL: Simple chat dag example
 
-    DB-GPT will automatically load and execute the current file after startup.
+    K-ICS will automatically load and execute the current file after startup.
 
     Example:
 
@@ -54,5 +54,5 @@ if __name__ == "__main__":
 
         setup_dev_environment([dag], port=5555)
     else:
-        # Production mode, DB-GPT will automatically load and execute the current file after startup.
+        # Production mode, K-ICS will automatically load and execute the current file after startup.
         pass

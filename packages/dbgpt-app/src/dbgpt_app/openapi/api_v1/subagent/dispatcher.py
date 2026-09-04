@@ -59,7 +59,7 @@ _SUBAGENT_HTML_MAX_CHARS = 200_000
 # Full structured outputs still travel through agent.step / the dispatch result.
 _SUBAGENT_RESULT_SUMMARY_MAX_CHARS = 8_000
 
-# Matches the tool-result wrapper {"chunks": [...]} that DB-GPT tools return.
+# Matches the tool-result wrapper {"chunks": [...]} that K-ICS tools return.
 _CHUNKS_WRAPPER_RE = re.compile(r'\{\s*"chunks"\s*:\s*\[.*?\]\s*\}', re.DOTALL)
 
 
@@ -173,7 +173,7 @@ _SUBAGENT_FACTORY_TOOL_NAMES = [
 
 
 _SUB_AGENT_PROMPT_TEMPLATE = """\
-You are a DB-GPT sub-agent executing ONE focused sub-task delegated by a lead
+You are a K-ICS sub-agent executing ONE focused sub-task delegated by a lead
 agent. You run in an isolated context — you CANNOT see the main conversation
 history. Everything you need is in the goal (and optional context) below.
 

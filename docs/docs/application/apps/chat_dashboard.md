@@ -1,6 +1,6 @@
 # Chat Dashboard
 
-Report analysis corresponds to the `Chat Dashboard` scenario in DB-GPT, and intelligent report generation and analysis can be performed through natural language. It is one of the basic capabilities of generative BI (GBI). Let's take a look at how to use the report analysis capabilities.
+Report analysis corresponds to the `Chat Dashboard` scenario in K-ICS, and intelligent report generation and analysis can be performed through natural language. It is one of the basic capabilities of generative BI (GBI). Let's take a look at how to use the report analysis capabilities.
 
 ## Steps
 The following are the steps for using report analysis:

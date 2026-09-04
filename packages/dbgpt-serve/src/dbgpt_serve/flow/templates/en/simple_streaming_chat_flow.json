@@ -367,7 +367,7 @@
                                 "optional": true,
                                 "default": null,
                                 "placeholder": null,
-                                "description": "The LLM Client, how to connect to the LLM model, if not provided, it will use the default client deployed by DB-GPT.",
+                                "description": "The LLM Client, how to connect to the LLM model, if not provided, it will use the default client deployed by K-ICS.",
                                 "value": null,
                                 "options": null
                             },

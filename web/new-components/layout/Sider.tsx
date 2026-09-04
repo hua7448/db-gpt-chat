@@ -86,7 +86,7 @@ const Sider: React.FC = () => {
       ) : (
         <>
           <Link href='/' className='flex items-center justify-center p-2 pb-4'>
-            <Image src='/logo_zh_latest.png' alt='DB-GPT' width={180} height={40} />
+            <Image src='/k.png' alt='K-ICS' width={40} height={40} className='object-contain' />
           </Link>
           <div></div>
           <div className='flex flex-col'>

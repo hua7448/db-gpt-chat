@@ -5,7 +5,7 @@ title: RAG
 
 # RAG (Retrieval-Augmented Generation)
 
-RAG enhances LLM responses by retrieving relevant context from your own data before generating an answer. DB-GPT provides a comprehensive RAG framework with multiple indexing and retrieval strategies, and runs knowledge-base chat as an **agentic RAG** loop.
+RAG enhances LLM responses by retrieving relevant context from your own data before generating an answer. K-ICS provides a comprehensive RAG framework with multiple indexing and retrieval strategies, and runs knowledge-base chat as an **agentic RAG** loop.
 
 ## Two phases: indexing and conversation
 
@@ -25,7 +25,7 @@ These two phases are decoupled — indexing runs once at sync time; chat only re
 
 ## How the conversation works (agentic RAG)
 
-DB-GPT does **not** do a single retrieve-then-generate. An agent drives the loop:
+K-ICS does **not** do a single retrieve-then-generate. An agent drives the loop:
 
 ```mermaid
 flowchart LR
@@ -70,7 +70,7 @@ Upload and process a wide variety of document formats:
 
 ## Quick start with RAG
 
-1. Open the DB-GPT Web UI
+1. Open the K-ICS Web UI
 2. Navigate to **Knowledge Base** in the sidebar
 3. Create a new knowledge base (choose index methods: Vector / Knowledge Graph / Full Text — combinable)
 4. Upload your documents

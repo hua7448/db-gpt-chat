@@ -91,7 +91,7 @@ Data_Manus多智能体应用具备对表格文件进行多表格协同分析的�
 
 3.基于后台代码实现并应用
 
-为了方便用户进一步了解DB-GPT社区多智能体应用构建过程，方便对Data_manus中各个子Agent进行优化，我们在examples目录下提供多个开发示例以供学习：
+为了方便用户进一步了解K-ICS社区多智能体应用构建过程，方便对Data_manus中各个子Agent进行优化，我们在examples目录下提供多个开发示例以供学习：
 **db_create**
 
 ```python
@@ -258,8 +258,8 @@ if __name__ == "__main__":
 async def main():
     # 多个Excel文件路径
     excel_files = [
-        "/home/me/DB-GPT/examples/test_files/employer_info.xlsx",
-        "/home/me/DB-GPT/examples/test_files/project_info.xlsx",
+        "/home/me/K-ICS/examples/test_files/employer_info.xlsx",
+        "/home/me/K-ICS/examples/test_files/project_info.xlsx",
         # 可以添加更多Excel文件路径
         # "/path/to/second_file.xlsx",
         # "/path/to/third_file.xlsx"
@@ -348,4 +348,3 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-

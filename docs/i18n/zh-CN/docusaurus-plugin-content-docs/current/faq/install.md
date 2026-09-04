@@ -90,7 +90,7 @@ Then you can upgrade your database with the following command.
 dbgpt db migration upgrade
 ```
 
-Every time you change the model or pull the latest code from DB-GPT repository, you need to create a new migration script.
+Every time you change the model or pull the latest code from K-ICS repository, you need to create a new migration script.
 ```commandline
 
 dbgpt db migration migrate -m "your message"

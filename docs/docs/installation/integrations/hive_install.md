@@ -1,6 +1,6 @@
 # Hive
 
-In this example, we will show how to use the Hive as in DB-GPT Datasource. Using Hive to implement Datasource can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
+In this example, we will show how to use the Hive as in K-ICS Datasource. Using Hive to implement Datasource can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
 
 ### Install Dependencies
 

@@ -12,8 +12,8 @@ then
   exit 1
 fi
 
-DEFAULT_DB_FILE="DB-GPT/pilot/data/default_sqlite.db"
-DEFAULT_SQL_FILE="DB-GPT/docker/examples/sqls/*_sqlite.sql"
+DEFAULT_DB_FILE="K-ICS/pilot/data/default_sqlite.db"
+DEFAULT_SQL_FILE="K-ICS/docker/examples/sqls/*_sqlite.sql"
 DB_FILE="$WORK_DIR/pilot/data/default_sqlite.db"
 WIDE_DB_FILE="$WORK_DIR/pilot/data/wide_sqlite.db"
 SQL_FILE=""
@@ -72,5 +72,4 @@ else
     echo "Execute SQL file ${SQL_FILE}"
     sqlite3 $DB_FILE < $SQL_FILE
 fi
-
 

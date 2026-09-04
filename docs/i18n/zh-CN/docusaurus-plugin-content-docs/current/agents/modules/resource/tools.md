@@ -1,6 +1,6 @@
 # Built-in tools
 
-DB-GPT provides a small set of built-in tools in the **Agentic Data API**.
+K-ICS provides a small set of built-in tools in the **Agentic Data API**.
 
 These tools are the core execution layer for:
 

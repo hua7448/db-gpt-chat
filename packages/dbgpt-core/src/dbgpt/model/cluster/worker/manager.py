@@ -1369,7 +1369,7 @@ def run_worker_manager(
 def parse_args():
     import argparse
 
-    parser = argparse.ArgumentParser(description="DB-GPT Model Worker")
+    parser = argparse.ArgumentParser(description="K-ICS Model Worker")
     parser.add_argument(
         "-c",
         "--config",

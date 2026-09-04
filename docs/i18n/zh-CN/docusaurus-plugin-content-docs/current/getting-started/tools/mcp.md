@@ -5,23 +5,23 @@ title: MCP 协议
 
 # MCP 协议
 
-**模型上下文协议（Model Context Protocol, MCP）** 让 DB-GPT Agent 能够通过标准化接口连接外部工具与服务。
+**模型上下文协议（Model Context Protocol, MCP）** 让 K-ICS Agent 能够通过标准化接口连接外部工具与服务。
 
 :::info 什么是 MCP？
-MCP 是一个开放协议，为 AI 应用连接外部数据源和工具提供统一标准。DB-GPT 同时支持作为 **客户端**（消费 MCP 工具）和 **服务端**（将 DB-GPT 能力暴露为 MCP 工具）。
+MCP 是一个开放协议，为 AI 应用连接外部数据源和工具提供统一标准。K-ICS 同时支持作为 **客户端**（消费 MCP 工具）和 **服务端**（将 K-ICS 能力暴露为 MCP 工具）。
 :::
 
 ## 架构
 
 ```mermaid
 graph TB
-  Agent[DB-GPT Agent] --> MCPClient[MCP Client]
+  Agent[K-ICS Agent] --> MCPClient[MCP Client]
   MCPClient --> MCP1[MCP Server A<br/>e.g. File System]
   MCPClient --> MCP2[MCP Server B<br/>e.g. Web Search]
   MCPClient --> MCP3[MCP Server C<br/>e.g. Custom API]
 
-  ExtClient[External MCP Client] --> MCPServer[DB-GPT MCP Server]
-  MCPServer --> DBGPT[DB-GPT Capabilities]
+  ExtClient[External MCP Client] --> MCPServer[K-ICS MCP Server]
+  MCPServer --> DBGPT[K-ICS Capabilities]
 ```
 
 ## 在 Agent 中使用 MCP 工具
@@ -78,9 +78,9 @@ env = { BRAVE_API_KEY = "${env:BRAVE_API_KEY}" }
 你可以在 [MCP Servers Directory](https://github.com/modelcontextprotocol/servers) 浏览不断扩展的 MCP Server 生态。
 :::
 
-## 将 DB-GPT 作为 MCP Server
+## 将 K-ICS 作为 MCP Server
 
-DB-GPT 也可以将自身能力暴露为 MCP Server，让其他兼容 MCP 的应用调用 DB-GPT 的能力，例如：
+K-ICS 也可以将自身能力暴露为 MCP Server，让其他兼容 MCP 的应用调用 K-ICS 的能力，例如：
 
 - 知识库查询
 - 数据库访问（Text2SQL）

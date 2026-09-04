@@ -5,7 +5,7 @@ title: RAG
 
 # RAG(检索增强生成)
 
-RAG 通过在生成回答前从你自己的数据里检索相关上下文,来增强 LLM 的回答。DB-GPT 提供了完整的 RAG 框架,支持多种索引与检索策略,并把知识库对话跑成 **agentic RAG** 循环。
+RAG 通过在生成回答前从你自己的数据里检索相关上下文,来增强 LLM 的回答。K-ICS 提供了完整的 RAG 框架,支持多种索引与检索策略,并把知识库对话跑成 **agentic RAG** 循环。
 
 ## 两个阶段:索引与对话
 
@@ -25,7 +25,7 @@ RAG 通过在生成回答前从你自己的数据里检索相关上下文,来增
 
 ## 对话怎么工作(agentic RAG)
 
-DB-GPT **不是**单次"检索-生成",而是由 agent 驱动循环:
+K-ICS **不是**单次"检索-生成",而是由 agent 驱动循环:
 
 ```mermaid
 flowchart LR
@@ -70,7 +70,7 @@ agent 可以改写问题、多次检索、融合重排结果、产出带引用�
 
 ## RAG 快速开始
 
-1. 打开 DB-GPT Web UI
+1. 打开 K-ICS Web UI
 2. 侧边栏进入 **Knowledge Base**
 3. 新建知识库(选择索引方法:Vector / Knowledge Graph / Full Text,可组合)
 4. 上传文档

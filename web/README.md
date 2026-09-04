@@ -1,21 +1,20 @@
 
 <h1 align="center">
-  <a href="https://dbgpt.site"><img width="96" src="https://github.com/eosphoros-ai/DB-GPT-Web/assets/10321453/062ee3ea-fac2-4437-a392-f4bc5451d116" alt="DB-GPT"></a>
   <br>
-  DB-GPT-Web
+  K-ICS Web UI
 </h1>
 
-_<p align="center">DB-GPT Chat UI, LLM to Vision.</p>_
+_<p align="center">K-ICS Chat UI for AI-assisted data work.</p>_
 
 <p align="center">
-  <a href="https://github.com/eosphoros-ai/DB-GPT-Web/blob/main/LICENSE">
+  <a href="https://github.com/hua7448/db-gpt-chat/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-blue.svg?label=License&style=flat" />
   </a>
-  <a href="https://github.com/eosphoros-ai/DB-GPT/releases">
-    <img alt="Release Notes" src="https://img.shields.io/github/release/eosphoros-ai/DB-GPT" />
+  <a href="https://github.com/hua7448/db-gpt-chat/releases">
+    <img alt="Release Notes" src="https://img.shields.io/github/release/hua7448/db-gpt-chat" />
   </a>
-  <a href="https://github.com/eosphoros-ai/DB-GPT-Web/issues">
-    <img alt="Open Issues" src="https://img.shields.io/github/issues-raw/eosphoros-ai/DB-GPT-Web" />
+  <a href="https://github.com/hua7448/db-gpt-chat/issues">
+    <img alt="Open Issues" src="https://img.shields.io/github/issues-raw/hua7448/db-gpt-chat" />
   </a>
   <a href="https://discord.gg/7uQnPuveTY">
     <img alt="Discord" src="https://dcbadge.vercel.app/api/server/7uQnPuveTY?compact=true&style=flat" />
@@ -26,10 +25,13 @@ _<p align="center">DB-GPT Chat UI, LLM to Vision.</p>_
 
 ## 👋 Introduction
 
-***DB-GPT-Web*** is an **Open source chat UI** for [**DB-GPT**](https://github.com/eosphoros-ai/DB-GPT).
-Also, it is a **LLM to Vision** solution. 
+***K-ICS Web UI*** is the downstream-branded chat interface for the
+[K-ICS](https://github.com/hua7448/db-gpt-chat) runtime. It is an **open source
+chat UI** for AI-assisted data work.
 
-[DB-GPT-Web](https://dbgpt.site) is an Open source Tailwind and Next.js based chat UI for AI and GPT projects. It beautify a lot of markdown labels, such as `table`, `thead`, `th`, `td`, `code`, `h1`, `h2`, `ul`, `li`, `a`, `img`. Also it define some custom labels to adapted to AI-specific scenarios. Such as `plugin running`, `knowledge name`, `Chart view`, and so on.
+K-ICS Web UI is a Tailwind and Next.js based chat UI for AI and GPT projects. It
+adds polished markdown rendering and custom views for plugin execution,
+knowledge references, charts, and related AI workflows.
 
 ## 💪🏻 Getting Started
 
@@ -62,7 +64,7 @@ npm run dev
 yarn dev
 ```
 
-## 🚀 Use In DB-GPT
+## 🚀 Use In K-ICS
 
 ```sh
 bash ../scripts/build_web_static.sh
@@ -70,30 +72,30 @@ bash ../scripts/build_web_static.sh
 
 ## 📚 Documentation
 
-For full documentation, visit [document](https://docs.dbgpt.site/).
+For full documentation, see the [K-ICS documentation](../docs/).
 
 
 ## Usage
-  [gpt-vis](https://github.com/eosphoros-ai/DB-GPT/gpt-vis) for markdown support.
+  [gpt-vis](https://github.com/eosphoros-ai/GPT-Vis) for markdown support.
   [ant-design](https://github.com/ant-design/ant-design) for ui components.
   [next.js](https://github.com/vercel/next.js) for server side rendering.
   [@antv/g2](https://github.com/antvis/g2#readme) for charts.
 
 ## License
 
-DB-GPT-Web is licensed under the [MIT License](LICENSE).
+K-ICS Web UI is licensed under the [MIT License](LICENSE).
 
 ---
 
-Enjoy using DB-GPT-Web to build stunning UIs for your AI and GPT projects.
+Use K-ICS Web UI to build tailored interfaces for your AI and GPT projects.
 
 🌟 If you find it helpful, don't forget to give it a star on GitHub! Stars are like little virtual hugs that keep us going! We appreciate every single one we receive.
 
-For any queries or issues, feel free to open an [issue](https://github.com/eosphoros-ai/DB-GPT-Web/issues) on the repository.
+For any queries or issues, feel free to open an [issue](https://github.com/hua7448/db-gpt-chat/issues) on the repository.
 
 Happy coding! 😊
 
 
-## antdbgptweb installation
+## K-ICS Web UI installation
 
 ### deploy in local environment:

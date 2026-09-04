@@ -1535,7 +1535,7 @@ def _split_messages_by_round(messages: List[BaseMessage]) -> List[List[BaseMessa
 def _append_view_messages(messages: List[BaseMessage]) -> List[BaseMessage]:
     """Append the view message to the messages.
 
-    Just for show in DB-GPT-Web.
+    Just for display in the K-ICS web UI.
     If already have view message, do nothing.
 
     Args:

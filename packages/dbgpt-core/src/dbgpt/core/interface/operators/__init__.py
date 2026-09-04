@@ -1,1 +1,1 @@
-"""The module include all core operators of DB-GPT."""
+"""The module includes all core operators of K-ICS."""

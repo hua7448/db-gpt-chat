@@ -1,7 +1,7 @@
 ---
 sidebar_position: 0
 title: 模型提供方
-summary: "了解 DB-GPT 支持哪些模型提供方，以及首次部署应该如何选择"
+summary: "了解 K-ICS 支持哪些模型提供方，以及首次部署应该如何选择"
 read_when:
   - 你第一次部署时需要选择模型提供方
   - 你想判断应该使用 API 模型、Ollama 还是 vLLM
@@ -9,7 +9,7 @@ read_when:
 
 # 模型提供方
 
-DB-GPT 同时支持 API 模型提供方和本地运行时。对于第一次部署，除非你明确需要本地推理，否则建议优先选择 API 提供方。
+K-ICS 同时支持 API 模型提供方和本地运行时。对于第一次部署，除非你明确需要本地推理，否则建议优先选择 API 提供方。
 
 :::info 快速建议
 如果你不确定该选哪个，建议先从 **OpenAI** 或 **DeepSeek** 开始：它们配置快、无需 GPU。若你希望在本地运行模型且尽量简化配置，可以选择 **Ollama**。
@@ -65,7 +65,7 @@ api_key = "your-api-key"
 
 ## 更多提供方
 
-DB-GPT 还可以通过代理体系接入更多模型提供方。详见 [Advanced LLM Configuration](/docs/installation/advanced_usage/More_proxyllms)，包括：
+K-ICS 还可以通过代理体系接入更多模型提供方。详见 [Advanced LLM Configuration](/docs/installation/advanced_usage/More_proxyllms)，包括：
 
 - Azure OpenAI
 - Google Gemini

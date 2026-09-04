@@ -5,7 +5,7 @@
 因此，我们需要使用一些工具来帮助 LLM 完成任务。
 
 :::note
-在 DB-GPT 智能体中，大多数 LLM 都支持工具调用，只要其自身能力不是太弱即可。
+在 K-ICS 智能体中，大多数 LLM 都支持工具调用，只要其自身能力不是太弱即可。
 （例如 `glm-4-9b-chat`、`Yi-1.5-34B-Chat`、`Qwen2-72B-Instruct` 等）
 :::
 
@@ -175,4 +175,4 @@ execution succeeded,
 
 在上面的代码中，我们使用 `tool` 装饰器来定义工具函数。它会将函数封装为一个 `FunctionTool` 对象。而 `FunctionTool` 是 `BaseTool` 的子类，`BaseTool` 是所有工具的基类。
 
-实际上，**工具**是 `DB-GPT` 智能体中一种特殊的**资源**。你可以在[资源](../modules/resource/resource.md)章节中了解更多细节。
+实际上，**工具**是 K-ICS 智能体中一种特殊的**资源**。你可以在[资源](../modules/resource/resource.md)章节中了解更多细节。

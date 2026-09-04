@@ -5,12 +5,12 @@ title: MCP Connectors
 
 # MCP Connectors
 
-**MCP Connectors** let your DB-GPT agents reach beyond the database — sending messages, reading and writing documents, managing issues, and searching the web — by connecting to external services through the **Model Context Protocol (MCP)**.
+**MCP Connectors** let your K-ICS agents reach beyond the database — sending messages, reading and writing documents, managing issues, and searching the web — by connecting to external services through the **Model Context Protocol (MCP)**.
 
 Activate a built-in template or plug in any custom MCP server, then pick the connectors you want in the composer. The agent only sees the tools you select, and any write action pauses for your confirmation first.
 
 :::info What is MCP?
-The [Model Context Protocol](https://modelcontextprotocol.io) is an open standard that gives AI applications a uniform way to talk to external tools and services. Each connector in DB-GPT is backed by an MCP server, so adding a new capability is as simple as pointing to its endpoint.
+The [Model Context Protocol](https://modelcontextprotocol.io) is an open standard that gives AI applications a uniform way to talk to external tools and services. Each connector in K-ICS is backed by an MCP server, so adding a new capability is as simple as pointing to its endpoint.
 :::
 
 ## Highlights

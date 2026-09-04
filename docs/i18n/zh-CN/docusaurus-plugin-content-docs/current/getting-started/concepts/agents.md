@@ -5,7 +5,7 @@ title: Agents
 
 # Agent 框架
 
-DB-GPT 提供了一个**数据驱动的多智能体框架**，用于构建能够协作、调用工具、访问数据库，并在多轮会话中保持记忆的自治 AI agent。
+K-ICS 提供了一个**数据驱动的多智能体框架**，用于构建能够协作、调用工具、访问数据库，并在多轮会话中保持记忆的自治 AI agent。
 
 ## Agent 架构
 
@@ -26,7 +26,7 @@ flowchart TB
     Agent --> KB["Knowledge Base"]
 ```
 
-DB-GPT 中的每个 agent 都围绕五个核心模块构建：
+K-ICS 中的每个 agent 都围绕五个核心模块构建：
 
 | 模块 | 作用 |
 |---|---|
@@ -61,7 +61,7 @@ DB-GPT 中的每个 agent 都围绕五个核心模块构建：
 
 ### 内置 agent 类型
 
-DB-GPT 内置了多种预定义 agent：
+K-ICS 内置了多种预定义 agent：
 
 - **Data Analysis Agent** —— 数据分析、SQL 生成、图表创建
 - **Summary Agent** —— 长文档与会话摘要

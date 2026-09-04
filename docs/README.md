@@ -1,4 +1,4 @@
-# DB-GPT documentation 
+# K-ICS documentation
 
 ## Quick Start
 
@@ -23,7 +23,7 @@ We can deploy multiple versions of the documentation by docker.
 
 ### Build Docker Image
 
-Firstly, build the docker image in `DB-GPT` project root directory.
+Firstly, build the docker image in the project root directory.
 
 ```bash
 # Use the default NPM_REGISTRY=https://registry.npmjs.org

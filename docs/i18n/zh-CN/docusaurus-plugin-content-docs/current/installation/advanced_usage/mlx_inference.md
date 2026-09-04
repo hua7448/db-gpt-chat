@@ -1,9 +1,9 @@
 # MLX Inference
-DB-GPT supports [MLX](https://github.com/ml-explore/mlx-lm) inference, a fast and easy-to-use LLM inference and service library.
+K-ICS supports [MLX](https://github.com/ml-explore/mlx-lm) inference, a fast and easy-to-use LLM inference and service library.
 
 ## Install dependencies
 
-`MLX` is an optional dependency in DB-GPT. You can install it by adding the extra `--extra "mlx"` when installing dependencies.
+`MLX` is an optional dependency in K-ICS. You can install it by adding the extra `--extra "mlx"` when installing dependencies.
 
 ```bash
 # Use uv to install dependencies needed for mlx

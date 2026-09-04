@@ -1,7 +1,7 @@
 # Cluster Deployment
 
 ## Install command line tools
-All the following operations are completed through the `dbgpt` command. To use the `dbgpt` command, you first need to install the `DB-GPT` project. You can install it through the following command
+All the following operations are completed through the `dbgpt` command. To use it, first install the K-ICS project with the following command.
 
 ```shell
 $ pip install -e ".[default]"
@@ -279,6 +279,5 @@ Commands:
   start    Start model instances
   stop     Stop model instances
 ```
-
 
 

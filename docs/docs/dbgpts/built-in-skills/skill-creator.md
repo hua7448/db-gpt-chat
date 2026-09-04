@@ -49,4 +49,4 @@ skills/skill-creator/
 
 ## Why it matters
 
-This built-in skill defines the best-practice model for authoring both custom skills and future built-in skills in DB-GPT.
+This built-in skill defines the best-practice model for authoring both custom skills and future built-in skills in K-ICS.

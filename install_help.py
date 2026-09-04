@@ -61,7 +61,7 @@ class I18N:
             "extra_not_in_package": "Error: Extra '{}' not found in package '{}'.",
             "available_extras_in_package": "Available extras: {}",
             # Interactive installation
-            "welcome": "Welcome to DB-GPT Installation Assistant!",
+            "welcome": "Welcome to K-ICS Installation Assistant!",
             "help_message": "This tool will help you generate the correct installation commands.\n",
             "select_mode": "Please select installation mode",
             "select_extras": "Please select extras to install (space to select/deselect, enter to confirm)",
@@ -141,7 +141,7 @@ class I18N:
             "extra_not_in_package": "错误: 包 '{}' 中没有名为 '{}' 的extra。",
             "available_extras_in_package": "可用的extras: {}",
             # Interactive installation
-            "welcome": "欢迎使用 DB-GPT 安装引导助手！",
+            "welcome": "欢迎使用 K-ICS 安装引导助手！",
             "help_message": "这个工具将帮助你生成正确的安装命令。\n",
             "select_mode": "请选择安装模式",
             "select_extras": "请选择需要安装的extras（空格选择/取消，回车确认）",

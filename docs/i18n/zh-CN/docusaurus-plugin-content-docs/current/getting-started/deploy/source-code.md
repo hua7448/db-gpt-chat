@@ -1,7 +1,7 @@
 ---
 sidebar_position: 0
 title: 源码部署
-summary: "Run DB-GPT from source with uv, configure a provider, and verify the webserver"
+summary: "Run K-ICS from source with uv, configure a provider, and verify the webserver"
 read_when:
   - You want the repo-based install instead of Docker
   - You need the most flexible setup for development or customization
@@ -9,7 +9,7 @@ read_when:
 
 # 源码部署
 
-直接通过源码部署 DB-GPT。这是最灵活的方式，适合开发、调试以及自定义集成场景。
+直接通过源码部署 K-ICS。这是最灵活的方式，适合开发、调试以及自定义集成场景。
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -24,8 +24,8 @@ import TabItem from '@theme/TabItem';
 ## 第一步：克隆仓库
 
 ```bash
-git clone https://github.com/eosphoros-ai/DB-GPT.git
-cd DB-GPT
+git clone https://github.com/hua7448/db-gpt-chat.git K-ICS
+cd K-ICS
 ```
 
 ## 第二步：安装 uv
@@ -118,7 +118,7 @@ uv sync --all-packages \
 <details>
 <summary><strong>使用交互式安装辅助工具</strong></summary>
 
-DB-GPT 提供了一个交互式辅助工具，用于生成合适的 `uv sync` 命令：
+K-ICS 提供了一个交互式辅助工具，用于生成合适的 `uv sync` 命令：
 
 ```bash
 uv run install_help.py install-cmd --interactive
@@ -231,7 +231,7 @@ uv run dbgpt start webserver --config configs/dbgpt-proxy-ollama.toml
 在浏览器中访问 **[http://localhost:5670](http://localhost:5670)**。
 
 :::tip 验证是否成功
-如果 Web UI 能正常打开，且你可以发起聊天会话，就说明 DB-GPT 已成功运行。
+如果 Web UI 能正常打开，且你可以发起聊天会话，就说明 K-ICS 已成功运行。
 :::
 
 ## 首次运行常见问题

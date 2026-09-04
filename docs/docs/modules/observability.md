@@ -1,6 +1,6 @@
 # Observability
 
-DB-GPT Observability gives you end-to-end visibility into how agents run — what they think, which tools they call, how much the model costs, and how long every step takes. It answers the question "what did the agent actually do?" without switching to an external tracing system.
+K-ICS Observability gives you end-to-end visibility into how agents run — what they think, which tools they call, how much the model costs, and how long every step takes. It answers the question "what did the agent actually do?" without switching to an external tracing system.
 
 ## Core capabilities
 

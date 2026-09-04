@@ -1,6 +1,6 @@
 # GaussDB
 
-GaussDB is an enterprise-grade relational database supported by DB-GPT through the
+GaussDB is an enterprise-grade relational database supported by K-ICS through the
 native connector in `dbgpt_ext.datasource.rdbms.conn_gaussdb`.
 
 ### Install Dependencies
@@ -18,7 +18,7 @@ uv sync --all-packages \
 
 ### Prepare GaussDB
 
-Prepare a GaussDB instance and start the DB-GPT webserver:
+Prepare a GaussDB instance and start the K-ICS webserver:
 
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml

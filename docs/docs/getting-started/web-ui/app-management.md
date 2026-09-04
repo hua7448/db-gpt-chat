@@ -5,13 +5,13 @@ title: App Management
 
 # App Management
 
-Create, configure, and manage AI applications in DB-GPT. Apps combine LLMs, tools, knowledge bases, and workflows into reusable configurations.
+Create, configure, and manage AI applications in K-ICS. Apps combine LLMs, tools, knowledge bases, and workflows into reusable configurations.
 
 ## App types
 
 | Type | Description |
 |---|---|
-| **Native App** | Built-in applications included with DB-GPT |
+| **Native App** | Built-in applications included with K-ICS |
 | **Community App** | Apps from the dbgpts community repository |
 | **Custom App** | Your own applications built with agents and AWEL |
 

@@ -1,6 +1,6 @@
 """Tool result persistence — saves oversized outputs to filesystem with preview + path.
 
-Ported from hermes-agent's ``tools/tool_result_storage.py`` and adapted for DB-GPT's
+Ported from hermes-agent's ``tools/tool_result_storage.py`` and adapted for K-ICS's
 agent architecture.
 
 Storage layout::

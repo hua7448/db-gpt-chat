@@ -5,7 +5,7 @@ title: Cluster Deployment
 
 # Cluster Deployment
 
-Deploy DB-GPT as a distributed cluster — separate the webserver, model workers, and controller for scalability.
+Deploy K-ICS as a distributed cluster — separate the webserver, model workers, and controller for scalability.
 
 ## Architecture overview
 

@@ -980,7 +980,7 @@ def initialize_apiserver(
 def parse_args():
     import argparse
 
-    parser = argparse.ArgumentParser(description="DB-GPT API Server")
+    parser = argparse.ArgumentParser(description="K-ICS API Server")
     parser.add_argument(
         "-c",
         "--config",

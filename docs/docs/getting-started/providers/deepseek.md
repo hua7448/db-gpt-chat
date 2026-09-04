@@ -5,12 +5,12 @@ title: DeepSeek
 
 # DeepSeek
 
-Configure DB-GPT to use DeepSeek's language models for chat and reasoning.
+Configure K-ICS to use DeepSeek's language models for chat and reasoning.
 
 ## Prerequisites
 
 - A [DeepSeek API key](https://platform.deepseek.com/)
-- DB-GPT installed with `proxy_openai` extra
+- K-ICS installed with `proxy_openai` extra
 
 ## Install dependencies
 

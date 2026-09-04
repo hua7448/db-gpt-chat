@@ -5,12 +5,12 @@ title: SiliconFlow
 
 # SiliconFlow
 
-配置 DB-GPT 使用 SiliconFlow 托管模型 API。SiliconFlow 提供统一 API，可接入多种开源模型，并且服务位于国内环境中。
+配置 K-ICS 使用 SiliconFlow 托管模型 API。SiliconFlow 提供统一 API，可接入多种开源模型，并且服务位于国内环境中。
 
 ## 前置条件
 
 - 一个可用的 [SiliconFlow API key](https://siliconflow.cn/)
-- 已安装带 `proxy_openai` 扩展的 DB-GPT
+- 已安装带 `proxy_openai` 扩展的 K-ICS
 
 ## 安装依赖
 

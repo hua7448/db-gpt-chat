@@ -17,7 +17,7 @@ To start a data conversation, you need to go through the following steps:
 
 ### Add data source
 
-First, select the [data source](../datasources.md) on the left to add and add a database. Currently, DB-GPT supports multiple database types. Just select the corresponding database type to add. Here we choose MySQL as a demonstration. For the test data of the demonstration, see the [test sample](https://github.com/eosphoros-ai/DB-GPT/tree/main/docker/examples/sqls).
+First, select the [data source](../datasources.md) on the left to add and add a database. Currently, K-ICS supports multiple database types. Just select the corresponding database type to add. Here we choose MySQL as a demonstration. For the test data of the demonstration, see the [test sample](https://github.com/hua7448/db-gpt-chat/tree/main/docker/examples/sqls).
 
 
 ### Choose ChatData App
@@ -31,6 +31,5 @@ First, select the [data source](../datasources.md) on the left to add and add a 
 <p align="center">
   <img src={'/img/app/chat_data_display_v0.6.jpg'} width="800px" />
 </p>
-
 
 

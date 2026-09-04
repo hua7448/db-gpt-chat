@@ -1,6 +1,6 @@
 # Vertica
 
-Vertica 是分析型 SQL 数据仓库。DB-GPT 通过
+Vertica 是分析型 SQL 数据仓库。K-ICS 通过
 `dbgpt_ext.datasource.rdbms.conn_vertica` 中的原生连接器提供支持。
 
 ### 安装依赖
@@ -18,7 +18,7 @@ uv sync --all-packages \
 
 ### 准备 Vertica
 
-准备好 Vertica 实例后，启动 DB-GPT WebServer：
+准备好 Vertica 实例后，启动 K-ICS WebServer：
 
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml

@@ -4,13 +4,13 @@
 
 ## What is a skill?
 
-In DB-GPT, a skill is a reusable capability package that gives an agent a structured way to solve a task.
+In K-ICS, a skill is a reusable capability package that gives an agent a structured way to solve a task.
 
 Instead of relying only on free-form reasoning, a skill provides a stable execution pattern for a specific kind of work.
 
 <img
   src="/img/skill/skill_list.png"
-  alt="DB-GPT skills overview"
+  alt="K-ICS skills overview"
   className="showcase-hero-image"
 />
 
@@ -25,7 +25,7 @@ Adapted from the Agent Skills description, a skill can be understood as:
 - a **self-contained bundle** of instructions, scripts, templates, and reference files
 - a way to make agent behavior more **consistent, repeatable, and domain-aware**
 
-In DB-GPT terms, a skill is not just “something the model knows.” It is a packaged workflow that helps the agent decide:
+In K-ICS terms, a skill is not just “something the model knows.” It is a packaged workflow that helps the agent decide:
 
 - what problem it is solving
 - what tools it should use
@@ -35,7 +35,7 @@ In DB-GPT terms, a skill is not just “something the model knows.” It is a pa
 
 ## What a skill usually contains
 
-A DB-GPT skill package often includes:
+A K-ICS skill package often includes:
 
 - a name
 - instructions in `SKILL.md`
@@ -55,7 +55,7 @@ my-skill/
 
 ## Skill anatomy
 
-Following the structure used by DB-GPT's own skill-creator guidance, a skill is organized as a small self-contained package:
+Following the structure used by K-ICS's own skill-creator guidance, a skill is organized as a small self-contained package:
 
 | Part | Required | Purpose |
 |------|----------|---------|

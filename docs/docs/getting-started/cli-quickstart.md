@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # CLI Quick Start
 
-Install DB-GPT from PyPI and start it with a single command — no source checkout required.
+Install K-ICS from PyPI and start it with a single command — no source checkout required.
 
 :::tip Prerequisites
 - Python **3.10** or later
@@ -49,13 +49,13 @@ Need additional providers or data sources? See [Optional Modules](#8-optional-mo
 
 After installation the `dbgpt` command is available in your terminal.
 
-## 2. Start DB-GPT
+## 2. Start K-ICS
 
 ```bash
 dbgpt start
 ```
 
-That's it! On first run DB-GPT will launch an **interactive setup wizard** that helps you:
+That's it! On first run K-ICS will launch an **interactive setup wizard** that helps you:
 
 1. Choose an LLM provider (OpenAI, Kimi, Qwen, MiniMax, Z.AI, or a custom endpoint)
 2. Enter your API key (or use an environment variable)
@@ -72,7 +72,7 @@ Once complete, a TOML configuration file is written to `~/.dbgpt/configs/<profil
    | |_| | |_) |____| |_| |  __/ | |
    |____/|____/      \____|_|    |_|
 
-   🚀 DB-GPT Quick Start
+   K-ICS Quick Start
 
    +- - - - - - - - - - - - - - - - - - - - - - - -+
    :  Profile:   openai                              :
@@ -100,7 +100,7 @@ Options:
   --help             Show help message
 
 Commands:
-  start     Start the DB-GPT server
+  start     Start the K-ICS server
   stop      Stop a running server
   setup     Configure LLM provider (interactive wizard or CI mode)
   profile   Manage configuration profiles
@@ -114,7 +114,7 @@ Commands:
 
 ### `dbgpt start`
 
-Start the DB-GPT web server. Running `dbgpt start` without a subcommand is equivalent to `dbgpt start web`.
+Start the K-ICS web server. Running `dbgpt start` without a subcommand is equivalent to `dbgpt start web`.
 
 #### Subcommands
 
@@ -168,7 +168,7 @@ When the web server starts, the configuration file is resolved in this order:
 
 ### `dbgpt stop`
 
-Stop running DB-GPT server processes.
+Stop running K-ICS server processes.
 
 ```bash
 # Stop the web server
@@ -274,7 +274,7 @@ The **Custom** profile lets you connect to any OpenAI-compatible API endpoint. D
 
 ## 6. Directory Structure
 
-After first run, DB-GPT creates the following structure under your home directory:
+After first run, K-ICS creates the following structure under your home directory:
 
 ```
 ~/.dbgpt/
@@ -294,7 +294,7 @@ After first run, DB-GPT creates the following structure under your home director
 
 | Variable | Default | Description |
 |---|---|---|
-| `DBGPT_HOME` | `~/.dbgpt` | Override the DB-GPT home directory |
+| `DBGPT_HOME` | `~/.dbgpt` | Override the K-ICS home directory |
 | `OPENAI_API_KEY` | — | OpenAI API key (used by `openai` and `custom` profiles) |
 | `MOONSHOT_API_KEY` | — | Kimi / Moonshot API key |
 | `DASHSCOPE_API_KEY` | — | Qwen / DashScope API key (also used for Kimi embeddings) |

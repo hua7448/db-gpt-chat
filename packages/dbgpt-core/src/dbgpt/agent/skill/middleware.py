@@ -1,4 +1,4 @@
-"""Skills middleware for DB-GPT agents.
+"""Skills middleware for K-ICS agents.
 
 This module implements progressive disclosure for skills, similar to
 deepagents' SkillsMiddleware. Skills are loaded from configured sources

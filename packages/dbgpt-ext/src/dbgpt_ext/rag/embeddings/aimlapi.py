@@ -10,8 +10,8 @@ from dbgpt.model.adapter.base import register_embedding_adapter
 from dbgpt.util.i18n_utils import _
 
 AIMLAPI_HEADERS = {
-    "HTTP-Referer": "https://github.com/eosphoros-ai/DB-GPT",
-    "X-Title": "DB GPT",
+    "HTTP-Referer": "https://github.com/hua7448/db-gpt-chat",
+    "X-Title": "K-ICS",
 }
 
 

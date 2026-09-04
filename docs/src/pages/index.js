@@ -1,7 +1,6 @@
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 
 const featureGroups = [
   {
@@ -9,19 +8,19 @@ const featureGroups = [
     items: [
       {
         title: 'Overview',
-        description: 'Learn what DB-GPT is and how it revolutionizes database interactions with AI.',
+        description: 'Learn what K-ICS is and how it enables agentic data work with AI.',
         link: '/docs/overview',
         icon: '📖',
       },
       {
         title: 'Getting Started',
-        description: 'Get DB-GPT running in minutes with the one-line installer.',
+        description: 'Get K-ICS running in minutes with the one-line installer.',
         link: '/docs/installation',
         icon: '🚀',
       },
       {
         title: 'Show Cases',
-        description: 'Explore real-world use cases and examples powered by DB-GPT.',
+        description: 'Explore real-world use cases and examples powered by K-ICS.',
         link: '/docs/use_cases',
         icon: '⚡',
       },
@@ -38,7 +37,7 @@ const featureGroups = [
       },
       {
         title: 'CLI Quick Start',
-        description: 'Get started quickly with the DB-GPT CLI.',
+        description: 'Get started quickly with the K-ICS CLI.',
         link: '/docs/getting-started/cli-quickstart',
         icon: '🔧',
       },
@@ -134,10 +133,10 @@ const featureGroups = [
 ];
 
 const quickLinks = [
-  { title: 'GitHub', href: 'https://github.com/eosphoros-ai/DB-GPT', icon: '🔗' },
+  { title: 'GitHub', href: 'https://github.com/hua7448/db-gpt-chat', icon: '🔗' },
   { title: 'Discord', href: 'https://discord.gg/erwfqcMP', icon: '💬' },
   { title: 'HuggingFace', href: 'https://huggingface.co/eosphoros', icon: '🤗' },
-  { title: 'Community', href: 'https://github.com/eosphoros-ai/community', icon: '👥' },
+  { title: 'K-ICS Community', href: 'https://github.com/hua7448/db-gpt-chat/discussions', icon: '👥' },
 ];
 
 function FeatureCard({ title, description, link, icon }) {
@@ -177,17 +176,15 @@ function QuickLink({ title, href, icon }) {
 
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
-  const logoSrc = useBaseUrl('img/dbgpt_logo.svg');
-
   return (
     <Layout
       title={siteConfig.title}
-      description="DB-GPT: Open-Source Agentic AI Data Assistant - Revolutionizing Database Interactions with Private LLM Technology"
+      description="K-ICS: Open-source agentic AI data workbench for analysis, automation, and insight"
     >
       <main className="homepage-main">
         <div className="homepage-hero">
           <div className="homepage-hero-content">
-            <img src={logoSrc} alt="DB-GPT Logo" className="homepage-hero-logo" />
+            <h1 className="homepage-hero-title">K-ICS</h1>
             <p className="homepage-hero-tagline">
               Open-Source Agentic AI Data Assistant
             </p>

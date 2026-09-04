@@ -118,9 +118,9 @@ def knowledge_init(
     client = KnowledgeApiClient(api_address)
     space = KnowledgeSpaceRequest()
     space.name = space_name
-    space.desc = "DB-GPT cli"
+    space.desc = "K-ICS CLI"
     space.vector_type = vector_store_type
-    space.owner = "DB-GPT"
+    space.owner = "K-ICS"
 
     # Create space
     logger.info(f"Create space: {space}")

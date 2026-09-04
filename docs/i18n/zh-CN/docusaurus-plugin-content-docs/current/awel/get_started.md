@@ -11,7 +11,7 @@ First, let's look at an introductory example of basic AWEL orchestration. The co
 - HTTP Request
 - Processing HTTP Response Result
 
-In DB-GPT, some basic dependent operators have already been encapsulated and can be referenced directly.
+In K-ICS, some basic dependent operators have already been encapsulated and can be referenced directly.
 
 ```python
 from dbgpt._private.pydantic import BaseModel, Field
@@ -44,7 +44,7 @@ class RequestHandleOperator(MapOperator[TriggerReqBody, str]):
 
 ### DAG Pipeline
 
-After writing the above operators, they can be assembled into a DAG orchestration. This DAG has a total of two nodes: the first node is an `HttpTrigger`, which primarily processes HTTP requests (this operator is built into DB-GPT), and the second node is the newly defined `RequestHandleOperator` that processes the request body. The DAG code below can be used to link the two nodes together.
+After writing the above operators, they can be assembled into a DAG orchestration. This DAG has a total of two nodes: the first node is an `HttpTrigger`, which primarily processes HTTP requests (this operator is built into K-ICS), and the second node is the newly defined `RequestHandleOperator` that processes the request body. The DAG code below can be used to link the two nodes together.
 
 ```python
 with DAG("simple_dag_example") as dag:
@@ -71,7 +71,7 @@ if __name__ == "__main__":
         from dbgpt.core.awel import setup_dev_environment
         setup_dev_environment([dag], port=5555)
     else:
-        # Production mode, DB-GPT will automatically load and execute the current file after startup.
+        # Production mode, K-ICS will automatically load and execute the current file after startup.
         pass
 ```
 

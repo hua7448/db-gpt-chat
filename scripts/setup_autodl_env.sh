@@ -1,11 +1,11 @@
 #!/bin/bash
-# This script is used for setting up the environment required for DB-GPT on https://www.autodl.com/
+# This script sets up the environment required for K-ICS on https://www.autodl.com/.
 
-# Usage: source /etc/network_turbo && curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/setup_autodl_env.sh | bash
+# Usage: source /etc/network_turbo && curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/setup_autodl_env.sh | bash
 
 # autodl usage: 
 # conda activate dbgpt
-# cd /root/DB-GPT
+# cd /root/K-ICS
 # bash scripts/examples/load_examples.sh
 # dbgpt start webserver --port 6006
 
@@ -32,16 +32,16 @@ install_sys_packages() {
 }
 
 clone_repositories() {
-    cd /root && git clone https://github.com/eosphoros-ai/DB-GPT.git
-    mkdir -p /root/DB-GPT/models && cd /root/DB-GPT/models
+    cd /root && git clone https://github.com/hua7448/db-gpt-chat.git K-ICS
+    mkdir -p /root/K-ICS/models && cd /root/K-ICS/models
     git clone https://www.modelscope.cn/Jerry0/text2vec-large-chinese.git
     git clone https://www.modelscope.cn/qwen/Qwen2-0.5B-Instruct.git
-    rm -rf /root/DB-GPT/models/text2vec-large-chinese/.git
-    rm -rf /root/DB-GPT/models/Qwen2-0.5B-Instruct/.git
+    rm -rf /root/K-ICS/models/text2vec-large-chinese/.git
+    rm -rf /root/K-ICS/models/Qwen2-0.5B-Instruct/.git
 }
 
 install_dbgpt_packages() {
-    conda activate dbgpt && cd /root/DB-GPT && pip install -e ".[default]" && pip install transformers_stream_generator einops
+    conda activate dbgpt && cd /root/K-ICS && pip install -e ".[default]" && pip install transformers_stream_generator einops
     cp .env.template .env && sed -i 's/LLM_MODEL=glm-4-9b-chat/LLM_MODEL=qwen2-0.5b-instruct/' .env
 }
 
@@ -53,12 +53,12 @@ clean_up() {
 }
 
 clean_local_data() {
-    rm -rf /root/DB-GPT/pilot/data
-    rm -rf /root/DB-GPT/pilot/message
-    rm -f /root/DB-GPT/logs/*
-    rm -f /root/DB-GPT/logsDbChatOutputParser.log
-    rm -rf /root/DB-GPT/pilot/meta_data/alembic/versions/*
-    rm -rf /root/DB-GPT/pilot/meta_data/*.db
+    rm -rf /root/K-ICS/pilot/data
+    rm -rf /root/K-ICS/pilot/message
+    rm -f /root/K-ICS/logs/*
+    rm -f /root/K-ICS/logsDbChatOutputParser.log
+    rm -rf /root/K-ICS/pilot/meta_data/alembic/versions/*
+    rm -rf /root/K-ICS/pilot/meta_data/*.db
 }
 
 usage() {

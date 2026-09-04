@@ -4,12 +4,12 @@ title: Troubleshooting
 summary: "First checks and common fixes for install, model, and environment issues"
 read_when:
   - Something broke and you want the fastest fix path
-  - DB-GPT starts inconsistently, the UI is blank, or models fail to load
+  - K-ICS starts inconsistently, the UI is blank, or models fail to load
 ---
 
 # Troubleshooting
 
-Common issues and solutions when working with DB-GPT.
+Common issues and solutions when working with K-ICS.
 
 ## First 60 seconds
 
@@ -62,7 +62,7 @@ docker logs db-gpt-webserver-1 -f
 
 If the troubleshooting guides don't resolve your issue:
 
-1. **Search existing issues**: [GitHub Issues](https://github.com/eosphoros-ai/DB-GPT/issues)
+1. **Search existing issues**: [K-ICS GitHub Issues](https://github.com/hua7448/db-gpt-chat/issues)
 2. **Ask the community**: [GitHub Discussions](https://github.com/orgs/eosphoros-ai/discussions)
-3. **Join Slack**: [DB-GPT Slack](https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA)
+3. **Join Slack**: [K-ICS Slack](https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA)
 4. **Check FAQ**: [Installation FAQ](/docs/faq/install) · [LLM FAQ](/docs/faq/llm) · [KBQA FAQ](/docs/faq/kbqa)

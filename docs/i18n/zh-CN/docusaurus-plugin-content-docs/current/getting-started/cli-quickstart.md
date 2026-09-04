@@ -1,15 +1,15 @@
 ---
 sidebar_position: 1
 title: CLI 安装
-summary: "通过 PyPI 安装 DB-GPT，并用单条命令启动它，无需源码 checkout"
+summary: "通过 PyPI 安装 K-ICS，并用单条命令启动它，无需源码 checkout"
 read_when:
-  - 你想直接从 PyPI 安装 DB-GPT
+  - 你想直接从 PyPI 安装 K-ICS
   - 你希望通过 `dbgpt` CLI 完成交互式配置
 ---
 
 # CLI 安装
 
-通过 PyPI 安装 DB-GPT，并使用单条命令启动它 —— 无需检出源码仓库。
+通过 PyPI 安装 K-ICS，并使用单条命令启动它 —— 无需检出源码仓库。
 
 :::tip 前置条件
 - Python **3.10** 或更高版本
@@ -52,13 +52,13 @@ export PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple  # pip
 
 安装完成后，终端中就可以直接使用 `dbgpt` 命令。
 
-## 2. 启动 DB-GPT
+## 2. 启动 K-ICS
 
 ```bash
 dbgpt start
 ```
 
-首次运行时，DB-GPT 会自动启动一个 **交互式配置向导**，帮助你：
+首次运行时，K-ICS 会自动启动一个 **交互式配置向导**，帮助你：
 
 1. 选择 LLM provider（OpenAI、Kimi、Qwen、MiniMax、Z.AI 或自定义 endpoint）
 2. 输入 API Key（或改用环境变量）
@@ -75,7 +75,7 @@ dbgpt start
    | |_| | |_) |____| |_| |  __/ | |
    |____/|____/      \____|_|    |_|
 
-   🚀 DB-GPT Quick Start
+   K-ICS Quick Start
 
    +- - - - - - - - - - - - - - - - - - - - - - - -+
    :  Profile:   openai                              :
@@ -103,7 +103,7 @@ Options:
   --help             Show help message
 
 Commands:
-  start     Start the DB-GPT server
+  start     Start the K-ICS server
   stop      Stop a running server
   setup     Configure LLM provider (interactive wizard or CI mode)
   profile   Manage configuration profiles
@@ -117,7 +117,7 @@ Commands:
 
 ### `dbgpt start`
 
-启动 DB-GPT web server。直接运行 `dbgpt start` 等价于 `dbgpt start web`。
+启动 K-ICS web server。直接运行 `dbgpt start` 等价于 `dbgpt start web`。
 
 #### 子命令
 
@@ -171,7 +171,7 @@ dbgpt start web --daemon
 
 ### `dbgpt stop`
 
-停止正在运行的 DB-GPT 服务进程。
+停止正在运行的 K-ICS 服务进程。
 
 ```bash
 # 停止 web server
@@ -277,7 +277,7 @@ dbgpt profile delete minimax --yes  # 跳过确认
 
 ## 6. 目录结构
 
-首次运行后，DB-GPT 会在用户目录下创建如下结构：
+首次运行后，K-ICS 会在用户目录下创建如下结构：
 
 ```
 ~/.dbgpt/
@@ -297,7 +297,7 @@ dbgpt profile delete minimax --yes  # 跳过确认
 
 | 变量 | 默认值 | 说明 |
 |---|---|---|
-| `DBGPT_HOME` | `~/.dbgpt` | 覆盖 DB-GPT home 目录 |
+| `DBGPT_HOME` | `~/.dbgpt` | 覆盖 K-ICS home 目录 |
 | `OPENAI_API_KEY` | — | OpenAI API key（也用于 `openai` 和 `custom` profile） |
 | `MOONSHOT_API_KEY` | — | Kimi / Moonshot API key |
 | `DASHSCOPE_API_KEY` | — | Qwen / DashScope API key（也用于 Kimi embedding） |

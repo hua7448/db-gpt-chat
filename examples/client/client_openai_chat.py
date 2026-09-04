@@ -5,7 +5,7 @@
 # [tool.uv]
 # exclude-newer = "2025-03-07T00:00:00Z"
 # ///
-"""Chat With Your DB-GPT's API by OpenAI Client
+"""Chat With Your K-ICS API by OpenAI Client
 
 Sample Usage:
 ```bash

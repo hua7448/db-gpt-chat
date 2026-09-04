@@ -1,6 +1,6 @@
 # GaussDB
 
-GaussDB 是企业级关系型数据库。DB-GPT 通过
+GaussDB 是企业级关系型数据库。K-ICS 通过
 `dbgpt_ext.datasource.rdbms.conn_gaussdb` 中的原生连接器提供支持。
 
 ### 安装依赖
@@ -18,7 +18,7 @@ uv sync --all-packages \
 
 ### 准备 GaussDB
 
-准备好 GaussDB 实例后，启动 DB-GPT WebServer：
+准备好 GaussDB 实例后，启动 K-ICS WebServer：
 
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml

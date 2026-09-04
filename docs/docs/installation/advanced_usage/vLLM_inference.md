@@ -1,8 +1,8 @@
 # vLLM Inference
-DB-GPT supports [vLLM](https://github.com/vllm-project/vllm) inference, a fast and easy-to-use LLM inference and service library.
+K-ICS supports [vLLM](https://github.com/vllm-project/vllm) inference, a fast and easy-to-use LLM inference and service library.
 
 ## Install dependencies
-`vLLM` is an optional dependency in DB-GPT. You can install it by adding the extra `--extra "vllm"` when installing dependencies.
+`vLLM` is an optional dependency in K-ICS. You can install it by adding the extra `--extra "vllm"` when installing dependencies.
 
 ```bash
 # Use uv to install dependencies needed for vllm

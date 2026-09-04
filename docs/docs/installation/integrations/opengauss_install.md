@@ -1,6 +1,6 @@
 # openGauss
 
-openGauss is an open-source relational database supported by DB-GPT through the
+openGauss is an open-source relational database supported by K-ICS through the
 native connector in `dbgpt_ext.datasource.rdbms.conn_openGauss`.
 
 ### Install Dependencies
@@ -18,7 +18,7 @@ uv sync --all-packages \
 
 ### Prepare openGauss
 
-Prepare an openGauss instance and start the DB-GPT webserver:
+Prepare an openGauss instance and start the K-ICS webserver:
 
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml

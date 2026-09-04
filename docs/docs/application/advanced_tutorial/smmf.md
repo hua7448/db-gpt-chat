@@ -1,9 +1,9 @@
 # SMMF
 
-The DB-GPT project provides service-oriented multi-model management capabilities. Developer who are interested in related capabilities can read the [SMMF](../../modules/smmf.md) module part. Here we focus on how to use multi-LLMs.
+The K-ICS project provides service-oriented multi-model management capabilities. Developer who are interested in related capabilities can read the [SMMF](../../modules/smmf.md) module part. Here we focus on how to use multi-LLMs.
 
 
-Here we mainly introduce the usage through the web interface. For developer interested in the command line, you can refer to the [cluster deployment](../../installation/model_service/cluster.md) model. Open the DB-GPT-Web frontend service and click on `Model Management` to enter the multi-model management interface.
+Here we mainly introduce the usage through the web interface. For developers interested in the command line, refer to the [cluster deployment](../../installation/model_service/cluster.md) guide. Open the K-ICS frontend service and click `Model Management` to enter the multi-model management interface.
 
 
 ## List Models
@@ -52,7 +52,7 @@ After the model is stopped, the display in the upper right corner will change.
 
 # Operations and Observability
 
-Operations and observability are important components of a production system. In terms of operational capabilities, DB-GPT provides a command-line tool called dbgpt for operations and management, in addition to the common management functionalities available on the web interface. The dbgpt command-line tool offers the following functionalities:
+Operations and observability are important components of a production system. In terms of operational capabilities, K-ICS provides a command-line tool called dbgpt for operations and management, in addition to the common management functionalities available on the web interface. The dbgpt command-line tool offers the following functionalities:
 
 - Starting and stopping various services
 - Knowledge base management (batch import, custom import, viewing, and deleting knowledge base documents)

@@ -306,8 +306,8 @@ msgid "Default LLM Client"
 msgstr "기본 LLM 클라이언트"
 
 #: ../packages/dbgpt-core/src/dbgpt/model/cluster/client.py:23
-msgid "Default LLM client(Connect to your DB-GPT model serving)"
-msgstr "기본 LLM 클라이언트(DB-GPT 모델 서비스에 연결)"
+msgid "Default LLM client(Connect to your K-ICS model serving)"
+msgstr "기본 LLM 클라이언트(K-ICS 모델 서비스에 연결)"
 
 #: ../packages/dbgpt-core/src/dbgpt/model/cluster/client.py:26
 #: ../packages/dbgpt-core/src/dbgpt/model/cluster/client.py:128
@@ -326,8 +326,8 @@ msgid "Remote LLM Client"
 msgstr "원격 LLM 클라이언트"
 
 #: ../packages/dbgpt-core/src/dbgpt/model/cluster/client.py:117
-msgid "Remote LLM client(Connect to the remote DB-GPT model serving)"
-msgstr "원격 LLM 클라이언트(원격 DB-GPT 모델 서비스에 연결)"
+msgid "Remote LLM client(Connect to the remote K-ICS model serving)"
+msgstr "원격 LLM 클라이언트(원격 K-ICS 모델 서비스에 연결)"
 
 #: ../packages/dbgpt-core/src/dbgpt/model/cluster/client.py:120
 msgid "Controller Address"
@@ -716,7 +716,7 @@ msgid ""
 "example, if you have two vLLM instances running on the same GPU, you can set "
 "the GPU memory utilization to 0.5 for each instance."
 msgstr ""
-"모델 실행기에 사용할 GPU 메모리의 비율로 0에서 1 사이의 값을 가질 수 있습니다. 예를 들어, 0.5의 값은 50% GPU 메모리 사용률을 의미합니다. 지정하지 않으면 기본값인 0.9를 사용합니다. 이는 인스턴스별 제한이며 현재 vLLM 인스턴스에만 적용됩니다. 동일한 GPU에서 다른 vLLM 인스턴스를 실행 중이더라도 영향을 받지 않습니다. 예를 들어, 동일한 GPU에서 두 개의 vLLM 인스턴스를 실행 중인 경우 각 인스턴스의 GPU 메모리 사용률을 0.5로 설정할 수 있습니다."
+"모델 실행기에 사용할 GPU 메모리의 비율로 0에서 1 사이의 값을 가질 수 있습니다. 예를 들어, 0.5의 값은 50%% GPU 메모리 사용률을 의미합니다. 지정하지 않으면 기본값인 0.9를 사용합니다. 이는 인스턴스별 제한이며 현재 vLLM 인스턴스에만 적용됩니다. 동일한 GPU에서 다른 vLLM 인스턴스를 실행 중이더라도 영향을 받지 않습니다. 예를 들어, 동일한 GPU에서 두 개의 vLLM 인스턴스를 실행 중인 경우 각 인스턴스의 GPU 메모리 사용률을 0.5로 설정할 수 있습니다."
 
 #: ../packages/dbgpt-core/src/dbgpt/model/adapter/vllm_adapter.py:301
 msgid "Maximum number of batched tokens per iteration."

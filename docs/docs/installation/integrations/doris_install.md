@@ -1,6 +1,6 @@
 # Apache Doris
 
-Apache Doris is a real-time analytical data warehouse supported by DB-GPT through
+Apache Doris is a real-time analytical data warehouse supported by K-ICS through
 the native connector in `dbgpt_ext.datasource.rdbms.conn_doris`.
 
 ### Install Dependencies
@@ -18,7 +18,7 @@ uv sync --all-packages \
 
 ### Prepare Apache Doris
 
-Prepare a Doris instance and start the DB-GPT webserver:
+Prepare a Doris instance and start the K-ICS webserver:
 
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml

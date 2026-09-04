@@ -40,7 +40,7 @@ The scene value of the benchmark, e.g. The marking evaluation task name
 <b>model_list</b> <font color="gray"> object </font> <font color="red"> Required </font>
 
 The model name list of the benchmark will execute, e.g. ["DeepSeek-V3.1","Qwen3-235B-A22B"]
-Notice: The model name configured on the db-gpt platform needs to be entered.
+Notice: The model name configured on the K-ICS platform needs to be entered.
 
 --------
 <b>temperature</b> <font color="gray"> float </font>
@@ -111,7 +111,7 @@ Query task list page size, Default is 20
                 "scene_value": "local_benchmark_task_for_Qwen",
                 "datasets_name": "Falcon评测集",
                 "input_file_path": "2025_07_27_public_500_standard_benchmark_question_list.xlsx",
-                "output_file_path": "/DB-GPT/pilot/benchmark_meta_data/result/1ec15dcbf5d54124bd5a5d23992af35d/202510201650_multi_round_benchmark_result.xlsx",
+                "output_file_path": "/path/to/K-ICS/pilot/benchmark_meta_data/result/1ec15dcbf5d54124bd5a5d23992af35d/202510201650_multi_round_benchmark_result.xlsx",
                 "model_list": [
                     "Qwen3-Coder-480B-A35B-Instruct"
                 ],
@@ -269,7 +269,7 @@ The benchMark task unique code
                 "exception": 0,
                 "accuracy": 0.272,
                 "execRate": 0.81,
-                "outputPath": "/DB-GPT/pilot/benchmark_meta_data/result/c827a274b4084f5dbce4c630f5267239/202510181449_multi_round_benchmark_result.xlsx"
+                "outputPath": "/path/to/K-ICS/pilot/benchmark_meta_data/result/c827a274b4084f5dbce4c630f5267239/202510181449_multi_round_benchmark_result.xlsx"
             }
         ]
     }
@@ -306,4 +306,3 @@ ________
 <b>outputPath</b> <font color="gray">string</font>
 The benchmark task execute result output file path
 ________
-

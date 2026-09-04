@@ -1,7 +1,7 @@
 """Example: Agent with Skill loading mechanism.
 
 This example demonstrates how to use the SKILL loading mechanism
-with DB-GPT agents.
+with K-ICS agents.
 """
 
 import asyncio
@@ -88,7 +88,7 @@ async def main():
     loaded_from_file = None
     try:
         loaded_from_file = loader.load_skill_from_file(
-            "/Users/chenketing.ckt/Desktop/project/DB-GPT/skills/claude/math_assistant/SKILL.md"
+            "/path/to/K-ICS/skills/claude/math_assistant/SKILL.md"
         )
         if loaded_from_file:
             # register loaded skill (demonstrate file-based loading path)
@@ -106,7 +106,7 @@ async def main():
                 name="math_assistant", description="Mathematical calculation assistant"
             )
             .with_version("1.0.0")
-            .with_author("DB-GPT Team")
+            .with_author("K-ICS Team")
             .with_skill_type(SkillType.Chat)
             .with_tags(["math", "calculation"])
             .with_prompt_template(

@@ -1,21 +1,21 @@
 ---
 sidebar_position: 0
 title: 架构
-summary: "DB-GPT 仓库结构与以 ReAct 为中心的运行时架构"
+summary: "K-ICS 仓库结构与以 ReAct 为中心的运行时架构"
 read_when:
-  - 你想快速理解 DB-GPT 在仓库中的组织方式
+  - 你想快速理解 K-ICS 在仓库中的组织方式
   - 你需要理解 UI、API、agent、skill、tool 和数据资源之间如何连接
 ---
 
 # 架构
 
-DB-GPT 是一个 Python 单体仓库（monorepo），其整体运行方式围绕以 ReAct 为中心的 agent runtime 展开。
+K-ICS 是一个 Python 单体仓库（monorepo），其整体运行方式围绕以 ReAct 为中心的 agent runtime 展开。
 Web UI 将请求发送到应用层，ReAct Agent 在 agent runtime 循环中执行，并通过工具、技能、数据库与知识资源完成分析任务，最终将结果返回到 UI。
 
 ## 仓库结构
 
 ```text
-DB-GPT/
+K-ICS/
 ├── packages/
 │   ├── dbgpt-core/        # 核心 agent、memory、planning、RAG、模型抽象
 │   ├── dbgpt-app/         # 应用服务、API 路由、场景逻辑、UI 资源托管
@@ -38,7 +38,7 @@ DB-GPT/
 | `dbgpt-app` | FastAPI 应用服务、聊天 API、运行时编排、静态 UI 托管 |
 | `dbgpt-serve` | knowledge、datasource、flow、app、agent 等资源服务 |
 | `dbgpt-ext` | 外部连接器，例如数据库 / 存储 / RAG 集成 |
-| `dbgpt-client` | DB-GPT API 的客户端 SDK |
+| `dbgpt-client` | K-ICS API 的客户端 SDK |
 | `dbgpt-sandbox` | 代码与工具执行的隔离运行时 |
 | `skills/` | 打包后的领域工作流、脚本、模板和参考资源 |
 

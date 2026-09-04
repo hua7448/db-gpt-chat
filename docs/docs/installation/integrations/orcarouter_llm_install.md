@@ -2,15 +2,15 @@
 
 ### [OrcaRouter](https://www.orcarouter.ai) provides 150+ AI models including OpenAI, Anthropic, Gemini, DeepSeek and Qwen behind a single OpenAI-compatible endpoint and API key.
 
-### This section describes how to use the OrcaRouter provider with DB-GPT.
+### This section describes how to use the OrcaRouter provider with K-ICS.
 
 1. Sign up at [OrcaRouter](https://www.orcarouter.ai) and generate an API key.
 2. Set the environment variable `ORCAROUTER_API_KEY` with your key.
-3. Use the `configs/dbgpt-proxy-orcarouter.toml` configuration when starting DB-GPT.
+3. Use the `configs/dbgpt-proxy-orcarouter.toml` configuration when starting K-ICS.
 
 ### You can look up models at [https://www.orcarouter.ai/models](https://www.orcarouter.ai/models)
 
-### Or you can use docker/base/Dockerfile to run DB-GPT with OrcaRouter:
+### Or you can use docker/base/Dockerfile to run K-ICS with OrcaRouter:
 
 ```dockerfile
 # Expose the port for the web server, if you want to run it directly from the Dockerfile

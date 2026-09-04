@@ -1,6 +1,6 @@
 # Tools Overview
 
-DB-GPT ships with a small set of built-in tools that power the **Agentic Data API**. These tools are the default execution surface for data analysis, skill-driven workflows, SQL exploration, shell access, and HTML report delivery.
+K-ICS ships with a small set of built-in tools that power the **Agentic Data API**. These tools are the default execution surface for data analysis, skill-driven workflows, SQL exploration, shell access, and HTML report delivery.
 
 The current source of truth lives in:
 

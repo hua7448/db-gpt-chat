@@ -16,7 +16,7 @@ pip install "dbgpt[agent,simple_framework, client]>=0.7.1" "dbgpt_ext>=0.7.1" -U
 
 ### Prepare Embedding Model
 
-To store the knowledge in a vector store, we need an embedding model, DB-GPT supports 
+To store the knowledge in a vector store, we need an embedding model, K-ICS supports
 a lot of embedding models, here are some of them:
 
 import Tabs from '@theme/Tabs';
@@ -48,7 +48,7 @@ embeddings = DefaultEmbeddingFactory.default("/data/models/text2vec-large-chines
 
   <TabItem value="remote_embedding">
 
-If you have deployed [DB-GPT cluster](/docs/installation/model_service/cluster) and 
+If you have deployed [K-ICS cluster](/docs/installation/model_service/cluster) and
 [API server](/docs/installation/advanced_usage/OpenAI_SDK_call)
 , you can connect to the API server to get the embeddings.
 
@@ -126,7 +126,7 @@ print(chunks)
 
 ### Prepare LLM
 
-To build a RAG program, we need a LLM, here are some of the LLMs that DB-GPT supports:
+To build a RAG program, we need a LLM, here are some of the LLMs that K-ICS supports:
 
 <Tabs
   defaultValue="openai"
@@ -172,7 +172,7 @@ llm_client = YiLLMClient()
 
   <TabItem value="model_service">
 
-If you have deployed [DB-GPT cluster](/docs/installation/model_service/cluster) and 
+If you have deployed [K-ICS cluster](/docs/installation/model_service/cluster) and
 [API server](/docs/installation/advanced_usage/OpenAI_SDK_call)
 , you can connect to the API server to get the LLM model.
 

@@ -12,4 +12,4 @@ In the dialogue interface, a series of operations such as refreshing and pausing
   <img src={'/img/app/app_chat_op_v0.6.jpg'} width="800" />
 </p>
 
-If you find new problems or have good ideas during use, you can also directly post them on Github [issue](https://github.com/eosphoros-ai/DB-GPT/issues) feedback.
+If you find new problems or have good ideas during use, you can also directly post them on the [K-ICS issue tracker](https://github.com/hua7448/db-gpt-chat/issues).

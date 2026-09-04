@@ -1,8 +1,8 @@
 # Graph RAG User Manual
 
-In this example, we will show how to use the Graph RAG framework in DB-GPT. Using a graph database to implement RAG can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
+In this example, we will show how to use the Graph RAG framework in K-ICS. Using a graph database to implement RAG can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
 
-You can refer to the python example file `DB-GPT/examples/rag/graph_rag_example.py` in the source code. This example demonstrates how to load knowledge from a document and store it in a graph store. Subsequently, it recalls knowledge relevant to your question by searching for triplets in the graph store.
+You can refer to [`examples/rag/graph_rag_example.py`](https://github.com/hua7448/db-gpt-chat/blob/main/examples/rag/graph_rag_example.py) in the K-ICS source tree. This example demonstrates how to load knowledge from a document and store it in a graph store. Subsequently, it recalls knowledge relevant to your question by searching for triplets in the graph store.
 
 
 ### Install Dependencies
@@ -20,7 +20,7 @@ uv sync --all-packages --frozen \
 
 ### Prepare Graph Database
 
-To store the knowledge in graph, we need an graph database, [TuGraph](https://github.com/TuGraph-family/tugraph-db) is the first graph database supported by DB-GPT.
+To store the knowledge in graph, we need an graph database, [TuGraph](https://github.com/TuGraph-family/tugraph-db) is the first graph database supported by K-ICS.
 
 Visit github repository of TuGraph to view [Quick Start](https://tugraph-db.readthedocs.io/zh-cn/latest/3.quick-start/1.preparation.html#id5) document, follow the instructions to pull the TuGraph database docker image (latest / version >= 4.5.1) and launch it.
 
@@ -43,7 +43,7 @@ The default port for the bolt protocol is `7687`.
 
 ### Prepare LLM
 
-To build a Graph RAG program, we need a LLM, here are some of the LLMs that DB-GPT supports:
+To build a Graph RAG program, we need a LLM, here are some of the LLMs that K-ICS supports:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -78,7 +78,7 @@ Then set your API key in the environment variable `YI_API_KEY`.
 
   <TabItem value="model_service">
 
-If you have deployed [DB-GPT cluster](/docs/installation/model_service/cluster) and 
+If you have deployed [K-ICS cluster](/docs/installation/model_service/cluster) and
 [API server](/docs/installation/advanced_usage/OpenAI_SDK_call)
 , you can connect to the API server to get the LLM model.
 
@@ -103,7 +103,7 @@ llm_client = OpenAILLMClient(api_base="http://localhost:8100/api/v1/", api_key="
 
 ### TuGraph Configuration
 
-Set variables below in `.env` file, let DB-GPT know how to connect to TuGraph.
+Set variables below in `.env` file, let K-ICS know how to connect to TuGraph.
 
 ```
 GRAPH_STORE_TYPE=TuGraph
@@ -122,7 +122,7 @@ COMMUNITY_SUMMARY_BATCH_SIZE=20  # the batch size of parallel community summary 
 
 ### Load into Knowledge Graph
 
-When using a graph database as the underlying knowledge storage platform, it is necessary to build a knowledge graph to facilitate the archiving and retrieval of documents. DB-GPT leverages the capabilities of large language models to implement an integrated knowledge graph, while still maintaining the flexibility to freely connect to other knowledge graph systems and graph database systems. 
+When using a graph database as the underlying knowledge storage platform, it is necessary to build a knowledge graph to facilitate the archiving and retrieval of documents. K-ICS leverages the capabilities of large language models to implement an integrated knowledge graph, while still maintaining the flexibility to freely connect to other knowledge graph systems and graph database systems.
 
 We created a knowledge graph with graph community summaries based on `CommunitySummaryKnowledgeGraph`.
 
@@ -233,7 +233,7 @@ First, create a knowledge base using the `Knowledge Graph` type.
   <img src={'/img/chat_knowledge/graph_rag/create_knowledge_graph.png'} width="1000px"/>
 </p>
 
-Then, upload the documents ([graphrag-test.md](https://github.com/eosphoros-ai/DB-GPT/blob/main/examples/test_files/graphrag-test.md)) and process them automatically (markdown header by default).
+Then, upload the bundled [graphrag-test.md](https://github.com/hua7448/db-gpt-chat/blob/main/examples/test_files/graphrag-test.md) and process it automatically (Markdown headers by default).
 
 <p align="left">
   <img src={'/img/chat_knowledge/graph_rag/upload_file.png'} width="1000px"/>
@@ -255,7 +255,7 @@ Performance testing is based on the `gpt-4o-mini` model.
 
 #### Indexing Performance
 
-|                     | DB-GPT                | GraphRAG(microsoft)  |
+|                     | K-ICS                | GraphRAG(microsoft)  |
 | ------------------- | --------------------- | -------------------- |
 | Doc Tokens          | 42631                 | 42631                |
 | Triplets Graph      | 734 nodes, 1064 edges | 779 nodes, 967 edges |
@@ -269,17 +269,21 @@ Performance testing is based on the `gpt-4o-mini` model.
 
 **Global Search**
 
-|        | DB-GPT | GraphRAG(microsoft) |
+|        | K-ICS | GraphRAG(microsoft) |
 | ------ | ------ | ------------------- |
 | Time   | 8s     | 40s                 |
 | Tokens | 7432   | 63317               |
 
 **Question**
+
+:::note
+The following benchmark transcript uses a preserved upstream DB-GPT graph corpus. Its entity names and historical answer text are test data, not K-ICS product branding.
+:::
 ```
 请总结知识库的内容，并进行摘要说明。
 ```
 
-- **DB-GPT Answer**
+- **K-ICS Answer**
 
 ```
 · 知识图谱概述: 知识图谱集中展示了与图数据库及相关处理系统的多种实体和其相互关联，涵盖了分布式内存图数据库、图计算模型及多种图处理框架和技术，强调了这些技术在图处理· 领域中的应用和相互影响。
@@ -310,7 +314,7 @@ Performance testing is based on the `gpt-4o-mini` model.
 
 **Local Search**
 
-|        | DB-GPT | GraphRAG(microsoft) |
+|        | K-ICS | GraphRAG(microsoft) |
 | ------ | ------ | ------------------- |
 | Time   | 15s    | 15s                 |
 | Tokens | 9230   | 11619               |
@@ -321,7 +325,7 @@ Performance testing is based on the `gpt-4o-mini` model.
 DB-GPT社区和TuGraph社区在社区贡献，社区生态，开发者的这几个方面的联系和区别分别是什么？
 ```
 
-- **DB-GPT Answer**
+- **K-ICS Answer**
 
 ```
 · 社区贡献:
@@ -361,7 +365,7 @@ DB-GPT社区与TuGraph社区的比较
 
 ### Retrieval Of Document Structure
 
-In version 0.6.1 of DB-GPT, we have added a new feature:
+In version 0.6.1 of K-ICS, we have added a new feature:
 - Retrieval of triplets with the **retrieval of document structure**
 
 We have expanded the definition scope of 'Graph' in GraphRAG:
@@ -393,7 +397,7 @@ We aim to construct a more complex Graph that covers more comprehensive informat
 
 ### Similarity Search in GraphRAG:
 
-In the latest version of DB-GPT, we have implemented a new feature:
+In the latest version of K-ICS, we have implemented a new feature:
 
 - **Similarity search** for GraphRAG retrieval
 
@@ -401,7 +405,7 @@ In the latest version of DB-GPT, we have implemented a new feature:
 
 Use TuGraph 4.5.1 and above.
 
-Set the variables below in the `.env` file to enable similarity search in DB-GPT.
+Set the variables below in the `.env` file to enable similarity search in K-ICS.
 
 ```
 SIMILARITY_SEARCH_ENABLED=True # enable the similarity search for entities and chunks
@@ -467,13 +471,13 @@ In conclusion, enabling similarity search in GraphRAG significantly expands the 
 
 ### Text2GQL Search in GraphRAG:
 
-In the latest version of DB-GPT, we have implemented a new feature:
+In the latest version of K-ICS, we have implemented a new feature:
 
 - **Text2GQL search** for GraphRAG retrieval
 
 #### How to use?
 
-Set the variables below in the `.env` file to enable text2gql search in DB-GPT.
+Set the variables below in the `.env` file to enable text2gql search in K-ICS.
 
 ```
 TEXT2GQL_SEARCH_ENABLED=True # enable the text2gql search for entities and relations.
@@ -500,7 +504,7 @@ The results of the text2gql search mode are as follows:
   <img src={'/img/chat_knowledge/graph_rag/comparison_result_for_text2gql_search.png'} width="1000px"/>
 </p>
 
-Compared to the keyword search method, the text2gql search method can generate an accurate graph query laguage to query the entity of DB-GPT in knowledge graph, which is
+Compared to the keyword search method, the text2gql search method can generate an accurate graph query language to query a knowledge-graph entity, for example:
 
 ```cypher
 MATCH (n) WHERE n.id = 'DB-GPT' RETURN n LIMIT 10

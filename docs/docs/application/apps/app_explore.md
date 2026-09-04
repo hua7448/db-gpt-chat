@@ -1,6 +1,6 @@
 # App Explore
 
-In the new version of DB-GPT V0.6.0, the application management has been comprehensively upgraded. The search square module is mainly used to discover various interesting, fun and useful data applications.KeywordsIn addition to searching for apps, it also provides popular recommendations, comprehensive apps, my favorites, etc.
+In the new version of K-ICS V0.6.0, the application management has been comprehensively upgraded. The search square module is mainly used to discover various interesting, fun and useful data applications.KeywordsIn addition to searching for apps, it also provides popular recommendations, comprehensive apps, my favorites, etc.
 
 After the default installation, the previous six application scenarios are retained.
 

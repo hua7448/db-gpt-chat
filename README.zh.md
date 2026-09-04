@@ -1,43 +1,26 @@
-# <img src="./assets/LOGO_SMALL.png" alt="Logo" style="vertical-align: middle; height: 24px;" /> DB-GPT：开源 Agentic AI 数据分析智能助手
-
-<p align="left">
-  <img src="./assets/dbgpt_vision.png" width="100%" />
-</p>
-
+# K-ICS：开源 Agentic AI 数据分析智能助手
 
 <div align="center">
   <p>
-    <a href="https://github.com/eosphoros-ai/DB-GPT">
-        <img alt="stars" src="https://img.shields.io/github/stars/eosphoros-ai/db-gpt?style=social" />
+    <a href="https://github.com/hua7448/db-gpt-chat">
+        <img alt="stars" src="https://img.shields.io/github/stars/hua7448/db-gpt-chat?style=social" />
     </a>
-    <a href="https://github.com/eosphoros-ai/DB-GPT">
-        <img alt="forks" src="https://img.shields.io/github/forks/eosphoros-ai/db-gpt?style=social" />
+    <a href="https://github.com/hua7448/db-gpt-chat">
+        <img alt="forks" src="https://img.shields.io/github/forks/hua7448/db-gpt-chat?style=social" />
     </a>
-    <a href="http://dbgpt.cn/">
-        <img alt="Official Website" src="https://img.shields.io/badge/Official%20website-DB--GPT-blue?style=flat&labelColor=3366CC" />
+    <a href="https://github.com/hua7448/db-gpt-chat">
+        <img alt="K-ICS 数据工作台" src="https://img.shields.io/badge/K--ICS-Data%20Workbench-blue?style=flat&labelColor=3366CC" />
     </a>
     <a href="https://opensource.org/licenses/MIT">
-      <img alt="License: MIT" src="https://img.shields.io/github/license/eosphoros-ai/db-gpt?style=flat&labelColor=009966&color=009933" />
+      <img alt="License: MIT" src="https://img.shields.io/github/license/hua7448/db-gpt-chat?style=flat&labelColor=009966&color=009933" />
     </a>
-     <a href="https://github.com/eosphoros-ai/DB-GPT/releases">
-      <img alt="Release Notes" src="https://img.shields.io/github/v/release/eosphoros-ai/db-gpt?style=flat&labelColor=FF9933&color=FF6633" />
+     <a href="https://github.com/hua7448/db-gpt-chat/releases">
+      <img alt="Release Notes" src="https://img.shields.io/github/v/release/hua7448/db-gpt-chat?style=flat&labelColor=FF9933&color=FF6633" />
     </a>
-    <a href="https://github.com/eosphoros-ai/DB-GPT/issues">
-      <img alt="Open Issues" src="https://img.shields.io/github/issues-raw/eosphoros-ai/db-gpt?style=flat&labelColor=666666&color=333333" />
+    <a href="https://github.com/hua7448/db-gpt-chat/issues">
+      <img alt="Open Issues" src="https://img.shields.io/github/issues-raw/hua7448/db-gpt-chat?style=flat&labelColor=666666&color=333333" />
     </a>
-    <a href="https://x.com/DBGPT_AI">
-      <img alt="X (formerly Twitter) Follow" src="https://img.shields.io/twitter/follow/DBGPT_AI" />
-    </a>
-    <a href="https://medium.com/@dbgpt0506">
-      <img alt="Medium Follow" src="https://badgen.net/badge/Medium/DB-GPT/333333?icon=medium&labelColor=666666" />
-    </a>
-    <a href="https://space.bilibili.com/3537113070963392">
-      <img alt="Bilibili Space" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.bilibili.com%2Fx%2Frelation%2Fstat%3Fvmid%3D3537113070963392&query=data.follower&style=flat&logo=bilibili&logoColor=white&label=Bilibili%20Fans&labelColor=F37697&color=6495ED" />
-    </a>
-    <a href="https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA">
-      <img alt="Slack" src="https://img.shields.io/badge/Slack-Join%20us-5d6b98?style=flat&logo=slack&labelColor=7d89b0" />
-    </a>
-    <a href="https://codespaces.new/eosphoros-ai/DB-GPT">
+    <a href="https://codespaces.new/hua7448/db-gpt-chat">
       <img alt="Open in GitHub Codespaces" src="https://github.com/codespaces/badge.svg" />
     </a>
   </p>
@@ -46,15 +29,15 @@
 [![简体中文](https://img.shields.io/badge/简体中文-d9d9d9?style=flat-square)](README.zh.md)
 [![日本語](https://img.shields.io/badge/日本語-d9d9d9?style=flat-square)](README.ja.md) 
 
-[**文档**](http://docs.dbgpt.cn/docs/overview/) | [**联系团队**](https://github.com/eosphoros-ai/DB-GPT/blob/main/README.zh.md#%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC) | [**社区**](https://github.com/eosphoros-ai/community) | [**Paper**](https://arxiv.org/pdf/2312.17449.pdf)
+[**文档**](./docs/) | [**联系团队**](https://github.com/hua7448/db-gpt-chat/blob/main/README.zh.md#%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC) | [**社区**](https://github.com/hua7448/db-gpt-chat/discussions) | [**上游论文**](https://arxiv.org/pdf/2312.17449.pdf)
 
 </div>
 
-> **一个开源的 AI 数据分析智能助手：连接你的数据，自主编写 SQL 与代码，在沙箱环境中运行 skills，把分析转化为报告、洞察与行动。**
+> **K-ICS 是一个开源的 AI 数据分析智能助手：连接你的数据，自主编写 SQL 与代码，在沙箱环境中运行 skills，把分析转化为报告、洞察与行动。**
 
-## DB-GPT 是什么？
+## K-ICS 是什么？
 
-DB-GPT 是一个开源的 **Agentic AI 数据分析智能助手**，面向下一代 **AI + Data** 产品形态。
+K-ICS 是一个开源的 **Agentic AI 数据分析智能助手**，面向下一代 **AI + Data** 产品形态。
 
 它可以帮助用户和团队：
 - 连接 **数据库、CSV / Excel、数仓、知识库与文档**
@@ -64,9 +47,9 @@ DB-GPT 是一个开源的 **Agentic AI 数据分析智能助手**，面向下一
 - 自动生成 **图表、Dashboard、HTML 报告和分析总结**
 - 在 **沙箱环境** 中安全执行分析任务
 
-DB-GPT 不只是一个助手界面，它同时也是一个平台，用于构建 **AI Native 数据智能体、工作流与应用**，底层支持 agents、AWEL、RAG 与多模型能力。
+K-ICS 不只是一个助手界面，它同时也是一个平台，用于构建 **AI Native 数据智能体、工作流与应用**，底层支持 agents、AWEL、RAG 与多模型能力。
 
-## 为什么选择 DB-GPT？
+## 为什么选择 K-ICS？
 
 ### 1. Agentic 数据分析
 它不只是回答问题，而是会进行任务规划、步骤拆解、工具调用和迭代式分析。
@@ -90,7 +73,7 @@ DB-GPT 不只是一个助手界面，它同时也是一个平台，用于构建 
 在隔离环境中运行代码和工具，让分析过程更安全、更可控。
 ![sandbox](https://github.com/user-attachments/assets/bfbd78e0-15e2-42ac-876f-5b91847aadc1)
 
-## 你可以用 DB-GPT 做什么？
+## 你可以用 K-ICS 做什么？
 
 - **分析 CSV / Excel 文件** 并生成可视化报告
 - **连接数据库** 自动生成数据库画像与分析报告
@@ -117,34 +100,34 @@ DB-GPT 不只是一个助手界面，它同时也是一个平台，用于构建 
 
 ## 快速开始
 
-你可以通过一键安装脚本在几分钟内启动 DB-GPT（macOS / Linux）：
+你可以通过一键安装脚本在几分钟内启动 K-ICS（macOS / Linux）：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh | bash
 ```
 
 也可以直接指定 profile 和 API Key：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh \
+curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh \
   | OPENAI_API_KEY=sk-xxx bash -s -- --profile openai
 ```
 
 如果你想使用 Kimi 2.5（Moonshot API）：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh \
+curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh \
   | MOONSHOT_API_KEY=sk-xxx bash -s -- --profile kimi
 ```
 
 如果你想使用 MiniMax（OpenAI 兼容接口）：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh \
+curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh \
   | MINIMAX_API_KEY=sk-xxx bash -s -- --profile minimax
 ```
 
-如果你已经有本地 DB-GPT 仓库，也可以直接复用当前仓库，跳过 `~/.dbgpt/DB-GPT` 的重复 clone：
+如果你已经有本地 K-ICS 仓库，也可以直接复用当前仓库，跳过 `~/.dbgpt/K-ICS` 的重复 clone：
 
 ```bash
 OPENAI_API_KEY=sk-xxx \
@@ -168,21 +151,21 @@ MINIMAX_API_KEY=sk-xxx \
 安装完成后，使用生成的 profile 配置启动服务：
 
 ```bash
-cd ~/.dbgpt/DB-GPT && uv run dbgpt start webserver --profile <profile>
+cd ~/.dbgpt/K-ICS && uv run dbgpt start webserver --profile <profile>
 ```
 
 然后打开 [http://localhost:5670](http://localhost:5670)。
 
 > **想先审阅安装脚本再执行？**
 > ```bash
-> curl -fsSL https://raw.githubusercontent.com/eosphoros-ai/DB-GPT/main/scripts/install/install.sh -o install.sh
+> curl -fsSL https://raw.githubusercontent.com/hua7448/db-gpt-chat/main/scripts/install/install.sh -o install.sh
 > less install.sh
 > bash install.sh --profile openai
 > ```
 
 ### 通过 PyPI 安装
 
-从 PyPI 安装 DB-GPT，一条命令即可启动，无需克隆源码仓库。
+从 PyPI 安装 K-ICS，一条命令即可启动，无需克隆源码仓库。
 
 > **前置条件：** Python **3.10+**，推荐使用 [uv](https://docs.astral.sh/uv/getting-started/installation/) 包管理器，也支持 pip。
 
@@ -215,31 +198,28 @@ dbgpt start
 ![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
-[**教程**](https://www.yuque.com/eosphoros/dbgpt-docs/bex30nsv60ru0fmx)
-- [**快速开始**](http://docs.dbgpt.cn/zh-CN/docs/next/overview/)
-  - [源码安装](https://www.yuque.com/eosphoros/dbgpt-docs/nh6zd314859l38qa)
-  - [Docker安装](https://www.yuque.com/eosphoros/dbgpt-docs/glf87qg4xxcyrp89)
-  - [Docker Compose安装](https://www.yuque.com/eosphoros/dbgpt-docs/wwdu11e0v5nkfzin)
-- [**使用手册**](https://www.yuque.com/eosphoros/dbgpt-docs/tkspdd0tcy2vlnu4)
-  - [知识库](https://www.yuque.com/eosphoros/dbgpt-docs/ycyz3d9b62fccqxh)
-  - [数据对话](https://www.yuque.com/eosphoros/dbgpt-docs/gd9hbhi1dextqgbz)
-  - [Excel对话](https://www.yuque.com/eosphoros/dbgpt-docs/prugoype0xd2g4bb)
-  - [数据库对话](https://www.yuque.com/eosphoros/dbgpt-docs/wswpv3zcm2c9snmg)
-  - [报表分析](https://www.yuque.com/eosphoros/dbgpt-docs/vsv49p33eg4p5xc1)
-  - [Agents](https://www.yuque.com/eosphoros/dbgpt-docs/pom41m7oqtdd57hm)
-- [**进阶教程**](https://www.yuque.com/eosphoros/dbgpt-docs/dxalqb8wsv2xkm5f)
-  - [数智应用开发](https://www.yuque.com/eosphoros/dbgpt-docs/ancwnrsk9agc6e4w)
-  - [智能体工作流使用](https://www.yuque.com/eosphoros/dbgpt-docs/hcomfb3yrleg7gmq)
-  - [智能应用使用](https://www.yuque.com/eosphoros/dbgpt-docs/aiagvxeb86iarq6r)
-  - [多模型管理](https://www.yuque.com/eosphoros/dbgpt-docs/huzgcf2abzvqy8uv)
-  - [命令行使用](https://www.yuque.com/eosphoros/dbgpt-docs/gd4kgumgd004aly8)
-- [**模型服务部署**](https://www.yuque.com/eosphoros/dbgpt-docs/vubxiv9cqed5mc6o)
-  - [单机部署](https://www.yuque.com/eosphoros/dbgpt-docs/kwg1ed88lu5fgawb)
-  - [集群部署](https://www.yuque.com/eosphoros/dbgpt-docs/gmbp9619ytyn2v1s)
-  - [vLLM](https://www.yuque.com/eosphoros/dbgpt-docs/bhy9igdvanx1uluf)
-- [**如何Debug**](https://www.yuque.com/eosphoros/dbgpt-docs/eyg0ocbc2ce3q95r)
-- [**AWEL**](https://www.yuque.com/eosphoros/dbgpt-docs/zozbzslbfk0m0op5)
-- [**FAQ**](https://www.yuque.com/eosphoros/dbgpt-docs/gomtc46qonmyt44l)
+[**教程**](./docs/)
+- [**快速开始**](./docs/docs/quickstart.md)
+  - [源码安装](./docs/docs/installation/sourcecode.md)
+  - [Docker 安装](./docs/docs/installation/docker.md)
+- [**使用手册**](./docs/docs/application/apps/app_explore.md)
+  - [知识库](./docs/docs/application/apps/chat_knowledge.md)
+  - [数据对话](./docs/docs/application/apps/chat_data.md)
+  - [Excel 对话](./docs/docs/application/apps/chat_excel.md)
+  - [数据库对话](./docs/docs/application/apps/chat_db.md)
+  - [报表分析](./docs/docs/application/apps/chat_financial_report.md)
+  - [Agents](./docs/docs/agents/introduction/introduction.md)
+- [**进阶教程**](./docs/docs/application/advanced_tutorial/cli.md)
+  - [数智应用开发](./docs/docs/cookbook/app/data_analysis_app_develop.md)
+  - [智能体工作流使用](./docs/docs/application/awel.md)
+  - [多模型管理](./docs/docs/application/llms.md)
+- [**模型服务部署**](./docs/docs/installation/model_service/stand_alone.md)
+  - [单机部署](./docs/docs/installation/model_service/stand_alone.md)
+  - [集群部署](./docs/docs/installation/model_service/cluster.md)
+  - [vLLM](./docs/docs/getting-started/providers/vllm.md)
+- [**如何 Debug**](./docs/docs/application/advanced_tutorial/debugging.md)
+- [**AWEL**](./docs/docs/application/awel.md)
+- [**FAQ**](./docs/docs/faq/install.md)
 
 ## 核心能力
 
@@ -281,7 +261,7 @@ dbgpt start
 
 
 #### DeepWiki
-- [DB-GPT](https://deepwiki.com/eosphoros-ai/DB-GPT)
+- [K-ICS](https://deepwiki.com/hua7448/db-gpt-chat)
 - [DB-GPT-HUB](https://deepwiki.com/eosphoros-ai/DB-GPT-Hub)
 - [dbgpts](https://deepwiki.com/eosphoros-ai/dbgpts)
 
@@ -410,7 +390,7 @@ dbgpt start
       </tbody>
     </table>
 
-  - [更多开源模型](https://www.yuque.com/eosphoros/dbgpt-docs/iqaaqwriwhp6zslc#qQktR)
+  - [更多模型](./docs/docs/application/llms.md)
 
   - 支持在线代理模型
     - [x] [DeepSeek.deepseek-chat](https://platform.deepseek.com/api-docs/)
@@ -431,7 +411,7 @@ dbgpt start
 通过私有化大模型、代理脱敏和沙箱执行等机制保障数据隐私与执行安全。
 
 ### 数据源
-- [支持数据源](https://www.yuque.com/eosphoros/dbgpt-docs/rc4r27ybmdwg9472)
+- [支持数据源](./docs/docs/application/datasources.md)
 
 ## 愿景
 
@@ -445,33 +425,33 @@ dbgpt start
 - 能自主编写 **SQL 和代码**
 - 能把分析转化为 **报告、结论与行动**
 
-DB-GPT 希望帮助开发者与企业共同构建这样的未来。
+K-ICS 希望帮助开发者与企业共同构建这样的未来。
 
 
 
 ## Image
 
-🌐 [小程序云部署](https://www.yuque.com/eosphoros/dbgpt-docs/ek12ly8k661tbyn8)
+🌐 [部署文档](./docs/docs/installation/index.md)
 
 ## 使用说明
 
 ### 多模型使用
 
-- [使用指南](https://www.yuque.com/eosphoros/dbgpt-docs/huzgcf2abzvqy8uv)
+- [使用指南](./docs/docs/application/llms.md)
 
 ### 数据Agents使用
 
-- [数据Agents](https://www.yuque.com/eosphoros/dbgpt-docs/gwz4rayfuwz78fbq)
+- [数据 Agents](./docs/docs/agents/introduction/introduction.md)
 
 ## 贡献
 
-更加详细的贡献指南请参考[如何贡献](https://github.com/eosphoros-ai/DB-GPT/blob/main/CONTRIBUTING.md)。
+更加详细的贡献指南请参考[如何贡献](https://github.com/hua7448/db-gpt-chat/blob/main/CONTRIBUTING.md)。
 
 这是一个用于数据库的复杂且创新的工具, 我们的项目也在紧急的开发当中, 会陆续发布一些新的feature。如在使用当中有任何具体问题, 优先在项目下提issue, 如有需要, 请联系如下微信，我会尽力提供帮助，同时也非常欢迎大家参与到项目建设中。
 
 ### 贡献者榜单 
-<a href="https://github.com/eosphoros-ai/DB-GPT/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=eosphoros-ai/DB-GPT&max=200" />
+<a href="https://github.com/hua7448/db-gpt-chat/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=hua7448/db-gpt-chat&max=200" />
 </a>
 
 
@@ -484,11 +464,11 @@ The MIT License (MIT)
 - [免责声明](./DISCKAIMER.md)
 
 ## 引用
-如果您发现`DB-GPT`对您的研究或开发有用，请引用以下论文，其中：
+K-ICS 基于 DB-GPT 二次开发；如需引用上游架构与研究成果，请引用以下 DB-GPT 论文：
 
-如果您想了解DB-GPT整体架构，请引用<a href="https://arxiv.org/abs/2312.17449" target="_blank">论文</a>和<a href="https://arxiv.org/abs/2404.10209" target="_blank">论文</a>
+如果您想了解K-ICS整体架构，请引用<a href="https://arxiv.org/abs/2312.17449" target="_blank">论文</a>和<a href="https://arxiv.org/abs/2404.10209" target="_blank">论文</a>
 
-如果您想了解使用DB-GPT进行Agent开发相关的内容，请引用<a href="https://arxiv.org/abs/2412.13520" target="_blank">论文</a>
+如果您想了解使用K-ICS进行Agent开发相关的内容，请引用<a href="https://arxiv.org/abs/2412.13520" target="_blank">论文</a>
 
 ```bibtex
 @article{xue2023dbgpt,
@@ -528,4 +508,4 @@ The MIT License (MIT)
     </figure>
 </div>
 
-[![Star History Chart](https://api.star-history.com/svg?repos=csunny/DB-GPT&type=Date)](https://star-history.com/#csunny/DB-GPT)
+[![Star History Chart](https://api.star-history.com/svg?repos=hua7448/db-gpt-chat&type=Date)](https://star-history.com/#hua7448/db-gpt-chat)

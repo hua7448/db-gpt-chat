@@ -5,12 +5,12 @@ title: MCP 连接器
 
 # MCP 连接器
 
-**MCP 连接器**让 DB-GPT 的 Agent 突破数据库的边界——发消息、读写文档、管理 Issue、搜索网页——通过 **Model Context Protocol(MCP)** 协议连接各类外部服务。
+**MCP 连接器**让 K-ICS 的 Agent 突破数据库的边界——发消息、读写文档、管理 Issue、搜索网页——通过 **Model Context Protocol(MCP)** 协议连接各类外部服务。
 
 激活一个内置模板,或接入任意自定义 MCP Server,然后在提问区按需勾选要用的连接器。Agent 只会看到你选中的工具;任何写操作都会先暂停等待你确认。
 
 :::info 什么是 MCP?
-[Model Context Protocol](https://modelcontextprotocol.io) 是一个开放标准,为 AI 应用提供了统一的方式去对接外部工具与服务。DB-GPT 中每个连接器背后都是一个 MCP Server,因此新增一项能力只需指向它的接入地址即可。
+[Model Context Protocol](https://modelcontextprotocol.io) 是一个开放标准,为 AI 应用提供了统一的方式去对接外部工具与服务。K-ICS 中每个连接器背后都是一个 MCP Server,因此新增一项能力只需指向它的接入地址即可。
 :::
 
 ## 功能亮点

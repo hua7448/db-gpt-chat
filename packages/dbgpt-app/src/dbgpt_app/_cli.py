@@ -10,23 +10,12 @@ from dbgpt.util.i18n_utils import _
 
 _GLOBAL_CONFIG: str = ""
 
-_BANNER_ART = """\
-    ____  ____        ____ ____ _____
-   |  _ \\| __ )      / ___|  _ \\_   _|
-   | | | |  _ \\ ____| |  _| |_) || |
-   | |_| | |_) |____| |_| |  __/ | |
-   |____/|____/      \\____|_|    |_|\
-"""
-
-
 def _print_banner() -> None:
-    """Print the DB-GPT ASCII art banner to the terminal."""
+    """Print the plain K-ICS startup label to the terminal."""
     from dbgpt.util.console.console import CliLogger
 
     _log = CliLogger()
-    _log.print(f"[bold green]{_BANNER_ART}[/bold green]")
-    _log.print("")
-    _log.print("   [dim]🚀 DB-GPT Quick Start[/dim]")
+    _log.print("[bold green]K-ICS Quick Start[/bold green]")
     _log.print("")
 
 
@@ -44,7 +33,7 @@ def _add_webserver_start_options(func):
         required=False,
         default=None,
         help=_(
-            "Path to a TOML config file.  If omitted, DB-GPT will use the active "
+            "Path to a TOML config file.  If omitted, K-ICS will use the active "
             "profile from ~/.dbgpt/ or run the first-time setup wizard."
         ),
     )
@@ -105,9 +94,9 @@ def start_webserver(
     api_key: Optional[str],
     **kwargs,
 ):
-    """Start webserver (dbgpt_server.py).
+    """Start the K-ICS webserver (dbgpt_server.py).
 
-    On first run (or when no config is found) DB-GPT will launch an
+    On first run (or when no config is found) K-ICS will launch an
     interactive setup wizard so you can choose your LLM provider and API key.
     Use ``--yes`` to skip the wizard in non-interactive environments.
     """

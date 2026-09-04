@@ -1,6 +1,6 @@
 # StarRocks
 
-StarRocks is a high-performance analytical database supported by DB-GPT through
+StarRocks is a high-performance analytical database supported by K-ICS through
 the native connector in `dbgpt_ext.datasource.rdbms.conn_starrocks`.
 
 ### Install Dependencies
@@ -18,7 +18,7 @@ uv sync --all-packages \
 
 ### Prepare StarRocks
 
-Prepare a StarRocks instance and start the DB-GPT webserver:
+Prepare a StarRocks instance and start the K-ICS webserver:
 
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml

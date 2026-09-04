@@ -13,11 +13,11 @@
 ### 下载源码
 
 :::tip
-下载 DB-GPT
+下载 K-ICS
 :::
 
 ```bash
-git clone https://github.com/eosphoros-ai/DB-GPT.git
+git clone git@github.com:hua7448/db-gpt-chat.git K-ICS
 ```
 
 :::info note
@@ -64,7 +64,7 @@ pipx install uv --global
 uv --version
 ```
 
-## 部署 DB-GPT
+## 部署 K-ICS
 
 ### 安装依赖
 
@@ -90,7 +90,7 @@ uv sync --all-packages \
 
 ### 启动 Webserver
 
-如果要通过 OpenAI 代理运行 DB-GPT，需要在 `configs/dbgpt-proxy-openai.toml` 配置文件中填入 OpenAI API Key，或者通过环境变量 `OPENAI_API_KEY` 提供。
+如果要通过 OpenAI 代理运行 K-ICS，需要在 `configs/dbgpt-proxy-openai.toml` 配置文件中填入 OpenAI API Key，或者通过环境变量 `OPENAI_API_KEY` 提供。
 
 ```toml
 # Model Configurations
@@ -130,7 +130,7 @@ uv sync --all-packages \
 
 ### 启动 Webserver
 
-如果要通过 DeepSeek 代理运行 DB-GPT，需要在 `configs/dbgpt-proxy-deepseek.toml` 中配置 DeepSeek API Key。
+如果要通过 DeepSeek 代理运行 K-ICS，需要在 `configs/dbgpt-proxy-deepseek.toml` 中配置 DeepSeek API Key。
 
 你也可以在 `configs/dbgpt-proxy-deepseek.toml` 中指定 embedding 模型。默认 embedding 模型是 `BAAI/bge-large-zh-v1.5`。如果想使用其他 embedding 模型，可以修改 `[[models.embeddings]]` 部分中的 `name` 和 `provider`，其中 provider 可以设为 `hf`。
 
@@ -181,7 +181,7 @@ uv sync --all-packages \
 
 ### 启动 Webserver
 
-如果要通过本地模型运行 DB-GPT，可以修改 `configs/dbgpt-local-glm.toml` 来指定模型路径和其他参数。
+如果要通过本地模型运行 K-ICS，可以修改 `configs/dbgpt-local-glm.toml` 来指定模型路径和其他参数。
 
 ```toml
 # Model Configurations
@@ -223,13 +223,13 @@ uv run dbgpt start webserver --config configs/dbgpt-local-glm.toml
 ```bash
 cd web && npm install
 cp .env.template .env
-// Set API_BASE_URL to your DB-GPT server address, usually http://localhost:5670
+// Set API_BASE_URL to your K-ICS server address, usually http://localhost:5670
 npm run dev
 ```
 Open your browser and visit [`http://localhost:3000`](http://localhost:3000)
 
 
-## 安装 DB-GPT 应用数据库
+## 安装 K-ICS 应用数据库
 <Tabs
   defaultValue="sqlite"
   values={[
@@ -240,7 +240,7 @@ Open your browser and visit [`http://localhost:3000`](http://localhost:3000)
 
 :::tip NOTE
 
-在 SQLite 下，你不需要手动创建 DB-GPT 应用相关的数据表；
+在 SQLite 下，你不需要手动创建 K-ICS 应用相关的数据表；
 默认会自动创建。
 
 :::
@@ -286,7 +286,7 @@ password = "aa123456"
 
 
 ## 测试数据（可选）
-DB-GPT 默认内置了一部分测试数据，你可以通过以下命令将其加载到本地数据库中进行测试。
+K-ICS 默认内置了一部分测试数据，你可以通过以下命令将其加载到本地数据库中进行测试。
 - **Linux**
 
 ```bash

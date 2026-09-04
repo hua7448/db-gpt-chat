@@ -1,1 +1,1 @@
-"""DB-GPT observability serve module (HTTP proxy to ObservabilityProvider)."""
+"""K-ICS observability serve module (HTTP proxy to ObservabilityProvider)."""

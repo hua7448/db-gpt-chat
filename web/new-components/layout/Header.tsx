@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+const docsUrl = process.env.NEXT_PUBLIC_K_ICS_DOCS_URL || 'https://github.com/hua7448/db-gpt-chat/tree/main/docs';
+
 const Header: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -29,7 +31,7 @@ const Header: React.FC = () => {
 
   return (
     <header className='flex items-center justify-end fixed top-0 right-0 h-14 pr-11 bg-transparent'>
-      <a href='htt://docs.dbgpt.cn' target='_blank' className='flex items-center h-full mr-4' rel='noreferrer'>
+      <a href={docsUrl} target='_blank' className='flex items-center h-full mr-4' rel='noreferrer'>
         <Tooltip title={t('docs')}>
           <ReadOutlined />
         </Tooltip>

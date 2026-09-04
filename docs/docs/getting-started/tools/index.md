@@ -1,15 +1,15 @@
 ---
 sidebar_position: 0
 title: Tools & Plugins
-summary: "How DB-GPT extends agents with MCP, dbgpts, and AWEL Flow"
+summary: "How K-ICS extends agents with MCP, dbgpts, and AWEL Flow"
 read_when:
-  - You want to add tools or external integrations to DB-GPT
+  - You want to add tools or external integrations to K-ICS
   - You want to understand the difference between MCP, dbgpts, and AWEL Flow
 ---
 
 # Tools & Plugins
 
-Extend DB-GPT with external tools, community packages, and visual workflow building.
+Extend K-ICS with external tools, community packages, and visual workflow building.
 
 - [MCP Protocol](/docs/getting-started/tools/mcp) — connect external tools and services to agents
 - [dbgpts Ecosystem](/docs/getting-started/tools/dbgpts) — install community apps, operators, workflows, and agents
@@ -17,7 +17,7 @@ Extend DB-GPT with external tools, community packages, and visual workflow build
 
 ## Overview
 
-DB-GPT supports three main extension mechanisms:
+K-ICS supports three main extension mechanisms:
 
 | Mechanism | What it does | When to use |
 |---|---|---|
@@ -38,7 +38,7 @@ graph LR
   Tools --> API[External APIs]
 ```
 
-Agents in DB-GPT can use tools to:
+Agents in K-ICS can use tools to:
 
 1. **Access data** — Query databases, search knowledge bases
 2. **Call APIs** — Interact with external services via MCP

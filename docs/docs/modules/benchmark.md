@@ -3,11 +3,11 @@
 For Text2SQL tasks, we provide a dataset benchmarking capability. It evaluates different large language models (LLMs) and agents on Text2SQL, covering syntax correctness, semantic accuracy, and execution validity. It outputs metrics such as executability rate and accuracy rate, and provides an evaluation report.
 
 1. Open-source Text2SQL dataset repository by Ant Group: [Falcon](https://github.com/eosphoros-ai/Falcon)
-2. DB-GPT supports LLM evaluation based on the Falcon benchmark dataset
+2. K-ICS supports LLM evaluation based on the Falcon benchmark dataset
 
 # Introduction
 
-To objectively and fairly evaluate models on Text2SQL tasks, we provide a benchmarking module and dataset. This module supports comprehensive evaluation of all models in the DB-GPT framework and provides an evaluation report.
+To objectively and fairly evaluate models on Text2SQL tasks, we provide a benchmarking module and dataset. This module supports comprehensive evaluation of all models in the K-ICS framework and provides an evaluation report.
 
 The benchmark dataset used by the module, [Falcon](https://github.com/eosphoros-ai/Falcon), is a high-quality and evolving open-source Text2SQL dataset from Ant Group.
 The dataset aims to stress-test models in complex, cross-domain analysis scenarios, with a focus on:
@@ -71,15 +71,15 @@ Core capabilities of the benchmarking module:
     mysql -h127.0.0.1 -uroot -p{your_password} < assets/schema/upgrade/v0_7_4/upgrade_to_v0.7.4.sql
     ```
 
-- Step2: Start the DB-GPT service, and wait for the benchmark dataset to load automatically. When you see the log line, the dataset has finished loading (about 1~5 minute).
+- Step2: Start the K-ICS service, and wait for the benchmark dataset to load automatically. When you see the log line, the dataset has finished loading (about 1~5 minute).
 
 <p align="left">
   <img src={'/img/module/benchmark/env_load.png'} width="1000px"/>
 </p>
 
-- Step3: Register LLM on the DB-GPT platform 
-  - Method 1: Configure via configuration file. Reference: [ProxyModel Configuration](http://docs.dbgpt.cn/docs/next/installation/advanced_usage/More_proxyllms)
-  - Method 2: Configure via product page. Reference: [Models](http://docs.dbgpt.cn/docs/next/application/llms)
+- Step3: Register LLM on the K-ICS platform
+  - Method 1: Configure via configuration file. Reference: [ProxyModel Configuration](../installation/advanced_usage/More_proxyllms)
+  - Method 2: Configure via product page. Reference: [Models](../application/llms)
 
 ## Create Evaluation Task
 - Step1: Click "Create Benchmark" to create an evaluation task
@@ -222,4 +222,3 @@ Core capabilities of the benchmarking module:
 - [ ] Support evaluating agents
 - [ ] Support different data sources
 - [ ] Support CSV, JSON, Yuque, and other file systems
-

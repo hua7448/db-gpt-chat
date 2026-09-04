@@ -1,6 +1,6 @@
 # Built-in Skills Overview
 
-DB-GPT ships with built-in skills under the project-level `skills/` directory.
+K-ICS ships with built-in skills under the project-level `skills/` directory.
 
 This subsection mirrors the repository structure and gives each built-in skill its own page.
 

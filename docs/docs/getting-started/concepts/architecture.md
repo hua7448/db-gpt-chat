@@ -1,15 +1,15 @@
 ---
 sidebar_position: 0
 title: Architecture
-summary: "DB-GPT repo layout and ReAct-centered runtime architecture"
+summary: "K-ICS repo layout and ReAct-centered runtime architecture"
 read_when:
-  - You want the shortest mental model for how DB-GPT is organized
+  - You want the shortest mental model for how K-ICS is organized
   - You need to understand how UI, API, agents, skills, tools, and data resources connect
 ---
 
 # Architecture
 
-DB-GPT is organized as a Python monorepo with a ReAct-centered agent runtime.
+K-ICS is organized as a Python monorepo with a ReAct-centered agent runtime.
 The Web UI sends requests to the application layer, the ReAct Agent executes in an
 agent runtime loop, and the agent uses tools, skills, databases, and knowledge
 resources to produce analysis results back to the UI.
@@ -17,7 +17,7 @@ resources to produce analysis results back to the UI.
 ## Repository layout
 
 ```text
-DB-GPT/
+K-ICS/
 ├── packages/
 │   ├── dbgpt-core/        # Core agent, memory, planning, RAG, model abstractions
 │   ├── dbgpt-app/         # Application server, API routes, scenes, UI asset hosting
@@ -40,7 +40,7 @@ DB-GPT/
 | `dbgpt-app` | FastAPI application server, chat APIs, runtime orchestration, static UI hosting |
 | `dbgpt-serve` | Resource services for knowledge, datasource, flow, app, and agent support |
 | `dbgpt-ext` | External connectors such as database/storage/RAG integrations |
-| `dbgpt-client` | Client SDK for DB-GPT APIs |
+| `dbgpt-client` | Client SDK for K-ICS APIs |
 | `dbgpt-sandbox` | Isolated execution runtimes for code and tool execution |
 | `skills/` | Packaged domain workflows, scripts, templates, and references |
 

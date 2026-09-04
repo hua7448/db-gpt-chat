@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 title: Prerequisites
-summary: "What you need before running DB-GPT locally or with Docker"
+summary: "What you need before running K-ICS locally or with Docker"
 read_when:
   - You want to confirm Python, uv, Docker, or GPU requirements before setup
   - You are deciding between API-proxy mode and local-model mode
@@ -9,7 +9,7 @@ read_when:
 
 # Prerequisites
 
-Everything you need before installing DB-GPT.
+Everything you need before installing K-ICS.
 
 :::tip Quick check
 Already have Python 3.10+ and uv? Skip to [Getting Started](/docs/getting-started/quick-start).
@@ -25,7 +25,7 @@ Already have Python 3.10+ and uv? Skip to [Getting Started](/docs/getting-starte
 
 ### Python
 
-DB-GPT requires **Python 3.10+**. We recommend Python 3.11 for the best compatibility.
+K-ICS requires **Python 3.10+**. We recommend Python 3.11 for the best compatibility.
 
 ```bash
 python --version
@@ -38,7 +38,7 @@ If you need to manage multiple Python versions, consider using [pyenv](https://g
 
 ### uv (package manager)
 
-Starting from v0.7.0, DB-GPT uses [uv](https://docs.astral.sh/uv/) for environment and package management, providing faster and more stable dependency resolution.
+Starting from v0.7.0, K-ICS uses [uv](https://docs.astral.sh/uv/) for environment and package management, providing faster and more stable dependency resolution.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

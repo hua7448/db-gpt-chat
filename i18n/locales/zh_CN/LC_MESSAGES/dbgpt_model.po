@@ -301,8 +301,8 @@ msgid "Default LLM Client"
 msgstr "默认大语言模型客户端"
 
 #: ../packages/dbgpt-core/src/dbgpt/model/cluster/client.py:23
-msgid "Default LLM client(Connect to your DB-GPT model serving)"
-msgstr "默认大语言模型客户端（连接到你的 DB-GPT 模型服务）"
+msgid "Default LLM client(Connect to your K-ICS model serving)"
+msgstr "默认大语言模型客户端（连接到你的 K-ICS 模型服务）"
 
 #: ../packages/dbgpt-core/src/dbgpt/model/cluster/client.py:26
 #: ../packages/dbgpt-core/src/dbgpt/model/cluster/client.py:128
@@ -321,8 +321,8 @@ msgid "Remote LLM Client"
 msgstr "远程大语言模型客户端"
 
 #: ../packages/dbgpt-core/src/dbgpt/model/cluster/client.py:117
-msgid "Remote LLM client(Connect to the remote DB-GPT model serving)"
-msgstr "远程大语言模型客户端（连接到远程 DB-GPT 模型服务）"
+msgid "Remote LLM client(Connect to the remote K-ICS model serving)"
+msgstr "远程大语言模型客户端（连接到远程 K-ICS 模型服务）"
 
 #: ../packages/dbgpt-core/src/dbgpt/model/cluster/client.py:120
 msgid "Controller Address"
@@ -687,7 +687,7 @@ msgid ""
 "example, if you have two vLLM instances running on the same GPU, you can set "
 "the GPU memory utilization to 0.5 for each instance."
 msgstr ""
-"用于模型执行器的 GPU 内存占比，范围为 0 到 1。例如，值为 0.5 意味着 GPU 内存利用率为 50%。若未指定，则使用默认值 0.9。这是每个实例的限制，仅适用于当前 vLLM 实例。即使同一 GPU 上运行着另一个 vLLM 实例，也不受影响。例如，若同一 GPU 上运行两个 vLLM 实例，可将每个实例的 GPU 内存利用率都设为 0.5。"
+"用于模型执行器的 GPU 内存占比，范围为 0 到 1。例如，值为 0.5 意味着 GPU 内存利用率为 50%%。若未指定，则使用默认值 0.9。这是每个实例的限制，仅适用于当前 vLLM 实例。即使同一 GPU 上运行着另一个 vLLM 实例，也不受影响。例如，若同一 GPU 上运行两个 vLLM 实例，可将每个实例的 GPU 内存利用率都设为 0.5。"
 
 #: ../packages/dbgpt-core/src/dbgpt/model/adapter/vllm_adapter.py:301
 msgid "Maximum number of batched tokens per iteration."

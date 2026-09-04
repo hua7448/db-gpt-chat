@@ -1,6 +1,6 @@
 # SKILL 机制集成指南
 
-本文档说明如何将 SKILL 机制集成到现有的 DB-GPT agent 中。
+本文档说明如何将 SKILL 机制集成到现有的 K-ICS agent 中。
 
 ## 集成步骤
 
@@ -190,7 +190,7 @@ agent_manage.register_agent(IntentRecognitionAgent)
     "name": "intent_recognition",
     "description": "Intent recognition skill for user queries",
     "version": "1.0.0",
-    "author": "DB-GPT Team",
+    "author": "K-ICS Team",
     "skill_type": "custom",
     "tags": ["intent", "recognition", "nlp"]
   },

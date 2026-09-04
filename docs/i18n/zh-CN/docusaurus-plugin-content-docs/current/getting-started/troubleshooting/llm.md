@@ -74,7 +74,7 @@ ollama serve
 # 或检查：curl http://localhost:11434/api/tags
 ```
 
-2. 如果 DB-GPT 运行在 Docker 中，请不要使用 `localhost`，而应改为宿主机地址：
+2. 如果 K-ICS 运行在 Docker 中，请不要使用 `localhost`，而应改为宿主机地址：
 
 ```toml
 [[models.llms]]
@@ -184,4 +184,4 @@ api_key = "${env:SILICONFLOW_API_KEY}"
 
 - 查看 [LLM FAQ](/docs/faq/llm)
 - 参考 [Model Providers](/docs/getting-started/providers/) 文档
-- 搜索 [GitHub Issues](https://github.com/eosphoros-ai/DB-GPT/issues)
+- 搜索 [K-ICS GitHub Issues](https://github.com/hua7448/db-gpt-chat/issues)

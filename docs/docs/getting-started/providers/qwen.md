@@ -5,12 +5,12 @@ title: Qwen (Tongyi)
 
 # Qwen (Tongyi)
 
-Configure DB-GPT to use Alibaba Cloud's Qwen models via the DashScope API.
+Configure K-ICS to use Alibaba Cloud's Qwen models via the DashScope API.
 
 ## Prerequisites
 
 - A [DashScope API key](https://dashscope.console.aliyun.com/)
-- DB-GPT installed with `proxy_openai` extra
+- K-ICS installed with `proxy_openai` extra
 
 ## Install dependencies
 

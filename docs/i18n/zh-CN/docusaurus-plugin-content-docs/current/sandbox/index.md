@@ -5,7 +5,7 @@ title: Sandbox Overview
 
 # Sandbox 总览
 
-DB-GPT 使用 sandbox（沙箱）让智能体在隔离的运行环境中执行代码和工具，而不是直接在宿主机环境中运行。
+K-ICS 使用 sandbox（沙箱）让智能体在隔离的运行环境中执行代码和工具，而不是直接在宿主机环境中运行。
 
 这对 agent 工作流非常重要，因为智能体往往不仅仅需要文本推理，还需要：
 
@@ -19,7 +19,7 @@ Sandbox 就是把这些执行能力放在一个更安全、可控、可管理的
 
 ## 什么是 sandbox？
 
-在 DB-GPT 中，sandbox 是一个隔离执行环境，供智能体在任务过程中执行代码、运行命令、处理文件或调用执行型工具。
+在 K-ICS 中，sandbox 是一个隔离执行环境，供智能体在任务过程中执行代码、运行命令、处理文件或调用执行型工具。
 
 它避免智能体直接操作宿主机，并提供：
 
@@ -60,7 +60,7 @@ flowchart TB
 
 ## 为什么 agent 需要 sandbox
 
-如果智能体可以不受限制地直接执行代码，那么在真实环境中很难安全落地。Sandbox 为 DB-GPT 提供了一个专门的执行层，用于支持：
+如果智能体可以不受限制地直接执行代码，那么在真实环境中很难安全落地。Sandbox 为 K-ICS 提供了一个专门的执行层，用于支持：
 
 - 代码执行
 - shell 命令执行
@@ -70,9 +70,9 @@ flowchart TB
 
 这对数据分析、报表生成和工具驱动型工作流尤其重要，因为这些场景需要把推理和真实执行结合起来。
 
-## DB-GPT 当前的 sandbox 方案
+## K-ICS 当前的 sandbox 方案
 
-DB-GPT 当前的 sandbox 实现位于：
+K-ICS 当前的 sandbox 实现位于：
 
 - `packages/dbgpt-sandbox/`
 
@@ -91,7 +91,7 @@ DB-GPT 当前的 sandbox 实现位于：
 
 - `packages/dbgpt-sandbox/src/dbgpt_sandbox/sandbox/execution_layer/runtime_factory.py`
 
-这意味着 DB-GPT 会优先使用容器隔离；如果部署环境没有容器支持，也可以退化到本地运行时用于开发或调试。
+这意味着 K-ICS 会优先使用容器隔离；如果部署环境没有容器支持，也可以退化到本地运行时用于开发或调试。
 
 ## `dbgpt-sandbox` 的分层架构
 
@@ -141,7 +141,7 @@ DB-GPT 当前的 sandbox 实现位于：
 
 ## Session 模型与有状态执行
 
-DB-GPT 当前 sandbox 设计的一个重要点，是支持**基于 session 的有状态执行**。
+K-ICS 当前 sandbox 设计的一个重要点，是支持**基于 session 的有状态执行**。
 
 这意味着：
 
@@ -152,9 +152,9 @@ DB-GPT 当前 sandbox 设计的一个重要点，是支持**基于 session 的�
 
 这非常适合 agent 场景，因为很多任务不是一次工具调用就完成，而是需要多轮“推理 -> 执行 -> 观察”。
 
-## DB-GPT app 中当前的接入方式
+## K-ICS app 中当前的接入方式
 
-目前 DB-GPT 已经在应用侧 agent 工具里实际使用了 sandbox。
+目前 K-ICS 已经在应用侧 agent 工具里实际使用了 sandbox。
 
 例如：
 
@@ -174,9 +174,9 @@ DB-GPT 当前 sandbox 设计的一个重要点，是支持**基于 session 的�
 - `dbgpt-sandbox` 中更完整的、可复用 session 的 sandbox 设计
 - `dbgpt-app` 中已经在实际工具执行里接入的 sandbox 用法
 
-## DB-GPT 当前支持的方向
+## K-ICS 当前支持的方向
 
-基于当前 `dbgpt-sandbox` 实现，DB-GPT 正在走向一个更通用的 agent 执行运行时，支持：
+基于当前 `dbgpt-sandbox` 实现，K-ICS 正在走向一个更通用的 agent 执行运行时，支持：
 
 - 多 runtime 的 sandbox 执行
 - 安全代码与 shell 执行
@@ -192,7 +192,7 @@ DB-GPT 当前 sandbox 设计的一个重要点，是支持**基于 session 的�
 - 报告生成 agent
 - 未来扩展到 browser / computer 风格运行时
 
-## 当前 DB-GPT sandbox 方向图
+## 当前 K-ICS sandbox 方向图
 
 ```mermaid
 flowchart TB

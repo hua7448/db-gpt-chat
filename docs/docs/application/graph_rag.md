@@ -1,6 +1,6 @@
 # Graph RAG
 
-Graph RAG is the retrieval mode that uses DB-GPT's **knowledge-graph index**. When you enable the `KnowledgeGraph` index method on a knowledge space, DB-GPT builds a *family of graphs* and retrieves by graph traversal instead of (or in addition to) vector / keyword search.
+Graph RAG is the retrieval mode that uses K-ICS's **knowledge-graph index**. When you enable the `KnowledgeGraph` index method on a knowledge space, K-ICS builds a *family of graphs* and retrieves by graph traversal instead of (or in addition to) vector / keyword search.
 
 ## What gets built
 

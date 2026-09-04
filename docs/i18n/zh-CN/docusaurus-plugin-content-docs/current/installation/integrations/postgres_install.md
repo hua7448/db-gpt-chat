@@ -2,7 +2,7 @@
 
 Postgres is a powerful, open source object-relational database system. It is a multi-user database management system and has sophisticated features such as Multi-Version Concurrency Control (MVCC), point in time recovery, tablespaces, asynchronous replication, nested transactions (savepoints), online/hot backups, a sophisticated query planner/optimizer, and write ahead logging for fault tolerance.
 
-In this example, we will show how to use Postgres as in DB-GPT Datasource. Using Postgres to implement Datasource can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
+In this example, we will show how to use Postgres as in K-ICS Datasource. Using Postgres to implement Datasource can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
 
 ### Install Dependencies
 

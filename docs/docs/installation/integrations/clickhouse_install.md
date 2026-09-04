@@ -1,6 +1,6 @@
 # ClickHouse
 
-In this example, we will show how to use the ClickHouse as in DB-GPT Datasource. Using a column-oriented database to implement Datasource can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
+In this example, we will show how to use the ClickHouse as in K-ICS Datasource. Using a column-oriented database to implement Datasource can, to some extent, alleviate the uncertainty and interpretability issues brought about by vector database retrieval.
 
 ### Install Dependencies
 

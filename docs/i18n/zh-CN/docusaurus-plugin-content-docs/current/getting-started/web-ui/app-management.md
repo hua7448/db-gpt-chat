@@ -5,13 +5,13 @@ title: 应用管理
 
 # 应用管理
 
-在 DB-GPT 中创建、配置并管理 AI 应用。应用会将 LLM、工具、知识库与工作流组合成可复用的配置。
+在 K-ICS 中创建、配置并管理 AI 应用。应用会将 LLM、工具、知识库与工作流组合成可复用的配置。
 
 ## 应用类型
 
 | 类型 | 说明 |
 |---|---|
-| **Native App** | DB-GPT 内置应用 |
+| **Native App** | K-ICS 内置应用 |
 | **Community App** | 来自 dbgpts 社区仓库的应用 |
 | **Custom App** | 你基于 Agent 和 AWEL 自定义构建的应用 |
 

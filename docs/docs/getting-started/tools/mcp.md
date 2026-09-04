@@ -5,23 +5,23 @@ title: MCP Protocol
 
 # MCP Protocol
 
-The **Model Context Protocol (MCP)** enables DB-GPT agents to connect with external tools and services through a standardized interface.
+The **Model Context Protocol (MCP)** enables K-ICS agents to connect with external tools and services through a standardized interface.
 
 :::info What is MCP?
-MCP is an open protocol that provides a standard way for AI applications to connect with external data sources and tools. DB-GPT supports MCP as both a **client** (consuming MCP tools) and a **server** (exposing DB-GPT capabilities as MCP tools).
+MCP is an open protocol that provides a standard way for AI applications to connect with external data sources and tools. K-ICS supports MCP as both a **client** (consuming MCP tools) and a **server** (exposing K-ICS capabilities as MCP tools).
 :::
 
 ## Architecture
 
 ```mermaid
 graph TB
-  Agent[DB-GPT Agent] --> MCPClient[MCP Client]
+  Agent[K-ICS Agent] --> MCPClient[MCP Client]
   MCPClient --> MCP1[MCP Server A<br/>e.g. File System]
   MCPClient --> MCP2[MCP Server B<br/>e.g. Web Search]
   MCPClient --> MCP3[MCP Server C<br/>e.g. Custom API]
 
-  ExtClient[External MCP Client] --> MCPServer[DB-GPT MCP Server]
-  MCPServer --> DBGPT[DB-GPT Capabilities]
+  ExtClient[External MCP Client] --> MCPServer[K-ICS MCP Server]
+  MCPServer --> DBGPT[K-ICS Capabilities]
 ```
 
 ## Using MCP tools in agents
@@ -78,9 +78,9 @@ When chatting with an MCP-enabled agent, the agent automatically selects and inv
 Browse the growing ecosystem of MCP servers at the [MCP Servers Directory](https://github.com/modelcontextprotocol/servers).
 :::
 
-## DB-GPT as an MCP server
+## K-ICS as an MCP server
 
-DB-GPT can also expose its capabilities as an MCP server, allowing other MCP-compatible applications to use DB-GPT features like:
+K-ICS can also expose its capabilities as an MCP server, allowing other MCP-compatible applications to use K-ICS features like:
 
 - Knowledge base queries
 - Database access (Text2SQL)

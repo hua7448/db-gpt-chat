@@ -192,7 +192,7 @@ effective_budget = max_context_tokens - reserved_tokens
 
 ## 工具结果快照
 
-工具观察结果可能非常大：SQL 结果表、生成代码输出、解释器日志、文件路径、报告元数据和中间计算值都可能快速占满 prompt。DB-GPT 通过把完整操作详情和需要进入模型上下文的文本拆开，来保持 prompt 紧凑。
+工具观察结果可能非常大：SQL 结果表、生成代码输出、解释器日志、文件路径、报告元数据和中间计算值都可能快速占满 prompt。K-ICS 通过把完整操作详情和需要进入模型上下文的文本拆开，来保持 prompt 紧凑。
 
 当一个 action 成功执行后，Agent 会为完整操作写入一份 JSON 快照。快照包含：
 
@@ -213,7 +213,7 @@ effective_budget = max_context_tokens - reserved_tokens
 $DBGPT_HOME/workspace/op_snapshots/<conv_id>/
 ```
 
-如果设置了 `AgentContext.output_dir`，DB-GPT 会优先使用该目录。
+如果设置了 `AgentContext.output_dir`，K-ICS 会优先使用该目录。
 
 快照文件名由步骤和 action 组成：
 

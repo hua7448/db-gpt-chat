@@ -1,3 +1,3 @@
 """
-DB-GPT Core Package
+K-ICS Sandbox Package
 """

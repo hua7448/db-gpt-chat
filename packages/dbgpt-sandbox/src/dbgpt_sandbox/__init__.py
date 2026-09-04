@@ -1,5 +1,5 @@
 """
-DB-GPT Sandbox Package
+K-ICS Sandbox Package
 """
 
 __version__ = "0.7.3"

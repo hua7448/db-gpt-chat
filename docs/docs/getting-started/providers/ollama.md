@@ -5,12 +5,12 @@ title: Ollama
 
 # Ollama
 
-Configure DB-GPT to use [Ollama](https://ollama.ai) for running models locally. Ollama provides the easiest way to run open-source models on your own machine.
+Configure K-ICS to use [Ollama](https://ollama.ai) for running models locally. Ollama provides the easiest way to run open-source models on your own machine.
 
 ## Prerequisites
 
 - [Ollama](https://ollama.ai) installed and running
-- DB-GPT installed with `proxy_ollama` extra
+- K-ICS installed with `proxy_ollama` extra
 
 ## Install Ollama
 
@@ -54,7 +54,7 @@ ollama pull bge-m3:latest
 Use `ollama list` to see all downloaded models.
 :::
 
-## Install DB-GPT dependencies
+## Install K-ICS dependencies
 
 ```bash
 uv sync --all-packages \
@@ -115,7 +115,7 @@ Make sure Ollama is running first:
 ollama serve
 ```
 
-Then start DB-GPT:
+Then start K-ICS:
 
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-ollama.toml

@@ -1,6 +1,6 @@
 # OceanBase
 
-OceanBase 是分布式 SQL 数据库，DB-GPT 通过
+OceanBase 是分布式 SQL 数据库，K-ICS 通过
 `dbgpt_ext.datasource.rdbms.conn_oceanbase` 中的原生连接器提供支持。
 
 ### 安装依赖
@@ -17,7 +17,7 @@ uv sync --all-packages \
 
 ### 准备 OceanBase
 
-准备好 OceanBase 实例后，启动 DB-GPT WebServer：
+准备好 OceanBase 实例后，启动 K-ICS WebServer：
 
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml

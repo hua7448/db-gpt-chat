@@ -6,7 +6,7 @@ sidebar_label: Agentic RAG Principles
 
 # Agentic RAG Conversation Principles
 
-> This document explains how DB-GPT combines Agent + RAG to answer knowledge-base questions, from query to a cited final answer. Intended for product/design readers — no code.
+> This document explains how K-ICS combines Agent + RAG to answer knowledge-base questions, from query to a cited final answer. Intended for product/design readers — no code.
 
 ## 1. Agentic RAG vs Traditional RAG
 
@@ -19,7 +19,7 @@ Traditional RAG (single retrieval)
                   retrieval once  stuff into ctx   one-shot
 Weakness: quality hinges on one similarity pass; can't iterate; no multi-step lookahead
 
-Agentic RAG (multi-round)  ← DB-GPT uses this
+Agentic RAG (multi-round)  <- K-ICS uses this
 ┌──────────┐    ┌──────────────────────────────────────┐    ┌──────────┐
 │ Question │ →  │         ReAct Agent Loop              │ →  │ Cited    │
 └──────────┘    │  ┌────────┐  ┌────────┐  ┌────────┐  │    │ Answer   │

@@ -1,4 +1,4 @@
-"""DB-GPT Multi-Agents Module."""
+"""K-ICS multi-agent module."""
 
 from .core.action import *  # noqa: F401, F403
 from .core.agent import (  # noqa: F401

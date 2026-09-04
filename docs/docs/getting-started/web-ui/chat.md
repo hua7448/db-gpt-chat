@@ -5,7 +5,7 @@ title: Chat
 
 # Chat
 
-DB-GPT provides multiple chat modes through its Web UI — each tailored for a different use case.
+K-ICS provides multiple chat modes through its Web UI — each tailored for a different use case.
 
 ## Chat modes
 
@@ -39,7 +39,7 @@ The default mode — a direct conversation with the configured LLM.
 
 ## Chat Data (Text2SQL)
 
-Query your connected databases using natural language. DB-GPT converts your question into SQL, executes it, and presents the results.
+Query your connected databases using natural language. K-ICS converts your question into SQL, executes it, and presents the results.
 
 **How to use:**
 
@@ -52,7 +52,7 @@ Query your connected databases using natural language. DB-GPT converts your ques
 
 ```
 User: Show me the top 10 customers by total order amount
-DB-GPT: [generates SQL, executes, and displays results in a table]
+K-ICS: [generates SQL, executes, and displays results in a table]
 ```
 
 :::info Supported databases
@@ -73,7 +73,7 @@ Upload an Excel or CSV file and query it with natural language.
 
 ```
 User: What is the average sales amount per region?
-DB-GPT: [analyzes the file and presents results]
+K-ICS: [analyzes the file and presents results]
 ```
 
 ## Chat Knowledge

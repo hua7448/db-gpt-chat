@@ -14,11 +14,11 @@ cd models
 git lfs clone https://huggingface.co/GanymedeNil/text2vec-large-chinese
 ```
 
-### Q2:How to change Vector DB Type in DB-GPT.
+### Q2:How to change Vector DB Type in K-ICS.
 
 Update .env file and set VECTOR_STORE_TYPE.
 
-DB-GPT currently support Chroma(Default), Milvus(>2.1), Weaviate, OceanBase vector database.
+K-ICS currently support Chroma(Default), Milvus(>2.1), Weaviate, OceanBase vector database.
 If you want to change vector db, Update your .env, set your vector store type, VECTOR_STORE_TYPE=Chroma (now only support Chroma and Milvus(>2.1), if you set Milvus, please set MILVUS_URL and MILVUS_PORT).
 
 If you want to use OceanBase, please first start a docker container via the following command:
@@ -53,7 +53,7 @@ OB_DATABASE=test
 ## Optional: If {OB_ENABLE_NORMALIZE_VECTOR} is set, the vector stored in OceanBase is normalized.
 # OB_ENABLE_NORMALIZE_VECTOR=True
 ```
-If you want to support more vector db, you can integrate yourself.[how to integrate](https://db-gpt.readthedocs.io/en/latest/modules/vector.html)
+If you need another vector store, add it through the K-ICS RAG extension points; start with the [RAG configuration guide](/docs/application/advanced_tutorial/rag).
 ```commandline
 #*******************************************************************#
 #**                  VECTOR STORE SETTINGS                       **#
@@ -68,10 +68,6 @@ VECTOR_STORE_TYPE=Chroma
 #WEAVIATE_URL=https://kt-region-m8hcy0wc.weaviate.network
 ```
 ### Q3:When I use vicuna-13b, found some illegal character like this.
-<p align="left">
-  <img src="https://github.com/eosphoros-ai/DB-GPT/assets/13723926/088d1967-88e3-4f72-9ad7-6c4307baa2f8" width="800px" />
-</p>
-
 Set KNOWLEDGE_SEARCH_TOP_SIZE smaller or set KNOWLEDGE_CHUNK_SIZE smaller, and reboot server.
 
 ### Q4:space add error (pymysql.err.OperationalError) (1054, "Unknown column 'knowledge_space.context' in 'field list'")
@@ -93,7 +89,7 @@ mysql> ALTER TABLE knowledge_space ADD COLUMN context TEXT COMMENT "arguments co
 
 4.restart dbgpt serve
 
-### Q5:Use Mysql, how to use DB-GPT KBQA
+### Q5:Use Mysql, how to use K-ICS KBQA
 
 build Mysql KBQA system database schema.
 

@@ -282,8 +282,8 @@ print(f"Analysis plan: {agent.analysis_plan}")
 
 ### 开发环境设置
 ```bash
-# 安装依赖
-pip install -r requirements.txt
+# 安装依赖（在仓库根目录执行）
+uv sync
 
 # 运行测试
 pytest tests/

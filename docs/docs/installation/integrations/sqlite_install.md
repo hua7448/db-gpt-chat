@@ -1,6 +1,6 @@
 # SQLite
 
-SQLite is a lightweight embedded relational database. DB-GPT includes a native
+SQLite is a lightweight embedded relational database. K-ICS includes a native
 SQLite connector in `dbgpt_ext.datasource.rdbms.conn_sqlite`.
 
 ### Install Dependencies

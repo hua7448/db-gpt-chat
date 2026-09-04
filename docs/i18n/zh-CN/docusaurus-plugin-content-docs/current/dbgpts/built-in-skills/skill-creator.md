@@ -49,4 +49,4 @@ skills/skill-creator/
 
 ## 为什么它重要
 
-这个 built-in skill 定义了 DB-GPT 中编写自定义 skill 和未来内置 skill 的最佳实践模型。
+这个 built-in skill 定义了 K-ICS 中编写自定义 skill 和未来内置 skill 的最佳实践模型。

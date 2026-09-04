@@ -5,7 +5,7 @@ title: 集群部署
 
 # 集群部署
 
-将 DB-GPT 部署为分布式集群，将 webserver、model worker 和 controller 拆分开来，以提升扩展性。
+将 K-ICS 部署为分布式集群，将 webserver、model worker 和 controller 拆分开来，以提升扩展性。
 
 ## 架构概览
 

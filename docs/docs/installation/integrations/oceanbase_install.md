@@ -1,6 +1,6 @@
 # OceanBase
 
-OceanBase is a distributed SQL database supported by DB-GPT through the native
+OceanBase is a distributed SQL database supported by K-ICS through the native
 connector in `dbgpt_ext.datasource.rdbms.conn_oceanbase`.
 
 ### Install Dependencies
@@ -18,7 +18,7 @@ uv sync --all-packages \
 
 ### Prepare OceanBase
 
-Prepare an OceanBase instance and start the DB-GPT webserver:
+Prepare an OceanBase instance and start the K-ICS webserver:
 
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-openai.toml

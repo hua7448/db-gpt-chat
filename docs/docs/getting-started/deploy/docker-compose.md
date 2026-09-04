@@ -5,7 +5,7 @@ title: Docker Compose Deployment
 
 # Docker Compose Deployment
 
-Deploy DB-GPT with MySQL using Docker Compose — a production-ready setup with persistent storage.
+Deploy K-ICS with MySQL using Docker Compose — a production-ready setup with persistent storage.
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -17,7 +17,7 @@ import TabItem from '@theme/TabItem';
 
 ## Quick start
 
-The root `docker-compose.yml` deploys DB-GPT with a MySQL database and SiliconFlow as the default LLM provider.
+The root `docker-compose.yml` deploys K-ICS with a MySQL database and SiliconFlow as the default LLM provider.
 
 ### Step 1 — Set your API key
 
@@ -85,7 +85,7 @@ The default `docker-compose.yml` creates:
 | Service | Image | Port | Purpose |
 |---|---|---|---|
 | `db` | `mysql/mysql-server` | 3306 | MySQL database for metadata |
-| `webserver` | `eosphorosai/dbgpt-openai:latest` | 5670 | DB-GPT application server |
+| `webserver` | `eosphorosai/dbgpt-openai:latest` | 5670 | K-ICS application server |
 
 ## Common operations
 
@@ -153,7 +153,7 @@ webserver:
 
 ## Other Compose examples
 
-DB-GPT ships with additional Compose files for specific scenarios:
+K-ICS ships with additional Compose files for specific scenarios:
 
 | File | Use case |
 |---|---|

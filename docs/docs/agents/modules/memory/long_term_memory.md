@@ -6,7 +6,7 @@
 
 > Long-term memory resembles the external vector storage that agents can rapidly query and retrieve from as needed.
 
-In DB-GPT, the long-term memory stored in the vector storage by default.
+In K-ICS, the long-term memory stored in the vector storage by default.
 
 
 ## Using Long-term Memory

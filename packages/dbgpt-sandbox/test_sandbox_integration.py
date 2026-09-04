@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-DB-GPT Sandbox Integration Test Script
+K-ICS Sandbox Integration Test Script
 Test code execution functionality of sandbox service
 """
 

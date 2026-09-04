@@ -1,15 +1,15 @@
 {
-  "name": "db-gpt-web",
+  "name": "k-ics-web",
   "version": "0.1.0",
   "private": true,
-  "description": "DB-GPT WebUI",
+  "description": "K-ICS WebUI",
   "main": "next.config.js",
   "directories": {
     "lib": "lib"
   },
   "author": "",
   "license": "ISC",
-  "repository": "https://github.com/eosphoros-ai/DB-GPT-Web.git",
+  "repository": "https://github.com/hua7448/db-gpt-chat.git",
   "scripts": {
     "start": "NODE_OPTIONS=--max_old_space_size=8192 next start",
     "dev": "NODE_OPTIONS=--max_old_space_size=16384 next dev",

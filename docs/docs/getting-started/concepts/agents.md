@@ -5,7 +5,7 @@ title: Agents
 
 # Agent Framework
 
-DB-GPT provides a **data-driven multi-agent framework** for building autonomous AI agents that can collaborate, use tools, access databases, and maintain memory across conversations.
+K-ICS provides a **data-driven multi-agent framework** for building autonomous AI agents that can collaborate, use tools, access databases, and maintain memory across conversations.
 
 ## Agent architecture
 
@@ -26,7 +26,7 @@ flowchart TB
     Agent --> KB["Knowledge Base"]
 ```
 
-Every agent in DB-GPT is built around five core modules:
+Every agent in K-ICS is built around five core modules:
 
 | Module | Purpose |
 |---|---|
@@ -61,7 +61,7 @@ Multiple agents can work together on complex tasks:
 
 ### Built-in agent types
 
-DB-GPT includes several pre-built agents:
+K-ICS includes several pre-built agents:
 
 - **Data Analysis Agent** — Analyzes data, generates SQL, creates charts
 - **Summary Agent** — Summarizes long documents and conversations

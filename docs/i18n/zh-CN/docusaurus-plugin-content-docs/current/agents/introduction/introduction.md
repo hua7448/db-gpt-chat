@@ -2,14 +2,14 @@
 
 ## Introduction
 
-DB-GPT agent is a data-driven multi-agent system that aims to provide a production-level 
+K-ICS agent is a data-driven multi-agent system that aims to provide a production-level
 agent development framework. We believe that production-level agent applications need 
 to be based on data-driven decisions and can be orchestrated in a controllable agentic workflow.
 
 ### Multi-Level API Design
 
 - Python agent API: Build an agents application with Python code, you just need install `dbgpt` package with `pip install "dbgpt[agent]"`
-- Application API: Build an agents application in DB-GPT project, you can use all the capabilities of other modules in DB-GPT project.
+- Application API: Build an agents application in K-ICS project, you can use all the capabilities of other modules in K-ICS project.
 
 Most of the time, you can use the Python agent API to build your agents application in 
 a simple way, only a little change to the code when you need to deploy your agents to production.
@@ -31,7 +31,7 @@ pip install openai
 ### Write Your First Calculator With Agent
 
 The LLM is the "brain" of the agent, now we use the OpenAI LLM.
-In DB-GPT agents, you can use all models then supported by DB-GPT, whether they are 
+In K-ICS agents, you can use all models then supported by K-ICS, whether they are
 locally deployed LLMs or proxy models, whether they are deployed on a single machine or in a cluster.
 
 ```python
@@ -137,11 +137,11 @@ execution succeeded,
 
 --------------------------------------------------------------------------------
 ```agent-plans
-[{"name": "Calculate the result of 321 * 123", "num": 1, "status": "complete", "agent": "Human", "markdown": "```agent-messages\n[{\"sender\": \"CodeEngineer\", \"receiver\": \"Human\", \"model\": \"gpt-3.5-turbo\", \"markdown\": \"```vis-code\\n{\\\"exit_success\\\": true, \\\"language\\\": \\\"python\\\", \\\"code\\\": [[\\\"python\\\", \\\"# filename: calculate_multiplication.py\\\\n\\\\nresult = 321 * 123\\\\nprint(result)\\\"]], \\\"log\\\": \\\"\\\\n39483\\\\n\\\"}\\n```\"}]\n```"}]
+[{"name": "Calculate the result of 321 * 123", "num": 1, "status": "complete", "agent": "Human", "markdown": "```agent-messages\n[{\"sender\": \"CodeEngineer\", \"receiver\": \"Human\", \"model\": \"gpt-3.5-turbo\", \"markdown\": \"```vis-code\n{\\"exit_success\\": true, \\"language\\": \\"python\\", \\"code\\": [[\\"python\\", \\"# filename: calculate_multiplication.py\\n\\nresult = 321 * 123\\nprint(result)\\"]], \\"log\\": \\"\\n39483\\n\\"}\n```\"}]\n```"}]
 ```
 ``````
 
-In DB-GPT agents, most core interfaces are asynchronous for high performance. 
+In K-ICS agents, most core interfaces are asynchronous for high performance.
 So we will write all the code to build the agent in an asynchronous way. In development, 
 you can use the `asyncio.run(main())` to run the agent.
 
@@ -165,10 +165,10 @@ In the end of the code, we print the conversation history messages between agent
 
 ## What's Next
 
-- How to use tools in DB-GPT agents
-- How to connect to the database in DB-GPT agents
-- How to use planning in DB-GPT agents
-- How to use various memories in DB-GPT agents
-- How to write a custom agent in DB-GPT agents
+- How to use tools in K-ICS agents
+- How to connect to the database in K-ICS agents
+- How to use planning in K-ICS agents
+- How to use various memories in K-ICS agents
+- How to write a custom agent in K-ICS agents
 - How to integrate agents with AWEL(Agentic Workflow Expression Language)
 - How to deploy agents in production

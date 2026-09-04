@@ -11,6 +11,7 @@ const darkCodeTheme = themes.dracula;
 const isDev = process.env.NODE_ENV === "development";
 const isBuildFast = !!process.env.BUILD_FAST;
 const isVersioningDisabled = !!process.env.DISABLE_VERSIONING;
+const siteUrl = process.env.K_ICS_DOCS_URL || 'http://localhost:3000';
 const versions = require("./versions.json");
 
 console.log("versions", versions)
@@ -38,20 +39,20 @@ function getNextVersionName() {
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'DB-GPT',
-  tagline: 'Revolutionizing Database Interactions with Private LLM Technology',
-  favicon: 'img/eosphoros.jpeg',
+  title: 'K-ICS',
+  tagline: 'Agentic AI data workbench for analysis, automation, and insight',
+  favicon: 'img/k.png',
 
-  // Set the production url of your site here
-  url: 'http://docs.dbgpt.cn',
+  // Set K_ICS_DOCS_URL to the public documentation domain during deployment.
+  url: siteUrl,
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'eosphoros-ai', // Usually your GitHub org/user name.
-  projectName: 'DB-GPT', // Usually your repo name.
+  organizationName: 'hua7448', // Downstream GitHub owner.
+  projectName: 'db-gpt-chat', // The downstream repository name.
 
   onBrokenLinks: isDev ? 'throw' : 'warn',
   onBrokenMarkdownLinks: isDev ? 'throw' : 'warn',
@@ -142,6 +143,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
+          editUrl: 'https://github.com/hua7448/db-gpt-chat/edit/main/docs/',
           includeCurrentVersion: true,
           // lastVersion: "current",
           lastVersion: isDev || isBuildFast || isVersioningDisabled ? "current" : getLastStableVersion(),
@@ -201,14 +203,13 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       defaultClassicDocs: '/docs/get_started',
-      // Replace with your project's social card
       navbar: {
         hideOnScroll: true,
+        title: 'K-ICS',
         logo: {
-          alt: 'DB-GPT Logo',
-          src: 'img/dbgpt_logo.svg',
-          srcDark: 'img/DB-GPT_LOGO_White.svg',
-          href: "/"
+          alt: 'K-ICS',
+          src: 'img/k.png',
+          href: '/',
         },
 
         items: [
@@ -225,7 +226,7 @@ const config = {
             dropdownActiveClassDisabled: true,
           },
           {
-            href: 'https://github.com/eosphoros-ai/community',
+            href: 'https://github.com/hua7448/db-gpt-chat/discussions',
             position: 'right',
             label: 'Community',
           },
@@ -237,12 +238,12 @@ const config = {
             dropdownActiveClassDisabled: true,
           },
           {
-            href: 'https://github.com/eosphoros-ai/DB-GPT/releases',
+            href: 'https://github.com/hua7448/db-gpt-chat/releases',
             position: 'right',
             label: "Releases",
           },
           {
-            href: 'https://github.com/eosphoros-ai/DB-GPT',
+            href: 'https://github.com/hua7448/db-gpt-chat',
             position: 'right',
             className: 'header-github-link',
             'aria-label': 'GitHub repository',
@@ -270,7 +271,7 @@ const config = {
             items: [
               {
                 label: 'Github',
-                href: 'https://github.com/eosphoros-ai/DB-GPT',
+                href: 'https://github.com/hua7448/db-gpt-chat',
               },
               {
                 label: "HuggingFace",
@@ -292,7 +293,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} DB-GPT`,
+        copyright: `Copyright © ${new Date().getFullYear()} K-ICS`,
       },
       prism: {
         theme: lightCodeTheme,

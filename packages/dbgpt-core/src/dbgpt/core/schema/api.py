@@ -239,6 +239,7 @@ class ModelCard(BaseModel):
     created: int = Field(
         default_factory=lambda: int(time.time()), description="Created time"
     )
+    # Keep the OpenAI-compatible metadata value stable for existing clients.
     owned_by: str = Field("DB-GPT", description="Owned by")
     root: Optional[str] = Field(None, description="Root")
     parent: Optional[str] = Field(None, description="Parent")

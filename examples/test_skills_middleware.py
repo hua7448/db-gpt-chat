@@ -1,7 +1,7 @@
 """Test script for SkillsMiddlewareV2.
 
 This script demonstrates how to use the new middleware system
-to load and use skills in DB-GPT agents.
+to load and use skills in K-ICS agents.
 """
 
 import asyncio
@@ -137,7 +137,7 @@ async def main():
     """Run all tests."""
 
     print("=" * 80)
-    print("DB-GPT Skills Middleware Test")
+    print("K-ICS Skills Middleware Test")
     print("=" * 80)
 
     print("\n\n### Test 1: SkillsMiddlewareV2 ###")

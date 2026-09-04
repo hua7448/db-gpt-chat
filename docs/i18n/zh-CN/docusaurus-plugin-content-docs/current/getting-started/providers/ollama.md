@@ -5,12 +5,12 @@ title: Ollama
 
 # Ollama
 
-配置 DB-GPT 使用 [Ollama](https://ollama.ai) 在本地运行模型。Ollama 是在个人机器上部署开源模型最简单的方式之一。
+配置 K-ICS 使用 [Ollama](https://ollama.ai) 在本地运行模型。Ollama 是在个人机器上部署开源模型最简单的方式之一。
 
 ## 前置条件
 
 - 已安装并启动 [Ollama](https://ollama.ai)
-- 已安装带 `proxy_ollama` 扩展的 DB-GPT
+- 已安装带 `proxy_ollama` 扩展的 K-ICS
 
 ## 安装 Ollama
 
@@ -54,7 +54,7 @@ ollama pull bge-m3:latest
 使用 `ollama list` 可以查看已下载模型。
 :::
 
-## 安装 DB-GPT 依赖
+## 安装 K-ICS 依赖
 
 ```bash
 uv sync --all-packages \
@@ -115,7 +115,7 @@ api_key = ""
 ollama serve
 ```
 
-然后启动 DB-GPT：
+然后启动 K-ICS：
 
 ```bash
 uv run dbgpt start webserver --config configs/dbgpt-proxy-ollama.toml

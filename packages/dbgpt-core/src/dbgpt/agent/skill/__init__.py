@@ -1,4 +1,4 @@
-"""Skill module for DB-GPT agent framework.
+"""Skill module for the K-ICS agent framework.
 
 This module provides a SKILL mechanism, which allows loading and managing
 agent skills that include prompts, tools, knowledge, and actions.

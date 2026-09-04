@@ -54,14 +54,14 @@ read_when:
 
 | 资源 | 链接 |
 |---|---|
-| GitHub Repository | [eosphoros-ai/DB-GPT](https://github.com/eosphoros-ai/DB-GPT) |
-| Community Apps | [dbgpts](https://github.com/eosphoros-ai/dbgpts) |
-| GitHub Issues | [Report a bug](https://github.com/eosphoros-ai/DB-GPT/issues) |
-| Discussions | [GitHub Discussions](https://github.com/orgs/eosphoros-ai/discussions) |
-| Slack | [Join Slack](https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA) |
-| Twitter/X | [@DBGPT_AI](https://x.com/DBGPT_AI) |
-| Paper | [DB-GPT Paper (arXiv)](https://arxiv.org/pdf/2312.17449.pdf) |
-| DeepWiki | [DB-GPT DeepWiki](https://deepwiki.com/eosphoros-ai/DB-GPT) |
+| GitHub Repository | [hua7448/db-gpt-chat](https://github.com/hua7448/db-gpt-chat) |
+| 上游社区应用 | [DB-GPT dbgpts](https://github.com/eosphoros-ai/dbgpts) |
+| GitHub Issues | [Report a bug](https://github.com/hua7448/db-gpt-chat/issues) |
+| Discussions | [K-ICS Discussions](https://github.com/hua7448/db-gpt-chat/discussions) |
+| 上游 Slack | [DB-GPT Slack](https://join.slack.com/t/slack-inu2564/shared_invite/zt-29rcnyw2b-N~ubOD9kFc7b7MDOAM1otA) |
+| 上游 Twitter/X | [@DBGPT_AI](https://x.com/DBGPT_AI) |
+| 上游论文 | [DB-GPT papers (arXiv)](https://arxiv.org/pdf/2312.17449.pdf) |
+| DeepWiki | [K-ICS DeepWiki](https://deepwiki.com/hua7448/db-gpt-chat) |
 
 ## FAQ
 

@@ -65,7 +65,7 @@ Each knowledge base has configurable settings:
 
 ## Storage types
 
-DB-GPT supports multiple vector storage backends:
+K-ICS supports multiple vector storage backends:
 
 | Backend | Description | Install Extra |
 |---|---|---|
@@ -84,7 +84,7 @@ uv sync --all-packages --extra "storage_milvus" ...
 <details>
 <summary><strong>Graph RAG</strong></summary>
 
-DB-GPT supports knowledge graphs for structured retrieval:
+K-ICS supports knowledge graphs for structured retrieval:
 
 - Extracts entities and relationships from documents
 - Enables graph-based queries alongside vector search

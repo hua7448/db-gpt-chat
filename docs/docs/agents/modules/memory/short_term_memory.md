@@ -26,7 +26,7 @@ The default short-term memory is a `FIFO` buffered memory, we won't introduce to
 
 ## Enhanced Short-term Memory
 
-Like human short-term memory, the short-term memory in DB-GPT agents can be enhanced by outside observations.
+Like human short-term memory, the short-term memory in K-ICS agents can be enhanced by outside observations.
 Here we introduce a kind of enhanced short-term memory, which is called `EnhancedShortTermMemory`, 
 it enhances memories by comparing the similarity between the new observation and the existing memories.
 
@@ -34,7 +34,7 @@ To use `EnhancedShortTermMemory`, you need to provide a embeddings model.
 
 ### Prepare Embedding Model
 
-DB-GPT supports 
+K-ICS supports
 a lot of embedding models, here are some of them:
 
 import Tabs from '@theme/Tabs';
@@ -71,7 +71,7 @@ embeddings = DefaultEmbeddingFactory.default("/data/models/text2vec-large-chines
 
 <TabItem value="remote_embedding">
 
-If you have deployed [DB-GPT cluster](../../../installation/model_service/cluster) and 
+If you have deployed [K-ICS cluster](../../../installation/model_service/cluster) and
 [API server](../../../installation/advanced_usage/OpenAI_SDK_call)
 , you can connect to the API server to get the embeddings.
 
@@ -104,7 +104,7 @@ memory = EnhancedShortTermMemory(
 )
 agent_memory: AgentMemory = AgentMemory(memory=memory)
 ```
-In DB-GPT, the core interface is asynchronous and non-blocking, so we use `ThreadPoolExecutor` to 
+In K-ICS, the core interface is asynchronous and non-blocking, so we use `ThreadPoolExecutor` to
 run the similarity calculation in a separate thread for better performance.
 
 In the above code, we set the `enhance_similarity_threshold` to `0.5`, which means if the 
