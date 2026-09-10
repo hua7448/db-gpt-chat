@@ -10,7 +10,10 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
     @tool(
         description=(
             "对用户选择的数据库执行 SQL 查询（仅支持 SELECT）。"
-            '参数: {"sql": "SELECT 语句"}'
+            '参数: {"sql": "SELECT 语句"}。'
+            "注意：本库为丽水市就业回流库，辖区代码均为 3311 开头（无绍兴/上虞等地数据）；"
+            "工具最多返回 50 行数据，大数据量请用 GROUP BY/COUNT 等聚合在 SQL 内汇总，"
+            "不要分页拉取全量明细。"
         )
     )
     def sql_query(sql: str) -> str:
@@ -57,6 +60,27 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
                 )
 
         try:
+            sql_stripped = sql_stripped or ""
+            # 11g 兜底：FETCH FIRST → ROWNUM 改写
+            import re
+
+            m = re.search(
+                r"\s+FETCH\s+FIRST\s+(\d+)\s+ROWS\s+ONLY\s*$", sql_stripped, re.IGNORECASE
+            )
+            if m:
+                sql_stripped = (
+                    f"SELECT * FROM ({sql_stripped[: m.start()].strip()}) "
+                    f"WHERE ROWNUM <= {m.group(1)}"
+                )
+            # Oracle 且未自带行数限制时，工具层加 ROWNUM <= 50 上限，
+            # 避免模型拉全量明细后死循环分页。
+            if (
+                getattr(database_connector, "db_type", "") == "oracle"
+                and "rownum" not in sql_stripped.lower()
+                and "limit" not in sql_stripped.lower()
+            ):
+                sql_stripped = f"SELECT * FROM ({sql_stripped}) WHERE ROWNUM <= 50"
+
             result = database_connector.run(sql_stripped)
             if not result:
                 return json.dumps(
@@ -79,7 +103,10 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
                 md_rows.append("| " + " | ".join(str(v) for v in row) + " |")
             table = "\n".join([header, separator] + md_rows)
             if len(rows) > 50:
-                table += f"\n\n（仅显示前 50 行，共 {len(rows)} 行）"
+                table += (
+                    "\n\n（达到工具 50 行显示上限，结果已截断；"
+                    "如需汇总请改用 GROUP BY 等聚合在 SQL 内完成，不要分页拉全量。）"
+                )
 
             # Cap total output size so a single wide query can't blow out the
             # LLM context window. The full result remains available via the

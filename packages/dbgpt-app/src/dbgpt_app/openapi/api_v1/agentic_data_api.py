@@ -1549,15 +1549,131 @@ async def _react_agent_stream_impl(
             local_db_manager = ConnectorManager.get_instance(CFG.SYSTEM_APP)
             database_connector = local_db_manager.get_connector(database_name)
             table_names = list(database_connector.get_table_names())
-            table_info = database_connector.get_table_info_no_throw()
+            table_info = database_connector.get_table_info_no_throw()  # 全量兜底
+
+            # 【现场适配·核心】自动寻表（schema linking）：
+            # 优先用 DB 概要向量检索命中的 top-k 表结构注入提示词；
+            # 概要未建/检索为空时，自动降级为"紧凑表目录"（表名+列+注释，
+            # 替代全量宽表：宽表 100+ 列会引入噪声，模型易选错字段/翻库迷路）。
+            used_mode = "full-table"
+            try:
+                from dbgpt_serve.datasource.service.db_summary_client import (
+                    DBSummaryClient,
+                )
+
+                db_summary = DBSummaryClient(CFG.SYSTEM_APP)
+                hits = db_summary.get_db_summary(database_name, user_input, topk=5)
+                focused = [str(h).strip() for h in hits if str(h).strip()]
+                if focused:
+                    # 【现场适配·稳定性】命中表后注入【完整列结构】（列名+注释），
+                    # 而非向量检索 topk=5 的字段：DC05 有 132 列，top-5 会漏掉
+                    # AAB301/AAE100/AAC001 等关键列，模型只能猜或翻列结构 →
+                    # 输出不稳定/幻觉。完整列结构让模型一次拿到全部字段。
+                    used_mode = "schema-linking"
+
+                    hit_tables = []
+                    for h in focused:
+                        m = re.search(r"CREATE TABLE `?(\w+)`?", h)
+                        if m:
+                            hit_tables.append(m.group(1))
+                    if not hit_tables:
+                        hit_tables = sorted(
+                            t.strip() for t in re.findall(r"table_name:\s*(\S+)", "\n".join(focused))
+                        )
+                    column_lines = []
+                    for t in sorted(set(hit_tables)):
+                        try:
+                            cols = database_connector.get_columns(t)
+                        except Exception:  # noqa: BLE001
+                            cols = []
+                        col_str = ", ".join(
+                            f"{c['name']}({c.get('comment') or ''})"
+                            for c in (cols or [])
+                        )
+                        column_lines.append(f"{t}: {col_str}")
+                    if column_lines:
+                        table_info = (
+                            "\n".join(column_lines)
+                            + "\n\n（以上为按问题自动检索命中的相关表完整结构（表名: 列名(注释)）。"
+                            '如需查看其他表，可执行 SELECT table_name FROM all_tables'
+                            " 或 SELECT column_name, data_type FROM all_tab_columns "
+                            "WHERE table_name='<表名>' 自行确认。）"
+                        )
+                    else:
+                        table_info = "\n\n".join(focused)
+            except Exception as e:  # noqa: BLE001
+                logger.warning(
+                    f"schema linking retrieval failed: {e}"
+                )
+            if used_mode == "full-table":
+                # 降级：紧凑表目录（列名+注释），避免全量宽表噪声
+                catalog_lines = []
+                try:
+                    for t in sorted(database_connector.get_table_names()):
+                        try:
+                            cols = database_connector.get_columns(t)
+                        except Exception:  # noqa: BLE001
+                            cols = []
+                        col_str = ", ".join(
+                            f"{c['name']}({c.get('comment') or ''})"
+                            for c in (cols or [])
+                        )
+                        if len(cols) > 40:
+                            col_str += ", ..."
+                        catalog_lines.append(f"{t}: {col_str}")
+                except Exception as e:  # noqa: BLE001
+                    logger.warning(f"build compact catalog failed: {e}")
+                if catalog_lines:
+                    used_mode = "compact-catalog"
+                    table_info = (
+                        "\n".join(catalog_lines)
+                        + "\n\n（以上为数据库全部表的紧凑结构（表名: 列名(注释)）。"
+                        '如需查看指定表完整结构，可执行 SELECT column_name, data_type,'
+                        " comment FROM all_tab_columns "
+                        "WHERE table_name='<表名>' ORDER BY column_id。）"
+                    )
+            logger.info(
+                f"database {database_name} schema injected: mode={used_mode}"
+            )
+            # 【现场适配】丽水市行政区划代码→县名映射（基于回归库已验证数据）。
+            # 模型（qwen）缺乏浙江区划代码常识，若不给映射表，会把 AAB301='331123'
+            # 当成需要"查字典翻译"的对象，跑去翻 AB01/DC03 等无关表，最终答非所问。
+            district_map = (
+                "331102=莲都区，331121=青田县，331122=缙云县，331123=遂昌县，"
+                "331124=松阳县，331125=云和县，331126=庆元县，331127=景宁县，"
+                "331181=龙泉市，331199=市直/未分配。"
+            )
+            # 【现场适配·双向映射】模型（qwen）对 331122（缙云）有强先验记忆，
+            # 反查县名→代码时易落回 331122（曾把遂昌/松阳都错记成 331122）。
+            # 故补充"县名→代码"反向映射 + 强制查表指令，禁止凭记忆背诵。
+            district_map_reverse = (
+                "莲都区=331102，青田县=331121，缙云县=331122，遂昌县=331123，"
+                "松阳县=331124，云和县=331125，庆元县=331126，景宁县=331127，"
+                "龙泉市=331181，市直/未分配=331199。"
+            )
+            # 【现场适配·可维护性】业务表清单从连接器实时枚举（排除 AC01 人员基础表）。
+            # 丽水库后续新增业务表（如新登记表）时，此处自动跟随，无需改代码。
+            # 约定：除 AC01 外均为业务表，均含 AAE100 有效标记；若未来某表不含
+            # AAE100，模型应通过查询 all_tab_columns 自行确认后跳过该表的有效过滤。
+            business_tables = [
+                t for t in table_names if str(t).strip().upper() != "AC01"
+            ]
             database_context = f"""
 ## 数据库信息
 - 数据库名: {database_name}
 - 可用表: {", ".join(table_names)}
-- 表结构:
-{table_info}
+- 业务表清单（均有 AAE100 有效标记）: {", ".join(business_tables) or "（无）"}
 - 使用 'sql_query' 工具执行 SQL 查询
 - **只允许 SELECT 查询，禁止 INSERT/UPDATE/DELETE/DROP/ALTER/TRUNCATE**
+- **丽水行政区划代码双向对照（重要）：题面出现区县名时，必须先查下表取对应代码，禁止凭记忆背诵；代码→名称：{district_map} 名称→代码：{district_map_reverse}**
+- **人数统计口径（重要）：统计"人数/多少人"时，必须按身份证去重——JOIN AC01（人员基础信息表）ON AC01.AAC001=业务表.AAC001，用 COUNT(DISTINCT AC01.AAC002)；不要用 COUNT(*)，否则记录数与去重人数不符**
+- **通用字段说明（重要）：AAC001=人员编号、AAC002=身份证号、AAE100=当前有效标记（'1'=有效，'0'=失效），为业务库通用字段，直接使用不要臆造拼写（如 AA100/AA1000）**
+- **AC01 基础表口径（重要）：AC01 是人员基础信息表（供关联取 AAC001/AAC002 做身份证去重），JOIN AC01 时【不要】对其过滤 AAE100，否则会排除正常人员；有效标记只对业务表过滤**
+- **现状统计口径（重要）：凡跨表关联（JOIN / EXISTS / NOT EXISTS 子查询）计数"当前有效"时，对业务表清单中出现的【每一张】业务表都要各自过滤 AAE100='1'，不能只过滤主表。例：困难认定 DC05 与失业登记 DC04 关联时，须同时 DC05.AAE100='1' AND DC04.AAE100='1'；DC05 与就业登记 DC03 关联同理**
+- **排除统计口径（重要）：统计"没有做过 X 的人/记录"时，用 NOT EXISTS (SELECT 1 FROM X表 WHERE X表.AAC001=主表.AAC001 AND X表.AAE100='1') 排除，或 LEFT JOIN + 对方表字段 IS NULL，不要用总数相减等近似算法**
+
+- 表结构:
+{table_info}
 """
             logger.info(
                 f"Loaded database connector: {database_name} "
@@ -2360,7 +2476,10 @@ print(json.dumps(summary, ensure_ascii=False))
         gpts_app_code="react_agent",
         gpts_app_name="ReAct",
         language="zh",
-        temperature=dialogue.temperature or 0.2,
+        # 【现场适配·稳定性】温度封顶 0.2：网页默认 0.6 采样随机性太高，
+        # 同样问题每次回答都不同（有时对有时错/幻觉）。逻辑推理类任务
+        # 低温度能显著提升输出稳定性和可复现性。
+        temperature=min(dialogue.temperature or 0.2, 0.2),
         enable_context_management=True,
         enable_native_function_calling=True,
     )

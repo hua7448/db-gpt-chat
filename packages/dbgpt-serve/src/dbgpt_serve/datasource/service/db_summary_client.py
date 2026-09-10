@@ -136,32 +136,51 @@ class DBSummaryClient:
         dbname(str): dbname
         """
         vector_store_name = dbname + "_profile"
+        field_vector_store_name = dbname + "_profile_field"
 
         table_vector_connector, field_vector_connector = (
             self._get_vector_connector_by_db(dbname)
         )
-        if not table_vector_connector.vector_name_exists():
-            from dbgpt_ext.rag.assembler.db_schema import DBSchemaAssembler
-            from dbgpt_ext.rag.summary.rdbms_db_summary import _DEFAULT_COLUMN_SEPARATOR
+        # 【修复·核心】原来只判断 table 集合存在(且有数据)就跳过重建，
+        # 导致"表级索引有了、字段级索引永远为 0"的空壳残留。
+        # 现改为：table 与 field 两个集合都非空才算建好，任一为空则重建；
+        # 重建前用 truncate() 清残留（保留集合句柄，避免 delete_vector_name
+        # 内部 clear_system_cache() 令缓存句柄全部失效 → "Collection ... does not exist"）。
+        table_ready = table_vector_connector.vector_name_exists()
+        field_ready = field_vector_connector.vector_name_exists()
+        if table_ready and field_ready:
+            logger.info(f"Vector store {vector_store_name} exists, skip init")
+            logger.info("initialize db summary profile success...")
+            return
 
-            chunk_parameters = ChunkParameters(
-                text_splitter=RDBTextSplitter(
-                    column_separator=_DEFAULT_COLUMN_SEPARATOR,
-                    separator="--table-field-separator--",
-                )
-            )
-            db_assembler = DBSchemaAssembler.load_from_connection(
-                connector=db_summary_client.db,
-                table_vector_store_connector=table_vector_connector,
-                field_vector_store_connector=field_vector_connector,
-                chunk_parameters=chunk_parameters,
-                max_seq_length=self.app_config.service.web.embedding_model_max_seq_len,
-            )
+        for connector, store_name in (
+            (table_vector_connector, vector_store_name),
+            (field_vector_connector, field_vector_store_name),
+        ):
+            try:
+                connector.truncate()
+            except Exception as e:  # noqa: BLE001
+                logger.warning(f"truncate {store_name} failed before rebuild: {e}")
 
-            if len(db_assembler.get_chunks()) > 0:
-                db_assembler.persist()
-        else:
-            logger.info(f"Vector store name {vector_store_name} exist")
+        from dbgpt_ext.rag.assembler.db_schema import DBSchemaAssembler
+        from dbgpt_ext.rag.summary.rdbms_db_summary import _DEFAULT_COLUMN_SEPARATOR
+
+        chunk_parameters = ChunkParameters(
+            text_splitter=RDBTextSplitter(
+                column_separator=_DEFAULT_COLUMN_SEPARATOR,
+                separator="--table-field-separator--",
+            )
+        )
+        db_assembler = DBSchemaAssembler.load_from_connection(
+            connector=db_summary_client.db,
+            table_vector_store_connector=table_vector_connector,
+            field_vector_store_connector=field_vector_connector,
+            chunk_parameters=chunk_parameters,
+            max_seq_length=self.app_config.service.web.embedding_model_max_seq_len,
+        )
+
+        if len(db_assembler.get_chunks()) > 0:
+            db_assembler.persist()
         logger.info("initialize db summary profile success...")
 
     def delete_db_profile(self, dbname):
