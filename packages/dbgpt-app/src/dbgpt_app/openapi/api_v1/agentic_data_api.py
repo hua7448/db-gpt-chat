@@ -2451,16 +2451,21 @@ print(json.dumps(summary, ensure_ascii=False))
     # before appending the current round, then pass it as historical_dialogues
     # so multi-turn follow-ups see the previous Q&A (mirrors hermes'
     # conversation_history passed into the loop).
-    # 【现场适配·多轮上下文净化】历史对话窗口化 + 截断：
+    # 【现场适配·多轮上下文净化】历史对话分级保留：
     # 现象：同一会话连续追问不同主题时，早期轮次的问题/回答（常含大段表结构
     # 描述、SQL、结果）原样进入 messages（base_agent 无条件全量带入），
     # 模型被旧主题带偏 → 查错表/答非所问。
-    # 处理：① 只保留最近 _MAX_HISTORY_TURNS 轮（默认 3 轮），更早轮次丢弃；
-    #       ② 每条内容截断至 _MAX_HISTORY_MSG_CHARS，防超长回答撑爆上下文。
-    # 说明：system prompt 每轮按当前问题重建（schema-linking），不受此处影响；
-    #       此处只控制"历史 messages 区"的内容，不破坏正常多轮跟随能力。
-    _MAX_HISTORY_TURNS = 3
-    _MAX_HISTORY_MSG_CHARS = 800
+    # 处理（分级保留，兼顾"早期记忆"与"污染防护"）：
+    #   ① 最近 _MAX_RECENT_TURNS 轮（默认 5 轮）：完整保留（问题+回答），
+    #      支持连续追问跟随；
+    #   ② 更早轮次：每条截断至 _MAX_EARLY_MSG_CHARS（默认 80 字符）——
+    #      问题基本完整、回答只留要点，既保留"用户问过什么"的长期记忆，
+    #      又避免早期大段表结构/SQL 噪声带偏当前问题；
+    #   ③ 所有轮次保持"问题/回答"成对结构，不破坏 base_agent 的奇偶角色分配。
+    # 说明：system prompt 每轮按当前问题重建（schema-linking），不受此处影响。
+    _MAX_RECENT_TURNS = 5
+    _MAX_RECENT_MSG_CHARS = 800
+    _MAX_EARLY_MSG_CHARS = 80
     historical_dialogues: List[AgentMessage] = []
     for _msg in storage_conv.get_history_message():
         if _msg.type == "human":
@@ -2480,11 +2485,14 @@ print(json.dumps(summary, ensure_ascii=False))
                 pass
             if _content:
                 historical_dialogues.append(AgentMessage(content=_content))
-    if len(historical_dialogues) > _MAX_HISTORY_TURNS * 2:
-        historical_dialogues = historical_dialogues[-(_MAX_HISTORY_TURNS * 2):]
-    for _m in historical_dialogues:
-        if len(_m.content or "") > _MAX_HISTORY_MSG_CHARS:
-            _m.content = _m.content[:_MAX_HISTORY_MSG_CHARS] + "…"
+    # 分级截断：更早轮次压缩，近期轮次完整
+    if len(historical_dialogues) > _MAX_RECENT_TURNS * 2:
+        for _m in historical_dialogues[:-(_MAX_RECENT_TURNS * 2)]:
+            if len(_m.content or "") > _MAX_EARLY_MSG_CHARS:
+                _m.content = _m.content[:_MAX_EARLY_MSG_CHARS] + "…"
+    for _m in historical_dialogues[-(_MAX_RECENT_TURNS * 2):]:
+        if len(_m.content or "") > _MAX_RECENT_MSG_CHARS:
+            _m.content = _m.content[:_MAX_RECENT_MSG_CHARS] + "…"
     storage_conv.add_user_message(user_input)
     context = AgentContext(
         conv_id=conv_id,
