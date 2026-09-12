@@ -1078,6 +1078,15 @@ const Playground: NextPage = () => {
     }
   });
 
+  // 【现场适配·默认库】数据源加载后自动选中 LSRSDB（丽水唯一业务库），
+  // 新会话无需人工选择数据库；若 LSRSDB 不存在则保持用户选择。
+  useEffect(() => {
+    if (Array.isArray(dataSources) && dataSources.length > 0 && !selectedDb) {
+      const lsrs = dataSources.find((ds: DataSource) => ds.db_name === 'LSRSDB');
+      if (lsrs) setSelectedDb(lsrs);
+    }
+  }, [dataSources, selectedDb]);
+
   // Fetch Knowledge Bases
   const { data: knowledgeSpaces, loading: _loadingKnowledge } = useRequest(async () => {
     try {
