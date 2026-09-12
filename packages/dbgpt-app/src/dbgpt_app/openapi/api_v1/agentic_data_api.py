@@ -3722,6 +3722,46 @@ Thought/Action/Action Input format shown above.
     ):
         yield terminal_event
 
+    # 【现场适配·任务标题】新会话第一轮问答完成后，调用一次 LLM 生成简短
+    # 标题并更新 conversation summary（左侧【所有任务】列表显示标题而非
+    # 问题原文，参考豆包实现）。仅第一轮生成：historical_dialogues 为空
+    # 即新会话；标题基于用户问题生成，去掉 [Database]/[Knowledge] 前缀。
+    # 失败时保留原 summary（问题原文），不影响主流程。
+    if not historical_dialogues and user_input:
+        try:
+            from dbgpt.core import HumanPromptTemplate, ModelMessage, ModelRequest
+
+            _clean_q = re.sub(
+                r"^\[(?:Database|Knowledge):[^\]]*\]\s*", "", user_input
+            ).strip()
+            if _clean_q:
+                _title_template = HumanPromptTemplate.from_template(
+                    "为下面的用户问题生成一个简短的中文对话标题，"
+                    "10-20字以内，概括核心内容，直接输出标题不要解释：\n"
+                    "{question}"
+                )
+                _msgs = ModelMessage.from_base_messages(
+                    _title_template.format_messages(question=_clean_q)
+                )
+                _resp = await llm_client.generate(
+                    request=ModelRequest(
+                        model=dialogue.model_name,
+                        messages=_msgs,
+                        temperature=0.1,
+                        max_new_tokens=40,
+                    )
+                )
+                _title = (_resp.text or "").strip().strip('"').strip("“”")
+                _title = re.sub(r"\s+", " ", _title).strip("：:")
+                if _title and 2 <= len(_title) <= 40:
+                    storage_conv.summary = _title
+                    storage_conv.save_to_storage()
+                    logger.info(
+                        f"conversation {conv_id} title generated: {_title}"
+                    )
+        except Exception as e:
+            logger.warning(f"generate conversation title failed: {e}")
+
 
 # ---------------------------------------------------------------------------
 # Share link APIs
