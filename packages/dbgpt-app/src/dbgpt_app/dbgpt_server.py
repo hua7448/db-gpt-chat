@@ -9,6 +9,8 @@ from fastapi.middleware.cors import CORSMiddleware
 # fastapi import time cost about 0.05s
 from fastapi.staticfiles import StaticFiles
 
+from starlette.middleware.gzip import GZipMiddleware
+
 from dbgpt._version import version
 from dbgpt.component import SystemApp
 from dbgpt.configs.model_config import (
@@ -41,8 +43,8 @@ ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fi
 sys.path.append(ROOT_PATH)
 
 app = create_app(
-    title=_("K-ICS Open API"),
-    description=_("K-ICS Open API"),
+    title=_("DB-GPT Open API"),
+    description=_("DB-GPT Open API"),
     version=version,
     openapi_tags=[],
 )
@@ -88,6 +90,22 @@ def mount_routers(app: FastAPI):
     app.include_router(recommend_question_v1, prefix="/api", tags=["RecommendQuestion"])
 
 
+def _immutable_static_files(directory: str) -> StaticFiles:
+    """StaticFiles that never re-fetches content-hashed assets.
+
+    现场适配：/_next/static 下的产物文件名都带内容 hash（内容不变名不变），
+    可安全长缓存，避免每次打开页面都重新下载十几 MB 解析。
+    """
+
+    class _ImmutableStaticFiles(StaticFiles):
+        def file_response(self, *args, **kwargs):
+            resp = super().file_response(*args, **kwargs)
+            resp.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+            return resp
+
+    return _ImmutableStaticFiles(directory=directory)
+
+
 def mount_static_files(app: FastAPI, param: ApplicationConfig):
     package_dir = os.path.dirname(os.path.abspath(__file__))
     if param.service.web.new_web_ui:
@@ -96,13 +114,19 @@ def mount_static_files(app: FastAPI, param: ApplicationConfig):
         static_file_path = os.path.join(package_dir, "static", "old_web")
 
     os.makedirs(STATIC_MESSAGE_IMG_PATH, exist_ok=True)
+
+    # 现场适配：对静态资源启用 gzip 压缩（原版未启用，整包明文传输大 JS 极慢）。
+    # GZipMiddleware 只压缩常规 Response/FileResponse，不动 SSE 流式响应。
+    app.add_middleware(GZipMiddleware, minimum_size=1024)
+
     app.mount(
         "/images",
         StaticFiles(directory=STATIC_MESSAGE_IMG_PATH, html=True),
         name="static2",
     )
     app.mount(
-        "/_next/static", StaticFiles(directory=static_file_path + "/_next/static")
+        "/_next/static",
+        _immutable_static_files(static_file_path + "/_next/static"),
     )
 
     # Serve the Next.js dynamic route page for /share/{token}.
@@ -368,7 +392,7 @@ def load_config(config_file: str = None) -> ApplicationConfig:
 def parse_args():
     import argparse
 
-    parser = argparse.ArgumentParser(description="K-ICS Webserver")
+    parser = argparse.ArgumentParser(description="DB-GPT Webserver")
     parser.add_argument(
         "-c",
         "--config",
