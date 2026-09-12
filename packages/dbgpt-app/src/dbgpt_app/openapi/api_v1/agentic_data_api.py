@@ -2444,12 +2444,24 @@ print(json.dumps(summary, ensure_ascii=False))
     agent_memory = AgentMemory(gpts_memory=gpt_memory)
 
     conv_serve = ConversationServe.get_instance(CFG.SYSTEM_APP)
+    # 【现场适配·标题固定】已有会话（非第一轮）保留已存 summary（可能是
+    # 第一轮生成的 LLM 标题），不要用当前问题覆盖；仅新会话用当前问题初始化。
+    # 否则每轮 L 后续 save_to_storage() 会把标题冲成"当前问题+[Database]前缀"。
+    _stored_summary = None
+    try:
+        from dbgpt_serve.conversation.api.schemas import ServeRequest as _ConvSvcReq
+
+        _svc_resp = _get_conversation_service().get(_ConvSvcReq(conv_uid=conv_id))
+        if _svc_resp is not None:
+            _stored_summary = getattr(_svc_resp, "user_input", None) or None
+    except Exception:
+        pass
     storage_conv = StorageConversation(
         conv_uid=conv_id,
         chat_mode=dialogue.chat_mode or "chat_react_agent",
         user_name=dialogue.user_name,
         sys_code=dialogue.sys_code,
-        summary=dialogue.user_input,
+        summary=_stored_summary or dialogue.user_input,
         app_code=dialogue.app_code,
         conv_storage=conv_serve.conv_storage,
         message_storage=conv_serve.message_storage,
