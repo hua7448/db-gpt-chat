@@ -10,7 +10,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from starlette.middleware.gzip import GZipMiddleware
-
 from dbgpt._version import version
 from dbgpt.component import SystemApp
 from dbgpt.configs.model_config import (
@@ -37,6 +36,35 @@ from dbgpt_app.base import (
 from dbgpt_app.component_configs import initialize_components
 from dbgpt_app.config import ApplicationConfig, ServiceWebParameters, SystemParameters
 from dbgpt_serve.core import add_exception_handler
+
+
+class _StaticOnlyGZipMiddleware(GZipMiddleware):
+    """GZip 中间件——只压缩静态资源，SSE 流式响应直通。
+
+    现场适配修正（2026-09-14）：
+    原版直接 `app.add_middleware(GZipMiddleware)` 是全局的，会对所有响应
+    启用 gzip。Starlette 的 GZipResponder 对流式响应（SSE，more_body=True）
+    逐块 `gzip_file.write()` 但**不 flush**，而 gzip.GzipFile 内部有压缩
+    缓冲，写入的字节不会立即落到响应流，只有流结束 close() 时才一次性
+    释放——导致 ReAct 的 step.start/step.chunk/step.done 等 SSE 事件被
+    积压在 gzip 缓冲里，前端全程看不到实时流程，直到整个问答结束才
+    一次性收到全部内容（表现为"一直在思考/转圈，结束才出结果"）。
+
+    修复：仅对静态资源路径（大 JS/图片）启用 gzip，/api 及 SSE 直通。
+    """
+
+    _STATIC_PREFIXES = ("/_next/static", "/images", "/swagger_static")
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+        path = scope.get("path", "") or ""
+        if path.startswith(self._STATIC_PREFIXES):
+            await super().__call__(scope, receive, send)
+        else:
+            await self.app(scope, receive, send)
+
 
 logger = logging.getLogger(__name__)
 ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -116,8 +144,9 @@ def mount_static_files(app: FastAPI, param: ApplicationConfig):
     os.makedirs(STATIC_MESSAGE_IMG_PATH, exist_ok=True)
 
     # 现场适配：对静态资源启用 gzip 压缩（原版未启用，整包明文传输大 JS 极慢）。
-    # GZipMiddleware 只压缩常规 Response/FileResponse，不动 SSE 流式响应。
-    app.add_middleware(GZipMiddleware, minimum_size=1024)
+    # 注意：不能用全局 GZipMiddleware——它会缓冲 SSE 流式响应（ReAct 步骤事件
+    # 被积压在 gzip 缓冲里，前端全程看不到实时流程）。只压缩静态资源路径。
+    app.add_middleware(_StaticOnlyGZipMiddleware, minimum_size=1024)
 
     app.mount(
         "/images",
