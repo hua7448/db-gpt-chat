@@ -34,11 +34,12 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
         def _breaker_suffix() -> str:
             if int(react_state.get("sql_query_fail_streak", 0)) >= 3:
                 return (
-                    "\n\n【工具熔断】sql_query 已连续失败 3 次，请停止反复重试同一类 SQL。"
-                    "先改用更稳妥的做法：① 先用 COUNT(*) 确认数据在哪个表、大概多少行；"
-                    "② 用 WHERE 加精确过滤条件（如姓名/编号/区划代码）缩小范围；"
-                    "③ 只 SELECT 少量必要字段。若仍无法确定，请直接基于已获得的信息整理回答，"
-                    "不要继续调用 sql_query。"
+                    "\n\n【查询策略调整】sql_query 已连续失败 3 次，说明当前写法有问题，"
+                    "请换一种查询策略：① 先执行 SELECT column_name FROM all_tab_columns "
+                    "WHERE table_name='表名' 拿到真实列名（或参考上方【列名纠偏】清单）；"
+                    "② 用 COUNT(*) / GROUP BY 探数，确认数据规模；"
+                    "③ 用 WHERE 加精确过滤（如姓名/编号/区划代码）缩小范围，只查少量字段。"
+                    "换策略后可以继续查询——重点是先拿到正确的列名，不要凭空猜列名。"
                 )
             return ""
 
@@ -218,15 +219,70 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
             )
         except Exception as e:
             _mark_fail()
+            err_str = str(e)
+            # 【列名无效自动纠错】模型常无真实列清单可用 → 反复用幻觉列名
+            # 失败（ORA-00904 标识符无效 / ORA-00972 标识符过长 / column not found）。
+            # 此时不再只报错，直接把该表真实字段清单（列名: 注释）回给模型，
+            # 让它下一步用正确列名，从根上打断"猜列名→失败→再猜"死循环。
+            col_hint = ""
+            if database_connector is not None and any(
+                kw in err_str.upper()
+                for kw in (
+                    "ORA-00904",
+                    "ORA-00972",
+                    "INVALID IDENTIFIER",
+                    "IDENTIFIER IS TOO LONG",
+                    "标识符无效",
+                    "标识符过长",
+                    "IDENTIFIER TOO LONG",
+                )
+            ):
+                try:
+                    import re as _re2
+
+                    _fm = _re2.search(
+                        r"\bFROM\s+(?:[\w\"]+\.)*([A-Za-z0-9_\"$#]+)",
+                        sql_stripped or "",
+                        _re2.IGNORECASE,
+                    )
+                    if _fm:
+                        _tbl = _fm.group(1).strip('"').upper()
+                        # 【现场适配】与 conn_oracle [6] 一致：CURRENT_SCHEMA 取业务
+                        # schema（LS45），不依赖 get_columns 的 ORACLE_SCHEMA 环境变量。
+                        _chk = database_connector.run(
+                            "SELECT c.column_name, "
+                            "NVL((SELECT t.comments FROM all_col_comments t "
+                            "WHERE t.owner=c.owner AND t.table_name=c.table_name "
+                            "AND t.column_name=c.column_name), '') "
+                            "FROM all_tab_columns c "
+                            "WHERE c.table_name='%s' "
+                            "AND c.owner=SYS_CONTEXT('USERENV','CURRENT_SCHEMA') "
+                            "ORDER BY c.column_id" % _tbl
+                        )
+                        _cols = [list(r) for r in (_chk or [])[1:]]
+                        if _cols:
+                            _lines = []
+                            for _row in _cols[1:41]:
+                                _cname = str(_row[0] or "")
+                                _ccom = str(_row[1] or "").strip()
+                                _lines.append(
+                                    f"{_cname}（{_ccom}）" if _ccom else _cname
+                                )
+                            _more = "…（其余略，" if len(_cols) > 40 else "（共 %d 列，" % len(_cols)
+                            col_hint = (
+                                f"\n\n【列名纠偏】SQL 因列名无效失败（Oracle {err_str.strip()[:120]}）。"
+                                f"表 {_tbl} 实际字段{_more}"
+                                "请只使用以上真实存在的列名重写 SQL，不要臆造列名，"
+                                "也不要 SELECT * 或全量列。"
+                                + ", ".join(_lines)
+                                + "）"
+                            )
+                except Exception:
+                    pass
+
+            content = f"SQL 执行失败: {err_str}" + col_hint + _breaker_suffix()
             return json.dumps(
-                {
-                    "chunks": [
-                        {
-                            "output_type": "text",
-                            "content": f"SQL 执行失败: {str(e)}" + _breaker_suffix(),
-                        }
-                    ]
-                },
+                {"chunks": [{"output_type": "text", "content": content}]},
                 ensure_ascii=False,
             )
 
