@@ -20,13 +20,37 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
     )
     def sql_query(sql: str) -> str:
         """Execute a read-only SQL query against the selected database."""
+
+        # ── 熔断计数（方案 C）：同一轮问答内 sql_query 连续失败过多时，
+        # 阻止模型继续盲目重试烧步数。react_state 单请求内跨调用共享。──
+        def _mark_fail() -> int:
+            streak = int(react_state.get("sql_query_fail_streak", 0)) + 1
+            react_state["sql_query_fail_streak"] = streak
+            return streak
+
+        def _mark_ok() -> None:
+            react_state["sql_query_fail_streak"] = 0
+
+        def _breaker_suffix() -> str:
+            if int(react_state.get("sql_query_fail_streak", 0)) >= 3:
+                return (
+                    "\n\n【工具熔断】sql_query 已连续失败 3 次，请停止反复重试同一类 SQL。"
+                    "先改用更稳妥的做法：① 先用 COUNT(*) 确认数据在哪个表、大概多少行；"
+                    "② 用 WHERE 加精确过滤条件（如姓名/编号/区划代码）缩小范围；"
+                    "③ 只 SELECT 少量必要字段。若仍无法确定，请直接基于已获得的信息整理回答，"
+                    "不要继续调用 sql_query。"
+                )
+            return ""
+
         if database_connector is None:
+            _mark_fail()
             return json.dumps(
                 {
                     "chunks": [
                         {
                             "output_type": "text",
-                            "content": "未选择数据库，请先在左侧面板选择一个数据源。",
+                            "content": "未选择数据库，请先在左侧面板选择一个数据源。"
+                            + _breaker_suffix(),
                         }
                     ]
                 },
@@ -57,6 +81,7 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
             if _too_long:
                 if _has_complex:
                     # 复杂查询不裁剪（改坏语义风险高），直接提示让模型重写
+                    _mark_fail()
                     return json.dumps(
                         {
                             "chunks": [
@@ -65,11 +90,14 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
                                     "content": (
                                         "SQL 过长：当前语句超过工具限制"
                                         "（单条 SQL 最多 30 个字段、2000 字符）。"
-                                        "请只 SELECT 回答问题所需的少量关键字段（建议 ≤10 列），"
+                                        "是【输入 SQL 本身超出长度限制】，不是数据库结果被截断——"
+                                        "请务必先加 WHERE 精确过滤（如姓名/编号/区划代码）缩小范围，"
+                                        "并且只 SELECT 回答问题所需的少量关键字段（建议 ≤10 列），"
                                         "不要列出整表全部列，也不要 SELECT *。"
                                         "不确定字段名时，可先执行："
                                         "SELECT column_name FROM all_tab_columns "
                                         "WHERE table_name='<表名>' 查看后再选字段。"
+                                        + _breaker_suffix(),
                                     ),
                                 }
                             ]
@@ -166,8 +194,9 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
             table = "\n".join([header, separator] + md_rows)
             if len(rows) > 50:
                 table += (
-                    "\n\n（达到工具 50 行显示上限，结果已截断；"
-                    "如需汇总请改用 GROUP BY 等聚合在 SQL 内完成，不要分页拉全量。）"
+                    "\n\n（结果超过 50 行，只显示前 50 行——这是【结果行数被截断】,"
+                    "不是 SQL 被截断。请先用 WHERE 精确过滤（如姓名/编号）缩小范围，"
+                    "或改用 GROUP BY/COUNT 在 SQL 内聚合汇总，不要试图拉全量。）"
                 )
 
             # Cap total output size so a single wide query can't blow out the
@@ -177,21 +206,24 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
             if len(table) > MAX_SQL_OUTPUT_CHARS:
                 table = (
                     table[:MAX_SQL_OUTPUT_CHARS]
-                    + f"\n\n... [Output truncated at {MAX_SQL_OUTPUT_CHARS} chars. "
-                    f"Total rows: {len(rows)}]"
+                    + "\n\n... [输出超过 20000 字符被截断——这是【结果体积被截断】，"
+                    "不是 SQL 被截断。请加 WHERE 过滤或用 GROUP BY 聚合减少返回内容]"
+                    f"(Total rows: {len(rows)})"
                 )
 
+            _mark_ok()
             return json.dumps(
                 {"chunks": [{"output_type": "markdown", "content": table}]},
                 ensure_ascii=False,
             )
         except Exception as e:
+            _mark_fail()
             return json.dumps(
                 {
                     "chunks": [
                         {
                             "output_type": "text",
-                            "content": f"SQL 执行失败: {str(e)}",
+                            "content": f"SQL 执行失败: {str(e)}" + _breaker_suffix(),
                         }
                     ]
                 },
