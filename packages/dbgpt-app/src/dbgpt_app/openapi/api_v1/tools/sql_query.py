@@ -34,10 +34,12 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
             )
 
         sql_stripped = sql.strip().rstrip(";")
-        # 【现场适配·超长SQL拦截】模型常把"人员画像"类问题理解为 SELECT 全列
-        # （AC01 等宽表 100+ 列），生成超长 SQL 反复失败、陷入"简化→又全列"
-        # 死循环直到步数耗尽。这里给模型一个明确的硬约束（字段数/长度阈值），
-        # 它才知道"简化到什么程度"才能收敛。
+        # 【现场适配·超长SQL自动裁剪】模型常把"人员画像"类问题理解为 SELECT
+        # 全列（ZD11/AC01 等宽表 100+ 列），且即使提示字段限制，qwen 仍会抄
+        # 整表列名 → 超长 SQL 反复失败 → "简化→又全列"死循环直到步数耗尽。
+        # 只提示限制不解决问题：模型管不住自己。改为【工具层自动裁剪】——
+        # 超长 SELECT 直接由工具裁到前 _MAX_AUTO_COLS 列再执行，不让模型重写。
+        # 简单 SELECT（无 GROUP BY/ORDER BY/子查询/聚合）才裁剪，避免改坏语义。
         try:
             import re as _re
 
@@ -45,25 +47,49 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
                 r"\bSELECT\b(.*?)\bFROM\b", sql_stripped, _re.IGNORECASE | _re.DOTALL
             )
             _col_count = _sel_m.group(1).count(",") + 1 if _sel_m else 0
-            if len(sql_stripped) > 2000 or _col_count > 30:
-                return json.dumps(
-                    {
-                        "chunks": [
-                            {
-                                "output_type": "text",
-                                "content": (
-                                    "SQL 过长：当前语句超过工具限制"
-                                    "（单条 SQL 最多 30 个字段、2000 字符）。"
-                                    "请只 SELECT 回答问题所需的少量关键字段（建议 ≤10 列），"
-                                    "不要列出整表全部列，也不要 SELECT *。"
-                                    "不确定字段名时，可先执行："
-                                    "SELECT column_name FROM all_tab_columns "
-                                    "WHERE table_name='<表名>' 查看后再选字段。"
-                                ),
-                            }
-                        ]
-                    },
-                    ensure_ascii=False,
+            _MAX_AUTO_COLS = 12
+            _untrimmed_upper = sql_stripped.upper()
+            _too_long = len(sql_stripped) > 2000 or _col_count > 30
+            _has_complex = any(
+                kw in _untrimmed_upper
+                for kw in (" GROUP ", " ORDER ", " OVER (", " UNION ", " DISTINCT ")
+            ) or _untrimmed_upper.count("SELECT") > 1
+            if _too_long:
+                if _has_complex:
+                    # 复杂查询不裁剪（改坏语义风险高），直接提示让模型重写
+                    return json.dumps(
+                        {
+                            "chunks": [
+                                {
+                                    "output_type": "text",
+                                    "content": (
+                                        "SQL 过长：当前语句超过工具限制"
+                                        "（单条 SQL 最多 30 个字段、2000 字符）。"
+                                        "请只 SELECT 回答问题所需的少量关键字段（建议 ≤10 列），"
+                                        "不要列出整表全部列，也不要 SELECT *。"
+                                        "不确定字段名时，可先执行："
+                                        "SELECT column_name FROM all_tab_columns "
+                                        "WHERE table_name='<表名>' 查看后再选字段。"
+                                    ),
+                                }
+                            ]
+                        },
+                        ensure_ascii=False,
+                    )
+                # 简单 SELECT：自动裁剪到前 _MAX_AUTO_COLS 列，继续执行
+                _col_text = _sel_m.group(1)
+                _col_parts = [c.strip() for c in _col_text.split(",") if c.strip()]
+                _keep = ", ".join(_col_parts[:_MAX_AUTO_COLS])
+                sql_stripped = (
+                    sql_stripped[:_sel_m.start(1)]
+                    + _keep
+                    + sql_stripped[_sel_m.end(1):]
+                )
+                sql_stripped = (
+                    "/* 自动精简：原 SQL 字段过多，已裁剪至前 "
+                    + str(_MAX_AUTO_COLS)
+                    + " 列 */\n"
+                    + sql_stripped
                 )
         except Exception:
             pass

@@ -196,40 +196,49 @@ def initialize_app(param: ApplicationConfig, args: List[str] = None):
     system_app.after_init()
 
     # Register default data sources
-    try:
-        from dbgpt.configs.model_config import PILOT_PATH, ROOT_PATH
-        from dbgpt_serve.datasource.manages.connect_config_db import ConnectConfigDao
+    # 【现场适配】丽水现场仅使用 LSRSDB，禁用 DB-GPT 内置示例库（Walmart_Sales）
+    # 自动注册：否则每次重建容器，只要元数据库里没有该记录，就会重新注入，
+    # 表现为"删了沃尔玛，重启又冒出来"。通过环境变量 KICS_DISABLE_DEFAULT_DATA_SOURCES
+    # 控制（现场 site.env 置 true），默认保持原逻辑。
+    if (
+        os.getenv("KICS_DISABLE_DEFAULT_DATA_SOURCES", "false").lower() == "true"
+    ):
+        logger.info("Default data sources registration disabled (KICS_DISABLE_DEFAULT_DATA_SOURCES=true)")
+    else:
+        try:
+            from dbgpt.configs.model_config import PILOT_PATH, ROOT_PATH
+            from dbgpt_serve.datasource.manages.connect_config_db import ConnectConfigDao
 
-        dao = ConnectConfigDao()
-        db_name = "Walmart_Sales"
-        if not dao.get_by_names(db_name):
-            candidate_paths = [
-                os.path.join(PILOT_PATH, "examples", "Walmart_Sales.db"),
-                os.path.join(
-                    ROOT_PATH, "docker", "examples", "dashboard", "Walmart_Sales.db"
-                ),
-            ]
-            db_absolute_path = next(
-                (p for p in candidate_paths if os.path.isfile(p)), None
-            )
-            if db_absolute_path is None:
-                logger.info(
-                    f"Skipping default data source '%s': file not found in any "
-                    f"{db_name} at {candidate_paths}"
+            dao = ConnectConfigDao()
+            db_name = "Walmart_Sales"
+            if not dao.get_by_names(db_name):
+                candidate_paths = [
+                    os.path.join(PILOT_PATH, "examples", "Walmart_Sales.db"),
+                    os.path.join(
+                        ROOT_PATH, "docker", "examples", "dashboard", "Walmart_Sales.db"
+                    ),
+                ]
+                db_absolute_path = next(
+                    (p for p in candidate_paths if os.path.isfile(p)), None
                 )
-            else:
-                dao.add_file_db(
-                    db_name=db_name,
-                    db_type="sqlite",
-                    db_path=db_absolute_path,
-                    comment="Default Walmart Sales example database",
-                )
-                logger.info(
-                    f"Successfully registered default data source: "
-                    f"{db_name} at {db_absolute_path}"
-                )
-    except Exception as e:
-        logger.error(f"Failed to register default data sources: {str(e)}")
+                if db_absolute_path is None:
+                    logger.info(
+                        f"Skipping default data source '%s': file not found in any "
+                        f"{db_name} at {candidate_paths}"
+                    )
+                else:
+                    dao.add_file_db(
+                        db_name=db_name,
+                        db_type="sqlite",
+                        db_path=db_absolute_path,
+                        comment="Default Walmart Sales example database",
+                    )
+                    logger.info(
+                        f"Successfully registered default data source: "
+                        f"{db_name} at {db_absolute_path}"
+                    )
+        except Exception as e:
+            logger.error(f"Failed to register default data sources: {str(e)}")
 
     binding_port = web_config.port
     binding_host = web_config.host
