@@ -61,17 +61,44 @@ def make_question(react_state: Dict[str, Any], stream_callback: Callable):
             if not isinstance(parsed_questions, list):
                 parsed_questions = parsed_questions.get("questions", [])
         except Exception as e:
-            return json.dumps(
-                {
-                    "chunks": [
-                        {
-                            "output_type": "text",
-                            "content": f"Error: invalid questions JSON — {e}",
-                        }
-                    ]
-                },
-                ensure_ascii=False,
-            )
+            # 【现场适配·JSON 容错】模型生成的问题文案常混入英文双引号
+            # （如 名为"施飞龙"），破坏 JSON 字符串结构导致解析失败。
+            # 兜底修复：把字符串内容里的英文裸引号替换为中文引号后重试。
+            repaired = None
+            try:
+                if isinstance(questions, str):
+                    import re as _r
+
+                    _repaired_str = _r.sub(
+                        r'(?<=[\u4e00-\u9fffA-Za-z0-9])"(?=[\u4e00-\u9fffA-Za-z0-9])',
+                        "「」",
+                        questions,
+                    )
+                    # 仍失败的极端情况：直接尝试把未配对英文引号全换中文引号
+                    if _repaired_str.count('"') % 2 != 0:
+                        _repaired_str = _repaired_str.replace('"', "「」")
+                    _parsed = json.loads(_repaired_str)
+                    parsed_questions = (
+                        _parsed
+                        if isinstance(_parsed, list)
+                        else _parsed.get("questions", [])
+                    )
+                    if parsed_questions:
+                        repaired = parsed_questions
+            except Exception:
+                pass
+            if repaired is None:
+                return json.dumps(
+                    {
+                        "chunks": [
+                            {
+                                "output_type": "text",
+                                "content": f"Error: invalid questions JSON — {e}",
+                            }
+                        ]
+                    },
+                    ensure_ascii=False,
+                )
 
         # 1. Register in QuestionManager → creates asyncio.Event
         pq = question_manager.create(conv_id=conv_id, questions=parsed_questions)
