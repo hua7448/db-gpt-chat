@@ -1680,6 +1680,7 @@ async def _react_agent_stream_impl(
 - **AC01 基础表口径（重要）：AC01 是人员基础信息表（供关联取 AAC001/AAC002 做身份证去重），JOIN AC01 时【不要】对其过滤 AAE100，否则会排除正常人员；有效标记只对业务表过滤**
 - **现状统计口径（重要）：凡跨表关联（JOIN / EXISTS / NOT EXISTS 子查询）计数"当前有效"时，对业务表清单中出现的【每一张】业务表都要各自过滤 AAE100='1'，不能只过滤主表。例：困难认定 DC05 与失业登记 DC04 关联时，须同时 DC05.AAE100='1' AND DC04.AAE100='1'；DC05 与就业登记 DC03 关联同理**
 - **排除统计口径（重要）：统计"没有做过 X 的人/记录"时，用 NOT EXISTS (SELECT 1 FROM X表 WHERE X表.AAC001=主表.AAC001 AND X表.AAE100='1') 排除，或 LEFT JOIN + 对方表字段 IS NULL，不要用总数相减等近似算法**
+- **字段选择指引（重要）：查询业务表时只 SELECT 回答问题所需的少量关键字段（建议 ≤10 列），禁止 SELECT * 或列出整表全部列；不确定字段名时可先查 all_tab_columns 确认**
 
 - 表结构:
 {table_info}

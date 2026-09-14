@@ -14,6 +14,8 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
             "注意：本库为丽水市就业回流库，辖区代码均为 3311 开头（无绍兴/上虞等地数据）；"
             "工具最多返回 50 行数据，大数据量请用 GROUP BY/COUNT 等聚合在 SQL 内汇总，"
             "不要分页拉取全量明细。"
+            "单条 SQL 最多选择 30 个字段、2000 字符：只 SELECT 回答问题所需的关键字段"
+            "（建议 ≤10 列），禁止 SELECT * 或列出整表全部列。"
         )
     )
     def sql_query(sql: str) -> str:
@@ -32,6 +34,40 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
             )
 
         sql_stripped = sql.strip().rstrip(";")
+        # 【现场适配·超长SQL拦截】模型常把"人员画像"类问题理解为 SELECT 全列
+        # （AC01 等宽表 100+ 列），生成超长 SQL 反复失败、陷入"简化→又全列"
+        # 死循环直到步数耗尽。这里给模型一个明确的硬约束（字段数/长度阈值），
+        # 它才知道"简化到什么程度"才能收敛。
+        try:
+            import re as _re
+
+            _sel_m = _re.search(
+                r"\bSELECT\b(.*?)\bFROM\b", sql_stripped, _re.IGNORECASE | _re.DOTALL
+            )
+            _col_count = _sel_m.group(1).count(",") + 1 if _sel_m else 0
+            if len(sql_stripped) > 2000 or _col_count > 30:
+                return json.dumps(
+                    {
+                        "chunks": [
+                            {
+                                "output_type": "text",
+                                "content": (
+                                    "SQL 过长：当前语句超过工具限制"
+                                    "（单条 SQL 最多 30 个字段、2000 字符）。"
+                                    "请只 SELECT 回答问题所需的少量关键字段（建议 ≤10 列），"
+                                    "不要列出整表全部列，也不要 SELECT *。"
+                                    "不确定字段名时，可先执行："
+                                    "SELECT column_name FROM all_tab_columns "
+                                    "WHERE table_name='<表名>' 查看后再选字段。"
+                                ),
+                            }
+                        ]
+                    },
+                    ensure_ascii=False,
+                )
+        except Exception:
+            pass
+
         sql_upper = sql_stripped.upper().lstrip()
         forbidden = [
             "INSERT",
