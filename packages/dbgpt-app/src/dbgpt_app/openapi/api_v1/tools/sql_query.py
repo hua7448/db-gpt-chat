@@ -59,6 +59,18 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
             )
 
         sql_stripped = sql.strip().rstrip(";")
+        # 【现场适配·残缺参数拦截】模型生成超长工具调用（如欲一次 SELECT
+        # 数百列）时，参数在生成/传输过程被截断，sql 可能带 JSON 外壳
+        # （{"sql": "SELECT ...}）且缺 FROM/缺闭合引号。若直接执行会报
+        # ORA-00972/ORA-01740 等垃圾错误并把模型带进"再试一次"死循环。
+        # 先尝试还原 JSON 外壳，还原失败或语句不完整则拦截并给出正确指引。
+        if sql_stripped.lstrip().startswith("{"):
+            try:
+                _shell = json.loads(sql_stripped)
+                if isinstance(_shell, dict) and _shell.get("sql"):
+                    sql_stripped = str(_shell["sql"]).strip().rstrip(";")
+            except Exception:
+                pass  # 截断的 JSON 无法解析，保留原文交给下方完整性校验
         # 【现场适配·超长SQL自动裁剪】模型常把"人员画像"类问题理解为 SELECT
         # 全列（ZD11/AC01 等宽表 100+ 列），且即使提示字段限制，qwen 仍会抄
         # 整表列名 → 超长 SQL 反复失败 → "简化→又全列"死循环直到步数耗尽。
@@ -71,7 +83,33 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
             _sel_m = _re.search(
                 r"\bSELECT\b(.*?)\bFROM\b", sql_stripped, _re.IGNORECASE | _re.DOTALL
             )
-            _col_count = _sel_m.group(1).count(",") + 1 if _sel_m else 0
+            _is_select = sql_stripped.lstrip().upper().startswith("SELECT")
+            if not _is_select or _sel_m is None:
+                # 语句不完整（缺 FROM / 非 SELECT 开头 / 被截断）：不执行，
+                # 直接给模型正确列名获取路径，避免"残缺 SQL→Oracle 报错→再试"死循环。
+                _mark_fail()
+                return json.dumps(
+                    {
+                        "chunks": [
+                            {
+                                "output_type": "text",
+                                "content": (
+                                    "SQL 不完整或无法解析（缺少完整的 SELECT...FROM 结构），"
+                                    "已拦截不执行。请重新生成规范的 SELECT 语句："
+                                    "只选择回答问题所需的少量字段（建议 ≤10 列），"
+                                    "并确保含完整 FROM 表名与 WHERE 条件，不要列出整表全部列。"
+                                    "不确定字段名时，先执行："
+                                    "SELECT column_name FROM all_tab_columns "
+                                    "WHERE table_name='<表名>' 查看该表真实字段，"
+                                    "再针对性查询。"
+                                    + _breaker_suffix()
+                                ),
+                            }
+                        ]
+                    },
+                    ensure_ascii=False,
+                )
+            _col_count = _sel_m.group(1).count(",") + 1
             _MAX_AUTO_COLS = 12
             _untrimmed_upper = sql_stripped.upper()
             _too_long = len(sql_stripped) > 2000 or _col_count > 30
