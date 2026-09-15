@@ -1,10 +1,12 @@
 """Oracle connector using python-oracledb."""
 
+import os
+import threading
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple, Type
-from urllib.parse import quote_plus
 
 from sqlalchemy import text
+from sqlalchemy.engine import URL
 
 from dbgpt.core.awel.flow import (
     TAGS_ORDER_HIGH,
@@ -13,6 +15,20 @@ from dbgpt.core.awel.flow import (
 )
 from dbgpt.datasource.rdbms.base import RDBMSConnector, RDBMSDatasourceParameters
 from dbgpt.util.i18n_utils import _
+
+_ORACLE_INIT_LOCK = threading.Lock()
+
+
+def initialize_oracle_client():
+    """Enable optional Thick mode before SQLAlchemy makes its first connection."""
+    if os.getenv("ORACLE_THICK_MODE", "false").lower() != "true":
+        return
+    import oracledb
+
+    with _ORACLE_INIT_LOCK:
+        if oracledb.is_thin_mode():
+            # Linux resolves Instant Client from ldconfig/LD_LIBRARY_PATH.
+            oracledb.init_oracle_client()
 
 
 @auto_register_resource(
@@ -51,20 +67,17 @@ class OracleParameters(RDBMSDatasourceParameters):
     )
 
     def db_url(self, ssl: bool = False, charset: Optional[str] = None) -> str:
-        if self.service_name:
-            dsn = (
-                f"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={self.host})"
-                f"(PORT={self.port}))(CONNECT_DATA=(SERVICE_NAME={self.service_name})))"
-            )
-        elif self.sid:
-            dsn = (
-                f"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={self.host})"
-                f"(PORT={self.port}))(CONNECT_DATA=(SID={self.sid})))"
-            )
-        else:
+        if not self.service_name and not self.sid:
             raise ValueError("Either service_name or sid must be provided for Oracle.")
-
-        return f"{self.driver}://{self.user}:{self.password}@{dsn}"
+        return URL.create(
+            self.driver,
+            username=self.user,
+            password=self.password,
+            host=self.host,
+            port=int(self.port),
+            database=None if self.service_name else self.sid,
+            query={"service_name": self.service_name} if self.service_name else {},
+        ).render_as_string(hide_password=False)
 
     def create_connector(self) -> "OracleConnector":
         return OracleConnector.from_parameters(self)
@@ -74,6 +87,11 @@ class OracleConnector(RDBMSConnector):
     db_type: str = "oracle"
     db_dialect: str = "oracle"
     driver: str = "oracle+oracledb"
+
+    @classmethod
+    def from_uri(cls, database_uri, engine_args=None, **kwargs):
+        initialize_oracle_client()
+        return super().from_uri(database_uri, engine_args=engine_args, **kwargs)
 
     @classmethod
     def param_class(cls) -> Type[RDBMSDatasourceParameters]:
@@ -94,19 +112,15 @@ class OracleConnector(RDBMSConnector):
         if not sid and not service_name:
             raise ValueError("Must provide either sid or service_name")
 
-        if service_name:
-            dsn = (
-                f"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)"
-                f"(HOST={host})(PORT={port}))(CONNECT_DATA=(SERVICE_NAME={service_name})))"
-            )
-        else:
-            dsn = (
-                f"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={host})"
-                f"(PORT={port}))(CONNECT_DATA=(SID={sid})))"
-            )
-
-        bm_pwd = quote_plus(pwd)
-        db_url = f"{cls.driver}://{user}:{bm_pwd}@{dsn}"
+        db_url = URL.create(
+            cls.driver,
+            username=user,
+            password=pwd,
+            host=host,
+            port=int(port),
+            database=None if service_name else sid,
+            query={"service_name": service_name} if service_name else {},
+        )
 
         return cls.from_uri(db_url, engine_args=engine_args, **kwargs)
 
@@ -153,6 +167,12 @@ class OracleConnector(RDBMSConnector):
 
     def get_database_names(self) -> List[str]:
         with self.session_scope() as session:
+            if self._engine.dialect.server_version_info < (12,):
+                return [
+                    session.execute(
+                        text("SELECT sys_context('USERENV', 'DB_NAME') FROM dual")
+                    ).scalar()
+                ]
             is_cdb = session.execute(text("SELECT CDB FROM V$DATABASE")).fetchone()[0]
             if is_cdb == "YES":
                 pdbs = session.execute(
