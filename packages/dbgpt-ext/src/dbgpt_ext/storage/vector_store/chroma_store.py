@@ -297,6 +297,16 @@ class ChromaStore(VectorStoreBase):
             # Delete collection if it exists
             self._chroma_client.delete_collection(self._collection.name)
             SharedSystemClient.clear_system_cache()
+
+            # 【修复】删完重新 create_collection，刷新 self._collection 句柄
+            # 因为 clear_system_cache() 作废了所有缓存，必须拿新句柄才能继续写
+            collection_metadata = getattr(
+                self._vector_store_config, "collection_metadata", None
+            ) or {"hnsw:space": "cosine"}
+            self._collection = self.create_collection(
+                collection_name=self._collection_name,
+                collection_metadata=collection_metadata,
+            )
             return True
 
         except Exception as e:

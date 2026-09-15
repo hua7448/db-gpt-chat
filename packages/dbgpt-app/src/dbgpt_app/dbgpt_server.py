@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # fastapi import time cost about 0.05s
 from fastapi.staticfiles import StaticFiles
 
+from starlette.middleware.gzip import GZipMiddleware
 from dbgpt._version import version
 from dbgpt.component import SystemApp
 from dbgpt.configs.model_config import (
@@ -36,13 +37,42 @@ from dbgpt_app.component_configs import initialize_components
 from dbgpt_app.config import ApplicationConfig, ServiceWebParameters, SystemParameters
 from dbgpt_serve.core import add_exception_handler
 
+
+class _StaticOnlyGZipMiddleware(GZipMiddleware):
+    """GZip 中间件——只压缩静态资源，SSE 流式响应直通。
+
+    现场适配修正（2026-09-14）：
+    原版直接 `app.add_middleware(GZipMiddleware)` 是全局的，会对所有响应
+    启用 gzip。Starlette 的 GZipResponder 对流式响应（SSE，more_body=True）
+    逐块 `gzip_file.write()` 但**不 flush**，而 gzip.GzipFile 内部有压缩
+    缓冲，写入的字节不会立即落到响应流，只有流结束 close() 时才一次性
+    释放——导致 ReAct 的 step.start/step.chunk/step.done 等 SSE 事件被
+    积压在 gzip 缓冲里，前端全程看不到实时流程，直到整个问答结束才
+    一次性收到全部内容（表现为"一直在思考/转圈，结束才出结果"）。
+
+    修复：仅对静态资源路径（大 JS/图片）启用 gzip，/api 及 SSE 直通。
+    """
+
+    _STATIC_PREFIXES = ("/_next/static", "/images", "/swagger_static")
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+        path = scope.get("path", "") or ""
+        if path.startswith(self._STATIC_PREFIXES):
+            await super().__call__(scope, receive, send)
+        else:
+            await self.app(scope, receive, send)
+
+
 logger = logging.getLogger(__name__)
 ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(ROOT_PATH)
 
 app = create_app(
-    title=_("K-ICS Open API"),
-    description=_("K-ICS Open API"),
+    title=_("DB-GPT Open API"),
+    description=_("DB-GPT Open API"),
     version=version,
     openapi_tags=[],
 )
@@ -88,6 +118,22 @@ def mount_routers(app: FastAPI):
     app.include_router(recommend_question_v1, prefix="/api", tags=["RecommendQuestion"])
 
 
+def _immutable_static_files(directory: str) -> StaticFiles:
+    """StaticFiles that never re-fetches content-hashed assets.
+
+    现场适配：/_next/static 下的产物文件名都带内容 hash（内容不变名不变），
+    可安全长缓存，避免每次打开页面都重新下载十几 MB 解析。
+    """
+
+    class _ImmutableStaticFiles(StaticFiles):
+        def file_response(self, *args, **kwargs):
+            resp = super().file_response(*args, **kwargs)
+            resp.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+            return resp
+
+    return _ImmutableStaticFiles(directory=directory)
+
+
 def mount_static_files(app: FastAPI, param: ApplicationConfig):
     package_dir = os.path.dirname(os.path.abspath(__file__))
     if param.service.web.new_web_ui:
@@ -96,13 +142,20 @@ def mount_static_files(app: FastAPI, param: ApplicationConfig):
         static_file_path = os.path.join(package_dir, "static", "old_web")
 
     os.makedirs(STATIC_MESSAGE_IMG_PATH, exist_ok=True)
+
+    # 现场适配：对静态资源启用 gzip 压缩（原版未启用，整包明文传输大 JS 极慢）。
+    # 注意：不能用全局 GZipMiddleware——它会缓冲 SSE 流式响应（ReAct 步骤事件
+    # 被积压在 gzip 缓冲里，前端全程看不到实时流程）。只压缩静态资源路径。
+    app.add_middleware(_StaticOnlyGZipMiddleware, minimum_size=1024)
+
     app.mount(
         "/images",
         StaticFiles(directory=STATIC_MESSAGE_IMG_PATH, html=True),
         name="static2",
     )
     app.mount(
-        "/_next/static", StaticFiles(directory=static_file_path + "/_next/static")
+        "/_next/static",
+        _immutable_static_files(static_file_path + "/_next/static"),
     )
 
     # Serve the Next.js dynamic route page for /share/{token}.
@@ -172,40 +225,49 @@ def initialize_app(param: ApplicationConfig, args: List[str] = None):
     system_app.after_init()
 
     # Register default data sources
-    try:
-        from dbgpt.configs.model_config import PILOT_PATH, ROOT_PATH
-        from dbgpt_serve.datasource.manages.connect_config_db import ConnectConfigDao
+    # 【现场适配】丽水现场仅使用 LSRSDB，禁用 DB-GPT 内置示例库（Walmart_Sales）
+    # 自动注册：否则每次重建容器，只要元数据库里没有该记录，就会重新注入，
+    # 表现为"删了沃尔玛，重启又冒出来"。通过环境变量 KICS_DISABLE_DEFAULT_DATA_SOURCES
+    # 控制（现场 site.env 置 true），默认保持原逻辑。
+    if (
+        os.getenv("KICS_DISABLE_DEFAULT_DATA_SOURCES", "false").lower() == "true"
+    ):
+        logger.info("Default data sources registration disabled (KICS_DISABLE_DEFAULT_DATA_SOURCES=true)")
+    else:
+        try:
+            from dbgpt.configs.model_config import PILOT_PATH, ROOT_PATH
+            from dbgpt_serve.datasource.manages.connect_config_db import ConnectConfigDao
 
-        dao = ConnectConfigDao()
-        db_name = "Walmart_Sales"
-        if not dao.get_by_names(db_name):
-            candidate_paths = [
-                os.path.join(PILOT_PATH, "examples", "Walmart_Sales.db"),
-                os.path.join(
-                    ROOT_PATH, "docker", "examples", "dashboard", "Walmart_Sales.db"
-                ),
-            ]
-            db_absolute_path = next(
-                (p for p in candidate_paths if os.path.isfile(p)), None
-            )
-            if db_absolute_path is None:
-                logger.info(
-                    f"Skipping default data source '%s': file not found in any "
-                    f"{db_name} at {candidate_paths}"
+            dao = ConnectConfigDao()
+            db_name = "Walmart_Sales"
+            if not dao.get_by_names(db_name):
+                candidate_paths = [
+                    os.path.join(PILOT_PATH, "examples", "Walmart_Sales.db"),
+                    os.path.join(
+                        ROOT_PATH, "docker", "examples", "dashboard", "Walmart_Sales.db"
+                    ),
+                ]
+                db_absolute_path = next(
+                    (p for p in candidate_paths if os.path.isfile(p)), None
                 )
-            else:
-                dao.add_file_db(
-                    db_name=db_name,
-                    db_type="sqlite",
-                    db_path=db_absolute_path,
-                    comment="Default Walmart Sales example database",
-                )
-                logger.info(
-                    f"Successfully registered default data source: "
-                    f"{db_name} at {db_absolute_path}"
-                )
-    except Exception as e:
-        logger.error(f"Failed to register default data sources: {str(e)}")
+                if db_absolute_path is None:
+                    logger.info(
+                        f"Skipping default data source '%s': file not found in any "
+                        f"{db_name} at {candidate_paths}"
+                    )
+                else:
+                    dao.add_file_db(
+                        db_name=db_name,
+                        db_type="sqlite",
+                        db_path=db_absolute_path,
+                        comment="Default Walmart Sales example database",
+                    )
+                    logger.info(
+                        f"Successfully registered default data source: "
+                        f"{db_name} at {db_absolute_path}"
+                    )
+        except Exception as e:
+            logger.error(f"Failed to register default data sources: {str(e)}")
 
     binding_port = web_config.port
     binding_host = web_config.host
@@ -368,7 +430,7 @@ def load_config(config_file: str = None) -> ApplicationConfig:
 def parse_args():
     import argparse
 
-    parser = argparse.ArgumentParser(description="K-ICS Webserver")
+    parser = argparse.ArgumentParser(description="DB-GPT Webserver")
     parser.add_argument(
         "-c",
         "--config",

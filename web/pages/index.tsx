@@ -491,26 +491,21 @@ const EXAMPLE_CARDS = [
   {
     id: 'walmart_sales',
     icon: '📊',
-    title: '沃尔玛销售数据分析',
-    description: '分析沃尔玛销售CSV数据，生成可视化网页报告',
-    query:
-      '请全面分析这份沃尔玛销售数据，包括各门店销售趋势、假日影响、温度与油价对销售的影响等维度，生成一份精美的交互式网页分析报告。',
-    fileName: 'Walmart_Sales.csv',
-    fileType: 'text/csv',
-    fileSize: 98304, // ~96 KB
+    title: '困难人员认定记录数',
+    description: '统计全市当前有效的困难人员认定记录总数',
+    query: '全市目前处于有效状态的困难人员认定记录一共有多少条？',
+    dbName: 'LSRSDB',
     color: 'from-blue-500/10 to-cyan-500/10',
     borderColor: 'border-blue-200/60 dark:border-blue-800/40',
     iconBg: 'bg-blue-100 dark:bg-blue-900/40',
-    skillName: 'csv-data-analysis',
   },
   {
     id: 'db_profile_report',
     icon: '🗄️',
-    title: '数据库画像与分析报告',
-    description: '连接数据库后，生成数据库画像并生成可视化网页报告',
-    query:
-      '请分析当前连接的数据库，生成数据库画像（包括表结构、字段信息、数据量统计等），并生成一份精美的交互式网页分析报告。',
-    dbName: 'Walmart_Sales',
+    title: '就业登记记录数',
+    description: '统计全市当前有效的就业登记记录总数',
+    query: '全市目前处于有效状态的就业登记记录一共有多少条？',
+    dbName: 'LSRSDB',
     color: 'from-emerald-500/10 to-teal-500/10',
     borderColor: 'border-emerald-200/60 dark:border-emerald-800/40',
     iconBg: 'bg-emerald-100 dark:bg-emerald-900/40',
@@ -518,29 +513,24 @@ const EXAMPLE_CARDS = [
   {
     id: 'fin_report',
     icon: '📈',
-    title: '金融财报深度分析',
-    description: '分析浙江海翔药业年度报告，生成数据可视化报告',
-    query:
-      '请深度分析这份浙江海翔药业2019年年度报告，包括营收利润趋势、资产负债结构、现金流分析、关键财务指标等，生成一份专业的交互式网页分析报告。',
-    fileName: '2020-01-23__浙江海翔药业股份有限公司__002099__海翔药业__2019年__年度报告.pdf',
-    fileType: 'application/pdf',
-    fileSize: 2621440, // ~2.5 MB
+    title: '失业登记记录数',
+    description: '统计全市当前有效的失业登记记录总数',
+    query: '全市目前处于有效状态的失业登记记录一共有多少条？',
+    dbName: 'LSRSDB',
     color: 'from-violet-500/10 to-purple-500/10',
     borderColor: 'border-violet-200/60 dark:border-violet-800/40',
     iconBg: 'bg-violet-100 dark:bg-violet-900/40',
-    skillName: 'financial-report-analyzer',
   },
   {
     id: 'create_sql_skill',
     icon: '🛠️',
-    title: '创建SQL分析技能',
-    description: '使用skill-creator创建一个实用的SQL数据分析技能',
-    query:
-      '请使用 skill-creator 帮我创建一个实用的SQL数据分析技能，包含连接数据库、执行SQL查询和数据可视化等核心功能。',
+    title: '困难认定最多的区县',
+    description: '找出有效困难认定记录最多的区县',
+    query: '全市各区县里，有效状态的困难人员认定记录最多的是哪个区县？',
+    dbName: 'LSRSDB',
     color: 'from-amber-500/10 to-orange-500/10',
     borderColor: 'border-amber-200/60 dark:border-amber-800/40',
     iconBg: 'bg-amber-100 dark:bg-amber-900/40',
-    skillName: 'skill-creator',
   },
 ];
 
@@ -1087,6 +1077,15 @@ const Playground: NextPage = () => {
       return [];
     }
   });
+
+  // 【现场适配·默认库】数据源加载后自动选中 LSRSDB（丽水唯一业务库），
+  // 新会话无需人工选择数据库；若 LSRSDB 不存在则保持用户选择。
+  useEffect(() => {
+    if (Array.isArray(dataSources) && dataSources.length > 0 && !selectedDb) {
+      const lsrs = dataSources.find((ds: DataSource) => ds.db_name === 'LSRSDB');
+      if (lsrs) setSelectedDb(lsrs);
+    }
+  }, [dataSources, selectedDb]);
 
   // Fetch Knowledge Bases
   const { data: knowledgeSpaces, loading: _loadingKnowledge } = useRequest(async () => {

@@ -1553,20 +1553,147 @@ async def _react_agent_stream_impl(
     # Step 4: Load database connector if specified in ext_info
     database_connector = None
     database_context = ""
+    # 【现场适配·默认库】前端未指定数据库时，自动使用 LSRSDB（丽水人社唯一
+    # 业务库），避免用户每次手动选择；LSRSDB 不存在/连不上时保持无库走原逻辑。
+    if not database_name:
+        try:
+            _mgr = ConnectorManager.get_instance(CFG.SYSTEM_APP)
+            _mgr.get_connector("LSRSDB")
+            database_name = "LSRSDB"
+        except Exception:
+            pass
     if database_name:
         try:
             local_db_manager = ConnectorManager.get_instance(CFG.SYSTEM_APP)
             database_connector = local_db_manager.get_connector(database_name)
             table_names = list(database_connector.get_table_names())
-            table_info = database_connector.get_table_info_no_throw()
+            table_info = database_connector.get_table_info_no_throw()  # 全量兜底
+
+            # 【现场适配·核心】自动寻表（schema linking）：
+            # 优先用 DB 概要向量检索命中的 top-k 表结构注入提示词；
+            # 概要未建/检索为空时，自动降级为"紧凑表目录"（表名+列+注释，
+            # 替代全量宽表：宽表 100+ 列会引入噪声，模型易选错字段/翻库迷路）。
+            used_mode = "full-table"
+            try:
+                from dbgpt_serve.datasource.service.db_summary_client import (
+                    DBSummaryClient,
+                )
+
+                db_summary = DBSummaryClient(CFG.SYSTEM_APP)
+                hits = db_summary.get_db_summary(database_name, user_input, topk=5)
+                focused = [str(h).strip() for h in hits if str(h).strip()]
+                if focused:
+                    # 【现场适配·稳定性】命中表后注入【完整列结构】（列名+注释），
+                    # 而非向量检索 topk=5 的字段：DC05 有 132 列，top-5 会漏掉
+                    # AAB301/AAE100/AAC001 等关键列，模型只能猜或翻列结构 →
+                    # 输出不稳定/幻觉。完整列结构让模型一次拿到全部字段。
+                    used_mode = "schema-linking"
+
+                    hit_tables = []
+                    for h in focused:
+                        m = re.search(r"CREATE TABLE `?(\w+)`?", h)
+                        if m:
+                            hit_tables.append(m.group(1))
+                    if not hit_tables:
+                        hit_tables = sorted(
+                            t.strip() for t in re.findall(r"table_name:\s*(\S+)", "\n".join(focused))
+                        )
+                    column_lines = []
+                    for t in sorted(set(hit_tables)):
+                        try:
+                            cols = database_connector.get_columns(t)
+                        except Exception:  # noqa: BLE001
+                            cols = []
+                        col_str = ", ".join(
+                            f"{c['name']}({c.get('comment') or ''})"
+                            for c in (cols or [])
+                        )
+                        column_lines.append(f"{t}: {col_str}")
+                    if column_lines:
+                        table_info = (
+                            "\n".join(column_lines)
+                            + "\n\n（以上为按问题自动检索命中的相关表完整结构（表名: 列名(注释)）。"
+                            '如需查看其他表，可执行 SELECT table_name FROM all_tables'
+                            " 或 SELECT column_name, data_type FROM all_tab_columns "
+                            "WHERE table_name='<表名>' 自行确认。）"
+                        )
+                    else:
+                        table_info = "\n\n".join(focused)
+            except Exception as e:  # noqa: BLE001
+                logger.warning(
+                    f"schema linking retrieval failed: {e}"
+                )
+            if used_mode == "full-table":
+                # 降级：紧凑表目录（列名+注释），避免全量宽表噪声
+                catalog_lines = []
+                try:
+                    for t in sorted(database_connector.get_table_names()):
+                        try:
+                            cols = database_connector.get_columns(t)
+                        except Exception:  # noqa: BLE001
+                            cols = []
+                        col_str = ", ".join(
+                            f"{c['name']}({c.get('comment') or ''})"
+                            for c in (cols or [])
+                        )
+                        if len(cols) > 40:
+                            col_str += ", ..."
+                        catalog_lines.append(f"{t}: {col_str}")
+                except Exception as e:  # noqa: BLE001
+                    logger.warning(f"build compact catalog failed: {e}")
+                if catalog_lines:
+                    used_mode = "compact-catalog"
+                    table_info = (
+                        "\n".join(catalog_lines)
+                        + "\n\n（以上为数据库全部表的紧凑结构（表名: 列名(注释)）。"
+                        '如需查看指定表完整结构，可执行 SELECT column_name, data_type,'
+                        " comment FROM all_tab_columns "
+                        "WHERE table_name='<表名>' ORDER BY column_id。）"
+                    )
+            logger.info(
+                f"database {database_name} schema injected: mode={used_mode}"
+            )
+            # 【现场适配】丽水市行政区划代码→县名映射（基于回归库已验证数据）。
+            # 模型（qwen）缺乏浙江区划代码常识，若不给映射表，会把 AAB301='331123'
+            # 当成需要"查字典翻译"的对象，跑去翻 AB01/DC03 等无关表，最终答非所问。
+            district_map = (
+                "331102=莲都区，331121=青田县，331122=缙云县，331123=遂昌县，"
+                "331124=松阳县，331125=云和县，331126=庆元县，331127=景宁县，"
+                "331181=龙泉市，331199=市直/未分配。"
+            )
+            # 【现场适配·双向映射】模型（qwen）对 331122（缙云）有强先验记忆，
+            # 反查县名→代码时易落回 331122（曾把遂昌/松阳都错记成 331122）。
+            # 故补充"县名→代码"反向映射 + 强制查表指令，禁止凭记忆背诵。
+            district_map_reverse = (
+                "莲都区=331102，青田县=331121，缙云县=331122，遂昌县=331123，"
+                "松阳县=331124，云和县=331125，庆元县=331126，景宁县=331127，"
+                "龙泉市=331181，市直/未分配=331199。"
+            )
+            # 【现场适配·可维护性】业务表清单从连接器实时枚举（排除 AC01 人员基础表）。
+            # 丽水库后续新增业务表（如新登记表）时，此处自动跟随，无需改代码。
+            # 约定：除 AC01 外均为业务表，均含 AAE100 有效标记；若未来某表不含
+            # AAE100，模型应通过查询 all_tab_columns 自行确认后跳过该表的有效过滤。
+            business_tables = [
+                t for t in table_names if str(t).strip().upper() != "AC01"
+            ]
             database_context = f"""
 ## 数据库信息
 - 数据库名: {database_name}
 - 可用表: {", ".join(table_names)}
-- 表结构:
-{table_info}
+- 业务表清单（均有 AAE100 有效标记）: {", ".join(business_tables) or "（无）"}
 - 使用 'sql_query' 工具执行 SQL 查询
 - **只允许 SELECT 查询，禁止 INSERT/UPDATE/DELETE/DROP/ALTER/TRUNCATE**
+- **丽水行政区划代码双向对照（重要）：题面出现区县名时，必须先查下表取对应代码，禁止凭记忆背诵；代码→名称：{district_map} 名称→代码：{district_map_reverse}**
+- **人数统计口径（重要）：统计"人数/多少人"时，必须按身份证去重——JOIN AC01（人员基础信息表）ON AC01.AAC001=业务表.AAC001，用 COUNT(DISTINCT AC01.AAC002)；不要用 COUNT(*)，否则记录数与去重人数不符**
+- **通用字段说明（重要）：AAC001=人员编号、AAC002=身份证号、AAE100=当前有效标记（'1'=有效，'0'=失效），为业务库通用字段，直接使用不要臆造拼写（如 AA100/AA1000）**
+- **AC01 基础表口径（重要）：AC01 是人员基础信息表（供关联取 AAC001/AAC002 做身份证去重），JOIN AC01 时【不要】对其过滤 AAE100，否则会排除正常人员；有效标记只对业务表过滤**
+- **现状统计口径（重要）：凡跨表关联（JOIN / EXISTS / NOT EXISTS 子查询）计数"当前有效"时，对业务表清单中出现的【每一张】业务表都要各自过滤 AAE100='1'，不能只过滤主表。例：困难认定 DC05 与失业登记 DC04 关联时，须同时 DC05.AAE100='1' AND DC04.AAE100='1'；DC05 与就业登记 DC03 关联同理**
+- **排除统计口径（重要）：统计"没有做过 X 的人/记录"时，用 NOT EXISTS (SELECT 1 FROM X表 WHERE X表.AAC001=主表.AAC001 AND X表.AAE100='1') 排除，或 LEFT JOIN + 对方表字段 IS NULL，不要用总数相减等近似算法**
+- **字段选择指引（重要）：查询业务表时只 SELECT 回答问题所需的少量关键字段（建议 ≤10 列），禁止 SELECT * 或列出整表全部列；不确定字段名时可先查 all_tab_columns 确认**
+- **人员查询模板（重要）：当要查询"某人"（姓名/编号）的信息时，必须按此步骤：①先用一条精简 SQL 按姓名/身份证定位人员编号——SELECT aac001, aac003, aab299 FROM AC01 WHERE aac003='姓名' AND ROWNUM <= 5，只查这几个字段（注意 AC01 的区划列是 aab299 户口所在地行政区划代码，不是 aab301；aab301 只存在于 DC03/DC04/DC05 等业务表）；②拿到人员编号后，再对每张业务表（DC03/DC04/DC05/ZD11 等）各发一条带 WHERE aac001='该编号' 的查询，每次只查该表 5~8 个关键字段；③严禁把多张表的所有列一次性 SELECT 出来，严禁一次查询拉全表全部列——每次 SQL 字段数必须控制在 10 列以内、语句长度控制在 1500 字符以内；④提问文本/工具参数中禁止出现英文双引号 " 字符（包括给姓名加引号），如需引用请用中文引号「」或直接写，避免破坏 JSON 解析**
+
+- 表结构:
+{table_info}
 """
             logger.info(
                 f"Loaded database connector: {database_name} "
@@ -2328,12 +2455,24 @@ print(json.dumps(summary, ensure_ascii=False))
     agent_memory = AgentMemory(gpts_memory=gpt_memory)
 
     conv_serve = ConversationServe.get_instance(CFG.SYSTEM_APP)
+    # 【现场适配·标题固定】已有会话（非第一轮）保留已存 summary（可能是
+    # 第一轮生成的 LLM 标题），不要用当前问题覆盖；仅新会话用当前问题初始化。
+    # 否则每轮 L 后续 save_to_storage() 会把标题冲成"当前问题+[Database]前缀"。
+    _stored_summary = None
+    try:
+        from dbgpt_serve.conversation.api.schemas import ServeRequest as _ConvSvcReq
+
+        _svc_resp = _get_conversation_service().get(_ConvSvcReq(conv_uid=conv_id))
+        if _svc_resp is not None:
+            _stored_summary = getattr(_svc_resp, "user_input", None) or None
+    except Exception:
+        pass
     storage_conv = StorageConversation(
         conv_uid=conv_id,
         chat_mode=dialogue.chat_mode or "chat_react_agent",
         user_name=dialogue.user_name,
         sys_code=dialogue.sys_code,
-        summary=dialogue.user_input,
+        summary=_stored_summary or dialogue.user_input,
         app_code=dialogue.app_code,
         conv_storage=conv_serve.conv_storage,
         message_storage=conv_serve.message_storage,
@@ -2344,6 +2483,21 @@ print(json.dumps(summary, ensure_ascii=False))
     # before appending the current round, then pass it as historical_dialogues
     # so multi-turn follow-ups see the previous Q&A (mirrors hermes'
     # conversation_history passed into the loop).
+    # 【现场适配·多轮上下文净化】历史对话分级保留：
+    # 现象：同一会话连续追问不同主题时，早期轮次的问题/回答（常含大段表结构
+    # 描述、SQL、结果）原样进入 messages（base_agent 无条件全量带入），
+    # 模型被旧主题带偏 → 查错表/答非所问。
+    # 处理（分级保留，兼顾"早期记忆"与"污染防护"）：
+    #   ① 最近 _MAX_RECENT_TURNS 轮（默认 5 轮）：完整保留（问题+回答），
+    #      支持连续追问跟随；
+    #   ② 更早轮次：每条截断至 _MAX_EARLY_MSG_CHARS（默认 80 字符）——
+    #      问题基本完整、回答只留要点，既保留"用户问过什么"的长期记忆，
+    #      又避免早期大段表结构/SQL 噪声带偏当前问题；
+    #   ③ 所有轮次保持"问题/回答"成对结构，不破坏 base_agent 的奇偶角色分配。
+    # 说明：system prompt 每轮按当前问题重建（schema-linking），不受此处影响。
+    _MAX_RECENT_TURNS = 5
+    _MAX_RECENT_MSG_CHARS = 800
+    _MAX_EARLY_MSG_CHARS = 80
     historical_dialogues: List[AgentMessage] = []
     for _msg in storage_conv.get_history_message():
         if _msg.type == "human":
@@ -2363,13 +2517,24 @@ print(json.dumps(summary, ensure_ascii=False))
                 pass
             if _content:
                 historical_dialogues.append(AgentMessage(content=_content))
+    # 分级截断：更早轮次压缩，近期轮次完整
+    if len(historical_dialogues) > _MAX_RECENT_TURNS * 2:
+        for _m in historical_dialogues[:-(_MAX_RECENT_TURNS * 2)]:
+            if len(_m.content or "") > _MAX_EARLY_MSG_CHARS:
+                _m.content = _m.content[:_MAX_EARLY_MSG_CHARS] + "…"
+    for _m in historical_dialogues[-(_MAX_RECENT_TURNS * 2):]:
+        if len(_m.content or "") > _MAX_RECENT_MSG_CHARS:
+            _m.content = _m.content[:_MAX_RECENT_MSG_CHARS] + "…"
     storage_conv.add_user_message(user_input)
     context = AgentContext(
         conv_id=conv_id,
         gpts_app_code="react_agent",
         gpts_app_name="ReAct",
         language="zh",
-        temperature=dialogue.temperature or 0.2,
+        # 【现场适配·稳定性】温度封顶 0.2：网页默认 0.6 采样随机性太高，
+        # 同样问题每次回答都不同（有时对有时错/幻觉）。逻辑推理类任务
+        # 低温度能显著提升输出稳定性和可复现性。
+        temperature=min(dialogue.temperature or 0.2, 0.2),
         enable_context_management=True,
         enable_native_function_calling=True,
     )
@@ -3588,6 +3753,46 @@ Thought/Action/Action Input format shown above.
         final_answer,
     ):
         yield terminal_event
+
+    # 【现场适配·任务标题】新会话第一轮问答完成后，调用一次 LLM 生成简短
+    # 标题并更新 conversation summary（左侧【所有任务】列表显示标题而非
+    # 问题原文，参考豆包实现）。仅第一轮生成：historical_dialogues 为空
+    # 即新会话；标题基于用户问题生成，去掉 [Database]/[Knowledge] 前缀。
+    # 失败时保留原 summary（问题原文），不影响主流程。
+    if not historical_dialogues and user_input:
+        try:
+            from dbgpt.core import HumanPromptTemplate, ModelMessage, ModelRequest
+
+            _clean_q = re.sub(
+                r"^\[(?:Database|Knowledge):[^\]]*\]\s*", "", user_input
+            ).strip()
+            if _clean_q:
+                _title_template = HumanPromptTemplate.from_template(
+                    "为下面的用户问题生成一个简短的中文对话标题，"
+                    "10-20字以内，概括核心内容，直接输出标题不要解释：\n"
+                    "{question}"
+                )
+                _msgs = ModelMessage.from_base_messages(
+                    _title_template.format_messages(question=_clean_q)
+                )
+                _resp = await llm_client.generate(
+                    request=ModelRequest(
+                        model=dialogue.model_name,
+                        messages=_msgs,
+                        temperature=0.1,
+                        max_new_tokens=40,
+                    )
+                )
+                _title = (_resp.text or "").strip().strip('"').strip("“”")
+                _title = re.sub(r"\s+", " ", _title).strip("：:")
+                if _title and 2 <= len(_title) <= 40:
+                    storage_conv.summary = _title
+                    storage_conv.save_to_storage()
+                    logger.info(
+                        f"conversation {conv_id} title generated: {_title}"
+                    )
+        except Exception as e:
+            logger.warning(f"generate conversation title failed: {e}")
 
 
 # ---------------------------------------------------------------------------
