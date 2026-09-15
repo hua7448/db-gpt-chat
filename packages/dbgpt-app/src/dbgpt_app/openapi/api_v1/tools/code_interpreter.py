@@ -36,6 +36,12 @@ async def _run_python_file(
     through ``env``. Returns ``(returncode, stdout, stderr)``; ``returncode``
     is ``None`` when the run timed out.
     """
+    from . import docker_execution
+
+    if docker_execution.enabled():
+        return await docker_execution.run(
+            ["python", script_path], cwd=cwd, env=env, timeout=timeout
+        )
     proc = await asyncio.create_subprocess_exec(
         sys.executable,
         script_path,

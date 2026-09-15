@@ -1002,6 +1002,92 @@ __name__ = "__main__"
 """
 
         try:
+            from dbgpt.util.code import docker_execution
+
+            if docker_execution.enabled():
+                import shutil
+                import tempfile
+                from pathlib import Path
+
+                from dbgpt.configs.model_config import PILOT_PATH
+
+                root = os.path.join(PILOT_PATH, "tmp")
+                os.makedirs(root, exist_ok=True)
+                work_dir = output_dir or tempfile.mkdtemp(prefix="skill_", dir=root)
+                work_dir = str(Path(work_dir).resolve())
+                if not Path(work_dir).is_relative_to(Path("/app/pilot/tmp")):
+                    raise ValueError("Skill output must be under /app/pilot/tmp")
+                os.makedirs(work_dir, exist_ok=True)
+                image_exts = {".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp"}
+                before_images = {
+                    p
+                    for p in Path(work_dir).rglob("*")
+                    if p.suffix.lower() in image_exts
+                }
+                copied_skill = tempfile.mkdtemp(prefix="skill_src_", dir=work_dir)
+                shutil.copytree(skill_path, copied_skill, dirs_exist_ok=True)
+                runner = os.path.join(copied_skill, "scripts", "_run.py")
+                with open(runner, "w", encoding="utf-8") as handle:
+                    handle.write(wrapper_code)
+                files = {}
+
+                def collect_files(value):
+                    if isinstance(value, dict):
+                        for item in value.values():
+                            collect_files(item)
+                    elif isinstance(value, list):
+                        for item in value:
+                            collect_files(item)
+                    elif isinstance(value, str) and os.path.isfile(value):
+                        files[str(len(files))] = value
+
+                collect_files(adapted_args)
+                manifest = os.path.join(work_dir, "inputs.json")
+                with open(manifest, "w", encoding="utf-8") as handle:
+                    json.dump(files, handle)
+                status, stdout, stderr = await docker_execution.run(
+                    ["python", runner],
+                    work_dir,
+                    {
+                        "OUTPUT_DIR": work_dir,
+                        "PLOT_DIR": work_dir,
+                        "FILES_JSON": manifest,
+                    },
+                    120,
+                )
+                output_text = stdout.decode("utf-8", errors="replace").strip()
+                chunks = []
+                if output_text:
+                    try:
+                        parsed = json.loads(output_text)
+                        if isinstance(parsed, dict) and isinstance(
+                            parsed.get("chunks"), list
+                        ):
+                            chunks = parsed["chunks"]
+                        else:
+                            chunks = [{"output_type": "text", "content": output_text}]
+                    except ValueError:
+                        chunks = [{"output_type": "text", "content": output_text}]
+                if status != 0:
+                    chunks.append(
+                        {
+                            "output_type": "text",
+                            "content": f"Execution failed (exit={status}): "
+                            + stderr.decode("utf-8", errors="replace"),
+                        }
+                    )
+                for path in Path(work_dir).rglob("*"):
+                    if (
+                        path.suffix.lower() in image_exts
+                        and path.is_file()
+                        and path not in before_images
+                        and not path.is_relative_to(Path(copied_skill))
+                    ):
+                        chunks.append({"output_type": "image", "content": str(path)})
+                if not chunks:
+                    chunks = [{"output_type": "text", "content": "Script completed"}]
+                return json.dumps({"chunks": chunks}, ensure_ascii=False)
+
             import sys
             import tempfile
 

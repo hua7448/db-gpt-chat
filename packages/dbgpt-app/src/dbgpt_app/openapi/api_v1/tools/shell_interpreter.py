@@ -70,8 +70,35 @@ def make_shell_interpreter(react_state: Dict[str, Any]):
 
         output_text = ""
         try:
-            session = await runtime.create_session(session_id, config)
-            result = await session.execute(code)
+            from . import docker_execution
+
+            if docker_execution.enabled():
+                from .code_interpreter import build_execution_env
+
+                env = build_execution_env(
+                    work_dir=sandbox_work_dir,
+                    file_path=react_state.get("file_path"),
+                    files_json_path=react_state.get("files_json_path"),
+                )
+                status, stdout, stderr = await docker_execution.run(
+                    ["bash", "-c", code], sandbox_work_dir, env, config.timeout
+                )
+                from types import SimpleNamespace
+
+                result = SimpleNamespace(
+                    status=(
+                        ExecutionStatus.TIMEOUT
+                        if status is None
+                        else ExecutionStatus.SUCCESS
+                        if status == 0
+                        else ExecutionStatus.ERROR
+                    ),
+                    output=stdout.decode("utf-8", errors="replace"),
+                    error=stderr.decode("utf-8", errors="replace"),
+                )
+            else:
+                session = await runtime.create_session(session_id, config)
+                result = await session.execute(code)
 
             if result.status == ExecutionStatus.SUCCESS:
                 output_text = result.output or ""

@@ -1339,6 +1339,15 @@ def make_react_tools(
         ]
         return json.dumps({"chunks": chunks}, ensure_ascii=False)
 
+    from ..tools import docker_execution
+
+    if docker_execution.enabled():
+        from ..tools.code_interpreter import make_code_interpreter
+        from ..tools.shell_interpreter import make_shell_interpreter
+
+        code_interpreter = make_code_interpreter(react_state)
+        shell_interpreter = make_shell_interpreter(react_state)
+
     return {
         "load_skill": load_skill,
         "load_tools": load_tools,
