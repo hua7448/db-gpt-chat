@@ -567,6 +567,15 @@ async def skill_upload(
     if not file.filename:
         return Result.failed(code="E4001", msg="No file provided")
 
+    if (
+        file.filename in (".", "..")
+        or "/" in file.filename
+        or "\\" in file.filename
+        or "\x00" in file.filename
+        or Path(file.filename).stem in (".", "..")
+    ):
+        return Result.failed(code="E4001", msg="Invalid upload filename")
+
     upload_dir = Path(resolve_root_path("pilot/tmp") or "pilot/tmp").resolve()
     upload_dir.mkdir(parents=True, exist_ok=True)
 
