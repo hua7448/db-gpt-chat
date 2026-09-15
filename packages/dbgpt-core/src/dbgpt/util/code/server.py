@@ -82,6 +82,13 @@ class CodeServer(BaseComponent):
     async def exec(
         self, code: str, lang: str, resources: Optional[PyTaskResourceConfig] = None
     ) -> CodeResult:
+        from .docker_execution import enabled
+
+        if enabled():
+            raise RuntimeError(
+                "Legacy Lyric execution is disabled in Docker sandbox mode. "
+                "Use code_interpreter or execute_skill_script_file."
+            )
         await self._ensure_initialized()
         return await self._lcd.exec(code, lang, resources=resources)
 
@@ -93,6 +100,12 @@ class CodeServer(BaseComponent):
         lang: str = "python",
         resources: Optional[PyTaskResourceConfig] = None,
     ) -> CodeResult:
+        from .docker_execution import enabled
+
+        if enabled():
+            raise RuntimeError(
+                "AWEL Lyric execution is not enabled in Docker sandbox mode"
+            )
         await self._ensure_initialized()
         return await self._lcd.exec1(
             code, input_bytes, call_name, lang=lang, resources=resources
