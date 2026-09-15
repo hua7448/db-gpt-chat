@@ -1,6 +1,7 @@
 """Oracle connector using python-oracledb."""
 
 import os
+import threading
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple, Type
 from urllib.parse import quote_plus
@@ -14,6 +15,21 @@ from dbgpt.core.awel.flow import (
 )
 from dbgpt.datasource.rdbms.base import RDBMSConnector, RDBMSDatasourceParameters
 from dbgpt.util.i18n_utils import _
+
+
+_ORACLE_INIT_LOCK = threading.Lock()
+
+
+def initialize_oracle_client():
+    """Enable optional Thick mode before SQLAlchemy makes its first connection."""
+    if os.getenv("ORACLE_THICK_MODE", "false").lower() != "true":
+        return
+    import oracledb
+
+    with _ORACLE_INIT_LOCK:
+        if oracledb.is_thin_mode():
+            # Linux resolves Instant Client from ldconfig/LD_LIBRARY_PATH.
+            oracledb.init_oracle_client()
 
 
 @auto_register_resource(
@@ -87,6 +103,11 @@ class OracleConnector(RDBMSConnector):
     db_dialect: str = "oracle"
     driver: str = "oracle+oracledb"
 
+    @classmethod
+    def from_uri(cls, database_uri, engine_args=None, **kwargs):
+        initialize_oracle_client()
+        return super().from_uri(database_uri, engine_args=engine_args, **kwargs)
+
     def get_usable_table_names(self) -> list:
         # 【现场适配·根因修复】SQLAlchemy Oracle 反射枚举表走 user_tables（登录账号名下），
         # 业务表 owner=LS45 时返回空（即使 CURRENT_SCHEMA 已切）。改为按
@@ -136,6 +157,10 @@ class OracleConnector(RDBMSConnector):
         engine_args: Optional[dict] = None,
         **kwargs,
     ) -> "OracleConnector":
+        # 【现场适配】ORACLE_THICK_MODE=true 时先切厚客户端再建引擎，
+        # 覆盖 ORACLE_SCHEMA 分支（该分支不走 from_uri，须在此处初始化）。
+        initialize_oracle_client()
+
         if not sid and not service_name:
             raise ValueError("Must provide either sid or service_name")
 
