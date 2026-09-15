@@ -1,0 +1,31 @@
+[system]
+language = "zh"
+
+[service.web]
+host = "0.0.0.0"
+port = 5670
+
+[service.web.database]
+type = "sqlite"
+path = "pilot/meta_data/dbgpt.db"
+
+[rag.storage.vector]
+type = "chroma"
+persist_path = "pilot/data"
+
+[[models.llms]]
+name = "${env:SITE_LLM_MODEL:-qwen3.8_27b}"
+provider = "${env:SITE_LLM_PROVIDER:-proxy/customer_gateway}"
+api_base = "${env:SITE_LLM_URL:-https://10.146.16.36:8898/aiApi/workflow/llmProxy}"
+app_key = "${env:SITE_APP_KEY}"
+app_secret = "${env:SITE_APP_SECRET}"
+verify_tls = true
+ca_file = "${env:SITE_CA_FILE:-}"
+context_length = 32768
+read_timeout = 120
+
+[[models.embeddings]]
+name = "Qwen3-Embedding-0.6B"
+provider = "proxy/openai"
+api_url = "${env:SITE_EMBEDDING_URL:-http://10.84.97.104:8000/v1/embeddings}"
+api_key = "${env:SITE_EMBEDDING_API_KEY:-unused}"

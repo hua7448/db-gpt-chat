@@ -1,4 +1,12 @@
 .env
+.env*
+**/.env*
+configs/my/
+python_uploads/
+docs/private/
+vendor/
+pilot/tmp/
+pilot/meta_data/*.db*
 .git/
 ./.mypy_cache/
 models/

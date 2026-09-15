@@ -239,3 +239,12 @@ test_docs
 openspec/
 docs/superpowers/
 .gstack/
+
+# Offline deployment local credentials and downloaded binaries
+docker/offline/site.env
+docker/offline/vendor/
+docker/offline/data/
+docker/offline/certs/
+
+# Runtime agent uploads (sandbox workdir data)
+python_uploads/
