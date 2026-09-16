@@ -153,6 +153,10 @@ class OracleConnector(RDBMSConnector):
         engine_args: Optional[dict] = None,
         **kwargs,
     ) -> "OracleConnector":
+        # 【现场适配】ORACLE_THICK_MODE=true 时先切厚客户端再建引擎：
+        # 该路径（ORACLE_SCHEMA 适配走 from_uri_db）不经过 from_uri，须在此初始化。
+        initialize_oracle_client()
+
         if not sid and not service_name:
             raise ValueError("Must provide either sid or service_name")
 

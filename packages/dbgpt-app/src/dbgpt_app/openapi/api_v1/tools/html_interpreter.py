@@ -5,11 +5,100 @@ import logging
 import os
 import re
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 from dbgpt.agent.resource.tool.base import tool
 
 logger = logging.getLogger(__name__)
+
+# ── 离线资源本地化 ──────────────────────────────────────────────────────────
+# 报告 HTML 由模型生成，可能引用外部 CDN 脚本或样式表；现场是内网离线部署，
+# 浏览器取不到这些资源，图表会渲染成空白或被压成一条，页面还会卡在等待请求
+# 超时。这里在返回前统一处理：已知资源改写到本地 /images/vendor/ 路径（由
+# /images 静态挂载直接服务），清单外的外部引用一律剥离。
+VENDOR_URL_PREFIX = "/images/vendor"
+CHARTJS_LOCAL_URL = f"{VENDOR_URL_PREFIX}/chart.umd.min.js"
+
+_OFFLINE_REWRITE_RULES = [
+    (
+        re.compile(
+            r"""https?://cdn\.jsdelivr\.net/npm/chart\.js@[^/"'<>\s]+/dist/chart\.umd(?:\.min)?\.js""",
+            re.IGNORECASE,
+        ),
+        CHARTJS_LOCAL_URL,
+    ),
+    (
+        re.compile(
+            r"""https?://unpkg\.com/chart\.js@[^/"'<>\s]+/dist/chart\.umd(?:\.min)?\.js""",
+            re.IGNORECASE,
+        ),
+        CHARTJS_LOCAL_URL,
+    ),
+    (
+        re.compile(
+            r"""https?://cdn\.jsdelivr\.net/npm/chart\.js(?:@[^/"'<>\s]+)?/dist/chart\.js""",
+            re.IGNORECASE,
+        ),
+        CHARTJS_LOCAL_URL,
+    ),
+]
+
+_EXTERNAL_SCRIPT_RE = re.compile(
+    r"""<script\b[^>]*\bsrc\s*=\s*["']https?://[^"']+["'][^>]*>\s*</script\s*>""",
+    re.IGNORECASE,
+)
+_EXTERNAL_LINK_RE = re.compile(
+    r"""<link\b[^>]*\bhref\s*=\s*["']https?://[^"']+["'][^>]*?/?>""",
+    re.IGNORECASE,
+)
+_CHART_USAGE_RE = re.compile(
+    r"new\s+Chart\s*\(|Chart\.register|Chart\.defaults", re.IGNORECASE
+)
+_CHART_INCLUDED_RE = re.compile(
+    r"""<script\b[^>]*\bsrc\s*=\s*["'][^"']*chart[^"']*\.js["']""", re.IGNORECASE
+)
+
+
+def localize_offline_assets(html: str) -> Tuple[str, List[str]]:
+    """把报告 HTML 里的外部资源改写成本地可用形态，返回 (html, notes)。
+
+    notes 是处理说明，会写进工具 observation 供模型参考，便于模型下一轮直接
+    采用离线写法（不再引用外部 CDN）。
+    """
+    notes: List[str] = []
+
+    for pattern, local_url in _OFFLINE_REWRITE_RULES:
+        html, count = pattern.subn(local_url, html)
+        if count:
+            notes.append(f"{count} 处外部资源已改用本地副本")
+
+    stripped = 0
+    html, count = _EXTERNAL_SCRIPT_RE.subn("", html)
+    stripped += count
+    html, count = _EXTERNAL_LINK_RE.subn("", html)
+    stripped += count
+    if stripped:
+        notes.append(f"{stripped} 处外部资源引用已移除（离线环境不可用）")
+
+    if _CHART_USAGE_RE.search(html) and not _CHART_INCLUDED_RE.search(html):
+        tag = f'<script src="{CHARTJS_LOCAL_URL}"></script>'
+        if re.search(r"</head>", html, re.IGNORECASE):
+            html = re.sub(
+                r"</head>", tag + "</head>", html, count=1, flags=re.IGNORECASE
+            )
+        else:
+            html = tag + html
+        notes.append("已自动引入本地图表库")
+
+    lowered = html.lower()
+    if "</html>" not in lowered:
+        html = html.rstrip() + ("\n" if "</body>" in lowered else "\n</body>\n") + "</html>\n"
+        notes.append("报告结构不完整，已补齐结束标签")
+
+    if notes:
+        logger.info("html_interpreter: offline asset localization — %s", "; ".join(notes))
+
+    return html, notes
 
 
 def make_html_interpreter(react_state: Dict[str, Any], skills_dir: str):
@@ -274,15 +363,25 @@ def make_html_interpreter(react_state: Dict[str, Any], skills_dir: str):
         except Exception:
             pass
 
+        # 离线资源本地化：必须在图片 URL 修正之后、返回给前端之前执行，
+        # 否则模型引用的外部 CDN 会在现场（无外网）加载失败。
+        fixed_html, offline_notes = localize_offline_assets(fixed_html)
+
+        summary = (
+            "✅ HTML 报告已成功渲染并展示给用户。报告任务已完成，"
+            "请勿重复调用 html_interpreter 生成报告。"
+            "若全部目标已达成，请直接调用 terminate 结束。"
+        )
+        if offline_notes:
+            summary += (
+                "【离线资源处理】本环境无外网，外部资源不可用："
+                + "；".join(offline_notes)
+                + "。图表请使用本地 Chart.js（/images/vendor/chart.umd.min.js）"
+                "或内联 SVG 绘制，不要在 HTML 中引用任何外部地址。"
+            )
+
         chunks: List[Dict[str, Any]] = [
-            {
-                "output_type": "text",
-                "content": (
-                    "✅ HTML 报告已成功渲染并展示给用户。报告任务已完成，"
-                    "请勿重复调用 html_interpreter 生成报告。"
-                    "若全部目标已达成，请直接调用 terminate 结束。"
-                ),
-            },
+            {"output_type": "text", "content": summary},
             {"output_type": "html", "content": fixed_html, "title": title},
         ]
         return json.dumps({"chunks": chunks}, ensure_ascii=False)

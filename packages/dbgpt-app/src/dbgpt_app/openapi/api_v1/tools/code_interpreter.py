@@ -21,6 +21,27 @@ logger = logging.getLogger(__name__)
 
 EXECUTION_TIMEOUT_SECONDS = 60
 
+# 超长代码不再整段回传前端：模型偶尔会用 code_interpreter 拼装大段 HTML/JSON
+# 字符串，这类代码会在对话区铺满好几屏，而用户需要看的是结论不是源码。
+# 超过阈值时只保留开头若干行作为线索，并注明总行数。
+_CODE_SUMMARY_LINE_LIMIT = 40
+_CODE_SUMMARY_HEAD_LINES = 12
+
+
+def _code_chunk(code_text: str) -> Dict[str, Any]:
+    """构造回传给前端的代码块；超长时降级为摘要。"""
+    lines = code_text.splitlines()
+    if len(lines) <= _CODE_SUMMARY_LINE_LIMIT:
+        return {"output_type": "code", "content": code_text}
+    head = "\n".join(lines[:_CODE_SUMMARY_HEAD_LINES])
+    return {
+        "output_type": "code",
+        "content": (
+            f"{head}\n\n"
+            f"# …… 共 {len(lines)} 行，此处仅显示前 {_CODE_SUMMARY_HEAD_LINES} 行"
+        ),
+    }
+
 
 async def _run_python_file(
     script_path: str,
@@ -182,7 +203,7 @@ def make_code_interpreter(react_state: Dict[str, Any]):
                 return json.dumps(
                     {
                         "chunks": [
-                            {"output_type": "code", "content": code.strip()},
+                            _code_chunk(code.strip()),
                             {"output_type": "text", "content": error_msg},
                         ]
                     },
@@ -223,7 +244,7 @@ def make_code_interpreter(react_state: Dict[str, Any]):
             output_text = f"Execution error: {e}"
 
         chunks: List[Dict[str, Any]] = [
-            {"output_type": "code", "content": code.strip()},
+            _code_chunk(code.strip()),
         ]
         if output_text.strip():
             clean_output = output_text.strip()

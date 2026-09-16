@@ -58,7 +58,6 @@ import { sendGetRequest, sendSpacePostRequest } from '@/utils/request';
 import {
   ApiOutlined,
   ArrowUpOutlined,
-  AudioOutlined,
   BarChartOutlined,
   BellOutlined,
   BookOutlined,
@@ -3027,9 +3026,6 @@ const Playground: NextPage = () => {
                 </Button>
               )}
               <BellOutlined className='text-lg text-gray-500 cursor-pointer' />
-              <div className='flex items-center gap-2 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full text-xs font-medium'>
-                <ThunderboltOutlined className='text-yellow-500' /> <span>300</span>
-              </div>
               <Avatar size='small' icon={<UserOutlined />} className='bg-blue-500' />
             </div>
           </div>
@@ -3722,17 +3718,6 @@ const Playground: NextPage = () => {
                                   className='mr-0.5'
                                 />
                               )}
-
-                              {/* Voice Button */}
-                              <Tooltip title={t('voice_input')}>
-                                <Button
-                                  type='text'
-                                  shape='circle'
-                                  icon={<AudioOutlined className='text-gray-500 text-[18px]' />}
-                                  onClick={() => message.info(t('voice_input_coming_soon'))}
-                                  className='flex-shrink-0 h-9 w-9 transition-all duration-200 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800'
-                                />
-                              </Tooltip>
 
                               {/* Send Button with blue gradient + gloss animation.
                                   While a reply is streaming it becomes a stop button. */}
@@ -4684,18 +4669,6 @@ const Playground: NextPage = () => {
                         </div>
 
                         <div className='flex items-center gap-3'>
-                          {/* Voice Button */}
-                          <Tooltip title={t('voice_input')}>
-                            <Button
-                              type='text'
-                              shape='circle'
-                              size='large'
-                              icon={<AudioOutlined className='text-gray-500 text-xl' />}
-                              onClick={() => message.info(t('voice_input_coming_soon'))}
-                              className='flex-shrink-0 transition-all duration-200 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-800'
-                            />
-                          </Tooltip>
-
                           {/* Send Button with blue gradient + gloss */}
                           <Button
                             type='primary'
