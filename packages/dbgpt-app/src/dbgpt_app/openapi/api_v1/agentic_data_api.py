@@ -1550,18 +1550,12 @@ async def _react_agent_stream_impl(
 - Warning: Failed to load knowledge space '{knowledge_space}'. Error: {str(e)}
 """
 
-    # Step 4: Load database connector if specified in ext_info
+    # Step 4: Load the database connector only when the request explicitly
+    # selected one. A deployment may use any database name; silently forcing
+    # LSRSDB makes a missing local datasource look like a model connection
+    # failure and breaks installations that use the built-in or another DB.
     database_connector = None
     database_context = ""
-    # 【现场适配·默认库】前端未指定数据库时，自动使用 LSRSDB（丽水人社唯一
-    # 业务库），避免用户每次手动选择；LSRSDB 不存在/连不上时保持无库走原逻辑。
-    if not database_name:
-        try:
-            _mgr = ConnectorManager.get_instance(CFG.SYSTEM_APP)
-            _mgr.get_connector("LSRSDB")
-            database_name = "LSRSDB"
-        except Exception:
-            pass
     if database_name:
         try:
             local_db_manager = ConnectorManager.get_instance(CFG.SYSTEM_APP)

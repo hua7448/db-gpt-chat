@@ -38,6 +38,8 @@ class ProxyTokenizerWrapper:
             )
             return -1
         encoding = self._get_or_create_encoding_model(model_name)
+        if encoding is None:
+            return -1
         cnt = 0
         if isinstance(messages, str):
             cnt = len(encoding.encode(messages, disallowed_special=()))
@@ -65,23 +67,42 @@ class ProxyTokenizerWrapper:
             import tiktoken
 
             logger.info(
-                "tiktoken installed, using it to count tokens, tiktoken will download "
-                "tokenizer from network, also you can download it and put it in the "
-                "directory of environment variable TIKTOKEN_CACHE_DIR"
+                "tiktoken installed; use a local model mapping when one is available"
             )
         except ImportError:
             self._support_encoding = False
             logger.warning("tiktoken not installed, cannot count tokens, returning -1")
             return -1
+        if not model_name:
+            logger.info(
+                "No model name was provided; use the local token estimate instead of "
+                "downloading a tokenizer."
+            )
+            self._support_encoding = False
+            return None
         try:
-            if not model_name:
-                model_name = "gpt-3.5-turbo"
             self._encoding_model = tiktoken.model.encoding_for_model(model_name)
         except KeyError:
-            logger.warning(
-                f"{model_name}'s tokenizer not found, using cl100k_base encoding."
+            # OpenAI-compatible providers commonly expose model names that
+            # tiktoken does not know, such as qwen3.8-27b. Do not fall back to
+            # cl100k_base here: loading that encoding can start a network
+            # download and make the first chat request time out. The caller
+            # already has a character-based estimate for this case.
+            logger.info(
+                "%s has no local tiktoken mapping; use the local token estimate.",
+                model_name,
             )
-            self._encoding_model = tiktoken.get_encoding("cl100k_base")
+            self._support_encoding = False
+            return None
+        except Exception as exc:
+            logger.warning(
+                "Failed to load the tiktoken encoding for %s; use the local token "
+                "estimate: %s",
+                model_name,
+                exc,
+            )
+            self._support_encoding = False
+            return None
         return self._encoding_model
 
 

@@ -40,6 +40,7 @@ export const ChatZh: Resources['translation'] = {
   code_preview_close: '关闭',
   ask_data_question: '向您的数据库提问，上传CSV，或生成报告...',
   recommend_examples: '推荐示例',
+  common_questions: '常用问题',
   example_walmart_sales_title: '困难人员认定记录数',
   example_walmart_sales_desc: '统计全市当前有效的困难人员认定记录总数',
   example_walmart_sales_query: '全市目前处于有效状态的困难人员认定记录一共有多少条？',

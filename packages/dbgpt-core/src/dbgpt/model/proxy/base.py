@@ -139,23 +139,36 @@ class TiktokenProxyTokenizer(ProxyTokenizer):
             import tiktoken
 
             logger.info(
-                "tiktoken installed, using it to count tokens, tiktoken will download "
-                "tokenizer from network, also you can download it and put it in the "
-                "directory of environment variable TIKTOKEN_CACHE_DIR"
+                "tiktoken installed; use a local model mapping when one is available"
             )
         except ImportError:
             self._support_encoding = False
             logger.warning("tiktoken not installed, cannot count tokens")
             return None
+        if not model_name:
+            logger.info(
+                "No model name was provided; skip tiktoken and return an approximate "
+                "token count."
+            )
+            return None
         try:
-            if not model_name:
-                model_name = "gpt-3.5-turbo"
             encoding_model = tiktoken.model.encoding_for_model(model_name)
         except KeyError:
-            logger.warning(
-                f"{model_name}'s tokenizer not found, using cl100k_base encoding."
+            # Do not download cl100k_base for provider-specific model names.
+            # The proxy client can continue with -1, which is handled by its
+            # callers as an approximate count.
+            logger.info(
+                "%s has no local tiktoken mapping; skip tokenizer download.",
+                model_name,
             )
-            encoding_model = tiktoken.model.get_encoding("cl100k_base")
+            return None
+        except Exception as exc:
+            logger.warning(
+                "Failed to load the tiktoken encoding for %s; skip token counting: %s",
+                model_name,
+                exc,
+            )
+            return None
         if encoding_model:
             self._cache[model_name] = encoding_model
         return encoding_model

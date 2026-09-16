@@ -23,14 +23,37 @@ export function NewTaskProvider({ children }: { children: React.ReactNode }) {
 
   const coordinatorRef = useRef<NewTaskCoordinator | null>(null);
   if (!coordinatorRef.current) {
+    const getBrowserLocation = () => {
+      if (typeof window === 'undefined') return null;
+      return {
+        pathname: window.location.pathname.replace(/\/$/, '') || '/',
+        hasQueryOrHash: Boolean(window.location.search || window.location.hash),
+      };
+    };
+
+    const getCanonicalPath = () => {
+      const browserLocation = getBrowserLocation();
+      const currentPathname = browserLocation?.pathname ?? routerRef.current.pathname;
+      return currentPathname === '/lishui/chat' ? '/lishui/chat' : '/';
+    };
+
     coordinatorRef.current = createNewTaskCoordinator({
       isCanonicalHome: () => {
+        const browserLocation = getBrowserLocation();
+        if (browserLocation) {
+          return browserLocation.pathname === getCanonicalPath() && !browserLocation.hasQueryOrHash;
+        }
+
         const current = routerRef.current;
-        return current.pathname === '/' && current.asPath === '/';
+        const pathWithoutHash = current.asPath.split('#', 1)[0];
+        const hasQuery = pathWithoutHash.includes('?');
+        const currentPath = pathWithoutHash.split('?', 1)[0].replace(/\/$/, '') || '/';
+        return currentPath === getCanonicalPath() && !hasQuery;
       },
       goCanonicalHome: async () => {
         const current = routerRef.current;
-        await current.replace('/', undefined, { shallow: current.pathname === '/' });
+        const targetPath = getCanonicalPath();
+        await current.replace(targetPath, undefined, { shallow: current.pathname === targetPath });
       },
     });
   }

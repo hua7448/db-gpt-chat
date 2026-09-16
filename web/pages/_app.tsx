@@ -92,9 +92,12 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
   }
 
   const renderContent = () => {
-    // Hide sidebar for mobile, share pages, and task replay mode (from_task)
+    // Hide sidebar for mobile, share pages, task replay mode (from_task), and lishui debug chat
     const hideSidebar =
-      router.pathname.includes('mobile') || router.pathname.startsWith('/share') || !!router.query.from_task;
+      router.pathname.includes('mobile') ||
+      router.pathname.startsWith('/share') ||
+      router.pathname.startsWith('/lishui') ||
+      !!router.query.from_task;
 
     if (router.pathname.includes('mobile') || router.pathname.startsWith('/share')) {
       return <>{children}</>;

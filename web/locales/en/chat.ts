@@ -32,18 +32,17 @@ export const ChatEn = {
   code_preview_close: 'Close',
   ask_data_question: 'Ask a question about your database, upload a CSV, or generate a report...',
   recommend_examples: 'Recommended Examples',
+  common_questions: 'Common Questions',
   example_walmart_sales_title: 'Difficult Certification Record Count',
   example_walmart_sales_desc: 'Count currently valid difficult-personnel certification records',
   example_walmart_sales_query:
     'How many currently valid difficult-personnel certification records are there in the city?',
   example_db_profile_report_title: 'Employment Registration Count',
   example_db_profile_report_desc: 'Count currently valid employment registration records',
-  example_db_profile_report_query:
-    'How many currently valid employment registration records are there in the city?',
+  example_db_profile_report_query: 'How many currently valid employment registration records are there in the city?',
   example_fin_report_title: 'Unemployment Registration Count',
   example_fin_report_desc: 'Count currently valid unemployment registration records',
-  example_fin_report_query:
-    'How many currently valid unemployment registration records are there in the city?',
+  example_fin_report_query: 'How many currently valid unemployment registration records are there in the city?',
   example_create_sql_skill_title: 'District with Most Certifications',
   example_create_sql_skill_desc: 'Find the district with the most valid difficult certification records',
   example_create_sql_skill_query:
