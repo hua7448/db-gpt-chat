@@ -38,10 +38,10 @@ from dbgpt_app.config import ApplicationConfig, ServiceWebParameters, SystemPara
 from dbgpt_serve.core import add_exception_handler
 
 
-class _StaticOnlyGZipMiddleware(GZipMiddleware):
-    """GZip 中间件——只压缩静态资源，SSE 流式响应直通。
+class _SelectiveGZipMiddleware(GZipMiddleware):
+    """GZip 中间件——静态资源 + 大数据 JSON 接口压缩，SSE 流式直通。
 
-    现场适配修正（2026-09-14）：
+    现场适配修正（2026-09-14 + 09-16）：
     原版直接 `app.add_middleware(GZipMiddleware)` 是全局的，会对所有响应
     启用 gzip。Starlette 的 GZipResponder 对流式响应（SSE，more_body=True）
     逐块 `gzip_file.write()` 但**不 flush**，而 gzip.GzipFile 内部有压缩
@@ -50,17 +50,19 @@ class _StaticOnlyGZipMiddleware(GZipMiddleware):
     积压在 gzip 缓冲里，前端全程看不到实时流程，直到整个问答结束才
     一次性收到全部内容（表现为"一直在思考/转圈，结束才出结果"）。
 
-    修复：仅对静态资源路径（大 JS/图片）启用 gzip，/api 及 SSE 直通。
+    修复：仅对静态资源路径（大 JS/图片）和确认非流式的 JSON 接口
+    （如 observability trace 全量响应，单条可达数 MB）启用 gzip，
+    /api 其余路径（含 SSE 对话流）直通。
     """
 
-    _STATIC_PREFIXES = ("/_next/static", "/images", "/swagger_static")
+    _COMPRESS_PREFIXES = ("/_next/static", "/images", "/swagger_static", "/api/v1/observability")
 
     async def __call__(self, scope, receive, send):
         if scope["type"] != "http":
             await self.app(scope, receive, send)
             return
         path = scope.get("path", "") or ""
-        if path.startswith(self._STATIC_PREFIXES):
+        if path.startswith(self._COMPRESS_PREFIXES):
             await super().__call__(scope, receive, send)
         else:
             await self.app(scope, receive, send)
@@ -146,7 +148,7 @@ def mount_static_files(app: FastAPI, param: ApplicationConfig):
     # 现场适配：对静态资源启用 gzip 压缩（原版未启用，整包明文传输大 JS 极慢）。
     # 注意：不能用全局 GZipMiddleware——它会缓冲 SSE 流式响应（ReAct 步骤事件
     # 被积压在 gzip 缓冲里，前端全程看不到实时流程）。只压缩静态资源路径。
-    app.add_middleware(_StaticOnlyGZipMiddleware, minimum_size=1024)
+    app.add_middleware(_SelectiveGZipMiddleware, minimum_size=1024)
 
     app.mount(
         "/images",

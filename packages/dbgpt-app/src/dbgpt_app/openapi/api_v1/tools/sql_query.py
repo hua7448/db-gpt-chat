@@ -1,6 +1,7 @@
 """sql_query tool — read-only SQL query against the selected database."""
 
 import json
+import re
 from typing import Any, Dict, Optional
 
 from dbgpt.agent.resource.tool.base import tool
@@ -42,6 +43,41 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
                     "换策略后可以继续查询——重点是先拿到正确的列名，不要凭空猜列名。"
                 )
             return ""
+
+        # ── 重复查询拦截 + 元数据探测上限（方案 D，2026-09-15 新增）──
+        # 背景：模型遇到"库里根本没有的信息"（如编码含义无字典表）时，会反复
+        # "换个表再找一遍"，实测把 50 轮全部耗尽、最后什么都没答出来（用户只看到
+        # 被截断的半截 SQL）。规则约束在长循环里会被模型遗忘，这里加两道硬闸门：
+        # ① 完全相同的 SQL 只执行一次；② 表结构/列注释探测超过上限即拦截。
+        _META_LIMIT = 5
+        _normalized = " ".join(sql.split()).lower()
+
+        def _blocked(message: str) -> str:
+            return json.dumps(
+                {"chunks": [{"output_type": "text", "content": message}]},
+                ensure_ascii=False,
+            )
+
+        _seen = react_state.setdefault("sql_query_seen", set())
+        if _normalized in _seen:
+            return _blocked(
+                "【重复查询已拦截】这条 SQL 本次问答中已经执行过，结果与上次完全相同，"
+                "不再重复执行。请立刻停止试探：已拿到所需数据就直接汇总作答；"
+                "若确认库中无法取得（例如缺少编码对照表），请说明缺口并结束本轮，"
+                "不要再用同类查询反复尝试。"
+            )
+
+        if re.search(r"\ball_(?:tab|col)_(?:columns|comments)\b", sql, re.IGNORECASE):
+            _probe = int(react_state.get("sql_query_meta_probe", 0)) + 1
+            react_state["sql_query_meta_probe"] = _probe
+            if _probe > _META_LIMIT:
+                return _blocked(
+                    "【元数据探测已超限】本次问答查询表结构/列注释已达 "
+                    f"{_META_LIMIT} 次上限。本库的列注释只写字段名（如“学历”），"
+                    "不含编码取值含义，继续查表结构不会得到新信息。请立刻改用已有"
+                    "信息作答：编码含义无法确定时，直接以编码形式给出统计结果"
+                    "（例：aac011='10' 共 N 人），并注明「编码含义待业务方确认」。"
+                )
 
         if database_connector is None:
             _mark_fail()
@@ -191,8 +227,9 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
         try:
             sql_stripped = sql_stripped or ""
             # 11g 兜底：FETCH FIRST → ROWNUM 改写
-            import re
-
+            # 注意：re 已在模块顶部导入，此处不可再 import——函数内出现 import re
+            # 会让 re 变成整个函数的局部变量，导致函数前段的 re.search 抛
+            # UnboundLocalError（2026-09-15 实测踩到）。
             m = re.search(
                 r"\s+FETCH\s+FIRST\s+(\d+)\s+ROWS\s+ONLY\s*$", sql_stripped, re.IGNORECASE
             )
@@ -250,6 +287,7 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
                     f"(Total rows: {len(rows)})"
                 )
 
+            _seen.add(_normalized)
             _mark_ok()
             return json.dumps(
                 {"chunks": [{"output_type": "markdown", "content": table}]},

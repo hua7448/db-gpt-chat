@@ -227,9 +227,21 @@ class AIWrapper:
     def _get_span_metadata(self, payload: Dict) -> Dict:
         metadata = {k: v for k, v in payload.items()}
 
-        metadata["messages"] = list(
-            map(lambda m: m if isinstance(m, dict) else m.dict(), metadata["messages"])
-        )
+        def _as_dict(m):
+            return m if isinstance(m, dict) else m.dict()
+
+        # The trace UI only renders the system prompt from this span
+        # (ConversationTracePanel reads messages[role==system]); the full
+        # dialogue history is not consumed anywhere and dominates the trace
+        # payload. Keep only the system message.
+        messages = metadata.get("messages")
+        if isinstance(messages, list):
+            metadata["messages"] = [
+                _as_dict(m) for m in messages if _as_dict(m).get("role") == "system"
+            ]
+        # Tool definitions are never read by the trace UI and are the second
+        # largest field; drop them entirely.
+        metadata.pop("tools", None)
         return metadata
 
     def _llm_messages_convert(self, params):
