@@ -106,6 +106,22 @@ alternating #FFFFFF and #F9FAFB, numeric columns right-aligned.
 """
 
 
+# 已完成步骤台账（2026-09-16 新增）：把 DB-GPT 的 task_progress 接回我们的自定义
+# system prompt。此前 workflow_prompt 作为 bind_prompt 会顶掉内置 _REACT_SYSTEM_TEMPLATE，
+# 模型因此收不到“禁止重复已完成动作”的指令；报告类任务会在已查过的维度间交替
+# 重查、把轮次耗尽。此处必须用【普通字符串】而非 f-string —— f-string 会把 {{ }} 转义
+# 成字面 { }，jinja2 就取不到 task_progress 变量了。
+TASK_PROGRESS_SECTION = """
+{% if task_progress %}
+## 已完成的步骤台账（禁止重复）
+{{ task_progress }}
+以上步骤【已经完成】。禁止重复执行同一个查询、同一个字段或同一个统计维度；
+请直接推进尚未完成的步骤。若渲染报告所需的维度已经齐备，立即渲染并结束本轮，
+不要再以“让报告更完整”为由继续收集更多维度。
+{% endif %}
+"""
+
+
 async def _resolve_model_context_tokens(
     llm_client: Any, model_name: Optional[str]
 ) -> Optional[int]:
@@ -3159,7 +3175,7 @@ Thought/Action/Action Input format shown above.
 
     # 追加 HTML 报告规范：skill / full 两种工作流共用同一份，统一报告观感，
     # 并保证报告在离线环境下可正常渲染（不使用任何外部资源）。
-    workflow_prompt = workflow_prompt + HTML_REPORT_STYLE_GUIDE
+    workflow_prompt = workflow_prompt + HTML_REPORT_STYLE_GUIDE + TASK_PROGRESS_SECTION
 
     # Convert workflow_prompt to PromptTemplate so it is used as system prompt
     # Use jinja2 format to avoid issues with JSON braces { } in the prompt

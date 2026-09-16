@@ -7,6 +7,66 @@ from typing import Any, Dict, Optional
 from dbgpt.agent.resource.tool.base import tool
 
 
+# ── 维度指纹闸门（2026-09-16 新增）──────────────────────────────────
+# 背景：报告类任务中模型会在【已统计过的维度之间交替重查】（实测出现
+# "按年份分布" ↔ "按类别分布" 来回十几次），因为每条 SQL 的文本不同（尤其模型
+# 生成的语句常被截断或微调），上面那道"完全相同 SQL 只执行一次"的闸门永远不命中
+# → 实测把 50 轮全部耗尽、用户什么也拿不到。这里按 (主表, GROUP BY 维度键) 生成
+# "维度指纹"，同一指纹超过 _DIM_QUERY_LIMIT 次即拦截，直接打断交替循环。
+# 只对含 GROUP BY 的聚合查询生效——那才是"按某个维度做分布统计"。
+_DIM_QUERY_LIMIT = 2
+
+
+def _split_top_level(text: str):
+    """按顶层逗号切分，括号内的逗号不切（TO_CHAR(x,'YYYY') 算一项）。"""
+    parts, depth, cur = [], 0, []
+    for ch in text:
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth = max(0, depth - 1)
+        if ch == "," and depth == 0:
+            parts.append("".join(cur))
+            cur = []
+        else:
+            cur.append(ch)
+    parts.append("".join(cur))
+    return [x.strip() for x in parts if x.strip()]
+
+
+def _dimension_fingerprint(sql_text: str) -> Optional[str]:
+    """维度指纹 = "<主表>|<归一化并排序后的 GROUP BY 键集合>"；非聚合查询返回 None。
+
+    归一化目的：让"同一维度的不同写法"（列顺序不同、带表别名 d.aac011、
+    大小写与空格差异）落到同一个指纹上，从而识别出重复统计。
+    """
+    # 先去一层括号，避免 EXTRACT(YEAR FROM AAE044) 里的 FROM 被误当成主表
+    flat = re.sub(r"\([^()]*\)", " ", sql_text)
+    m_tbl = re.search(r"\bFROM\s+([A-Za-z_][\w$#.]*)", flat, re.I)
+    if not m_tbl:
+        return None
+    table = m_tbl.group(1).split(".")[-1].upper()
+
+    m_grp = re.search(
+        r"\bGROUP\s+BY\s+(.+?)(?:\bORDER\s+BY\b|\bHAVING\b|\bFETCH\b|\bOFFSET\b|$)",
+        sql_text,
+        re.I | re.S,
+    )
+    if not m_grp:
+        return None
+
+    keys = []
+    for part in _split_top_level(m_grp.group(1)):
+        part = re.sub(r"\b\w+\.(\w+)", r"\1", part)      # 去掉表别名前缀
+        part = re.sub(r"\s+", " ", part).strip().lower()      # 归一化空白与大小写
+        if part:
+            keys.append(part)
+    if not keys:
+        return None
+    return "%s|%s" % (table, ",".join(sorted(keys)))
+
+
+
 def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any]):
     @tool(
         description=(
@@ -145,6 +205,21 @@ def make_sql_query(react_state: Dict[str, Any], database_connector: Optional[Any
                     },
                     ensure_ascii=False,
                 )
+            # 【维度指纹闸门】同一 (主表, GROUP BY 列集合) 的统计维度最多执行
+            # _DIM_QUERY_LIMIT 次；超出即拦截，打断"交替重查已查过维度"的循环。
+            _dim_fp = _dimension_fingerprint(sql_stripped)
+            if _dim_fp is not None:
+                _dim_counts = react_state.setdefault("sql_query_dim_seen", {})
+                _dim_counts[_dim_fp] = int(_dim_counts.get(_dim_fp, 0)) + 1
+                if _dim_counts[_dim_fp] > _DIM_QUERY_LIMIT:
+                    _dim_tbl, _, _dim_cols = _dim_fp.partition("|")
+                    return _blocked(
+                        "【同一维度重复统计已拦截】本次问答中已经统计过「表 %s 按 %s "
+                        "分组」这个维度，结果与上次完全相同，不再重复执行。请立刻停止"
+                        "收集更多维度：直接使用已经获得的数据渲染报告并结束本轮。"
+                        % (_dim_tbl, _dim_cols)
+                    )
+
             _col_count = _sel_m.group(1).count(",") + 1
             _MAX_AUTO_COLS = 12
             _untrimmed_upper = sql_stripped.upper()
