@@ -77,8 +77,34 @@ AUTO_DATA_MARKER_PATTERN = re.compile(
 )
 
 # HTML 报告规范（skill / full 两种工作流共用一份，避免风格漂移）。
+# 现场是内网离线部署：任何外部 CDN 引用都会加载失败——图表渲染成空白或被压扁、
+# 页面还会卡在请求超时，因此这里明确禁用外部资源并指定内置的本地图表库。
+# 注意：本常量在 f-string 之外拼接，CSS 花括号无需转义。
 HTML_REPORT_STYLE_GUIDE = """
+
 ## HTML Report Style Guide (mandatory)
+1. No external resources: this deployment has no internet access. Never reference
+CDN scripts, external stylesheets, web fonts or remote images. Any <script src>
+or <link href> pointing at an external domain is removed by the system, which
+breaks the report page.
+2. Charts: use the bundled Chart.js. Reference it once with
+<script src="/images/vendor/chart.umd.min.js"></script>, then draw with
+new Chart(canvasElement, options). Inline SVG is also acceptable for simple
+charts. Never use echarts, d3, tailwind, font-awesome or any other library loaded
+from the internet.
+3. Layout: page background #F5F6FA with 24px padding; each section in a white card
+(border 1px solid #E5E7EB, border-radius 12px, padding 20px, margin-bottom 16px);
+content column max-width 1100px, centered.
+4. Typography: font-family system-ui, "Microsoft YaHei", sans-serif. Page title
+22px/600, section title 16px/600, body text 14px/400 with line-height 1.7,
+secondary text 12px #6B7280.
+5. Colors: primary #2563EB; chart palette #2563EB #F59E0B #10B981 #8B5CF6 #EF4444
+#06B6D4 #F97316 #64748B #EC4899 #84CC16 #6366F1.
+6. Tables: full width, header row background #2563EB with white text, body rows
+alternating #FFFFFF and #F9FAFB, numeric columns right-aligned.
+7. Output ONE complete, self-contained HTML document (DOCTYPE, html, head, body).
+"""
+
 
 async def _resolve_model_context_tokens(
     llm_client: Any, model_name: Optional[str]
@@ -1663,6 +1689,13 @@ async def _react_agent_stream_impl(
                 "松阳县=331124，云和县=331125，庆元县=331126，景宁县=331127，"
                 "龙泉市=331181，市直/未分配=331199。"
             )
+            # 【现场适配·业务码表 / 幻觉防护】模型对没有对照表的编码字段会"从相邻
+            # 字段反推含义"：2026-09-15 实测它拿 AC01 的毕业学校名称去推 AAC011 学历
+            # 代码，编出 "10=小学本科""21=大学专科"等错误映射（GB/T 4658-2006 实为
+            # 研究生教育、大学本科毕业），会把错误结论直接交给业务方。
+            # 【重要】此处刻意【不硬编码任何码表】：国家标准与丽水库实际口径未必一致
+            # （实测已出现国标外的 100/105），硬编码一份可能错的映射比不写更危险。
+            # 码表必须取自本库的代码字典表或业务方确认 → 只给"去哪取"的溯源规则。
             # 【现场适配·可维护性】业务表清单从连接器实时枚举（排除 AC01 人员基础表）。
             # 丽水库后续新增业务表（如新登记表）时，此处自动跟随，无需改代码。
             # 约定：除 AC01 外均为业务表，均含 AAE100 有效标记；若未来某表不含
@@ -1680,6 +1713,11 @@ async def _react_agent_stream_impl(
 - **丽水行政区划代码双向对照（重要）：题面出现区县名时，必须先查下表取对应代码，禁止凭记忆背诵；代码→名称：{district_map} 名称→代码：{district_map_reverse}**
 - **人数统计口径（重要）：统计"人数/多少人"时，必须按身份证去重——JOIN AC01（人员基础信息表）ON AC01.AAC001=业务表.AAC001，用 COUNT(DISTINCT AC01.AAC002)；不要用 COUNT(*)，否则记录数与去重人数不符**
 - **通用字段说明（重要）：AAC001=人员编号、AAC002=身份证号、AAE100=当前有效标记（'1'=有效，'0'=失效），为业务库通用字段，直接使用不要臆造拼写（如 AA100/AA1000）**
+- **编码字段处理规则（重要，动手前先读这条）：解码类字段（学历 AAC011、性别 AAC004、民族 AAC005 等）按序找含义——① 查 all_tab_columns / all_col_comments 的 comment；② 查库内代码字典表（人社系统常见 AA10：AAA100=代码类别、AAA102=代码值、AAA103=代码名称）；③ 用 question 工具向用户确认。**这三步最多走一遍。**
+- **【已现场核实】本库没有代码字典表**：AA10 不存在，列注释只写字段名（如"学历"）、不含取值含义 → 第 ② 步直接跳过；**不要再尝试别的"可能的字典表"，也不要反复查表结构**，已确认无效，继续试探只会耗尽轮次、让用户什么结果都拿不到。
+- **查不到含义也必须给结果（重要）**：直接以编码形式给出统计，例如 aac011='10' 共 1247 人、'21' 共 646 人，并注明「编码含义未在本库取得，需业务方确认」。**禁止**因为含义未知而拒绝作答或继续搜索——这类结果是可以交付的。
+- **【严禁】依据其它字段内容（毕业学校名称、单位名称等）反推编码含义，【严禁】凭个人印象或常识编造名称**——实测曾把 AAC011='10' 说成"小学本科"、'21' 说成"大学专科"（国家标准实为研究生教育、大学本科毕业）。
+- **试错与收尾（重要）：同一张表/同一个字段最多确认一次；连续两次查询得到同样结论就必须停止，禁止"换个表名再找一遍"这类无效搜索（实测曾因此把 50 轮全部耗尽）；系统会对完全重复的 SQL 和超量的表结构查询直接拦截，收到拦截提示就说明方向已错，必须立刻改用已有信息作答。若已无有效手段，立即汇总已知结果、说明缺口并结束，不要输出半截 SQL。**
 - **AC01 基础表口径（重要）：AC01 是人员基础信息表（供关联取 AAC001/AAC002 做身份证去重），JOIN AC01 时【不要】对其过滤 AAE100，否则会排除正常人员；有效标记只对业务表过滤**
 - **现状统计口径（重要）：凡跨表关联（JOIN / EXISTS / NOT EXISTS 子查询）计数"当前有效"时，对业务表清单中出现的【每一张】业务表都要各自过滤 AAE100='1'，不能只过滤主表。例：困难认定 DC05 与失业登记 DC04 关联时，须同时 DC05.AAE100='1' AND DC04.AAE100='1'；DC05 与就业登记 DC03 关联同理**
 - **排除统计口径（重要）：统计"没有做过 X 的人/记录"时，用 NOT EXISTS (SELECT 1 FROM X表 WHERE X表.AAC001=主表.AAC001 AND X表.AAE100='1') 排除，或 LEFT JOIN + 对方表字段 IS NULL，不要用总数相减等近似算法**
@@ -3109,7 +3147,9 @@ Thought/Action/Action Input format shown above.
     # --- End connector system prompt injection ---
 
     # 追加 HTML 报告规范：skill / full 两种工作流共用同一份，统一报告观感，
+    # 并保证报告在离线环境下可正常渲染（不使用任何外部资源）。
     workflow_prompt = workflow_prompt + HTML_REPORT_STYLE_GUIDE
+
     # Convert workflow_prompt to PromptTemplate so it is used as system prompt
     # Use jinja2 format to avoid issues with JSON braces { } in the prompt
     workflow_prompt_template = PromptTemplate(
@@ -3119,7 +3159,10 @@ Thought/Action/Action Input format shown above.
     )
 
     agent_builder = (
-        ToolCallingReActAgent(max_retry_count=30)
+        # 【现场适配】轮次上限由 30 提到 50：复杂分布类问题（多表关联 + 编码翻译 +
+        # 报告渲染）比标准问数长，30 轮常在收尾前耗尽，用户看到的是被截断的中间态。
+        # 提高上限只放宽预算，真正的效率问题由数据库上下文里的"试错与收尾"规则约束。
+        ToolCallingReActAgent(max_retry_count=50)
         .bind(context)
         .bind(agent_memory)
         .bind(llm_config)
