@@ -76,6 +76,9 @@ AUTO_DATA_MARKER_PATTERN = re.compile(
     r"###([A-Z0-9_]+)_START###\s*(.*?)\s*###\1_END###", re.DOTALL
 )
 
+# HTML 报告规范（skill / full 两种工作流共用一份，避免风格漂移）。
+HTML_REPORT_STYLE_GUIDE = """
+## HTML Report Style Guide (mandatory)
 
 async def _resolve_model_context_tokens(
     llm_client: Any, model_name: Optional[str]
@@ -3105,6 +3108,8 @@ Thought/Action/Action Input format shown above.
         pass  # graceful degradation
     # --- End connector system prompt injection ---
 
+    # 追加 HTML 报告规范：skill / full 两种工作流共用同一份，统一报告观感，
+    workflow_prompt = workflow_prompt + HTML_REPORT_STYLE_GUIDE
     # Convert workflow_prompt to PromptTemplate so it is used as system prompt
     # Use jinja2 format to avoid issues with JSON braces { } in the prompt
     workflow_prompt_template = PromptTemplate(
