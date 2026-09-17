@@ -127,6 +127,10 @@ export interface ManusLeftPanelProps {
   /** 展开的 SQL 卡片要显示的数据库类型 / 名称（与右栏同源）。 */
   databaseType?: string;
   databaseName?: string;
+  /**
+   * 单栏布局专用：不渲染历史消息里的"已选数据库"卡片（客户侧不需要看到库名）。
+   */
+  hideAttachedDb?: boolean;
   artifacts?: ArtifactItem[];
   onArtifactClick?: (artifact: ArtifactItem) => void;
   onArtifactDownload?: (artifact: ArtifactItem) => void;
@@ -1172,6 +1176,7 @@ const ManusLeftPanel: React.FC<ManusLeftPanelProps> = ({
   expandableSteps = false,
   databaseType,
   databaseName,
+  hideAttachedDb = false,
   artifacts,
   onArtifactClick,
   onArtifactDownload,
@@ -1268,7 +1273,8 @@ const ManusLeftPanel: React.FC<ManusLeftPanelProps> = ({
                   </div>
                 </div>
               )}
-              {attachedDb && (
+              {/* 单栏（嵌入客户系统）不显示"已选数据库"卡片 */}
+              {!hideAttachedDb && attachedDb && (
                 <div className='flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700/60 bg-white dark:bg-[#1a1b1e] shadow-sm'>
                   <div className='w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0'>
                     <DatabaseOutlined className='text-blue-500 text-base' />

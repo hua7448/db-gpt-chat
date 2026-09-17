@@ -3195,6 +3195,8 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                         expandableSteps={isSingle}
                         databaseType={selectedDb?.db_type}
                         databaseName={selectedDb?.db_name}
+                        // 单栏不显示历史消息里的"已选数据库"卡片
+                        hideAttachedDb={isSingle}
                         onArtifactClick={artifact => {
                           if (round.viewMsg?.id) setActiveViewMsgId(round.viewMsg.id);
                           setRightPanelCollapsed(false);
@@ -3295,7 +3297,8 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                     <div className='max-w-[720px] mx-auto'>
                       {/* Context Tags Area */}
                       <div className='flex flex-wrap gap-2 mb-2'>
-                        {selectedDb && (
+                        {/* 单栏（嵌入客户系统）不展示已选数据库标签 */}
+                        {!isSingle && selectedDb && (
                           <Tag
                             closable
                             onClose={() => setSelectedDb(null)}
@@ -3737,13 +3740,17 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                                 </Tooltip>
                               </Popover>
 
-                              {/* Separator dot */}
-                              <div className='w-px h-4 bg-gray-200 dark:bg-gray-700 mx-0.5' />
+                              {/* Separator dot + Model Selector：单栏（嵌入客户系统）不展示模型选择 */}
+                              {!isSingle && (
+                                <>
+                                  <div className='w-px h-4 bg-gray-200 dark:bg-gray-700 mx-0.5' />
 
-                              {/* Model Selector with premium styling */}
-                              <div className='model-selector-premium'>
-                                <ModelSelector onChange={val => setModel(val)} />
-                              </div>
+                                  {/* Model Selector with premium styling */}
+                                  <div className='model-selector-premium'>
+                                    <ModelSelector onChange={val => setModel(val)} />
+                                  </div>
+                                </>
+                              )}
                               <style
                                 dangerouslySetInnerHTML={{
                                   __html: `
@@ -4056,7 +4063,8 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                       {/* Database, Knowledge, Connector Tags */}
                       {(selectedDb || selectedKnowledge || selectedConnectors.length > 0) && (
                         <div className='flex flex-wrap gap-2 mb-2'>
-                          {selectedDb && (
+                          {/* 单栏（嵌入客户系统）不展示已选数据库标签 */}
+                          {!isSingle && selectedDb && (
                             <Tag
                               closable
                               onClose={() => setSelectedDb(null)}
@@ -4707,13 +4715,17 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                             </Tooltip>
                           </Popover>
 
-                          {/* Separator */}
-                          <div className='w-px h-4 bg-gray-200 dark:bg-gray-700 mx-0.5' />
+                          {/* Separator + Model Selector：单栏（嵌入客户系统）不展示模型选择 */}
+                          {!isSingle && (
+                            <>
+                              <div className='w-px h-4 bg-gray-200 dark:bg-gray-700 mx-0.5' />
 
-                          {/* Model Selector with premium styling */}
-                          <div className='model-selector-premium'>
-                            <ModelSelector onChange={val => setModel(val)} />
-                          </div>
+                              {/* Model Selector with premium styling */}
+                              <div className='model-selector-premium'>
+                                <ModelSelector onChange={val => setModel(val)} />
+                              </div>
+                            </>
+                          )}
                           <style
                             dangerouslySetInnerHTML={{
                               __html: `
