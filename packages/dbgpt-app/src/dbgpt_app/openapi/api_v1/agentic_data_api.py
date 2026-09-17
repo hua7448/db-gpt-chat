@@ -145,10 +145,13 @@ JOB_MATCH_SECTION = """
 ## 岗位数据与岗位匹配（数据来自岗位库，与业务库分离）
 - **岗位数据在另一个库**（`job_info` 等表属于岗位库，**不在**业务库 LSRSDB 中）：
   禁止用 `sql_query` 去查岗位表，也**禁止尝试跨库 JOIN**（两个库在不同实例上，SQL 层无法关联）。
-  岗位数据只能通过 `job_search` / `job_match` 两个工具获取。
+  岗位数据只能通过 `job_search` / `job_match` 两个工具获取，**直接调用**（`Action: job_search` / `Action: job_match`），
+  **不要套 `execute_tool`**；参数名见上文「Available Tools Description」中的 job_search / job_match 两条，不要自造参数名。
 - **`job_search`**：不针对具体人的岗位查询。用户问“有哪些岗位 / 招什么岗 / 某地某类岗位 / 薪资多少”时用它。
-- **`job_match`**：按人员条件匹配岗位。参数取人员的**真实数据**，必须先用 `sql_query` 从业务库查到（年龄、学历、性别、区县），
+- **`job_match`**：按人员条件匹配岗位。单个人员用 `age`；**一类人群**用 `age_min`/`age_max` 表示年龄跨度。
+  参数取人员的**真实数据**，必须先用 `sql_query` 从业务库查到（年龄、学历、性别、区县），
   **严禁凭印象或猜测填写人员条件**（例如不要自行假设某人学历为大专）。
+  人员的学历若查不到或本身就是“不限”，`education` 就**留空不要填**（填“不限”会被当成一个很低的学历档，反而把岗位筛掉）。
 - **人数较多时不要逐人匹配**（重要）：`job_match` 一次只针对一个人的条件。
   ① 若用户问的是**某个人**（给了姓名/编号）：先用 `sql_query` 取该人的年龄/学历/性别/区县，再调 `job_match` 一次；
   ② 若用户问的是**一类人群**：先用 `sql_query` 统计人数（按身份证去重口径），
@@ -2361,6 +2364,29 @@ print(json.dumps(summary, ensure_ascii=False))
     # 桥未配置（site.env 无 GS56_BRIDGE_URL）时返回空列表 —— 不注册任何新工具，
     # 现有问数行为零变化；这使岗位能力天然成为可开关的特性，便于分包部署与回归。
     job_tool_list = make_job_tools(react_state)
+
+    # 岗位工具的参数说明 —— 必须进 system prompt 里的「## Available Tools Description」。
+    # 原因（2026-09-17 现场实测）：那份清单是【手写】的，模型据此才知道每个工具的参数名；
+    # 不在清单里的工具，模型只能猜参数名（实测 job_search 被猜成 {"city","status","limit"}，
+    # 直接报 unexpected keyword argument 而失败）。本段与 job_tool_list 同开关，
+    # 桥未配置时返回空串、不进入提示词。
+    def _job_tools_desc(start_no: int) -> str:
+        if not job_tool_list:
+            return ""
+        return f"""
+{start_no}. **job_search**: 查询在招岗位（数据来自岗位库，只读；【禁止】用 sql_query 查岗位表）。
+Parameters: {{"district": "区县名(可选)", "keyword": "岗位名或职责关键字(可选)",
+"category": "岗位类别关键字(可选)", "salary_min": "最低薪资,元/月(可选)", "top_n": "返回条数(默认5,最多20)"}}
+   Example: {{"district": "莲都区", "keyword": "普工", "top_n": 5}}
+{start_no + 1}. **job_match**: 按人员条件匹配岗位（数据来自岗位库；人员条件必须先用 sql_query 从业务库查得，不要编造）。
+Parameters: {{"age": "某个人的年龄(可选)", "age_min": "人群年龄段下限(可选)",
+"age_max": "人群年龄段上限(可选)", "gender": "男/女(可选)", "education": "学历文本或代码(可选)",
+"district": "区县(可选)", "category": "岗位类别(可选)", "top_n": "返回条数(默认5,最多20)"}}
+   Example: {{"age": 35, "gender": "男", "education": "大专", "district": "莲都区"}}
+   人群整体推荐用 age_min/age_max + district + education 表示人群共同特征。
+以上两个岗位工具请【直接调用】（Action: job_search / job_match），不要套 execute_tool。
+"""
+
     # read_file lets the agent read back persisted tool results / snapshots
     # from disk when a <persisted-output> block references a file path.
     read_file_tool = make_read_file(react_state)
@@ -2839,7 +2865,7 @@ If template_path returns "Template not found", immediately switch to the default
    {available_images_hint}
 6. **sql_query**: Execute a read-only SQL query against the selected database.
 Parameters: {{"sql": "SELECT statement"}}
-7. **todowrite**: Create and manage a structured task list. Use for complex tasks
+{_job_tools_desc(7)}7. **todowrite**: Create and manage a structured task list. Use for complex tasks
 (3+ steps) to plan and track progress. Pass the FULL list every time. Each item:
 {{"content": "description", "status": "pending|in_progress|completed|cancelled",
 "priority": "high|medium|low"}}. Only ONE task in_progress at a time.
@@ -3054,7 +3080,7 @@ to display reports on the right panel). Default usage:
 {{"html": "<html>complete HTML code</html>", "title": "title"}}. Template mode:
 {{"template_path": "skill/templates/xxx.html", "data": {{...}}, "title": "title"}}.
 File mode: {{"file_path": "/path/to/report.html"}}
-14. **todowrite**: Create and manage a structured task list. Use for complex tasks
+{_job_tools_desc(18)}14. **todowrite**: Create and manage a structured task list. Use for complex tasks
 (3+ steps) to plan and track progress. Pass the FULL list every time. Each item:
 {{"content": "description", "status": "pending|in_progress|completed|cancelled",
 "priority": "high|medium|low"}}. Only ONE task in_progress at a time.

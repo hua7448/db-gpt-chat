@@ -10,6 +10,36 @@ logger = logging.getLogger(__name__)
 
 
 def make_execute_tool(react_state: Dict[str, Any]):
+    def _accepted_params_hint(name: str) -> str:
+        """把某个工具的真实参数名拼成提示串。
+
+        为什么需要（2026-09-17 现场实测）：模型有时会自造参数名（job_search 被传
+        {"city","status","limit"}，真实签名是 district/keyword/category/salary_min/top_n），
+        而报错原文 "got an unexpected keyword argument 'city'" 对模型不够可操作 ——
+        实测它据此回答"服务不可用"就放弃了。这里把可用参数名一并回给它，下一轮即可自我纠正。
+        """
+        try:
+            from dbgpt._private.config import Config
+            from dbgpt.agent.resource.manage import get_resource_manager
+            from dbgpt.agent.resource.resource_api import AgentResource, ResourceType
+
+            res = get_resource_manager(Config().SYSTEM_APP).build_resource_by_type(
+                ResourceType.Tool.value,
+                AgentResource(type=ResourceType.Tool.value, value=name),
+            )
+            inner = getattr(res, "_tool", res)
+            args = getattr(inner, "args", None) or {}
+            names = list(args.keys())
+            if names:
+                return (
+                    "【参数名提示】该工具实际接受的参数名是: "
+                    + ", ".join(names)
+                    + "。请用这些参数名重新调用；不了解的参数直接省略，不要自造参数名。"
+                )
+        except Exception:
+            pass  # 拿不到元数据就不提示，不能因此影响原有报错路径
+        return ""
+
     @tool(description="Execute a tool by name with JSON args.")
     async def execute_tool(tool_name: str, args: dict) -> str:
         from dbgpt._private.config import Config
@@ -91,6 +121,7 @@ def make_execute_tool(react_state: Dict[str, Any]):
                 ensure_ascii=False,
             )
         except Exception as primary_exc:
+            _param_hint = _accepted_params_hint(tool_name)
             # Connector tools are normally called directly, but models may
             # route them through execute_tool. Preserve the active-pack
             # fallback used before the tools/ refactor.
@@ -141,7 +172,8 @@ def make_execute_tool(react_state: Dict[str, Any]):
                                 "output_type": "text",
                                 "content": (
                                     f"Tool execute failed: {fallback_exc} "
-                                    f"(primary lookup error: {primary_exc})"
+                                    f"(primary lookup error: {primary_exc}) "
+                                    f"{_param_hint}"
                                 ),
                             }
                         ]
@@ -153,7 +185,7 @@ def make_execute_tool(react_state: Dict[str, Any]):
                     "chunks": [
                         {
                             "output_type": "text",
-                            "content": f"Tool execute failed: {primary_exc}",
+                            "content": f"Tool execute failed: {primary_exc} {_param_hint}",
                         }
                     ]
                 },

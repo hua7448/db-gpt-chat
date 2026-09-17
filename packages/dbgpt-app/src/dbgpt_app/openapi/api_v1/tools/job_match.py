@@ -163,32 +163,57 @@ def _loc_of(job: Dict[str, Any]) -> str:
 def _filter_and_rank(
     jobs: List[Dict[str, Any]],
     age: Optional[int] = None,
+    age_min: Optional[int] = None,
+    age_max: Optional[int] = None,
     gender: Optional[str] = None,
     education: Any = None,
     district: Optional[str] = None,
     top_n: int = DEFAULT_TOP_N,
     order: str = "match",
 ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
-    """层 1/2 规则：过滤 + 打分 + 生成匹配理由。返回 (结果, 口径统计)。"""
+    """层 1/2 规则：过滤 + 打分 + 生成匹配理由。返回 (结果, 口径统计)。
+
+    年龄支持两种用法：单人用 `age`（须落在岗位区间内）；整群推荐用 `age_min`/`age_max`
+    （人群年龄跨度，与岗位区间**有交集**即算符合 —— 一群人不可能同时落在同一个点上）。
+    二者统一按"区间求交"实现：`age` 时把区间退化成 [age, age]，
+    与原先的单点严格判断语义完全一致。
+    """
     edu_person = _edu_level(education)
-    edu_known = edu_person is not None
+    # "不限"/"无要求" 被 _edu_level 折算成 0，但语义是"人员学历不作限制"，
+    # 不能当成一个极低的学历档去筛岗位（否则 req_lvl <= 0 会把所有要求学历的岗位全部排除，
+    # 实测模型确实会传 "不限"）。这里归一为"未知 → 不做学历筛选"。
+    edu_known = edu_person is not None and edu_person > 0
+    if not edu_known:
+        edu_person = None
     out: List[Dict[str, Any]] = []
     stats = {"total": len(jobs), "age_out": 0, "edu_out": 0, "gender_out": 0, "edu_unknown_skipped_filter": not edu_known}
+
+    # 人群区间（age 存在时退化为单点）
+    p_min = age if age is not None else age_min
+    p_max = age if age is not None else age_max
+    has_age_cond = p_min is not None or p_max is not None
 
     for j in jobs:
         reasons: List[str] = []
         hits = 0
 
         j_age_min, j_age_max = _to_int(j.get("age_min")), _to_int(j.get("age_max"))
-        if age is not None and (j_age_min is not None or j_age_max is not None):
-            if (j_age_min is not None and age < j_age_min) or (j_age_max is not None and age > j_age_max):
+        if has_age_cond:
+            if j_age_min is None and j_age_max is None:
+                # 岗位不限年龄：不排除，但【不计命中】——"命中维度"统计的是
+                # 正向满足了几项约束；无约束对所有人成立，不构成拟合度证据，
+                # 否则一个"零门槛+高薪"的岗位会永远压过真正匹配的岗位。
+                reasons.append("岗位未限年龄")
+            elif (p_max is not None and j_age_min is not None and j_age_min > p_max) or (
+                p_min is not None and j_age_max is not None and j_age_max < p_min
+            ):
+                # 与岗位年龄区间无交集
                 stats["age_out"] += 1
                 continue
-            reasons.append(f"年龄符合（{j_age_min if j_age_min is not None else '不限'}-{j_age_max if j_age_max is not None else '不限'}）")
-            hits += 1
-        elif age is not None:
-            reasons.append("岗位未限年龄")
-            hits += 1
+            else:
+                rng = f"{j_age_min if j_age_min is not None else '不限'}-{j_age_max if j_age_max is not None else '不限'}"
+                reasons.append(f"年龄符合（{rng}）" if age is not None else f"年龄段与岗位要求（{rng}）有交集")
+                hits += 1
 
         req_lvl = _edu_level(j.get("education"))
         if edu_known and req_lvl is not None and req_lvl > 0:
@@ -240,8 +265,8 @@ def _filter_and_rank(
 
 
 CALIBER_TEXT = (
-    "在招岗位且未下架；年龄区间符合；学历按“岗位要求不高于本人学历”（高配低放行）；"
-    "性别放宽；同区县优先；排序=命中维度→薪资上限→发布时间"
+    "在招岗位且未下架；年龄区间与本人年龄（或人群年龄段）相符；学历按“岗位要求不高于本人学历”（高配低放行）；"
+    "性别不符不排除但降优先；同区县优先；排序=正向命中的条件数（岗位不限该项不计）→ 薪资上限 → 发布时间"
 )
 
 
@@ -350,13 +375,15 @@ def make_job_tools(react_state: Dict[str, Any]) -> List[Any]:
 何时用：用户要求“给某人/某类人推荐岗位、匹配岗位、看看能干什么工作”时。
 人员条件必须来自已查到的真实数据（先用 sql_query 查业务库得到年龄/学历/性别/区县），禁止自己编造。
 参数（全部可选，只填已知的；无法确定的不要填）：
-  age: 年龄（整数）
+  age: 某个人的年龄（整数）——给单个人做匹配时用它
+  age_min / age_max: 人群年龄段上下限（给一类人整体推荐时用，与岗位年龄区间有交集即算符合）
   gender: 性别，男 或 女
-  education: 学历文本或代码，如 大专 / 本科 / 30
+  education: 学历文本或代码，如 大专 / 本科 / 30；查不到或本身就是"不限"就留空
   district: 区县名（默认作为“优先项”，不是硬条件）
   category: 岗位类别关键字
   top_n: 返回条数，默认 5，最多 20
 调用示例：{"age": 35, "gender": "男", "education": "大专", "district": "莲都区"}
+一类人群示例：{"age_min": 30, "age_max": 55, "education": "大专", "district": "莲都区"}
 返回：JSON，含匹配岗位列表、匹配理由与口径说明。
 若返回 matched=0：先按“主动澄清”规则用 question 问用户是否放宽（学历/年龄/扩大区域），再重试一次。
 """
@@ -366,6 +393,8 @@ def make_job_tools(react_state: Dict[str, Any]) -> List[Any]:
     )
     async def job_match(
         age: str = "",
+        age_min: str = "",
+        age_max: str = "",
         gender: str = "",
         education: str = "",
         district: str = "",
@@ -375,7 +404,9 @@ def make_job_tools(react_state: Dict[str, Any]) -> List[Any]:
         """按人员条件匹配岗位。
 
         Args:
-            age: 年龄，可选
+            age: 某个人的年龄，可选
+            age_min: 人群年龄段下限，可选
+            age_max: 人群年龄段上限，可选
             gender: 性别，可选
             education: 学历文本或代码，可选
             district: 区县名，可选
@@ -394,9 +425,13 @@ def make_job_tools(react_state: Dict[str, Any]) -> List[Any]:
             return json.dumps({"error": str(e), "hint": "岗位库暂时不可用，可先回答人员问题并说明岗位数据未取到"}, ensure_ascii=False)
 
         top_n_val = min(20, _to_int(top_n) or DEFAULT_TOP_N)
+        age_lo = _to_int(age_min) or None
+        age_hi = _to_int(age_max) or None
         ranked, stats = _filter_and_rank(
             jobs,
             age=age_val,
+            age_min=age_lo,
+            age_max=age_hi,
             gender=(gender or None),
             education=(education or None),
             district=(district or None),
@@ -405,6 +440,7 @@ def make_job_tools(react_state: Dict[str, Any]) -> List[Any]:
         scope = "、".join(
             [x for x in [
                 f"年龄{age_val}" if age_val else None,
+                f"年龄{age_lo}-{age_hi}" if (age_lo or age_hi) else None,
                 f"学历{education}" if education else None,
                 f"性别{gender}" if gender else None,
                 district,
