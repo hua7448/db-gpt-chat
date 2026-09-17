@@ -3191,6 +3191,10 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                             />
                           ) : undefined
                         }
+                        // 单栏没有右栏，步骤卡片改为就地展开明细（默认折叠）
+                        expandableSteps={isSingle}
+                        databaseType={selectedDb?.db_type}
+                        databaseName={selectedDb?.db_name}
                         onArtifactClick={artifact => {
                           if (round.viewMsg?.id) setActiveViewMsgId(round.viewMsg.id);
                           setRightPanelCollapsed(false);

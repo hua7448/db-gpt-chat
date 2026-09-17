@@ -39,6 +39,7 @@ import classNames from 'classnames';
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ObservationFormatter from './ObservationFormatter';
+import SqlQueryCard, { extractSqlFromStep } from './SqlQueryCard';
 import TaskPlanCard, { TaskItem } from './TaskPlanCard';
 
 export type StepStatus = 'pending' | 'running' | 'completed' | 'error';
@@ -118,6 +119,14 @@ export interface ManusLeftPanelProps {
    * 双栏布局不传，结果仍留在右侧面板。由 Playground 决定传什么。
    */
   resultsSlot?: React.ReactNode;
+  /**
+   * 单栏布局专用：步骤卡片可点击就地展开（默认折叠）。
+   * 双栏布局不传，点击仍走 onStepClick 在右侧面板查看。
+   */
+  expandableSteps?: boolean;
+  /** 展开的 SQL 卡片要显示的数据库类型 / 名称（与右栏同源）。 */
+  databaseType?: string;
+  databaseName?: string;
   artifacts?: ArtifactItem[];
   onArtifactClick?: (artifact: ArtifactItem) => void;
   onArtifactDownload?: (artifact: ArtifactItem) => void;
@@ -510,16 +519,69 @@ const getTodoStepBadge = (t: (key: string, options?: Record<string, any>) => str
   return todoMeta.state === 'init' ? t('task_plan_new_badge') : '';
 };
 
+/**
+ * 步骤就地展开的明细数据：sql 步骤给 SQL 卡片，其余动作给紧凑参数表。
+ * 数据全部来自 ExecutionStep 自身（与右栏同源），不新增后端通道。
+ */
+const buildStepDetail = (
+  step: ExecutionStep,
+): { kind: 'sql'; sql: string } | { kind: 'params'; entries: { key: string; value: string }[] } | null => {
+  if (step.action === 'sql_query' || step.description?.includes('Action: sql_query')) {
+    const sql = extractSqlFromStep(step);
+    if (sql) return { kind: 'sql', sql };
+  }
+
+  // action_input 在现场数据里是 JSON 字符串（实测 {"sql": "..."}），统一归一成对象
+  let parsedInput: unknown = step.actionInput;
+  if (typeof parsedInput === 'string') {
+    try {
+      parsedInput = JSON.parse(parsedInput);
+    } catch {
+      parsedInput = null;
+    }
+  }
+
+  if (parsedInput && typeof parsedInput === 'object') {
+    const entries = Object.entries(parsedInput as Record<string, unknown>)
+      // 只展示紧凑的非敏感字段
+      .filter(([key]) => !/key|token|secret|password|pwd/i.test(key))
+      .map(([key, value]) => ({
+        key,
+        value: (typeof value === 'string' ? value : JSON.stringify(value) ?? '').slice(0, 400),
+      }))
+      .filter(item => item.value !== '' && item.value !== 'undefined' && item.value !== 'null');
+    if (entries.length > 0) return { kind: 'params', entries };
+  }
+
+  return null;
+};
+
 const StepCard: React.FC<{
   step: ExecutionStep;
   isActive: boolean;
   onClick: () => void;
   thought?: string;
-}> = memo(({ step, isActive, onClick, thought }) => {
+  /** 单栏：卡片可就地展开明细（默认折叠）。 */
+  expandable?: boolean;
+  databaseType?: string;
+  databaseName?: string;
+}> = memo(({ step, isActive, onClick, thought, expandable = false, databaseType, databaseName }) => {
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
+  const [isDetailExpanded, setIsDetailExpanded] = useState(false);
   const detailLine = step.description ? step.description.split('\n')[0] : '';
   const isTodoStep = detailLine.toLowerCase() === 'todowrite' || step.title.startsWith('TODO::') || !!step.todoMeta;
+
+  const stepDetail = useMemo(() => (expandable ? buildStepDetail(step) : null), [expandable, step]);
+  const hasDetail = !!stepDetail;
+  const handleRowClick = () => {
+    // 单栏：有明细就就地展开/收起；无明细或双栏：维持原有「选中该步骤」行为
+    if (expandable && hasDetail) {
+      setIsDetailExpanded(prev => !prev);
+      return;
+    }
+    onClick();
+  };
 
   React.useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 50);
@@ -677,27 +739,28 @@ const StepCard: React.FC<{
     );
   }
   return (
-    <div
-      onClick={onClick}
-      className={classNames(
-        'group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer transition-all duration-200',
-        'border bg-white dark:bg-[#1a1b1e]',
-        'transform',
-        {
-          'opacity-0 translate-y-1': !isVisible,
-          'opacity-100 translate-y-0': isVisible,
-          'border-blue-300 dark:border-blue-700 shadow-sm ring-1 ring-blue-200/50 dark:ring-blue-800/50': isActive,
-          'border-gray-200 dark:border-gray-700/50 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm':
-            !isActive,
-          'border-l-[3px] border-l-blue-500': step.status === 'running',
-          'border-l-[3px] border-l-emerald-500': step.status === 'completed' && isActive,
-          'border-l-[3px] border-l-red-500': step.status === 'error',
-        },
-      )}
-      style={{
-        transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
-      }}
-    >
+    <div className='flex flex-col gap-1.5'>
+      <div
+        onClick={handleRowClick}
+        className={classNames(
+          'group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer transition-all duration-200',
+          'border bg-white dark:bg-[#1a1b1e]',
+          'transform',
+          {
+            'opacity-0 translate-y-1': !isVisible,
+            'opacity-100 translate-y-0': isVisible,
+            'border-blue-300 dark:border-blue-700 shadow-sm ring-1 ring-blue-200/50 dark:ring-blue-800/50': isActive,
+            'border-gray-200 dark:border-gray-700/50 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm':
+              !isActive,
+            'border-l-[3px] border-l-blue-500': step.status === 'running',
+            'border-l-[3px] border-l-emerald-500': step.status === 'completed' && isActive,
+            'border-l-[3px] border-l-red-500': step.status === 'error',
+          },
+        )}
+        style={{
+          transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
+        }}
+      >
       <div
         className={classNames(
           'flex-shrink-0 w-6 h-6 rounded-md flex items-center justify-center',
@@ -748,6 +811,35 @@ const StepCard: React.FC<{
         {step.status === 'completed' && <CheckCircleOutlined className='text-xs text-emerald-500' />}
         {step.status === 'error' && <ExclamationCircleOutlined className='text-xs text-red-500' />}
       </div>
+
+      {hasDetail && (
+        <span className='flex-shrink-0 text-[10px] text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors'>
+          {isDetailExpanded ? <CaretDownOutlined /> : <CaretRightOutlined />}
+        </span>
+      )}
+      </div>
+
+      {hasDetail && isDetailExpanded && stepDetail && (
+        <div className='pl-1'>
+          {stepDetail.kind === 'sql' ? (
+            <SqlQueryCard
+              sql={stepDetail.sql}
+              databaseType={databaseType}
+              databaseName={databaseName}
+              compact
+            />
+          ) : (
+            <div className='rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#1a1b1e] px-3 py-2 max-h-56 overflow-auto'>
+              {stepDetail.entries.map(item => (
+                <div key={item.key} className='flex gap-2 text-[11px] leading-5 font-mono'>
+                  <span className='text-gray-400 flex-shrink-0'>{item.key}</span>
+                  <span className='text-gray-600 dark:text-gray-300 break-all'>{item.value}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 });
@@ -952,7 +1044,20 @@ const SectionBlock: React.FC<{
   onStepClick: (stepId: string) => void;
   defaultExpanded?: boolean;
   stepThoughts?: Record<string, string>;
-}> = memo(({ section, activeStepId, onStepClick, defaultExpanded = true, stepThoughts }) => {
+  expandableSteps?: boolean;
+  databaseType?: string;
+  databaseName?: string;
+}> = memo(
+  ({
+    section,
+    activeStepId,
+    onStepClick,
+    defaultExpanded = true,
+    stepThoughts,
+    expandableSteps = false,
+    databaseType,
+    databaseName,
+  }) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
   const completedCount = section.steps.filter(s => s.status === 'completed').length;
@@ -1014,7 +1119,14 @@ const SectionBlock: React.FC<{
                 {isParallelDispatch ? (
                   <div className='space-y-2'>
                     <ParallelDispatchSummary actionInput={step.actionInput} />
-                    <StepCard step={step} isActive={step.id === activeStepId} onClick={() => onStepClick(step.id)} />
+                    <StepCard
+                      step={step}
+                      isActive={step.id === activeStepId}
+                      onClick={() => onStepClick(step.id)}
+                      expandable={expandableSteps}
+                      databaseType={databaseType}
+                      databaseName={databaseName}
+                    />
                   </div>
                 ) : step.description?.includes('Action: get_skill_resource') ? (
                   <SkillResourceCard
@@ -1023,7 +1135,14 @@ const SectionBlock: React.FC<{
                     onClick={() => onStepClick(step.id)}
                   />
                 ) : (
-                  <StepCard step={step} isActive={step.id === activeStepId} onClick={() => onStepClick(step.id)} />
+                  <StepCard
+                    step={step}
+                    isActive={step.id === activeStepId}
+                    onClick={() => onStepClick(step.id)}
+                    expandable={expandableSteps}
+                    databaseType={databaseType}
+                    databaseName={databaseName}
+                  />
                 )}
                 {step.description?.includes('Observation:') && <ObservationFormatter observation={step.description} />}
               </React.Fragment>
@@ -1050,6 +1169,9 @@ const ManusLeftPanel: React.FC<ManusLeftPanelProps> = ({
   stepThoughts,
   subAgentSlot,
   resultsSlot,
+  expandableSteps = false,
+  databaseType,
+  databaseName,
   artifacts,
   onArtifactClick,
   onArtifactDownload,
@@ -1195,6 +1317,9 @@ const ManusLeftPanel: React.FC<ManusLeftPanelProps> = ({
                 onStepClick={stepId => handleStepClick(stepId, section.id)}
                 defaultExpanded={index === sections.length - 1}
                 stepThoughts={stepThoughts}
+                expandableSteps={expandableSteps}
+                databaseType={databaseType}
+                databaseName={databaseName}
               />
             ))}
           </div>
