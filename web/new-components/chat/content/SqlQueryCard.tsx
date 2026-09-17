@@ -3,8 +3,9 @@ import {
   CopyOutlined,
   DatabaseOutlined,
 } from '@ant-design/icons';
-import { Tooltip, message } from 'antd';
+import { Tooltip } from 'antd';
 import React from 'react';
+import { copyWithToast } from './clipboard';
 
 /**
  * SQL 展示卡片（与右栏「SQL Query」卡片同款）。
@@ -161,10 +162,9 @@ const SqlQueryCard: React.FC<SqlQueryCardProps> = ({ sql, databaseType, database
         <Tooltip title='复制SQL'>
           <button
             className='flex items-center gap-1 text-[11px] text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700'
-            onClick={e => {
+            onClick={async e => {
               e.stopPropagation();
-              navigator.clipboard.writeText(sql);
-              message.success('SQL已复制到剪贴板');
+              await copyWithToast(sql, 'SQL已复制到剪贴板');
             }}
           >
             <CopyOutlined className='text-xs' />

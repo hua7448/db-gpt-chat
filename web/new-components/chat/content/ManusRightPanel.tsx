@@ -50,6 +50,7 @@ import classNames from 'classnames';
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Collapsible } from '../tools/Collapsible';
+import { copyWithToast } from './clipboard';
 import ConversationTracePanel from './ConversationTracePanel';
 import { ArtifactItem, StepStatus, StepType } from './ManusLeftPanel';
 import ParallelTasksPanel from './ParallelTasksPanel';
@@ -321,9 +322,9 @@ const StatusBadge: React.FC<{ status: StepStatus }> = ({ status }) => {
 };
 
 // Copy to clipboard helper
-const copyToClipboard = (text: string, successText: string) => {
-  navigator.clipboard.writeText(text);
-  message.success(successText);
+// 现场是 http 站点（非安全上下文），navigator.clipboard 不可用 → 统一走 clipboard.ts 的回退实现
+const copyToClipboard = (text: string, successText = '已复制到剪贴板') => {
+  void copyWithToast(text, successText);
 };
 
 const getArtifactFileIcon = (artifact: ArtifactItem) => {
@@ -3328,8 +3329,7 @@ const ManusRightPanel: React.FC<ManusRightPanelProps> = ({
                                   <button
                                     className='flex items-center gap-1 text-[11px] text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700'
                                     onClick={() => {
-                                      navigator.clipboard.writeText(sql);
-                                      message.success('SQL已复制到剪贴板');
+                                      copyToClipboard(sql, 'SQL已复制到剪贴板');
                                     }}
                                   >
                                     <CopyOutlined className='text-xs' />
