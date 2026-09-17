@@ -7,6 +7,7 @@ import type { NewTaskCoordinator, NewTaskGuard } from './coordinator';
 import { createNewTaskCoordinator } from './coordinator';
 
 const NewTaskContext = createContext<NewTaskCoordinator | null>(null);
+const KeepPathContext = createContext<((keep: boolean) => void) | null>(null);
 
 function useCoordinator(): NewTaskCoordinator {
   const coordinator = useContext(NewTaskContext);
@@ -21,6 +22,15 @@ export function NewTaskProvider({ children }: { children: React.ReactNode }) {
   const routerRef = useRef(router);
   routerRef.current = router;
 
+  // 独立/嵌入式对话页（Playground variant='lishui' | 'single'）通过
+  // useKeepCurrentPath(true) 声明：执行“新建任务/清除会话”后必须留在当前路径，
+  // 且不做任何 URL 改写 —— 内嵌（iframe）时地址由宿主页面把控，多一次路由替换
+  // 就可能让整页重新挂载成完整首页（侧边栏、首页文案全部冒出来）。
+  const keepPathRef = useRef(false);
+  const setKeepPath = useCallback((keep: boolean) => {
+    keepPathRef.current = keep;
+  }, []);
+
   const coordinatorRef = useRef<NewTaskCoordinator | null>(null);
   if (!coordinatorRef.current) {
     const getBrowserLocation = () => {
@@ -31,24 +41,38 @@ export function NewTaskProvider({ children }: { children: React.ReactNode }) {
       };
     };
 
+    /** 独立对话页：允许携带 query/hash，且不触发任何 URL 替换。 */
+    const toleratesQuery = (path: string) =>
+      keepPathRef.current || path.startsWith('/lishui/');
+
     const getCanonicalPath = () => {
       const browserLocation = getBrowserLocation();
       const currentPathname = browserLocation?.pathname ?? routerRef.current.pathname;
-      return currentPathname === '/lishui/chat' ? '/lishui/chat' : '/';
+      // 独立对话页（/lishui/chat、/lishui/single 等）在执行“新建任务/清除会话”后
+      // 必须留在原路径。若写死成 '/'，整页会 remount 成完整首页——侧边栏和
+      // 首页文案会全部冒出来。按前缀判断，以后新增 /lishui/* 页面无需再改这里。
+      // 独立对话页自己声明过 → 原样保持；否则 /lishui/* 也保持；其余回到 '/'。
+      if (keepPathRef.current) return currentPathname;
+      return currentPathname.startsWith('/lishui/') ? currentPathname : '/';
     };
 
     coordinatorRef.current = createNewTaskCoordinator({
       isCanonicalHome: () => {
         const browserLocation = getBrowserLocation();
         if (browserLocation) {
-          return browserLocation.pathname === getCanonicalPath() && !browserLocation.hasQueryOrHash;
+          const canonical = getCanonicalPath();
+          if (browserLocation.pathname !== canonical) return false;
+          // 独立对话页允许携带 query/hash（内嵌时常带 token 等参数），
+          // 直接视为 canonical —— 不触发任何 URL 替换。
+          return toleratesQuery(canonical) || !browserLocation.hasQueryOrHash;
         }
 
         const current = routerRef.current;
         const pathWithoutHash = current.asPath.split('#', 1)[0];
         const hasQuery = pathWithoutHash.includes('?');
         const currentPath = pathWithoutHash.split('?', 1)[0].replace(/\/$/, '') || '/';
-        return currentPath === getCanonicalPath() && !hasQuery;
+        if (currentPath !== getCanonicalPath()) return false;
+        return toleratesQuery(currentPath) || !hasQuery;
       },
       goCanonicalHome: async () => {
         const current = routerRef.current;
@@ -58,7 +82,11 @@ export function NewTaskProvider({ children }: { children: React.ReactNode }) {
     });
   }
 
-  return <NewTaskContext.Provider value={coordinatorRef.current}>{children}</NewTaskContext.Provider>;
+  return (
+    <NewTaskContext.Provider value={coordinatorRef.current}>
+      <KeepPathContext.Provider value={setKeepPath}>{children}</KeepPathContext.Provider>
+    </NewTaskContext.Provider>
+  );
 }
 
 /** Return the single app-wide command used by every "new task" affordance. */
@@ -88,3 +116,17 @@ export function useNewTaskGuard(guard: NewTaskGuard): void {
 
   useEffect(() => coordinator.attachGuard(() => guardRef.current()), [coordinator]);
 }
+
+/**
+ * 独立/嵌入式对话页声明：执行“新建任务/清除会话”后保持当前路径。
+ * Playground 在 variant='lishui' | 'single' 时调用。
+ */
+export function useKeepCurrentPath(keep: boolean): void {
+  const setKeepPath = useContext(KeepPathContext);
+  useEffect(() => {
+    if (!setKeepPath) return;
+    setKeepPath(keep);
+    return () => setKeepPath(false);
+  }, [keep, setKeepPath]);
+}
+
