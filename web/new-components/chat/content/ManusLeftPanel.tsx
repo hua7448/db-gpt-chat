@@ -113,6 +113,11 @@ export interface ManusLeftPanelProps {
   stepThoughts?: Record<string, string>;
   /** Optional slot rendered above the execution sections (sub-agent card). */
   subAgentSlot?: React.ReactNode;
+  /**
+   * 单栏布局专用：把本轮的结果（报告 / 图表 / 图片）渲染在回答正文下方。
+   * 双栏布局不传，结果仍留在右侧面板。由 Playground 决定传什么。
+   */
+  resultsSlot?: React.ReactNode;
   artifacts?: ArtifactItem[];
   onArtifactClick?: (artifact: ArtifactItem) => void;
   onArtifactDownload?: (artifact: ArtifactItem) => void;
@@ -1044,6 +1049,7 @@ const ManusLeftPanel: React.FC<ManusLeftPanelProps> = ({
   modelName,
   stepThoughts,
   subAgentSlot,
+  resultsSlot,
   artifacts,
   onArtifactClick,
   onArtifactDownload,
@@ -1262,6 +1268,8 @@ const ManusLeftPanel: React.FC<ManusLeftPanelProps> = ({
             />
           </div>
         )}
+
+        {resultsSlot}
 
         {artifacts && artifacts.length > 0 && (
           <div className='mt-5 px-1 pb-8'>

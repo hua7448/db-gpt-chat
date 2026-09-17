@@ -2,7 +2,12 @@ import { ChatContext } from '@/app/chat-context';
 import ModelSelector from '@/components/chat/header/model-selector';
 import { useConnectors } from '@/hooks/use-connector-api';
 import { buildSubAgentArtifacts, parseSubAgentEvent, restoreSubAgentStates } from '@/hooks/use-subagent-stream';
-import { useNewTaskGuard, useNewTaskOwner, useStartNewTask } from '@/modules/new-task';
+import {
+  useKeepCurrentPath,
+  useNewTaskGuard,
+  useNewTaskOwner,
+  useStartNewTask,
+} from '@/modules/new-task';
 import {
   ATTACHMENT_PREVIEW_DRAWER_STYLES,
   AttachmentPreview,
@@ -41,6 +46,7 @@ import ManusRightPanel, {
 } from '@/new-components/chat/content/ManusRightPanel';
 import { MessagePart, ToolPart, ToolStatus } from '@/new-components/chat/content/OpenCodeSessionTurn';
 import QuestionDock from '@/new-components/chat/content/QuestionDock';
+import InlineArtifacts from '@/new-components/chat/content/InlineArtifacts';
 import SubAgentSection from '@/new-components/chat/content/SubAgentSection';
 import TaskPlanCard, { TaskItem } from '@/new-components/chat/content/TaskPlanCard';
 import ConfirmDialog from '@/new-components/connector/ConfirmDialog';
@@ -534,12 +540,19 @@ const EXAMPLE_CARDS = [
 ];
 
 export interface PlaygroundProps {
-  /** full: 完整首页（默认）；lishui: 无侧栏对话页，保留副标题和常用问题 */
-  variant?: 'full' | 'lishui';
+  /**
+   * full: 完整首页（默认）；lishui: 无侧栏对话页，保留副标题和常用问题；
+   * single: 单栏对话页（/lishui/single）——不显示右侧结果面板，本轮产物
+   * （报告 / 图表 / 图片）就地展开在回答下方，代码与附件折叠。
+   */
+  variant?: 'full' | 'lishui' | 'single';
 }
 
 const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
-  const isLishui = variant === 'lishui';
+  // single 是 lishui 的单栏版：必须继承 lishui 的全部「减法」（去掉首页标题、
+  // 数据库标签、通知与头像、欢迎页大图），只把布局换成单栏并把结果内联到回答下方。
+  const isSingle = variant === 'single';
+  const isLishui = variant === 'lishui' || isSingle;
   const router = useRouter();
   const { t } = useTranslation();
   const { model, setModel } = useContext(ChatContext);
@@ -843,6 +856,9 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
 
   const [selectedStepId, setSelectedStepId] = useState<string | null>(null);
   const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false);
+  // 单栏布局（/lishui/single）：右栏根本不渲染，对话列直接按"已折叠"样式居中
+  // （flex-1 + max-w-[800px] + justify-center），不依赖用户去点展开按钮。
+  const panelCollapsed = isSingle || rightPanelCollapsed;
   const [rightPanelView, setRightPanelView] = useState<PanelView>('execution');
   const [selectedCitationIndex, setSelectedCitationIndex] = useState<number | null>(null);
   const [pendingFinalization, setPendingFinalization] = useState<{
@@ -1011,6 +1027,11 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
     setConnectorSearchQuery('');
     dismiss();
   }, [abortInFlightChat, cancelSummaryPresentation, closeSessionFilePreview, dismiss, resetSessionFiles]);
+
+  // 独立对话页（/lishui/chat、/lishui/single，以及任何内嵌这些页面的宿主）：
+  // 声明“新建任务/清除会话”后保持在当前路径，且不改写 URL —— 否则整页会 remount
+  // 成完整首页（侧边栏 + 首页文案全部出现），内嵌场景尤其明显。
+  useKeepCurrentPath(isLishui);
 
   useNewTaskOwner(resetTaskSession);
 
@@ -3066,9 +3087,9 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
               <Spin size='large' tip='加载对话历史...' />
             </div>
           ) : messages.length > 0 ? (
-            <div className={`flex-1 min-h-0 flex overflow-hidden ${rightPanelCollapsed ? 'justify-center' : ''}`}>
+            <div className={`flex-1 min-h-0 flex overflow-hidden ${panelCollapsed ? 'justify-center' : ''}`}>
               <div
-                className={`${rightPanelCollapsed ? 'flex-1 max-w-[800px] border-r-0' : 'flex-[2] min-w-0 border-r border-gray-200/80 dark:border-gray-800'} min-h-0 flex flex-col overflow-hidden bg-white dark:bg-[#111217] transition-all duration-300 relative`}
+                className={`${panelCollapsed ? 'flex-1 max-w-[800px] border-r-0' : 'flex-[2] min-w-0 border-r border-gray-200/80 dark:border-gray-800'} min-h-0 flex flex-col overflow-hidden bg-white dark:bg-[#111217] transition-all duration-300 relative`}
               >
                 <div className='flex-1 min-h-0 overflow-y-auto'>
                   {rounds.map((round, roundIndex) => {
@@ -3162,6 +3183,14 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                         modelName={round.viewMsg?.model_name || model}
                         stepThoughts={stepThoughts}
                         artifacts={artifacts.filter(a => a.messageId === round.viewMsg?.id)}
+                        resultsSlot={
+                          isSingle ? (
+                            <InlineArtifacts
+                              artifacts={artifacts.filter(a => a.messageId === round.viewMsg?.id)}
+                              onDownload={artifact => downloadArtifact(artifact as Artifact)}
+                            />
+                          ) : undefined
+                        }
                         onArtifactClick={artifact => {
                           if (round.viewMsg?.id) setActiveViewMsgId(round.viewMsg.id);
                           setRightPanelCollapsed(false);
@@ -3813,6 +3842,8 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                 )}
               </div>
               {/* Panel toggle handle — placed between panels to avoid overflow clipping */}
+              {/* 单栏布局没有右栏，也就不需要折叠/展开手柄 */}
+              {!isSingle && (
               <div className='relative z-20 flex-shrink-0'>
                 <Tooltip title={rightPanelCollapsed ? t('expand_panel') : t('collapse_panel')} placement='left'>
                   <button
@@ -3827,8 +3858,9 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                   </button>
                 </Tooltip>
               </div>
+              )}
               <div
-                className={`${rightPanelCollapsed ? 'w-0 min-w-0 overflow-hidden opacity-0' : 'flex-[3] min-w-0 overflow-hidden'} min-h-0 bg-[#f8f8fb] dark:bg-[#0f1114] flex flex-col transition-all duration-300`}
+                className={`${panelCollapsed ? 'w-0 min-w-0 overflow-hidden opacity-0' : 'flex-[3] min-w-0 overflow-hidden'} min-h-0 bg-[#f8f8fb] dark:bg-[#0f1114] flex flex-col transition-all duration-300`}
               >
                 {showInlineAttachmentPreview ? (
                   <div className='flex-1 min-h-0 flex flex-col bg-white dark:bg-[#1a1b1e]'>
@@ -3895,7 +3927,8 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                       isRunning = activeSub.status === 'running';
                     }
 
-                    return (
+                    // 单栏布局不要右侧结果面板：结果已内联到每轮回答下方。
+                    return isSingle ? null : (
                       <ManusRightPanel
                         activeStep={activeStep}
                         outputs={outputs}

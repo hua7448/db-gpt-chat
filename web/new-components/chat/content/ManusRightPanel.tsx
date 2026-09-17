@@ -565,7 +565,9 @@ function fixSquishedTables(text: string): string {
 // this keeps a ResizeObserver on the iframe document body so the height tracks
 // async content (charts / fonts / images that lay out after load). Falls back
 // to a polling re-measure for the first second to catch late layout shifts.
-const AutoHeightIframe: React.FC<{
+// Exported so the single-column layout (InlineArtifacts) can render reports
+// in place instead of in the right panel. Behaviour is unchanged.
+export const AutoHeightIframe: React.FC<{
   srcDoc: string;
   title?: string;
   minHeight?: number;
