@@ -137,6 +137,38 @@ SECURITY_BOUNDARY_SECTION = """
 """
 
 
+# 岗位匹配（2026-09-17 新增）：岗位数据在 gs56（GaussDB）里，与人社业务库（Oracle）不是
+# 同一个库 —— 跨实例无法 JOIN，所以匹配必须经专用工具完成，不能让模型直接写 SQL 关联。
+# 本段仅在岗位库桥已配置时注入（与 job_tool_list 同开关），未配置时不出现、行为零变化。
+# 用【普通字符串】：段内含 JSON 示例的单层花括号，不能被 f-string 转义。
+JOB_MATCH_SECTION = """
+## 岗位数据与岗位匹配（数据来自岗位库，与业务库分离）
+- **岗位数据在另一个库**（`job_info` 等表属于岗位库，**不在**业务库 LSRSDB 中）：
+  禁止用 `sql_query` 去查岗位表，也**禁止尝试跨库 JOIN**（两个库在不同实例上，SQL 层无法关联）。
+  岗位数据只能通过 `job_search` / `job_match` 两个工具获取。
+- **`job_search`**：不针对具体人的岗位查询。用户问“有哪些岗位 / 招什么岗 / 某地某类岗位 / 薪资多少”时用它。
+- **`job_match`**：按人员条件匹配岗位。参数取人员的**真实数据**，必须先用 `sql_query` 从业务库查到（年龄、学历、性别、区县），
+  **严禁凭印象或猜测填写人员条件**（例如不要自行假设某人学历为大专）。
+- **人数较多时不要逐人匹配**（重要）：`job_match` 一次只针对一个人的条件。
+  ① 若用户问的是**某个人**（给了姓名/编号）：先用 `sql_query` 取该人的年龄/学历/性别/区县，再调 `job_match` 一次；
+  ② 若用户问的是**一类人群**：先用 `sql_query` 统计人数（按身份证去重口径），
+     - 人数 ≤ 5：可逐人调 `job_match`；
+     - 人数 > 5：**先不要逐人跑**，用 `question` 问用户想要哪种（“只看几名示例”／“按这类人群的共同特征整体推荐岗位”／“先缩小范围如限定区县或某类人员”），
+       再按答复执行；整体推荐时用人群的**共同特征**（如区县、年龄段、学历档）调一次 `job_match`，不要重复调用。
+- **口径可交给用户现场调整**（层 2 / 层 3）：
+  - 用户话里已经说清的条件（“只要莲都区的”“给我 10 条”“薪资 5000 以上”“不要大专以下”）直接作为工具参数，**不要再问一遍**；
+  - 需要提问的只有两种情况：**(a)** 未限定统计范围且范围会明显改变结果时，先用 `question` 问区域范围
+    （选项示例：全市（推荐）／指定区县／不限但按区县排序），**同一会话最多问一次**；
+    **(b)** 工具返回 `matched=0` 或结果过少时，用 `question` 问是否放宽
+    （选项示例：放宽学历要求（推荐）／放宽年龄范围／扩大到全市／保持严格），拿到答复后**只重试一次**。
+- **默认口径（未特别说明时按此执行，并在答案里写明）**：仅**在招且未下架**岗位；年龄落在岗位标注区间内；
+  学历按“岗位要求不高于本人学历”（高配低放行）；性别不符不排除但降低优先级；同区县优先（非硬条件）；每人最多 5 条。
+- **必须写明口径**：给出匹配结果时，用一句话说明所采用的口径（例如“匹配口径：在招岗位、年龄符合、学历要求不高于本人学历、同区县优先，取前 5 条”），
+  让用户知道结果是怎么算出来的。
+- **岗位库只读**：只能查询，任何写入/修改都不允许；岗位库不可用时（工具返回 error），先正常回答人员部分问题，并说明岗位数据本次未取到。
+"""
+
+
 async def _resolve_model_context_tokens(
     llm_client: Any, model_name: Optional[str]
 ) -> Optional[int]:
@@ -2268,6 +2300,7 @@ print(json.dumps(summary, ensure_ascii=False))
         make_execute_skill_script_file,
         make_execute_tool,
         make_html_interpreter,
+        make_job_tools,
         make_kb_tools,
         make_knowledge_retrieve,
         make_load_file,
@@ -2324,6 +2357,10 @@ print(json.dumps(summary, ensure_ascii=False))
     html_interpreter_tool = make_html_interpreter(react_state, DEFAULT_SKILLS_DIR)
     todowrite_tool = make_todowrite(_todo_list, stream_callback)
     question_tool = make_question(react_state, stream_callback)
+    # 岗位工具（数据在 gs56 高斯库，经宿主机 gauss-bridge 只读访问）。
+    # 桥未配置（site.env 无 GS56_BRIDGE_URL）时返回空列表 —— 不注册任何新工具，
+    # 现有问数行为零变化；这使岗位能力天然成为可开关的特性，便于分包部署与回归。
+    job_tool_list = make_job_tools(react_state)
     # read_file lets the agent read back persisted tool results / snapshots
     # from disk when a <persisted-output> block references a file path.
     read_file_tool = make_read_file(react_state)
@@ -2879,6 +2916,7 @@ Thought/Action/Action Input format shown above.
                     question_tool,
                     Terminate(),
                 ]
+                + job_tool_list
                 + business_tools
                 + connector_tool_extras
             )
@@ -3094,6 +3132,7 @@ Thought/Action/Action Input format shown above.
                     question_tool,
                     Terminate(),
                 ]
+                + job_tool_list
                 + business_tools
                 + connector_tool_extras
             )
@@ -3190,9 +3229,11 @@ Thought/Action/Action Input format shown above.
 
     # 追加 HTML 报告规范：skill / full 两种工作流共用同一份，统一报告观感，
     # 并保证报告在离线环境下可正常渲染（不使用任何外部资源）。
+    # 岗位匹配说明与工具注册同开关：桥未配置（job_tool_list 为空）时不注入，现有行为零变化。
     workflow_prompt = (
         SECURITY_BOUNDARY_SECTION
         + workflow_prompt
+        + (JOB_MATCH_SECTION if job_tool_list else "")
         + HTML_REPORT_STYLE_GUIDE
         + TASK_PROGRESS_SECTION
     )
