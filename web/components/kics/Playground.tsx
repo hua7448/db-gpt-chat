@@ -3545,17 +3545,19 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                                       <span className='text-[10px] text-gray-400'>
                                         {t('picker_skill_count', { count: (skillsList || []).length })}
                                       </span>
-                                      <Button
-                                        type='link'
-                                        size='small'
-                                        onClick={() => {
-                                          router.push('/construct/skills');
-                                          setIsSkillPanelOpen(false);
-                                        }}
-                                        className='text-[10px] p-0 h-auto'
-                                      >
-                                        {t('picker_manage_skill')}
-                                      </Button>
+                                      {!isSingle && (
+                                        <Button
+                                          type='link'
+                                          size='small'
+                                          onClick={() => {
+                                            router.push('/construct/skills');
+                                            setIsSkillPanelOpen(false);
+                                          }}
+                                          className='text-[10px] p-0 h-auto'
+                                        >
+                                          {t('picker_manage_skill')}
+                                        </Button>
+                                      )}
                                     </div>
                                   </div>
                                 }
@@ -3691,17 +3693,19 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                                           ).length,
                                         })}
                                       </span>
-                                      <Button
-                                        type='link'
-                                        size='small'
-                                        onClick={() => {
-                                          router.push('/construct/connectors');
-                                          setIsConnectorPanelOpen(false);
-                                        }}
-                                        className='text-[10px] p-0 h-auto'
-                                      >
-                                        {t('picker_manage_connector')}
-                                      </Button>
+                                      {!isSingle && (
+                                        <Button
+                                          type='link'
+                                          size='small'
+                                          onClick={() => {
+                                            router.push('/construct/connectors');
+                                            setIsConnectorPanelOpen(false);
+                                          }}
+                                          className='text-[10px] p-0 h-auto'
+                                        >
+                                          {t('picker_manage_connector')}
+                                        </Button>
+                                      )}
                                     </div>
                                   </div>
                                 }
@@ -4273,17 +4277,19 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                                   <span className='text-[10px] text-gray-400'>
                                     {t('picker_skill_count', { count: (skillsList || []).length })}
                                   </span>
-                                  <Button
-                                    type='link'
-                                    size='small'
-                                    onClick={() => {
-                                      router.push('/construct/skills');
-                                      setIsSkillPanelOpen(false);
-                                    }}
-                                    className='text-[10px] p-0 h-auto'
-                                  >
-                                    {t('picker_manage_skill')}
-                                  </Button>
+                                  {!isSingle && (
+                                    <Button
+                                      type='link'
+                                      size='small'
+                                      onClick={() => {
+                                        router.push('/construct/skills');
+                                        setIsSkillPanelOpen(false);
+                                      }}
+                                      className='text-[10px] p-0 h-auto'
+                                    >
+                                      {t('picker_manage_skill')}
+                                    </Button>
+                                  )}
                                 </div>
                               </div>
                             }
@@ -4411,17 +4417,19 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                                       ).length,
                                     })}
                                   </span>
-                                  <Button
-                                    type='link'
-                                    size='small'
-                                    onClick={() => {
-                                      router.push('/construct/connectors');
-                                      setIsConnectorPanelOpen(false);
-                                    }}
-                                    className='text-[10px] p-0 h-auto'
-                                  >
-                                    {t('picker_manage_connector')}
-                                  </Button>
+                                  {!isSingle && (
+                                    <Button
+                                      type='link'
+                                      size='small'
+                                      onClick={() => {
+                                        router.push('/construct/connectors');
+                                        setIsConnectorPanelOpen(false);
+                                      }}
+                                      className='text-[10px] p-0 h-auto'
+                                    >
+                                      {t('picker_manage_connector')}
+                                    </Button>
+                                  )}
                                 </div>
                               </div>
                             }
@@ -4546,17 +4554,19 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                                   <span className='text-[10px] text-gray-400'>
                                     {t('picker_database_count', { count: (dataSources || []).length })}
                                   </span>
-                                  <Button
-                                    type='link'
-                                    size='small'
-                                    onClick={() => {
-                                      router.push('/construct/database');
-                                      setIsDbPanelOpen(false);
-                                    }}
-                                    className='text-[10px] p-0 h-auto'
-                                  >
-                                    {t('picker_manage_database')}
-                                  </Button>
+                                  {!isSingle && (
+                                    <Button
+                                      type='link'
+                                      size='small'
+                                      onClick={() => {
+                                        router.push('/construct/database');
+                                        setIsDbPanelOpen(false);
+                                      }}
+                                      className='text-[10px] p-0 h-auto'
+                                    >
+                                      {t('picker_manage_database')}
+                                    </Button>
+                                  )}
                                 </div>
                               </div>
                             }
@@ -4671,17 +4681,19 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
                                   <span className='text-[10px] text-gray-400'>
                                     {t('picker_knowledge_count', { count: (knowledgeSpaces || []).length })}
                                   </span>
-                                  <Button
-                                    type='link'
-                                    size='small'
-                                    onClick={() => {
-                                      router.push('/construct/knowledge');
-                                      setIsKnowledgePanelOpen(false);
-                                    }}
-                                    className='text-[10px] p-0 h-auto'
-                                  >
-                                    {t('picker_manage_knowledge')}
-                                  </Button>
+                                  {!isSingle && (
+                                    <Button
+                                      type='link'
+                                      size='small'
+                                      onClick={() => {
+                                        router.push('/construct/knowledge');
+                                        setIsKnowledgePanelOpen(false);
+                                      }}
+                                      className='text-[10px] p-0 h-auto'
+                                    >
+                                      {t('picker_manage_knowledge')}
+                                    </Button>
+                                  )}
                                 </div>
                               </div>
                             }
@@ -4897,9 +4909,11 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
             locale={{ emptyText: 'No data sources found' }}
           />
           <div className='mt-4 pt-4 border-t border-gray-100 text-center'>
-            <Button type='dashed' block icon={<PlusOutlined />} onClick={() => router.push('/construct/database')}>
-              Add New Data Source
-            </Button>
+            {!isSingle && (
+              <Button type='dashed' block icon={<PlusOutlined />} onClick={() => router.push('/construct/database')}>
+                Add New Data Source
+              </Button>
+            )}
           </div>
         </Modal>
 
@@ -4942,9 +4956,11 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
             locale={{ emptyText: 'No knowledge bases found' }}
           />
           <div className='mt-4 pt-4 border-t border-gray-100 text-center'>
-            <Button type='dashed' block icon={<PlusOutlined />} onClick={() => router.push('/construct/knowledge')}>
-              Add New Knowledge Base
-            </Button>
+            {!isSingle && (
+              <Button type='dashed' block icon={<PlusOutlined />} onClick={() => router.push('/construct/knowledge')}>
+                Add New Knowledge Base
+              </Button>
+            )}
           </div>
         </Modal>
         <SaveAsScheduledTaskDrawer
