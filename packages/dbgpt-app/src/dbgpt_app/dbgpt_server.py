@@ -136,6 +136,36 @@ def _immutable_static_files(directory: str) -> StaticFiles:
     return _ImmutableStaticFiles(directory=directory)
 
 
+def _revalidating_static_files(directory: str) -> StaticFiles:
+    """StaticFiles that always revalidate, so HTML can never be served stale.
+
+    现场适配：这个挂载服务的入口资源（各页面的 index.html）文件名固定、内容随
+    每次构建变化。Starlette 默认只发 ETag/Last-Modified、不发 Cache-Control，
+    浏览器因此可以对它启用启发式缓存——在"新鲜期"内直接复用本地副本，连一次
+    校验都不发。而它引用的 /_next/static 产物是 immutable 长缓存的，旧 chunk
+    仍留在客户端缓存里，于是浏览器会整包跑上一次构建的代码：页面看起来完全
+    没更新，直到用户手动强制刷新。显式声明 no-cache 后每次都会带 ETag 校验，
+    内容没变仍是 304（一个来回、无正文），改了就立刻拿到新 HTML。
+
+    只对本挂载生效；/_next/static 走单独的 immutable 挂载，不受影响。
+    """
+
+    class _RevalidatingStaticFiles(StaticFiles):
+        def file_response(self, *args, **kwargs):
+            resp = super().file_response(*args, **kwargs)
+            resp.headers["Cache-Control"] = "no-cache, must-revalidate"
+            return resp
+
+        async def get_response(self, path: str, scope):
+            # 304（未修改）走的是 NotModifiedResponse，不经过 file_response，
+            # 这里补同一份声明，保证缓存语义在命中校验时也保持一致。
+            resp = await super().get_response(path, scope)
+            resp.headers["Cache-Control"] = "no-cache, must-revalidate"
+            return resp
+
+    return _RevalidatingStaticFiles(directory=directory, html=True)
+
+
 def mount_static_files(app: FastAPI, param: ApplicationConfig):
     package_dir = os.path.dirname(os.path.abspath(__file__))
     if param.service.web.new_web_ui:
@@ -174,10 +204,14 @@ def mount_static_files(app: FastAPI, param: ApplicationConfig):
     @app.get("/share/{token}/")
     async def _share_page_fallback(token: str):
         if os.path.isfile(share_html):
-            return FileResponse(share_html, media_type="text/html")
+            return FileResponse(
+                share_html,
+                media_type="text/html",
+                headers={"Cache-Control": "no-cache, must-revalidate"},
+            )
         raise HTTPException(status_code=404, detail="Page not found")
 
-    app.mount("/", StaticFiles(directory=static_file_path, html=True), name="static")
+    app.mount("/", _revalidating_static_files(static_file_path), name="static")
 
     app.mount(
         "/swagger_static",
