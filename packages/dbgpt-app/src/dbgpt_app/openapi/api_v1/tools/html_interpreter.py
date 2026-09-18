@@ -93,7 +93,7 @@ def localize_offline_assets(html: str) -> Tuple[str, List[str]]:
     lowered = html.lower()
     if "</html>" not in lowered:
         html = html.rstrip() + ("\n" if "</body>" in lowered else "\n</body>\n") + "</html>\n"
-        notes.append("报告结构不完整，已补齐结束标签")
+        notes.append("报告 HTML 疑似被截断（缺少 </html> 结束标签），已补齐结束标签兜底渲染")
 
     if notes:
         logger.info("html_interpreter: offline asset localization — %s", "; ".join(notes))
@@ -112,7 +112,9 @@ def make_html_interpreter(react_state: Dict[str, Any], skills_dir: str):
             "你需要自己生成完整的 HTML 代码"
             "（包含 <!DOCTYPE html>、<html>、<head>、<body> 等），"
             "然后传给 html 参数即可。"
-            "HTML 可以很长，没有长度限制，不需要分段传入；"
+            "HTML 总长务必控制在 8000 字符以内：模型单轮输出在约 1 万字符处会被"
+            "截断，超长的报告会被拦腰截断、尾部图表丢失；报告较长时压缩样式与"
+            "图表配置，而不是分多次调用；"
             "若报告含多部分内容，请合并进【同一份】HTML 一次性渲染，"
             "不要分多次生成多份报告。"
             "【禁止】不要用 code_interpreter 写 HTML 再 print，"
@@ -367,11 +369,24 @@ def make_html_interpreter(react_state: Dict[str, Any], skills_dir: str):
         # 否则模型引用的外部 CDN 会在现场（无外网）加载失败。
         fixed_html, offline_notes = localize_offline_assets(fixed_html)
 
-        summary = (
-            "✅ HTML 报告已成功渲染并展示给用户。报告任务已完成，"
-            "请勿重复调用 html_interpreter 生成报告。"
-            "若全部目标已达成，请直接调用 terminate 结束。"
-        )
+        if any("截断" in n for n in offline_notes):
+            # 输入 HTML 本身就不完整（模型输出被上游截断）——绝不能按"成功"汇报，
+            # 否则模型会拿着残页继续 terminate，用户看到的就是丢图/断版的报告。
+            summary = (
+                "⚠️ 你传入的 HTML 参数在生成阶段就被截断（缺少结束标签，通常是单轮"
+                "输出超过约 1 万字符上限导致）。系统已对残页做兜底修复并渲染，但报告"
+                "尾部内容与图表脚本很可能已丢失。"
+                "【必须重写】重新生成一份更精简的报告并重新调用本工具：整个 HTML "
+                "控制在 8000 字符以内 —— 单个 <style> 块、元素不带内联 style、"
+                "Chart.js 配置精简、最多 4 张图和 15 行表格；写不下的部分用一段文字"
+                "说明省略了什么。不要重发刚才那份长报告。"
+            )
+        else:
+            summary = (
+                "✅ HTML 报告已成功渲染并展示给用户。报告任务已完成，"
+                "请勿重复调用 html_interpreter 生成报告。"
+                "若全部目标已达成，请直接调用 terminate 结束。"
+            )
         if offline_notes:
             summary += (
                 "【离线资源处理】本环境无外网，外部资源不可用："

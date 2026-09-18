@@ -103,6 +103,13 @@ secondary text 12px #6B7280.
 6. Tables: full width, header row background #2563EB with white text, body rows
 alternating #FFFFFF and #F9FAFB, numeric columns right-aligned.
 7. Output ONE complete, self-contained HTML document (DOCTYPE, html, head, body).
+8. Length budget (hard, upstream cap): the model's single-turn output is truncated
+around 10,000 characters by the model service. Keep the ENTIRE HTML document within
+8,000 characters: one compact <style> block, no inline style attributes, minimal
+Chart.js options, at most 4 charts and 15 table rows. If the requested report cannot
+fit, render the most important parts and briefly state what was omitted — never
+write a longer document that will be cut off mid-way. Reports are delivered only
+via html_interpreter; do not fall back to code_interpreter or matplotlib images.
 """
 
 
@@ -1334,6 +1341,92 @@ class _AgentStreamingResponse(StreamingResponse):
                     raise
                 except Exception:
                     logger.exception("Failed to close ReAct agent stream iterator")
+
+
+# 动作文本泄漏检测（2026-09-18 现场实测）：模型把长内容（大表格 / HTML）塞进 terminate 的
+# result 时，JSON 很容易被截断或引号写坏 —— 解析抛异常后被 except 吞掉，最终答复就变成裸的
+# "Action: terminate Action Input: {...}"。用户看到的是"断掉的表格 + 一行莫名其妙的 Action
+# 文本"，界面上也没有任何"出错了"的提示。这里统一识别这种形态，换成能看懂的话。
+_LEAKED_ACTION_RE = re.compile(r"^\s*(Thought|Action|Action\s+Input)\s*:", re.IGNORECASE)
+
+_LEAKED_ACTION_MESSAGE = (
+    "上一轮没有正常结束：模型输出的动作内容不完整（多数情况是内容太长被截断或格式写坏），"
+    "系统没能解析出有效结果，因此这次回答中途停止了。\n\n"
+    "可以这样继续：把任务拆小一点再问一次（例如先统计人数，再单独让我出报告），"
+    "或者直接说「重新生成报告」。"
+)
+
+
+def _looks_like_leaked_action(text: Optional[str]) -> bool:
+    """最终答复是否其实是没解析成功的 ReAct 动作文本（Action: xxx / Action Input: {...}）。"""
+    if not text:
+        return False
+    head = text.lstrip()[:200]
+    return bool(_LEAKED_ACTION_RE.match(head) or _RAW_RESULT_RE.match(head))
+
+
+_TERMINATE_RESULT_RE = re.compile(
+    r"Action\s+Input\s*:\s*\{\s*[\"']result[\"']\s*:\s*([\"'])", re.IGNORECASE
+)
+# 原生 function-calling 路径的泄漏形态：final_content 本身就是 {"result": ...}
+_RAW_RESULT_RE = re.compile(r"^\s*\{\s*[\"']result[\"']\s*:\s*([\"'])", re.IGNORECASE)
+
+
+def _salvage_terminate_result(text: str) -> Optional[str]:
+    """从被截断的 terminate 动作文本里抢救 result 已写出的内容。
+
+    现场实测（2026-09-18，会话 7245c0b7）：模型把长报告塞进 terminate 的 result，
+    模型服务在单轮输出约 10240 字符处掐断 → JSON 没了结尾 → 解析失败被吞 →
+    用户看到裸的 "Action: terminate Action Input: {..."。
+    这里把 result 里已经写出来的部分抢救出来；若值本身没写完，尾部注明被截断。
+    抢救不出任何内容时返回 None（调用方改用 _LEAKED_ACTION_MESSAGE）。
+    """
+    if not text:
+        return None
+    m = _TERMINATE_RESULT_RE.search(text)
+    if m:
+        quote = m.group(1)
+        body = text[m.end():]
+    else:
+        # 原生 function-calling 路径：内容本身就是 {"result": ...
+        stripped = text.lstrip()
+        m2 = _RAW_RESULT_RE.match(stripped)
+        if not m2:
+            return None
+        quote = m2.group(1)
+        body = stripped[m2.end():]
+    out: List[str] = []
+    i = 0
+    closed = False
+    while i < len(body):
+        ch = body[i]
+        if ch == "\\" and i + 1 < len(body):
+            out.append(body[i : i + 2])
+            i += 2
+            continue
+        if ch == quote:
+            closed = True
+            break
+        out.append(ch)
+        i += 1
+    raw = "".join(out).rstrip()
+    if not raw:
+        return None
+    if quote == '"':
+        try:
+            salvaged = json.loads('"' + raw + '"')
+        except Exception:
+            salvaged = raw.replace("\\n", "\n").replace('\\"', '"').replace("\\\\", "\\")
+    else:
+        salvaged = raw.replace("\\n", "\n").replace("\\'", "'").replace('\\"', '"')
+    salvaged = str(salvaged).rstrip()
+    if not closed:
+        salvaged += (
+            "\n\n---\n（说明：这条回答的内容在生成时被截断——模型单轮输出有约 1 万字符的"
+            "上限，以上是已生成的部分。可以对我说「继续」补全剩余内容，"
+            "或把问题拆小一点重新提问。）"
+        )
+    return salvaged
 
 
 async def _react_agent_stream_impl(
@@ -3917,7 +4010,18 @@ Thought/Action/Action Input format shown above.
     else:
         final_content = reply.content or ""
 
+    # 截断/泄漏兜底（2026-09-18）：裸的 Action 文本不外露 —— 能从 result 里抢救出
+    # 已生成内容就抢救（尾部注明被截断），抢救不出就明确告知用户中断原因与下一步；
+    # 最终答复为空同样给出说明，绝不让会话"悄悄停下"。
+    if _looks_like_leaked_action(final_content):
+        final_content = (
+            _salvage_terminate_result(final_content) or _LEAKED_ACTION_MESSAGE
+        )
     final_answer = final_answer_assembler.finalize(final_content)
+    if not (final_answer.content or "").strip():
+        final_answer = AgentFinalAnswer(
+            content=_LEAKED_ACTION_MESSAGE, citations=final_answer.citations
+        )
 
     # Persist AI reply with structured history payload
     history_payload = _build_react_history_payload(
