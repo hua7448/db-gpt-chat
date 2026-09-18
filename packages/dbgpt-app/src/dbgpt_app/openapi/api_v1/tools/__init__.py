@@ -1,5 +1,6 @@
 """Built-in tools for the ReAct agent in agentic_data_api."""
 
+from .code_dict import dict_dir, make_dict_tools
 from .code_interpreter import make_code_interpreter
 from .execute_analysis import make_execute_analysis
 from .execute_tool import make_execute_tool
@@ -19,6 +20,8 @@ from .sql_query import make_sql_query
 from .todowrite import make_todowrite
 
 __all__ = [
+    "dict_dir",
+    "make_dict_tools",
     "make_code_interpreter",
     "make_execute_analysis",
     "make_execute_tool",

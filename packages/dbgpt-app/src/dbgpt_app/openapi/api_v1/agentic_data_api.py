@@ -80,6 +80,21 @@ AUTO_DATA_MARKER_PATTERN = re.compile(
 # 现场是内网离线部署：任何外部 CDN 引用都会加载失败——图表渲染成空白或被压扁、
 # 页面还会卡在请求超时，因此这里明确禁用外部资源并指定内置的本地图表库。
 # 注意：本常量在 f-string 之外拼接，CSS 花括号无需转义。
+# 代码字典（2026-09-18 新增）：业务库大量字段存的是编码（学历/性别/证件类型/区划…），
+# 现场提供码表 JSON 放 pilot 卷 dictionary/ 目录，由 code_lookup 工具按需查询 —— 不占提示词、
+# 替换文件即生效。本段仅在字典目录存在（dict_tool_list 非空）时注入。用普通字符串拼接。
+CODE_DICT_SECTION = """
+## 业务代码字典（编码字段必须查字典，禁止猜测）
+业务库里很多字段存的是代码而不是文字（例：`AAC011` 学历、`AAC004` 性别、`AAC058` 证件类型、`AAC161` 国家/地区）。
+处理规则：
+- 查询条件本身是代码、或要把结果里的代码翻译成文字时，**先调用 `code_lookup`**
+  （`code_lookup(field="AAC011")` 列出该字段全部码值；`code_lookup(field="AAC011", value="21")` 查单个代码的含义）；
+- 典型易错点：学历 **21=大学本科、31=大学专科**（此前曾把 21 当大专，导致筛错人群）；
+- 工具返回"字典中没有该值"时，在答案里标注「未知编码(值)」并说明字典待补充，
+  **严禁按相邻字段反推、严禁编造含义**；
+- 回答里用中文名称，必要时附代码（如「大学本科(21)」）；人数统计类回答要把用到的代码写进口径说明，便于追溯。
+"""
+
 HTML_REPORT_STYLE_GUIDE = """
 
 ## HTML Report Style Guide (mandatory)
@@ -2406,6 +2421,7 @@ print(json.dumps(summary, ensure_ascii=False))
     # ── Import built-in tools from tools/ directory ──
     from dbgpt_app.openapi.api_v1.tools import (
         make_code_interpreter,
+        make_dict_tools,
         make_execute_analysis,
         make_execute_skill_script_file,
         make_execute_tool,
@@ -2476,11 +2492,27 @@ print(json.dumps(summary, ensure_ascii=False))
     # 聚合/统计/任意条件组合这类"固定口径做不了"的查询才用它。同一个开关。
     gs56_sql_tool_list = make_gs56_sql_tools(react_state)
 
+    # 代码字典工具（2026-09-18 新增）：字典文件放 pilot 卷的 dictionary/ 目录（可整体替换，
+    # 免补丁、免重启）；目录不存在时不注册，现有行为零变化。
+    from dbgpt_app.openapi.api_v1.tools.code_dict import dict_dir
+
+    dict_tool_list = make_dict_tools(react_state) if dict_dir() else []
+
     # 岗位工具的参数说明 —— 必须进 system prompt 里的「## Available Tools Description」。
     # 原因（2026-09-17 现场实测）：那份清单是【手写】的，模型据此才知道每个工具的参数名；
     # 不在清单里的工具，模型只能猜参数名（实测 job_search 被猜成 {"city","status","limit"}，
     # 直接报 unexpected keyword argument 而失败）。本段与 job_tool_list 同开关，
     # 桥未配置时返回空串、不进入提示词。
+    def _dict_tools_desc(start_no: int) -> str:
+        if not dict_tool_list:
+            return ""
+        return f"""
+{start_no}. **code_lookup**: 查询业务库代码类字段的码表（代码→名称）。遇到编码字段（学历/性别/证件类型等）先用它确认含义，禁止猜测。
+Parameters: {{"field": "字段名，如 AAC011（学历）、AAC004（性别）、AAC058（证件类型）", "value": "代码（可选，不传则列出该字段全部码值）"}}
+   Example: {{"field": "AAC011", "value": "21"}} 或 {{"field": "AAC011"}}
+   字典中查不到时，在答案里标注「未知编码(值)」，不要按相邻字段推断或编造。
+"""
+
     def _job_tools_desc(start_no: int) -> str:
         if not job_tool_list:
             return ""
@@ -2985,20 +3017,20 @@ If template_path returns "Template not found", immediately switch to the default
    {available_images_hint}
 6. **sql_query**: Execute a read-only SQL query against the selected database.
 Parameters: {{"sql": "SELECT statement"}}
-{_job_tools_desc(7)}10. **todowrite**: Create and manage a structured task list. Use for complex tasks
+{_job_tools_desc(7)}{_dict_tools_desc(10)}11. **todowrite**: Create and manage a structured task list. Use for complex tasks
 (3+ steps) to plan and track progress. Pass the FULL list every time. Each item:
 {{"content": "description", "status": "pending|in_progress|completed|cancelled",
 "priority": "high|medium|low"}}. Only ONE task in_progress at a time.
 IMPORTANT: You MUST call todowrite again after EACH task completes to update status.
 The user sees progress in real time — never skip an update.
 Parameters: {{"todos": [{{...}}]}}
-11. **question**: Ask the user a question and wait for their response. Use this tool
+12. **question**: Ask the user a question and wait for their response. Use this tool
    when you need user input, clarification, or a decision to proceed. The tool blocks
    until the user answers.
    Parameters: {{"questions": [{{"question": "...", "header": "...", "options": [
    {{"label": "...", "description": "..."}}, ...]}}]}}. Set multiple=true to allow
    multiple selections. The tool returns the user's selected answers.
-12. **terminate**: Return the final answer when the task is completed. Action Input
+13. **terminate**: Return the final answer when the task is completed. Action Input
 must be {{"result": "your final answer content"}}.
 
 ## Task Management
@@ -3064,6 +3096,7 @@ Thought/Action/Action Input format shown above.
                 ]
                 + job_tool_list
                 + gs56_sql_tool_list
+                + dict_tool_list
                 + business_tools
                 + connector_tool_extras
             )
@@ -3201,24 +3234,24 @@ to display reports on the right panel). Default usage:
 {{"html": "<html>complete HTML code</html>", "title": "title"}}. Template mode:
 {{"template_path": "skill/templates/xxx.html", "data": {{...}}, "title": "title"}}.
 File mode: {{"file_path": "/path/to/report.html"}}
-{_job_tools_desc(18)}21. **todowrite**: Create and manage a structured task list. Use for complex tasks
+{_job_tools_desc(18)}{_dict_tools_desc(21)}22. **todowrite**: Create and manage a structured task list. Use for complex tasks
 (3+ steps) to plan and track progress. Pass the FULL list every time. Each item:
 {{"content": "description", "status": "pending|in_progress|completed|cancelled",
 "priority": "high|medium|low"}}. Only ONE task in_progress at a time.
 IMPORTANT: You MUST call todowrite again after EACH task completes to update status.
 The user sees progress in real time — never skip an update.
 Parameters: {{"todos": [{{...}}]}}
-22. **dispatch_parallel_tasks**: Execute 2 or more mutually independent todo
+23. **dispatch_parallel_tasks**: Execute 2 or more mutually independent todo
 items concurrently with isolated sub-agents. Each task needs a self-contained
 goal and may include shared context and a display title.
 Parameters: {{"tasks": [{{"goal": "...", "context": "...", "title": "..."}}]}}
-23. **question**: Ask the user a question and wait for their response. Use this tool
+24. **question**: Ask the user a question and wait for their response. Use this tool
    when you need user input, clarification, or a decision to proceed. The tool blocks
    until the user answers.
    Parameters: {{"questions": [{{"question": "...", "header": "...", "options": [
    {{"label": "...", "description": "..."}}, ...]}}]}}. Set multiple=true to allow
    multiple selections. The tool returns the user's selected answers.
-24. **terminate**: Finish the task. Parameters: {{"result": "final answer"}}
+25. **terminate**: Finish the task. Parameters: {{"result": "final answer"}}
 
 {file_context}
 {knowledge_context}
@@ -3281,6 +3314,7 @@ Thought/Action/Action Input format shown above.
                 ]
                 + job_tool_list
                 + gs56_sql_tool_list
+                + dict_tool_list
                 + business_tools
                 + connector_tool_extras
             )
@@ -3382,6 +3416,7 @@ Thought/Action/Action Input format shown above.
         SECURITY_BOUNDARY_SECTION
         + workflow_prompt
         + (JOB_MATCH_SECTION if job_tool_list else "")
+        + (CODE_DICT_SECTION if dict_tool_list else "")
         + HTML_REPORT_STYLE_GUIDE
         + TASK_PROGRESS_SECTION
     )
