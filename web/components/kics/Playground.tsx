@@ -572,6 +572,10 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  // 消息区滚动容器引用（2026-09-18 现场反馈修）：单栏模式下消息列被限制为 max-w-[800px] 居中，
+  // 而唯一的纵向滚动容器在列内部 —— 鼠标移到左右两侧空白处滚轮就没反应。
+  // 下面给外层容器挂了 onWheel，把"落在滚动容器之外"的滚轮转发给它。
+  const chatScrollRef = useRef<HTMLDivElement>(null);
 
   // --- Session files (Task12): rail drafts + send snapshots ---------------
   const sessionFiles = useSessionFiles({ api: sessionFilesApi });
@@ -3087,11 +3091,24 @@ const Playground: NextPage<PlaygroundProps> = ({ variant = 'full' }) => {
               <Spin size='large' tip='加载对话历史...' />
             </div>
           ) : messages.length > 0 ? (
-            <div className={`flex-1 min-h-0 flex overflow-hidden ${panelCollapsed ? 'justify-center' : ''}`}>
+            <div
+              className={`flex-1 min-h-0 flex overflow-hidden ${panelCollapsed ? 'justify-center' : ''}`}
+              onWheel={
+                panelCollapsed
+                  ? event => {
+                      // 只转发"没落在滚动容器里"的滚轮（也就是消息列两侧的空白区域），
+                      // 这样整个页面区域都能滚，同时不会和列内部的滚动重复触发。
+                      const scroller = chatScrollRef.current;
+                      if (!scroller || scroller.contains(event.target as Node)) return;
+                      scroller.scrollBy({ top: event.deltaY });
+                    }
+                  : undefined
+              }
+            >
               <div
                 className={`${panelCollapsed ? 'flex-1 max-w-[800px] border-r-0' : 'flex-[2] min-w-0 border-r border-gray-200/80 dark:border-gray-800'} min-h-0 flex flex-col overflow-hidden bg-white dark:bg-[#111217] transition-all duration-300 relative`}
               >
-                <div className='flex-1 min-h-0 overflow-y-auto'>
+                <div ref={chatScrollRef} className='flex-1 min-h-0 overflow-y-auto'>
                   {rounds.map((round, roundIndex) => {
                     const isLastRound = roundIndex === rounds.length - 1;
                     const isSelected = round.viewMsg?.id === selectedViewMsgId;

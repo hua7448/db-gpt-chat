@@ -195,6 +195,17 @@ table {
   table-layout: fixed;
 }
 
+/* 消息正文里的 markdown 表格（components/chat/chat-content/config.tsx 的 table 覆写）：
+   上面那条全局规则是为别处准备的，用在消息正文里会把宽表格裁掉且无法横向滚动。
+   这里恢复真实表格布局，让外层 .kics-md-table 的 overflow-x-auto 真正生效。
+   —— 2026-09-18 现场反馈"表格超出左右栏且不能左右滑动"。 */
+.kics-md-table table {
+  display: table;
+  width: auto;
+  min-width: 100%;
+  table-layout: auto;
+}
+
 .rc-md-editor {
   height: inherit;
 }

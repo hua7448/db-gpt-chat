@@ -271,9 +271,16 @@ const basicComponents: MarkdownComponent = {
     );
   },
   table({ children }) {
+    // 现场反馈（2026-09-18）：表格顶破聊天栏、而且左右滑不动。原因两条：
+    //   ① 全局 styles/globals.css 里 `table { display:block; width:100% }` —— display:block 会让
+    //      table-layout 失效，表格内部按内容（配合 whitespace-nowrap）撑得比 100% 还宽；
+    //   ② 表格自己还带着 `overflow-hidden`（原本是为了让圆角生效）→ 超出的列被**直接裁掉**，
+    //      外层这层 overflow-x-auto 拿不到溢出内容，自然也没有横向滚动条。
+    // 修法：圆角/裁切交给外层滚动容器，表格本身不再裁切；真正"能横向滚"由 globals.css 的
+    // `.kics-md-table table` 规则保证（恢复真实表格布局 + min-width:100%）。
     return (
-      <div className='w-full overflow-x-auto'>
-        <table className='my-2 rounded-tl-md rounded-tr-md bg-white dark:bg-gray-800 text-sm rounded-lg overflow-hidden whitespace-nowrap min-w-full'>
+      <div className='kics-md-table my-2 w-full overflow-x-auto rounded-lg'>
+        <table className='whitespace-nowrap text-sm bg-white dark:bg-gray-800 min-w-full'>
           {children}
         </table>
       </div>
