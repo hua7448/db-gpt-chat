@@ -8,6 +8,7 @@ import shutil
 import tempfile
 import uuid
 import zipfile
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, AsyncGenerator, Dict, List, Optional, Tuple
 from urllib.parse import urlparse
@@ -142,6 +143,30 @@ TASK_PROGRESS_SECTION = """
 不要再以“让报告更完整”为由继续收集更多维度。
 {% endif %}
 """
+
+
+# 当前时间（2026-09-18 新增，重要）：我们的 workflow_prompt 顶掉了框架内置的
+# _REACT_SYSTEM_TEMPLATE，而后者末尾原本带着 "The current time is: {{ now_time }}" ——
+# 于是模型手里【没有任何当前时间信息】，只能用训练数据里的时间先验作答。现场实测
+# （会话 7411f345）：模型把 2026 年答成"当前是 2025 年"，并把 2026-12-31 判成未来日期。
+# ⚠️ 不能直接用框架的 {{ now_time }} —— 容器时区是 UTC，datetime.now() 会差 8 小时；
+# 这里显式固定 +08:00（中国无夏令时），与容器 TZ 无关。必须用【普通字符串】拼接。
+def _time_context_section() -> str:
+    now = datetime.now(timezone(timedelta(hours=8)))
+    week = "一二三四五六日"[now.weekday()]
+    return (
+        "\n\n## 当前时间（重要：回答任何时间相关问题前必读）\n"
+        f"现在是 {now.strftime('%Y-%m-%d %H:%M:%S')}（北京时间，星期{week}）。\n"
+        "- 「今天 / 昨天 / 本周 / 本月 / 本季度 / 今年 / 近 N 天 / 最近一个月 / 截至现在」等相对时间，"
+        "一律以上面这个时间为基准计算，**不要凭记忆猜测当前年份或日期**。\n"
+        "- 若这个时间与你记忆中的时间不一致，**以这里为准**；用户问题里的日期早于它是历史数据，"
+        "晚于它的才是未来日期。\n"
+        "- 业务库（Oracle）的日期列是 DATE 类型：等值比较写 `TRUNC(列) = TO_DATE('YYYY-MM-DD','YYYY-MM-DD')`，"
+        "区间写 `列 >= TO_DATE(起始,'YYYY-MM-DD') AND 列 < TO_DATE(结束,'YYYY-MM-DD') + 1`；"
+        "直接与字符串比较会报 ORA-01861。\n"
+        "- 需要「此刻」去卡数据时可用 Oracle 的 `SYSDATE`（数据库服务器时间）；但向用户叙述的"
+        "「今天 / 本月」必须用上面这个北京时间，不要混用。\n"
+    )
 
 
 # 安全边界（2026-09-17 新增）：此前提示词里【没有任何】拒绝类规则，模型可被诱导
@@ -3419,6 +3444,7 @@ Thought/Action/Action Input format shown above.
         + (CODE_DICT_SECTION if dict_tool_list else "")
         + HTML_REPORT_STYLE_GUIDE
         + TASK_PROGRESS_SECTION
+        + _time_context_section()
     )
 
     # Convert workflow_prompt to PromptTemplate so it is used as system prompt
