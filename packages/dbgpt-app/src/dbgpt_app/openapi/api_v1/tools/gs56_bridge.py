@@ -88,8 +88,8 @@ def bridge_configured() -> bool:
     return bool(bridge_url())
 
 
-def query(sql: str, max_rows: int = 200, timeout: Optional[int] = None) -> Tuple[List[str], List[List[Any]]]:
-    """执行一条只读 SQL，返回 (columns, rows)。失败抛 BridgeError。"""
+def _post(sql: str, max_rows: int, timeout: Optional[int]) -> Dict[str, Any]:
+    """向桥 POST 一条只读 SQL，返回桥的完整 JSON 负载。失败抛 BridgeError。"""
     url = bridge_url()
     if not url:
         raise BridgeError("GS56_BRIDGE_URL 未配置")
@@ -119,13 +119,47 @@ def query(sql: str, max_rows: int = 200, timeout: Optional[int] = None) -> Tuple
 
     if "error" in payload:
         raise BridgeError(str(payload["error"]))
-    return payload.get("columns") or [], payload.get("rows") or []
+    return payload
+
+
+def query_with_meta(
+    sql: str, max_rows: int = 200, timeout: Optional[int] = None
+) -> Tuple[List[str], List[List[Any]], Dict[str, Any]]:
+    """执行一条只读 SQL，返回 (columns, rows, meta)。
+
+    meta 含 rowcount 与 truncated。为什么要带出来：桥在结果达到行数上限时会返回
+    truncated=true，而只取 columns/rows 的调用方会把"被截断的不完整结果"当成完整结果
+    用掉（2026-09-18 复核时发现）。
+    """
+    payload = _post(sql, max_rows, timeout)
+    return (
+        payload.get("columns") or [],
+        payload.get("rows") or [],
+        {
+            "rowcount": payload.get("rowcount"),
+            "truncated": bool(payload.get("truncated")),
+        },
+    )
+
+
+def query(sql: str, max_rows: int = 200, timeout: Optional[int] = None) -> Tuple[List[str], List[List[Any]]]:
+    """执行一条只读 SQL，返回 (columns, rows)。失败抛 BridgeError。"""
+    columns, rows, _ = query_with_meta(sql, max_rows=max_rows, timeout=timeout)
+    return columns, rows
 
 
 def query_dicts(sql: str, max_rows: int = 200, timeout: Optional[int] = None) -> List[Dict[str, Any]]:
     """同上，但把每行转成 dict（列名 → 值），便于后续过滤排序。"""
-    cols, rows = query(sql, max_rows=max_rows, timeout=timeout)
-    return [dict(zip(cols, r)) for r in rows]
+    columns, rows, _ = query_with_meta(sql, max_rows=max_rows, timeout=timeout)
+    return [dict(zip(columns, r)) for r in rows]
+
+
+def query_dicts_with_meta(
+    sql: str, max_rows: int = 200, timeout: Optional[int] = None
+) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    """同 query_dicts，但把 meta（rowcount / truncated）一并返回。"""
+    columns, rows, meta = query_with_meta(sql, max_rows=max_rows, timeout=timeout)
+    return [dict(zip(columns, r)) for r in rows], meta
 
 
 def health() -> Dict[str, Any]:
