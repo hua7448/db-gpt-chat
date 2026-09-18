@@ -145,13 +145,20 @@ JOB_MATCH_SECTION = """
 ## 岗位数据与岗位匹配（数据来自岗位库，与业务库分离）
 - **岗位数据在另一个库**（`job_info` 等表属于岗位库，**不在**业务库 LSRSDB 中）：
   禁止用 `sql_query` 去查岗位表，也**禁止尝试跨库 JOIN**（两个库在不同实例上，SQL 层无法关联）。
-  岗位数据只能通过 `job_search` / `job_match` 两个工具获取，**直接调用**（`Action: job_search` / `Action: job_match`），
-  **不要套 `execute_tool`**；参数名见上文「Available Tools Description」中的 job_search / job_match 两条，不要自造参数名。
+  岗位数据通过 `job_search` / `job_match` / `gs56_sql` 三个工具获取，**直接调用**（`Action: job_search` 等），
+  **不要套 `execute_tool`**；参数名见上文「Available Tools Description」里的对应条目，不要自造参数名。
 - **`job_search`**：不针对具体人的岗位查询。用户问“有哪些岗位 / 招什么岗 / 某地某类岗位 / 薪资多少”时用它。
 - **`job_match`**：按人员条件匹配岗位。单个人员用 `age`；**一类人群**用 `age_min`/`age_max` 表示年龄跨度。
   参数取人员的**真实数据**，必须先用 `sql_query` 从业务库查到（年龄、学历、性别、区县），
   **严禁凭印象或猜测填写人员条件**（例如不要自行假设某人学历为大专）。
   人员的学历若查不到或本身就是“不限”，`education` 就**留空不要填**（填“不限”会被当成一个很低的学历档，反而把岗位筛掉）。
+- **`gs56_sql`（只在聚合/统计类查询时用，重要）**：常规的“有哪些岗位 / 给某人或某类人推荐岗位”**一律**用上面两个
+  固定口径工具 —— 它们的口径写死在代码里，同一个问题重问结果一致。只有当那两个工具**覆盖不到**时才用 `gs56_sql`：
+  各区县/各企业/各岗位类别分别有多少岗位、按条件精确计数、多个条件自由组合、按发布时间看趋势。
+  用它时：只能发**单条只读** SQL（select/with）、只能查 `lishui` 下的业务表、一次最多返回 500 行；
+  判空用 `is null`（本库 `''` 即 NULL）；区县字段用 `work_county`（`work_district` 全空）；
+  在招条件统一写 `hiring_status = 1 and (deleted = 0 or deleted is null)`。
+  **不要**用 `gs56_sql` 自己写“给谁推荐岗位”的匹配逻辑（口径会与固定工具不一致，客户对不上账）。
 - **人数较多时不要逐人匹配**（重要）：`job_match` 一次只针对一个人的条件。
   ① 若用户问的是**某个人**（给了姓名/编号）：先用 `sql_query` 取该人的年龄/学历/性别/区县，再调 `job_match` 一次；
   ② 若用户问的是**一类人群**：先用 `sql_query` 统计人数（按身份证去重口径），
@@ -164,8 +171,15 @@ JOB_MATCH_SECTION = """
     （选项示例：全市（推荐）／指定区县／不限但按区县排序），**同一会话最多问一次**；
     **(b)** 工具返回 `matched=0` 或结果过少时，用 `question` 问是否放宽
     （选项示例：放宽学历要求（推荐）／放宽年龄范围／扩大到全市／保持严格），拿到答复后**只重试一次**。
-- **默认口径（未特别说明时按此执行，并在答案里写明）**：仅**在招且未下架**岗位；年龄落在岗位标注区间内；
-  学历按“岗位要求不高于本人学历”（高配低放行）；性别不符不排除但降低优先级；同区县优先（非硬条件）；每人最多 5 条。
+- **默认口径（未特别说明时按此执行，并在答案里写明）**：仅**在招且未下架**岗位；年龄区间与本人年龄（或人群年龄段）
+  **有交集**即符合（岗位未填年龄视为不限）；学历按“岗位要求不高于本人学历”（高配低放行；人员学历查不到时不做学历筛选）；
+  性别不符不排除但降低优先级；同区县优先（非硬条件）；
+  排序 = 正向命中的条件数 → 同区县 → 发布时间新（**已不看薪资**，避免高薪岗位霸榜）；每人最多 5 条。
+- **总数必须说对（重要）**：工具返回里的 `stats.matched_total` 才是“符合当前条件的岗位总数”，`stats.fetched_rows`
+  只是本次抓取的行数（内部窗口）。说“全市共有多少岗位”“符合条件的共多少条”时**只能用 `matched_total`**
+  （曾把 fetched_rows 当成总数，答出“共 400 个”而实际 3,690）；需要按维度细分总数（如各区县）时用 `gs56_sql` 聚合。
+- **返回里出现 `notice` 时必须转述给用户**：它说明“符合条件的有 N 条，但本次只在最近抓取的 M 条里排序挑选”
+  （不限区县、候选很多时会出现）。转述后按“范围未定先问一次”的规则用 `question` 问清区县，再重查一次即可完整覆盖。
 - **必须写明口径**：给出匹配结果时，用一句话说明所采用的口径（例如“匹配口径：在招岗位、年龄符合、学历要求不高于本人学历、同区县优先，取前 5 条”），
   让用户知道结果是怎么算出来的。
 - **岗位库只读**：只能查询，任何写入/修改都不允许；岗位库不可用时（工具返回 error），先正常回答人员部分问题，并说明岗位数据本次未取到。
@@ -2302,6 +2316,7 @@ print(json.dumps(summary, ensure_ascii=False))
         make_execute_analysis,
         make_execute_skill_script_file,
         make_execute_tool,
+        make_gs56_sql_tools,
         make_html_interpreter,
         make_job_tools,
         make_kb_tools,
@@ -2364,6 +2379,9 @@ print(json.dumps(summary, ensure_ascii=False))
     # 桥未配置（site.env 无 GS56_BRIDGE_URL）时返回空列表 —— 不注册任何新工具，
     # 现有问数行为零变化；这使岗位能力天然成为可开关的特性，便于分包部署与回归。
     job_tool_list = make_job_tools(react_state)
+    # gs56 只读 SQL 工具（2026-09-18 新增）：常规岗位问法用上面两个固定口径工具，
+    # 聚合/统计/任意条件组合这类"固定口径做不了"的查询才用它。同一个开关。
+    gs56_sql_tool_list = make_gs56_sql_tools(react_state)
 
     # 岗位工具的参数说明 —— 必须进 system prompt 里的「## Available Tools Description」。
     # 原因（2026-09-17 现场实测）：那份清单是【手写】的，模型据此才知道每个工具的参数名；
@@ -2384,7 +2402,16 @@ Parameters: {{"age": "某个人的年龄(可选)", "age_min": "人群年龄段�
 "district": "区县(可选)", "category": "岗位类别(可选)", "top_n": "返回条数(默认5,最多20)"}}
    Example: {{"age": 35, "gender": "男", "education": "大专", "district": "莲都区"}}
    人群整体推荐用 age_min/age_max + district + education 表示人群共同特征。
-以上两个岗位工具请【直接调用】（Action: job_search / job_match），不要套 execute_tool。
+{start_no + 2}. **gs56_sql**: 对岗位库执行单条只读 SQL。【仅当】上面两个工具覆盖不到时使用：
+聚合统计（各区县/各企业/各岗位类别分别有多少岗位）、按条件精确计数、任意条件组合、按发布时间看趋势。
+Parameters: {{"sql": "单条 select/with 语句", "purpose": "本次查询要回答什么(可选)"}}
+   Example: {{"sql": "select work_county, count(*) as cnt from lishui.job_info where hiring_status = 1 and (deleted = 0 or deleted is null) group by work_county order by cnt desc", "purpose": "各区县在招岗位数"}}
+   限制：只能查 lishui 下的业务表、只能单条 select/with、一次最多 500 行；判空用 is null（本库 '' 即 NULL）；
+   区县字段用 work_county（work_district 全空）；在招条件统一写 hiring_status = 1 and (deleted = 0 or deleted is null)。
+以上三个岗位库工具请【直接调用】（Action: job_search / job_match / gs56_sql），不要套 execute_tool。
+"有哪些岗位 / 给这些人推荐岗位"这类常规问法一律用前两个固定口径工具，【不要】用 gs56_sql 自己写匹配逻辑。
+返回里的 stats.matched_total 是"符合当前条件的岗位总数"，stats.fetched_rows 只是本次抓取行数，
+说"共多少个岗位"时只能用 matched_total（曾把 fetched_rows 当成总数，答出 400 而实际 3,690）。
 """
 
     # read_file lets the agent read back persisted tool results / snapshots
@@ -2865,20 +2892,20 @@ If template_path returns "Template not found", immediately switch to the default
    {available_images_hint}
 6. **sql_query**: Execute a read-only SQL query against the selected database.
 Parameters: {{"sql": "SELECT statement"}}
-{_job_tools_desc(7)}7. **todowrite**: Create and manage a structured task list. Use for complex tasks
+{_job_tools_desc(7)}10. **todowrite**: Create and manage a structured task list. Use for complex tasks
 (3+ steps) to plan and track progress. Pass the FULL list every time. Each item:
 {{"content": "description", "status": "pending|in_progress|completed|cancelled",
 "priority": "high|medium|low"}}. Only ONE task in_progress at a time.
 IMPORTANT: You MUST call todowrite again after EACH task completes to update status.
 The user sees progress in real time — never skip an update.
 Parameters: {{"todos": [{{...}}]}}
-8. **question**: Ask the user a question and wait for their response. Use this tool
+11. **question**: Ask the user a question and wait for their response. Use this tool
    when you need user input, clarification, or a decision to proceed. The tool blocks
    until the user answers.
    Parameters: {{"questions": [{{"question": "...", "header": "...", "options": [
    {{"label": "...", "description": "..."}}, ...]}}]}}. Set multiple=true to allow
    multiple selections. The tool returns the user's selected answers.
-9. **terminate**: Return the final answer when the task is completed. Action Input
+12. **terminate**: Return the final answer when the task is completed. Action Input
 must be {{"result": "your final answer content"}}.
 
 ## Task Management
@@ -2943,6 +2970,7 @@ Thought/Action/Action Input format shown above.
                     Terminate(),
                 ]
                 + job_tool_list
+                + gs56_sql_tool_list
                 + business_tools
                 + connector_tool_extras
             )
@@ -3080,24 +3108,24 @@ to display reports on the right panel). Default usage:
 {{"html": "<html>complete HTML code</html>", "title": "title"}}. Template mode:
 {{"template_path": "skill/templates/xxx.html", "data": {{...}}, "title": "title"}}.
 File mode: {{"file_path": "/path/to/report.html"}}
-{_job_tools_desc(18)}14. **todowrite**: Create and manage a structured task list. Use for complex tasks
+{_job_tools_desc(18)}21. **todowrite**: Create and manage a structured task list. Use for complex tasks
 (3+ steps) to plan and track progress. Pass the FULL list every time. Each item:
 {{"content": "description", "status": "pending|in_progress|completed|cancelled",
 "priority": "high|medium|low"}}. Only ONE task in_progress at a time.
 IMPORTANT: You MUST call todowrite again after EACH task completes to update status.
 The user sees progress in real time — never skip an update.
 Parameters: {{"todos": [{{...}}]}}
-15. **dispatch_parallel_tasks**: Execute 2 or more mutually independent todo
+22. **dispatch_parallel_tasks**: Execute 2 or more mutually independent todo
 items concurrently with isolated sub-agents. Each task needs a self-contained
 goal and may include shared context and a display title.
 Parameters: {{"tasks": [{{"goal": "...", "context": "...", "title": "..."}}]}}
-16. **question**: Ask the user a question and wait for their response. Use this tool
+23. **question**: Ask the user a question and wait for their response. Use this tool
    when you need user input, clarification, or a decision to proceed. The tool blocks
    until the user answers.
    Parameters: {{"questions": [{{"question": "...", "header": "...", "options": [
    {{"label": "...", "description": "..."}}, ...]}}]}}. Set multiple=true to allow
    multiple selections. The tool returns the user's selected answers.
-17. **terminate**: Finish the task. Parameters: {{"result": "final answer"}}
+24. **terminate**: Finish the task. Parameters: {{"result": "final answer"}}
 
 {file_context}
 {knowledge_context}
@@ -3159,6 +3187,7 @@ Thought/Action/Action Input format shown above.
                     Terminate(),
                 ]
                 + job_tool_list
+                + gs56_sql_tool_list
                 + business_tools
                 + connector_tool_extras
             )

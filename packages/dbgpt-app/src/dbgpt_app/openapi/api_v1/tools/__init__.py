@@ -3,6 +3,7 @@
 from .code_interpreter import make_code_interpreter
 from .execute_analysis import make_execute_analysis
 from .execute_tool import make_execute_tool
+from .gs56_sql import make_gs56_sql_tools
 from .html_interpreter import make_html_interpreter
 from .job_match import make_job_tools
 from .kb_tools import make_kb_tools
@@ -21,6 +22,7 @@ __all__ = [
     "make_code_interpreter",
     "make_execute_analysis",
     "make_execute_tool",
+    "make_gs56_sql_tools",
     "make_html_interpreter",
     "make_job_tools",
     "make_kb_tools",
