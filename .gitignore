@@ -248,3 +248,19 @@ docker/offline/certs/
 
 # Runtime agent uploads (sandbox workdir data)
 python_uploads/
+
+# ── 现场配置 / 凭据 / 备份包：禁止入库（2026-09-18 补全）──
+# 真实值只存在于现场与本机备份；仓库里只允许放模板（*.example / *.template）。
+# docker/offline/site.toml 是历史跟踪的占位模板（无真实值），不受 ignore 影响。
+site.env
+site.toml
+site.env.bak*
+site.toml.bak*
+certs/
+*.pem
+*.key
+*.p12
+*.jks
+id_rsa*
+*.tar
+*.tar.gz
